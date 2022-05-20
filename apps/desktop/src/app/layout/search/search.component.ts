@@ -17,7 +17,7 @@ export class SearchComponent {
     });
 
     this.searchText.valueChanges.subscribe((value) => {
-      this.searchBarService.setSearchText(value);
+      this.searchBarService.setSearchText(value.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
     });
   }
 }
