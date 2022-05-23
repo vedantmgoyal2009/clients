@@ -193,11 +193,10 @@ export class VaultFilterComponent implements OnInit, OnDestroy {
       clearTimeout(this.searchTimeout);
     }
     const filterDeleted = (c: CipherView) => !c.isDeleted;
-    const normalizedSearchText = this.searchText?.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     if (timeout == null) {
-      this.hasSearched = this.searchService.isSearchable(normalizedSearchText);
+      this.hasSearched = this.searchService.isSearchable(this.searchText);
       this.ciphers = await this.searchService.searchCiphers(
-        normalizedSearchText,
+        this.searchText,
         filterDeleted,
         this.allCiphers
       );
@@ -208,12 +207,12 @@ export class VaultFilterComponent implements OnInit, OnDestroy {
     }
     this.searchPending = true;
     this.searchTimeout = setTimeout(async () => {
-      this.hasSearched = this.searchService.isSearchable(normalizedSearchText);
+      this.hasSearched = this.searchService.isSearchable(this.searchText);
       if (!this.hasLoadedAllCiphers && !this.hasSearched) {
         await this.loadCiphers();
       } else {
         this.ciphers = await this.searchService.searchCiphers(
-          normalizedSearchText,
+          this.searchText,
           filterDeleted,
           this.allCiphers
         );

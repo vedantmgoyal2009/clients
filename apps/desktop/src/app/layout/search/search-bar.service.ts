@@ -29,7 +29,7 @@ export class SearchBarService {
   }
 
   setSearchText(value: string) {
-    this.searchText.next(value);
+    this.searchText.next(value?.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
   }
 
   private updateState() {
