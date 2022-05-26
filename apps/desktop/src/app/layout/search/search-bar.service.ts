@@ -31,7 +31,7 @@ export class SearchBarService {
   }
 
   setSearchText(value: string) {
-    this.searchText.next(Utils.normalizeSearchQuery(value));
+    this.searchText.next(value);
   }
 
   private updateState() {
