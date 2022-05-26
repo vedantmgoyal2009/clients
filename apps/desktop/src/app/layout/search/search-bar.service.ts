@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { Utils } from "jslib-common/misc/utils";
 
 export type SearchBarState = {
   enabled: boolean;
@@ -28,9 +29,8 @@ export class SearchBarService {
     this.updateState();
   }
 
-  // Remove accents/diacritics characters from text. This regex is equivalent to the Diacritic unicode property escape, i.e. it will match all diacritic characters.
   setSearchText(value: string) {
-    this.searchText.next(value?.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    this.searchText.next(Utils.normalizeSearchQuery(value));
   }
 
   private updateState() {
