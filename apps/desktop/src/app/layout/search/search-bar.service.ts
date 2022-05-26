@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+
 import { Utils } from "jslib-common/misc/utils";
 
 export type SearchBarState = {
