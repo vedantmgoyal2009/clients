@@ -125,11 +125,15 @@ jobs:
         env:
           REGISTRY: bitwardenqa.azurecr.io
         run: |
-          docker tag bitwarden/web:$_BRANCH_NAME $REGISTRY/web:$_RELEASE_VERSION
-          docker tag bitwarden/web:$_BRANCH_NAME $REGISTRY/web:latest
+          if [[ "${{ github.event.inputs.release_type }}" == "Dry Run" ]]; then
+            docker tag bitwarden/web:latest $REGISTRY/web:$_RELEASE_VERSION
+          else
+            docker tag bitwarden/web:$_BRANCH_NAME $REGISTRY/web:$_RELEASE_VERSION
+            docker tag bitwarden/web:$_BRANCH_NAME $REGISTRY/web:latest
 
-          docker tag bitwarden/web:$_BRANCH_NAME $REGISTRY/web-sh:$_RELEASE_VERSION
-          docker tag bitwarden/web:$_BRANCH_NAME $REGISTRY/web-sh:latest
+            docker tag bitwarden/web:$_BRANCH_NAME $REGISTRY/web-sh:$_RELEASE_VERSION
+            docker tag bitwarden/web:$_BRANCH_NAME $REGISTRY/web-sh:latest
+          fi
 
       - name: Push version and latest image
         if: ${{ github.event.inputs.release_type != 'Dry Run' }}
