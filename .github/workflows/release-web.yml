@@ -91,8 +91,12 @@ jobs:
 
       - name: Docker Tag version and latest image
         run: |
-          docker tag bitwarden/web:$_BRANCH_NAME bitwarden/web:$_RELEASE_VERSION
-          docker tag bitwarden/web:$_BRANCH_NAME bitwarden/web:latest
+          if [[ "${{ github.event.inputs.release_type }}" == "Dry Run" ]]; then
+            docker tag bitwarden/web:latest bitwarden/web:$_RELEASE_VERSION
+          else
+            docker tag bitwarden/web:$_BRANCH_NAME bitwarden/web:$_RELEASE_VERSION
+            docker tag bitwarden/web:$_BRANCH_NAME bitwarden/web:latest
+          fi
 
       - name: Docker Push version and latest image
         if: ${{ github.event.inputs.release_type != 'Dry Run' }}
