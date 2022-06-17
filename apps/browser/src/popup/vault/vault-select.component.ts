@@ -101,7 +101,7 @@ export class VaultSelectComponent implements OnInit {
   }
 
   async load() {
-    this.vaultFilter = this.vaultFilterService.getVaultFilter();
+    this.vaultFilter = await this.vaultFilterService.getVaultFilter();
     this.organizations = (await this.vaultFilterService.buildOrganizations()).sort((a, b) =>
       a.name.localeCompare(b.name)
     );

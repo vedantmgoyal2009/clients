@@ -7,6 +7,8 @@ import { TotpService } from "@bitwarden/common/abstractions/totp.service";
 import { ThemeType } from "@bitwarden/common/enums/themeType";
 import { UriMatchType } from "@bitwarden/common/enums/uriMatchType";
 
+import { VaultFilterService } from "../../services/vaultFilter.service";
+
 @Component({
   selector: "app-options",
   templateUrl: "options.component.html",
@@ -17,6 +19,8 @@ export class OptionsComponent implements OnInit {
   enableAutoFillOnPageLoad = false;
   autoFillOnPageLoadDefault = false;
   autoFillOnPageLoadOptions: any[];
+  defaultVaultFilter: string;
+  defaultVaultFilterOptions: { key: string; value: string }[];
   disableAutoTotpCopy = false;
   disableContextMenuItem = false;
   disableAddLoginNotification = false;
@@ -33,11 +37,13 @@ export class OptionsComponent implements OnInit {
   showGeneral = true;
   showAutofill = true;
   showDisplay = true;
+  showVaultFilter = false;
 
   constructor(
     private messagingService: MessagingService,
     private stateService: StateService,
     private totpService: TotpService,
+    private vaultFilterService: VaultFilterService,
     i18nService: I18nService
   ) {
     this.themeOptions = [
@@ -75,6 +81,12 @@ export class OptionsComponent implements OnInit {
 
     this.autoFillOnPageLoadDefault =
       (await this.stateService.getAutoFillOnPageLoadDefault()) ?? true;
+
+    this.showVaultFilter = await this.vaultFilterService.showVaultFilter();
+    if (this.showVaultFilter) {
+      this.defaultVaultFilterOptions = await this.vaultFilterService.getVaultFilterOptions();
+      this.defaultVaultFilter = await this.stateService.getDefaultVaultFilter();
+    }
 
     this.disableAddLoginNotification = await this.stateService.getDisableAddLoginNotification();
 
@@ -142,6 +154,10 @@ export class OptionsComponent implements OnInit {
 
   async updateShowIdentities() {
     await this.stateService.setDontShowIdentitiesCurrentTab(this.dontShowIdentities);
+  }
+
+  async updateDefaultVaultFilter() {
+    await this.stateService.setDefaultVaultFilter(this.defaultVaultFilter);
   }
 
   async saveTheme() {

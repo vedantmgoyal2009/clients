@@ -61,6 +61,12 @@
   "allVaults": {
     "message": "All Vaults"
   },
+  "defaultVaultFilter": {
+    "message": "Default Vault Filter"
+  },
+  "defaultVaultDesc": {
+    "message": "Change the vault filter the application will have on start up."
+  },
   "tools": {
     "message": "Tools"
   },

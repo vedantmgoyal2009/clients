@@ -118,6 +118,24 @@
       </div>
       <div class="box-footer">{{ "disableContextMenuItemDesc" | i18n }}</div>
     </div>
+    <div class="box" *ngIf="showVaultFilter">
+      <div class="box-content">
+        <div class="box-content-row" appBoxRow>
+          <label for="defaultVaultFilter">{{ "defaultVaultFilter" | i18n }}</label>
+          <select
+            id="defaultVaultFilter"
+            name="defaultVaultFilter"
+            [(ngModel)]="defaultVaultFilter"
+            (change)="updateDefaultVaultFilter()"
+          >
+            <option *ngFor="let o of defaultVaultFilterOptions" [ngValue]="o.key">
+              {{ o.value }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="box-footer">{{ "defaultVaultDesc" | i18n }}</div>
+    </div>
   </ng-container>
   <div class="box box-section-divider">
     <h2>

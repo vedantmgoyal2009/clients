@@ -107,6 +107,7 @@ export class AccountSettings {
   clearClipboard?: number;
   collapsedGroupings?: string[];
   defaultUriMatch?: UriMatchType;
+  defaultVaultFilter?: string;
   disableAddLoginNotification?: boolean;
   disableAutoBiometricsPrompt?: boolean;
   disableAutoTotpCopy?: boolean;

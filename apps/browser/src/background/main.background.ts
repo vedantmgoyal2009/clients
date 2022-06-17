@@ -291,7 +291,8 @@ export default class MainBackground {
       this.folderService,
       this.cipherService,
       this.collectionService,
-      this.policyService
+      this.policyService,
+      this.i18nService
     );
 
     this.twoFactorService = new TwoFactorService(this.i18nService, this.platformUtilsService);

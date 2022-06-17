@@ -237,7 +237,8 @@ function getBgService<T>(service: keyof MainBackground) {
           getBgService<FolderService>("folderService")(),
           getBgService<CipherService>("cipherService")(),
           getBgService<CollectionService>("collectionService")(),
-          getBgService<PolicyService>("policyService")()
+          getBgService<PolicyService>("policyService")(),
+          getBgService<I18nService>("i18nService")()
         );
       },
       deps: [],
