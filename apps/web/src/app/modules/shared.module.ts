@@ -53,10 +53,10 @@ import localeZhTw from "@angular/common/locales/zh-Hant";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { JslibModule } from "jslib-angular/jslib.module";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ToastrModule } from "ngx-toastr";
 
+import { JslibModule } from "@bitwarden/angular/jslib.module";
 import {
   BadgeModule,
   ButtonModule,
