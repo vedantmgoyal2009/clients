@@ -1,4 +1,10 @@
-<form id="register-page" #form (ngSubmit)="submit()" [appApiAction]="formPromise">
+<form
+  id="register-page"
+  #form
+  (ngSubmit)="submit()"
+  [appApiAction]="formPromise"
+  [formGroup]="formGroup"
+>
   <div class="content">
     <h1>{{ "createAccount" | i18n }}</h1>
     <div class="box">
@@ -7,10 +13,8 @@
           <label for="email">{{ "emailAddress" | i18n }}</label>
           <input
             id="email"
-            type="text"
-            name="Email"
-            [(ngModel)]="email"
-            required
+            type="email"
+            formControlName="email"
             [appAutofocus]="email === ''"
             appInputVerbatim
           />
@@ -28,12 +32,11 @@
                 </strong>
               </label>
               <input
+                #masterPassword
                 id="masterPassword"
                 type="{{ showPassword ? 'text' : 'password' }}"
-                name="MasterPassword"
                 class="monospaced"
-                [(ngModel)]="masterPassword"
-                required
+                formControlName="masterPassword"
                 [appAutofocus]="email !== ''"
                 (input)="updatePasswordStrength()"
                 appInputVerbatim
@@ -79,12 +82,11 @@
           <div class="row-main">
             <label for="masterPasswordRetype">{{ "reTypeMasterPass" | i18n }}</label>
             <input
+              #masterPasswordRetype
               id="masterPasswordRetype"
               type="{{ showPassword ? 'text' : 'password' }}"
-              name="MasterPasswordRetype"
               class="monospaced"
-              [(ngModel)]="confirmMasterPassword"
-              required
+              formControlName="confirmMasterPassword"
               appInputVerbatim
             />
           </div>
@@ -107,7 +109,7 @@
         </div>
         <div class="box-content-row" appBoxRow>
           <label for="hint">{{ "masterPassHint" | i18n }}</label>
-          <input id="hint" type="text" name="Hint" [(ngModel)]="hint" />
+          <input id="hint" type="text" formControlName="hint" />
         </div>
         <div class="box last" [hidden]="!showCaptcha()">
           <div class="box-content">
@@ -127,12 +129,7 @@
     </div>
     <div class="box last" *ngIf="showTerms">
       <div class="box-footer checkbox">
-        <input
-          type="checkbox"
-          id="acceptPolicies"
-          [(ngModel)]="acceptPolicies"
-          name="AcceptPolicies"
-        />
+        <input type="checkbox" id="acceptPolicies" formControlName="acceptPolicies" />
         <label for="acceptPolicies">
           {{ "acceptPolicies" | i18n }}<br />
           <a href="https://bitwarden.com/terms/" target="_blank" rel="noopener">{{

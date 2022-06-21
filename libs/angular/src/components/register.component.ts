@@ -1,4 +1,5 @@
-import { Directive, OnInit } from "@angular/core";
+import { Directive, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -19,22 +20,28 @@ import { CaptchaProtectedComponent } from "./captchaProtected.component";
 
 @Directive()
 export class RegisterComponent extends CaptchaProtectedComponent implements OnInit {
-  name = "";
-  email = "";
-  masterPassword = "";
-  confirmMasterPassword = "";
-  hint = "";
+  @ViewChild("masterPassword") masterPasswordRef: ElementRef;
+  @ViewChild("masterPasswordRetype") masterPasswordRetypeRef: ElementRef;
+
+  // name = "";
+  // email = "";
+  // masterPassword = "";
+  // confirmMasterPassword = "";
+  // hint = "";
   showPassword = false;
   formPromise: Promise<any>;
   masterPasswordScore: number;
   referenceData: ReferenceEventRequest;
   showTerms = true;
   acceptPolicies = false;
+  showErrorSummary = false;
+  formGroup: FormGroup;
 
   protected successRoute = "login";
   private masterPasswordStrengthTimeout: any;
 
   constructor(
+    protected formBuilder: FormBuilder,
     protected authService: AuthService,
     protected router: Router,
     i18nService: I18nService,
@@ -47,6 +54,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
     protected logService: LogService
   ) {
     super(environmentService, i18nService, platformUtilsService);
+    this.createRegisterForm();
     this.showTerms = !platformUtilsService.isSelfHost();
   }
 
@@ -85,7 +93,17 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
   }
 
   async submit() {
-    if (!this.acceptPolicies && this.showTerms) {
+    let email = this.formGroup.get("email")?.value;
+    let name = this.formGroup.get("name")?.value;
+    const masterPassword = this.formGroup.get("masterPassword")?.value;
+    const confirmMasterPassword = this.formGroup.get("confirmMasterPassword")?.value;
+    const hint = this.formGroup.get("hint")?.value;
+    const acceptPolicies = this.formGroup.get("acceptPolicies")?.value;
+
+    this.formGroup.markAllAsTouched();
+    this.showErrorSummary = true;
+
+    if (!acceptPolicies && this.showTerms) {
       this.platformUtilsService.showToast(
         "error",
         this.i18nService.t("errorOccurred"),
@@ -94,7 +112,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       return;
     }
 
-    if (this.email == null || this.email === "") {
+    if (email == null || email === "") {
       this.platformUtilsService.showToast(
         "error",
         this.i18nService.t("errorOccurred"),
@@ -102,7 +120,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       );
       return;
     }
-    if (this.email.indexOf("@") === -1) {
+    if (email.indexOf("@") === -1) {
       this.platformUtilsService.showToast(
         "error",
         this.i18nService.t("errorOccurred"),
@@ -110,7 +128,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       );
       return;
     }
-    if (this.masterPassword == null || this.masterPassword === "") {
+    if (masterPassword == null || masterPassword === "") {
       this.platformUtilsService.showToast(
         "error",
         this.i18nService.t("errorOccurred"),
@@ -118,7 +136,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       );
       return;
     }
-    if (this.masterPassword.length < 8) {
+    if (masterPassword.length < 8) {
       this.platformUtilsService.showToast(
         "error",
         this.i18nService.t("errorOccurred"),
@@ -126,7 +144,8 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       );
       return;
     }
-    if (this.masterPassword !== this.confirmMasterPassword) {
+
+    if (masterPassword !== confirmMasterPassword) {
       this.platformUtilsService.showToast(
         "error",
         this.i18nService.t("errorOccurred"),
@@ -136,7 +155,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
     }
 
     const strengthResult = this.passwordGenerationService.passwordStrength(
-      this.masterPassword,
+      masterPassword,
       this.getPasswordStrengthUserInput()
     );
     if (strengthResult != null && strengthResult.score < 3) {
@@ -152,7 +171,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       }
     }
 
-    if (this.hint === this.masterPassword) {
+    if (hint === masterPassword) {
       this.platformUtilsService.showToast(
         "error",
         this.i18nService.t("errorOccurred"),
@@ -161,24 +180,19 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       return;
     }
 
-    this.name = this.name === "" ? null : this.name;
-    this.email = this.email.trim().toLowerCase();
+    name = name === "" ? null : name;
+    email = email.trim().toLowerCase();
     const kdf = DEFAULT_KDF_TYPE;
     const kdfIterations = DEFAULT_KDF_ITERATIONS;
-    const key = await this.cryptoService.makeKey(
-      this.masterPassword,
-      this.email,
-      kdf,
-      kdfIterations
-    );
+    const key = await this.cryptoService.makeKey(masterPassword, email, kdf, kdfIterations);
     const encKey = await this.cryptoService.makeEncKey(key);
-    const hashedPassword = await this.cryptoService.hashPassword(this.masterPassword, key);
+    const hashedPassword = await this.cryptoService.hashPassword(masterPassword, key);
     const keys = await this.cryptoService.makeKeyPair(encKey[0]);
     const request = new RegisterRequest(
-      this.email,
-      this.name,
+      email,
+      name,
       hashedPassword,
-      this.hint,
+      hint,
       encKey[1].encryptedString,
       kdf,
       kdfIterations,
@@ -204,7 +218,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
         }
       }
       this.platformUtilsService.showToast("success", null, this.i18nService.t("newAccountCreated"));
-      this.router.navigate([this.successRoute], { queryParams: { email: this.email } });
+      this.router.navigate([this.successRoute], { queryParams: { email: email } });
     } catch (e) {
       this.logService.error(e);
     }
@@ -212,16 +226,20 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
 
   togglePassword(confirmField: boolean) {
     this.showPassword = !this.showPassword;
-    document.getElementById(confirmField ? "masterPasswordRetype" : "masterPassword").focus();
+    confirmField
+      ? this.masterPasswordRetypeRef.nativeElement.focus()
+      : this.masterPasswordRef.nativeElement.focus();
   }
 
   updatePasswordStrength() {
+    const masterPassword = this.formGroup.get("masterPassword")?.value;
+
     if (this.masterPasswordStrengthTimeout != null) {
       clearTimeout(this.masterPasswordStrengthTimeout);
     }
     this.masterPasswordStrengthTimeout = setTimeout(() => {
       const strengthResult = this.passwordGenerationService.passwordStrength(
-        this.masterPassword,
+        masterPassword,
         this.getPasswordStrengthUserInput()
       );
       this.masterPasswordScore = strengthResult == null ? null : strengthResult.score;
@@ -230,19 +248,32 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
 
   private getPasswordStrengthUserInput() {
     let userInput: string[] = [];
-    const atPosition = this.email.indexOf("@");
+    const email = this.formGroup.get("email")?.value;
+    const name = this.formGroup.get("name").value;
+    const atPosition = email.indexOf("@");
     if (atPosition > -1) {
       userInput = userInput.concat(
-        this.email
+        email
           .substr(0, atPosition)
           .trim()
           .toLowerCase()
           .split(/[^A-Za-z0-9]/)
       );
     }
-    if (this.name != null && this.name !== "") {
-      userInput = userInput.concat(this.name.trim().toLowerCase().split(" "));
+    if (name != null && name !== "") {
+      userInput = userInput.concat(name.trim().toLowerCase().split(" "));
     }
     return userInput;
+  }
+
+  private createRegisterForm() {
+    this.formGroup = this.formBuilder.group({
+      email: ["", [Validators.required, Validators.email]],
+      name: [""],
+      masterPassword: ["", [Validators.required]],
+      confirmMasterPassword: ["", [Validators.required]],
+      hint: [],
+      acceptPolicies: [false, [Validators.requiredTrue]],
+    });
   }
 }

@@ -5,7 +5,7 @@
   class="tw-container tw-mx-auto"
   [formGroup]="formGroup"
 >
-  <div>
+  <div #form [formGroup]="formGroup">
     <div class="tw-mb-3">
       <bit-form-field>
         <bit-label>{{ "emailAddress" | i18n }}</bit-label>
@@ -128,7 +128,7 @@
 
     <hr />
 
-    <div class="tw-flex tw-mb-2">
+    <div class="tw-flex tw-mb-3">
       <button
         class="tw-px-6 tw-py-2.5"
         type="submit"
@@ -150,6 +150,6 @@
         {{ "logIn" | i18n }}
       </a>
     </div>
+    <bit-error-summary *ngIf="showErrorSummary" [formGroup]="formGroup"></bit-error-summary>
   </div>
-  <bit-error-summary *ngIf="showErrorSummary" [formGroup]="formGroup"></bit-error-summary>
 </form>

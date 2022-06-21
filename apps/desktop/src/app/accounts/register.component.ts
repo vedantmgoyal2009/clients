@@ -1,4 +1,5 @@
 import { Component, NgZone, OnDestroy, OnInit } from "@angular/core";
+import { FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 
 import { RegisterComponent as BaseRegisterComponent } from "@bitwarden/angular/components/register.component";
@@ -21,6 +22,7 @@ const BroadcasterSubscriptionId = "RegisterComponent";
 })
 export class RegisterComponent extends BaseRegisterComponent implements OnInit, OnDestroy {
   constructor(
+    formBuilder: FormBuilder,
     authService: AuthService,
     router: Router,
     i18nService: I18nService,
@@ -35,6 +37,7 @@ export class RegisterComponent extends BaseRegisterComponent implements OnInit, 
     logService: LogService
   ) {
     super(
+      formBuilder,
       authService,
       router,
       i18nService,

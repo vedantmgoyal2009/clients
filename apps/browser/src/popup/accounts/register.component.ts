@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 
 import { RegisterComponent as BaseRegisterComponent } from "@bitwarden/angular/components/register.component";
@@ -18,6 +19,7 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 })
 export class RegisterComponent extends BaseRegisterComponent {
   constructor(
+    formBuilder: FormBuilder,
     authService: AuthService,
     router: Router,
     i18nService: I18nService,
@@ -30,6 +32,7 @@ export class RegisterComponent extends BaseRegisterComponent {
     logService: LogService
   ) {
     super(
+      formBuilder,
       authService,
       router,
       i18nService,
