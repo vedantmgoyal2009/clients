@@ -36,6 +36,15 @@
       <bit-form-field>
         <bit-label>{{ "identifier" | i18n }}</bit-label>
         <input bitInput type="text" formControlName="identifier" />
+        <button bitPrefix bitButton>Button</button>
+        <button
+          bitSuffix
+          bitButton
+          [appCopyToClipboard]="formData.get('identifier').value"
+          type="button"
+        >
+          <i aria-hidden="true" class="bwi bwi-lg bwi-clone"></i>
+        </button>
       </bit-form-field>
     </div>
     <div class="col-6">

@@ -13,6 +13,7 @@ import { ApiActionDirective } from "./directives/api-action.directive";
 import { AutofocusDirective } from "./directives/autofocus.directive";
 import { BlurClickDirective } from "./directives/blur-click.directive";
 import { BoxRowDirective } from "./directives/box-row.directive";
+import { CopyDirective } from "./directives/copy.directive";
 import { FallbackSrcDirective } from "./directives/fallback-src.directive";
 import { InputStripSpacesDirective } from "./directives/input-strip-spaces.directive";
 import { InputVerbatimDirective } from "./directives/input-verbatim.directive";
@@ -52,6 +53,7 @@ import { UserNamePipe } from "./pipes/user-name.pipe";
     CalloutComponent,
     ColorPasswordCountPipe,
     ColorPasswordPipe,
+    CopyDirective,
     CreditCardNumberPipe,
     EllipsisPipe,
     ExportScopeCalloutComponent,
@@ -81,6 +83,7 @@ import { UserNamePipe } from "./pipes/user-name.pipe";
     CalloutComponent,
     ColorPasswordCountPipe,
     ColorPasswordPipe,
+    CopyDirective,
     CreditCardNumberPipe,
     EllipsisPipe,
     ExportScopeCalloutComponent,
