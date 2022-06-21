@@ -57,7 +57,13 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ToastrModule } from "ngx-toastr";
 
 import { JslibModule } from "@bitwarden/angular/jslib.module";
-import { BadgeModule, ButtonModule, CalloutModule, MenuModule } from "@bitwarden/components";
+import {
+  BadgeModule,
+  ButtonModule,
+  CalloutModule,
+  MenuModule,
+  FormFieldModule,
+} from "@bitwarden/components";
 
 registerLocaleData(localeAf, "af");
 registerLocaleData(localeAz, "az");
@@ -126,6 +132,7 @@ registerLocaleData(localeZhTw, "zh-TW");
     BadgeModule,
     ButtonModule,
     MenuModule,
+    FormFieldModule,
   ],
   exports: [
     CommonModule,
@@ -142,6 +149,7 @@ registerLocaleData(localeZhTw, "zh-TW");
     BadgeModule,
     ButtonModule,
     MenuModule,
+    FormFieldModule,
   ],
   providers: [DatePipe],
   bootstrap: [],
