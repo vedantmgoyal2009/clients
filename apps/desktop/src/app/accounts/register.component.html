@@ -31,7 +31,6 @@
                 type="{{ showPassword ? 'text' : 'password' }}"
                 class="monospaced"
                 formControlName="masterPassword"
-                [appAutofocus]="email !== ''"
                 (input)="updatePasswordStrength()"
                 appInputVerbatim
               />
