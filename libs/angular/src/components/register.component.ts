@@ -23,17 +23,11 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
   @ViewChild("masterPassword") masterPasswordRef: ElementRef;
   @ViewChild("masterPasswordRetype") masterPasswordRetypeRef: ElementRef;
 
-  // name = "";
-  // email = "";
-  // masterPassword = "";
-  // confirmMasterPassword = "";
-  // hint = "";
   showPassword = false;
   formPromise: Promise<any>;
   masterPasswordScore: number;
   referenceData: ReferenceEventRequest;
   showTerms = true;
-  acceptPolicies = false;
   showErrorSummary = false;
   formGroup: FormGroup;
 
