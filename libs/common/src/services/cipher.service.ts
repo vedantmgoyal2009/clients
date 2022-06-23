@@ -1,6 +1,7 @@
 import { ApiService } from "../abstractions/api.service";
 import { CipherService as CipherServiceAbstraction } from "../abstractions/cipher.service";
 import { CryptoService } from "../abstractions/crypto.service";
+import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { FileUploadService } from "../abstractions/fileUpload.service";
 import { I18nService } from "../abstractions/i18n.service";
 import { LogService } from "../abstractions/log.service";
@@ -44,6 +45,8 @@ import { FieldView } from "../models/view/fieldView";
 import { PasswordHistoryView } from "../models/view/passwordHistoryView";
 import { View } from "../models/view/view";
 
+import { EncryptWorkerService } from "./encryptWorker.service";
+
 const DomainMatchBlacklist = new Map<string, Set<string>>([
   ["google.com", new Set(["script.google.com"])],
 ]);
@@ -61,7 +64,8 @@ export class CipherService implements CipherServiceAbstraction {
     private i18nService: I18nService,
     private searchService: () => SearchService,
     private logService: LogService,
-    private stateService: StateService
+    private stateService: StateService,
+    private encryptWorkerService: AbstractEncryptWorkerService
   ) {}
 
   async getDecryptedCipherCache(): Promise<CipherView[]> {
@@ -324,6 +328,8 @@ export class CipherService implements CipherServiceAbstraction {
 
   @sequentialize(() => "getAllDecrypted")
   async getAllDecrypted(): Promise<CipherView[]> {
+    await this.encryptWorkerService.decryptCiphers(null, null);
+
     const userId = await this.stateService.getUserId();
     if ((await this.getDecryptedCipherCache()) != null) {
       if (
