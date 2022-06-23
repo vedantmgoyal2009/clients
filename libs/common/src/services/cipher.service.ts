@@ -5,6 +5,7 @@ import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.serv
 import { FileUploadService } from "../abstractions/fileUpload.service";
 import { I18nService } from "../abstractions/i18n.service";
 import { LogService } from "../abstractions/log.service";
+import { PlatformUtilsService } from "../abstractions/platformUtils.service";
 import { SearchService } from "../abstractions/search.service";
 import { SettingsService } from "../abstractions/settings.service";
 import { StateService } from "../abstractions/state.service";
@@ -65,7 +66,9 @@ export class CipherService implements CipherServiceAbstraction {
     private searchService: () => SearchService,
     private logService: LogService,
     private stateService: StateService,
-    private encryptWorkerService: AbstractEncryptWorkerService
+    private encryptWorkerService: AbstractEncryptWorkerService,
+    private platformUtilsService: PlatformUtilsService,
+    private win: Window
   ) {}
 
   async getDecryptedCipherCache(): Promise<CipherView[]> {
@@ -328,8 +331,6 @@ export class CipherService implements CipherServiceAbstraction {
 
   @sequentialize(() => "getAllDecrypted")
   async getAllDecrypted(): Promise<CipherView[]> {
-    await this.encryptWorkerService.decryptCiphers(null, null);
-
     const userId = await this.stateService.getUserId();
     if ((await this.getDecryptedCipherCache()) != null) {
       if (
@@ -341,7 +342,14 @@ export class CipherService implements CipherServiceAbstraction {
       return await this.getDecryptedCipherCache();
     }
 
-    const decCiphers: CipherView[] = [];
+    if (this.platformUtilsService.supportsWorkers(this.win)) {
+      return this.decryptCiphersWithWorker();
+    } else {
+      return this.decryptCiphers();
+    }
+  }
+
+  private async decryptCiphers(): Promise<CipherView[]> {
     const hasKey = await this.cryptoService.hasKey();
     if (!hasKey) {
       throw new Error("No key.");
@@ -349,6 +357,7 @@ export class CipherService implements CipherServiceAbstraction {
 
     const promises: any[] = [];
     const ciphers = await this.getAll();
+    const decCiphers: CipherView[] = [];
     ciphers.forEach(async (cipher) => {
       promises.push(cipher.decrypt().then((c) => decCiphers.push(c)));
     });
@@ -357,6 +366,11 @@ export class CipherService implements CipherServiceAbstraction {
     decCiphers.sort(this.getLocaleSortingFunction());
     await this.setDecryptedCipherCache(decCiphers);
     return decCiphers;
+  }
+
+  private async decryptCiphersWithWorker(): Promise<CipherView[]> {
+    await this.encryptWorkerService.decryptCiphers(null, null);
+    return this.decryptCiphers();
   }
 
   async getAllDecryptedForGrouping(groupingId: string, folder = true): Promise<CipherView[]> {

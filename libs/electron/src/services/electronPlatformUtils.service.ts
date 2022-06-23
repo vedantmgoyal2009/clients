@@ -97,6 +97,10 @@ export class ElectronPlatformUtilsService implements PlatformUtilsService {
     return true;
   }
 
+  supportsWorkers(win: Window & typeof globalThis): boolean {
+    return win?.Worker != null;
+  }
+
   showToast(
     type: "error" | "success" | "warning" | "info",
     title: string,

@@ -100,6 +100,11 @@ export class CliPlatformUtilsService implements PlatformUtilsService {
     return false;
   }
 
+  supportsWorkers(): boolean {
+    // CLI probably could support workers, but there's no advantage at the command line
+    return false;
+  }
+
   showToast(
     type: "error" | "success" | "warning" | "info",
     title: string,
