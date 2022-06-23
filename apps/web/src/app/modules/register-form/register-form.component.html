@@ -31,32 +31,18 @@
       </app-callout>
       <bit-form-field>
         <bit-label>{{ "masterPass" | i18n }}</bit-label>
-        <div class="tw-w-full">
-          <input
-            #masterPassword
-            class="mb-2"
-            bitInput
-            (input)="updatePasswordStrength()"
-            type="{{ showPassword ? 'text' : 'password' }}"
-            formControlName="masterPassword"
-          />
-          <app-password-strength [score]="masterPasswordScore" [showText]="true">
-          </app-password-strength>
-        </div>
-
-        <button
-          type="button"
-          class="tw-ml-1 tw-p-2 tw-text-main tw-bg-transparent tw-text-sm tw-border-0 tw-outline-none tw-mb-1"
-          appA11yTitle="{{ 'toggleVisibility' | i18n }}"
-          (click)="togglePassword(false)"
-        >
+        <input
+          #masterPassword
+          bitInput
+          (input)="updatePasswordStrength()"
+          type="{{ showPassword ? 'text' : 'password' }}"
+          formControlName="masterPassword"
+        />
+        <button bitSuffix (click)="togglePassword(false)">
           <i
-            class="bwi bwi-lg"
             aria-hidden="true"
-            [ngClass]="{
-              'bwi-eye': !showPassword,
-              'bwi-eye-slash': showPassword
-            }"
+            class="bwi bwi-lg bwi-eye"
+            [ngClass]="{ 'bwi-eye': !showPassword, 'bwi-eye-slash': showPassword }"
           ></i>
         </button>
         <bit-hint class="tw-text-sm tw-mt-2.5">
@@ -64,6 +50,8 @@
           {{ "masterPassImportant" | i18n }}</bit-hint
         >
       </bit-form-field>
+      <app-password-strength [score]="masterPasswordScore" [showText]="true">
+      </app-password-strength>
     </div>
 
     <div class="tw-mb-3">
@@ -75,16 +63,10 @@
           type="{{ showPassword ? 'text' : 'password' }}"
           formControlName="confirmMasterPassword"
         />
-
-        <button
-          type="button"
-          class="tw-ml-1 tw-p-2 tw-text-main tw-bg-transparent tw-text-sm tw-border-0 tw-outline-none tw-mb-1"
-          appA11yTitle="{{ 'toggleVisibility' | i18n }}"
-          (click)="togglePassword(true)"
-        >
+        <button bitSuffix (click)="togglePassword(true)">
           <i
-            class="bwi bwi-lg"
             aria-hidden="true"
+            class="bwi bwi-lg bwi-eye"
             [ngClass]="{ 'bwi-eye': !showPassword, 'bwi-eye-slash': showPassword }"
           ></i>
         </button>
