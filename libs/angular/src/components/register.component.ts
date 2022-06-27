@@ -29,7 +29,15 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
   referenceData: ReferenceEventRequest;
   showTerms = true;
   showErrorSummary = false;
-  formGroup: FormGroup;
+
+  formGroup = this.formBuilder.group({
+    email: ["", [Validators.required, Validators.email]],
+    name: [""],
+    masterPassword: ["", [Validators.required]],
+    confirmMasterPassword: ["", [Validators.required]],
+    hint: [],
+    acceptPolicies: [false, [Validators.requiredTrue]],
+  });
 
   protected successRoute = "login";
   private masterPasswordStrengthTimeout: any;
@@ -48,7 +56,6 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
     protected logService: LogService
   ) {
     super(environmentService, i18nService, platformUtilsService);
-    this.createRegisterForm();
     this.showTerms = !platformUtilsService.isSelfHost();
   }
 
@@ -258,16 +265,5 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       userInput = userInput.concat(name.trim().toLowerCase().split(" "));
     }
     return userInput;
-  }
-
-  private createRegisterForm() {
-    this.formGroup = this.formBuilder.group({
-      email: ["", [Validators.required, Validators.email]],
-      name: [""],
-      masterPassword: ["", [Validators.required]],
-      confirmMasterPassword: ["", [Validators.required]],
-      hint: [],
-      acceptPolicies: [false, [Validators.requiredTrue]],
-    });
   }
 }
