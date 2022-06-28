@@ -1963,8 +1963,5 @@
   },
   "apiKey": {
     "message": "API Key"
-  },
-  "passwordMatchingInvalid": {
-    "message": "Password does not match."
   }
 }

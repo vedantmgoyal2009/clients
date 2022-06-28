@@ -236,7 +236,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
           ? null
           : {
               passwordMatchingInvalid: {
-                message: this.i18nService.t("passwordMatchingInvalid"),
+                message: this.i18nService.t("masterPassDoesntMatch"),
               },
             };
       }

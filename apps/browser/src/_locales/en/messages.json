@@ -1967,8 +1967,5 @@
   },
   "ssoKeyConnectorError": {
     "message": "Key Connector error: make sure Key Connector is available and working correctly."
-  },
-  "passwordMatchingInvalid": {
-    "message": "Password does not match."
   }
 }

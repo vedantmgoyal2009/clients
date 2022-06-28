@@ -5187,9 +5187,6 @@
       }
     }
   },
-  "passwordMatchingInvalid": {
-    "message": "Password does not match."
-  },
   "fieldsNeedAttention": {
     "message": "$COUNT$ field(s) above need your attention.",
     "placeholders": {
