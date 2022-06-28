@@ -572,6 +572,9 @@
   "createAccount": {
     "message": "Create Account"
   },
+  "startTrial": {
+    "message": "Start Trial"
+  },
   "logIn": {
     "message": "Log In"
   },
