@@ -32,13 +32,12 @@
       <bit-form-field>
         <bit-label>{{ "masterPass" | i18n }}</bit-label>
         <input
-          #masterPassword
           bitInput
           (input)="updatePasswordStrength()"
           type="{{ showPassword ? 'text' : 'password' }}"
           formControlName="masterPassword"
         />
-        <button type="button" bitSuffix bitButton (click)="togglePassword(false)">
+        <button type="button" bitSuffix bitButton (click)="togglePassword()">
           <i
             aria-hidden="true"
             class="bwi bwi-lg bwi-eye"
@@ -58,12 +57,11 @@
       <bit-form-field>
         <bit-label>{{ "reTypeMasterPass" | i18n }}</bit-label>
         <input
-          #masterPasswordRetype
           bitInput
           type="{{ showPassword ? 'text' : 'password' }}"
           formControlName="confirmMasterPassword"
         />
-        <button type="button" bitSuffix bitButton (click)="togglePassword(true)">
+        <button type="button" bitSuffix bitButton (click)="togglePassword()">
           <i
             aria-hidden="true"
             class="bwi bwi-lg bwi-eye"

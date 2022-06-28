@@ -1,11 +1,16 @@
-import { Directive, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Directive, OnInit } from "@angular/core";
+import { FormBuilder, Validators, ValidatorFn, AbstractControl } from "@angular/forms";
 import { Router } from "@angular/router";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { AuthService } from "@bitwarden/common/abstractions/auth.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { EnvironmentService } from "@bitwarden/common/abstractions/environment.service";
+import {
+  AllValidationErrors,
+  FormGroupControls,
+  FormValidationErrorsService,
+} from "@bitwarden/common/abstractions/formValidationErrors.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PasswordGenerationService } from "@bitwarden/common/abstractions/passwordGeneration.service";
@@ -20,9 +25,6 @@ import { CaptchaProtectedComponent } from "./captchaProtected.component";
 
 @Directive()
 export class RegisterComponent extends CaptchaProtectedComponent implements OnInit {
-  @ViewChild("masterPassword") masterPasswordRef: ElementRef;
-  @ViewChild("masterPasswordRetype") masterPasswordRetypeRef: ElementRef;
-
   showPassword = false;
   formPromise: Promise<any>;
   masterPasswordScore: number;
@@ -33,9 +35,12 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
   formGroup = this.formBuilder.group({
     email: ["", [Validators.required, Validators.email]],
     name: [""],
-    masterPassword: ["", [Validators.required]],
-    confirmMasterPassword: ["", [Validators.required]],
-    hint: [],
+    masterPassword: ["", [Validators.required, Validators.minLength(8)]],
+    confirmMasterPassword: [
+      "",
+      [Validators.required, Validators.minLength(8), this.matchPasswords("masterPassword")],
+    ],
+    hint: [null, [this.hintEqualsPassword("masterPassword")]],
     acceptPolicies: [false, [Validators.requiredTrue]],
   });
 
@@ -43,6 +48,7 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
   private masterPasswordStrengthTimeout: any;
 
   constructor(
+    protected formValidationErrorService: FormValidationErrorsService,
     protected formBuilder: FormBuilder,
     protected authService: AuthService,
     protected router: Router,
@@ -93,65 +99,33 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
     }
   }
 
-  async submit() {
+  async submit(showToast = true) {
     let email = this.formGroup.get("email")?.value;
     let name = this.formGroup.get("name")?.value;
     const masterPassword = this.formGroup.get("masterPassword")?.value;
-    const confirmMasterPassword = this.formGroup.get("confirmMasterPassword")?.value;
     const hint = this.formGroup.get("hint")?.value;
-    const acceptPolicies = this.formGroup.get("acceptPolicies")?.value;
 
     this.formGroup.markAllAsTouched();
     this.showErrorSummary = true;
 
-    if (!acceptPolicies && this.showTerms) {
+    if (this.formGroup.get("acceptPolicies").hasError("required")) {
       this.platformUtilsService.showToast(
         "error",
         this.i18nService.t("errorOccurred"),
-        this.i18nService.t("acceptPoliciesError")
+        this.i18nService.t("acceptPoliciesRequired")
       );
       return;
     }
 
-    if (email == null || email === "") {
-      this.platformUtilsService.showToast(
-        "error",
-        this.i18nService.t("errorOccurred"),
-        this.i18nService.t("emailRequired")
-      );
-      return;
-    }
-    if (email.indexOf("@") === -1) {
-      this.platformUtilsService.showToast(
-        "error",
-        this.i18nService.t("errorOccurred"),
-        this.i18nService.t("invalidEmail")
-      );
-      return;
-    }
-    if (masterPassword == null || masterPassword === "") {
-      this.platformUtilsService.showToast(
-        "error",
-        this.i18nService.t("errorOccurred"),
-        this.i18nService.t("masterPassRequired")
-      );
-      return;
-    }
-    if (masterPassword.length < 8) {
-      this.platformUtilsService.showToast(
-        "error",
-        this.i18nService.t("errorOccurred"),
-        this.i18nService.t("masterPassLength")
-      );
+    //web
+    if (this.formGroup.invalid && !showToast) {
       return;
     }
 
-    if (masterPassword !== confirmMasterPassword) {
-      this.platformUtilsService.showToast(
-        "error",
-        this.i18nService.t("errorOccurred"),
-        this.i18nService.t("masterPassDoesntMatch")
-      );
+    //desktop, browser
+    if (this.formGroup.invalid && showToast) {
+      const errorText = this.getErrorToastMessage();
+      this.platformUtilsService.showToast("error", this.i18nService.t("errorOccurred"), errorText);
       return;
     }
 
@@ -170,15 +144,6 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       if (!result) {
         return;
       }
-    }
-
-    if (hint === masterPassword) {
-      this.platformUtilsService.showToast(
-        "error",
-        this.i18nService.t("errorOccurred"),
-        this.i18nService.t("hintEqualsPassword")
-      );
-      return;
     }
 
     name = name === "" ? null : name;
@@ -225,11 +190,8 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
     }
   }
 
-  togglePassword(confirmField: boolean) {
+  togglePassword() {
     this.showPassword = !this.showPassword;
-    confirmField
-      ? this.masterPasswordRetypeRef.nativeElement.focus()
-      : this.masterPasswordRef.nativeElement.focus();
   }
 
   updatePasswordStrength() {
@@ -265,5 +227,63 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       userInput = userInput.concat(name.trim().toLowerCase().split(" "));
     }
     return userInput;
+  }
+
+  private matchPasswords(matchTo: string): ValidatorFn {
+    return (control: AbstractControl) => {
+      if (control.parent && control.parent.controls) {
+        return control?.value === (control?.parent?.controls as FormGroupControls)[matchTo].value
+          ? null
+          : {
+              passwordMatchingInvalid: {
+                message: this.i18nService.t("passwordMatchingInvalid"),
+              },
+            };
+      }
+
+      return null;
+    };
+  }
+
+  private hintEqualsPassword(matchTo: string): ValidatorFn {
+    return (control: AbstractControl) => {
+      if (control.parent && control.parent.controls) {
+        return control?.value === (control?.parent?.controls as FormGroupControls)[matchTo].value
+          ? {
+              hintEqualsPassword: {
+                message: this.i18nService.t("hintEqualsPassword"),
+              },
+            }
+          : null;
+      }
+
+      return null;
+    };
+  }
+
+  private getErrorToastMessage() {
+    const error: AllValidationErrors = this.formValidationErrorService
+      .getFormValidationErrors(this.formGroup.controls)
+      .shift();
+
+    if (error) {
+      switch (error.errorName) {
+        case "email":
+          return this.i18nService.t("invalidEmail");
+        case "passwordMatchingInvalid":
+          return this.i18nService.t("masterPassDoesntMatch");
+        case "hintEqualsPassword":
+          return this.i18nService.t("hintEqualsPassword");
+        default:
+          return this.i18nService.t(this.errorTag(error));
+      }
+    }
+
+    return;
+  }
+
+  private errorTag(error: AllValidationErrors): string {
+    const name = error.errorName.charAt(0).toUpperCase() + error.errorName.slice(1);
+    return `${error.controlName}${name}`;
   }
 }

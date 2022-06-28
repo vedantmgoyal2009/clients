@@ -33,7 +33,6 @@
                 </strong>
               </label>
               <input
-                #masterPassword
                 id="masterPassword"
                 type="{{ showPassword ? 'text' : 'password' }}"
                 class="monospaced"
@@ -49,7 +48,7 @@
                 appStopClick
                 appBlurClick
                 appA11yTitle="{{ 'toggleVisibility' | i18n }}"
-                (click)="togglePassword(false)"
+                (click)="togglePassword()"
                 [attr.aria-pressed]="showPassword"
               >
                 <i
@@ -83,7 +82,6 @@
           <div class="row-main">
             <label for="masterPasswordRetype">{{ "reTypeMasterPass" | i18n }}</label>
             <input
-              #masterPasswordRetype
               id="masterPasswordRetype"
               type="{{ showPassword ? 'text' : 'password' }}"
               class="monospaced"
@@ -98,7 +96,7 @@
               appStopClick
               appBlurClick
               appA11yTitle="{{ 'toggleVisibility' | i18n }}"
-              (click)="togglePassword(true)"
+              (click)="togglePassword()"
               [attr.aria-pressed]="showPassword"
             >
               <i
