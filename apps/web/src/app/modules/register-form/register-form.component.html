@@ -108,7 +108,17 @@
 
     <div class="tw-flex tw-mb-3">
       <button
-        class="tw-px-6 tw-py-2.5"
+        type="submit"
+        bitButton
+        buttonType="primary"
+        class="btn-submit"
+        [disabled]="form.loading"
+      >
+        <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
+        <span>{{ "createAccount" | i18n }}</span>
+      </button>
+      <!-- <button type="submit" bitButton buttonType="primary">Submit</button> -->
+      <!-- <button
         type="submit"
         bitButton
         buttonType="primary"
@@ -117,7 +127,7 @@
       >
         <span>{{ "createAccount" | i18n }}</span>
         <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
-      </button>
+      </button> -->
       <a
         bitButton
         buttonType="secondary"

@@ -2,6 +2,10 @@ import { Directive, OnInit } from "@angular/core";
 import { FormBuilder, Validators, ValidatorFn, AbstractControl } from "@angular/forms";
 import { Router } from "@angular/router";
 
+import {
+  validateInputsDoesntMatch,
+  validateInputsMatch,
+} from "@bitwarden/angular/validators/fieldsInputCheck.validator";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { AuthService } from "@bitwarden/common/abstractions/auth.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
@@ -38,9 +42,16 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
     masterPassword: ["", [Validators.required, Validators.minLength(8)]],
     confirmMasterPassword: [
       "",
-      [Validators.required, Validators.minLength(8), this.matchPasswords("masterPassword")],
+      [
+        Validators.required,
+        Validators.minLength(8),
+        validateInputsMatch("masterPassword", this.i18nService.t("masterPassDoesntMatch")),
+      ],
     ],
-    hint: [null, [this.hintEqualsPassword("masterPassword")]],
+    hint: [
+      null,
+      [validateInputsDoesntMatch("masterPassword", this.i18nService.t("hintEqualsPassword"))],
+    ],
     acceptPolicies: [false, [Validators.requiredTrue]],
   });
 
@@ -229,38 +240,6 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
     return userInput;
   }
 
-  private matchPasswords(matchTo: string): ValidatorFn {
-    return (control: AbstractControl) => {
-      if (control.parent && control.parent.controls) {
-        return control?.value === (control?.parent?.controls as FormGroupControls)[matchTo].value
-          ? null
-          : {
-              passwordMatchingInvalid: {
-                message: this.i18nService.t("masterPassDoesntMatch"),
-              },
-            };
-      }
-
-      return null;
-    };
-  }
-
-  private hintEqualsPassword(matchTo: string): ValidatorFn {
-    return (control: AbstractControl) => {
-      if (control.parent && control.parent.controls) {
-        return control?.value === (control?.parent?.controls as FormGroupControls)[matchTo].value
-          ? {
-              hintEqualsPassword: {
-                message: this.i18nService.t("hintEqualsPassword"),
-              },
-            }
-          : null;
-      }
-
-      return null;
-    };
-  }
-
   private getErrorToastMessage() {
     const error: AllValidationErrors = this.formValidationErrorService
       .getFormValidationErrors(this.formGroup.controls)
@@ -270,9 +249,9 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
       switch (error.errorName) {
         case "email":
           return this.i18nService.t("invalidEmail");
-        case "passwordMatchingInvalid":
+        case "inputsDoesntMatchError":
           return this.i18nService.t("masterPassDoesntMatch");
-        case "hintEqualsPassword":
+        case "inputsMatchError":
           return this.i18nService.t("hintEqualsPassword");
         default:
           return this.i18nService.t(this.errorTag(error));
