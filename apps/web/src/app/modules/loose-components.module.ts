@@ -68,9 +68,7 @@ import { SettingsComponent as OrgSettingComponent } from "../organizations/setti
 import { TwoFactorSetupComponent as OrgTwoFactorSetupComponent } from "../organizations/settings/two-factor-setup.component";
 import { AcceptFamilySponsorshipComponent } from "../organizations/sponsorships/accept-family-sponsorship.component";
 import { FamiliesForEnterpriseSetupComponent } from "../organizations/sponsorships/families-for-enterprise-setup.component";
-import { ExportComponent as OrgExportComponent } from "../organizations/tools/export.component";
 import { ExposedPasswordsReportComponent as OrgExposedPasswordsReportComponent } from "../organizations/tools/exposed-passwords-report.component";
-import { ImportComponent as OrgImportComponent } from "../organizations/tools/import.component";
 import { InactiveTwoFactorReportComponent as OrgInactiveTwoFactorReportComponent } from "../organizations/tools/inactive-two-factor-report.component";
 import { ReusedPasswordsReportComponent as OrgReusedPasswordsReportComponent } from "../organizations/tools/reused-passwords-report.component";
 import { ToolsComponent as OrgToolsComponent } from "../organizations/tools/tools.component";
@@ -142,9 +140,7 @@ import { UserBillingHistoryComponent } from "../settings/user-billing-history.co
 import { UserSubscriptionComponent } from "../settings/user-subscription.component";
 import { VaultTimeoutInputComponent } from "../settings/vault-timeout-input.component";
 import { VerifyEmailComponent } from "../settings/verify-email.component";
-import { ExportComponent } from "../tools/export.component";
 import { GeneratorComponent } from "../tools/generator.component";
-import { ImportComponent } from "../tools/import.component";
 import { PasswordGeneratorHistoryComponent } from "../tools/password-generator-history.component";
 import { ToolsComponent } from "../tools/tools.component";
 import { AddEditCustomFieldsComponent } from "../vault/add-edit-custom-fields.component";
@@ -220,14 +216,12 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     EmergencyAccessTakeoverComponent,
     EmergencyAccessViewComponent,
     EmergencyAddEditComponent,
-    ExportComponent,
     ExposedPasswordsReportComponent,
     FamiliesForEnterpriseSetupComponent,
     FolderAddEditComponent,
     FooterComponent,
     FrontendLayoutComponent,
     HintComponent,
-    ImportComponent,
     InactiveTwoFactorReportComponent,
     LockComponent,
     LoginComponent,
@@ -251,11 +245,9 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     OrgCollectionsComponent,
     OrgEntityEventsComponent,
     OrgEventsComponent,
-    OrgExportComponent,
     OrgExposedPasswordsReportComponent,
     OrgGroupAddEditComponent,
     OrgGroupsComponent,
-    OrgImportComponent,
     OrgInactiveTwoFactorReportComponent,
     OrgManageCollectionsComponent,
     OrgManageComponent,
@@ -379,14 +371,12 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     EmergencyAccessTakeoverComponent,
     EmergencyAccessViewComponent,
     EmergencyAddEditComponent,
-    ExportComponent,
     ExposedPasswordsReportComponent,
     FamiliesForEnterpriseSetupComponent,
     FolderAddEditComponent,
     FooterComponent,
     FrontendLayoutComponent,
     HintComponent,
-    ImportComponent,
     InactiveTwoFactorReportComponent,
     LockComponent,
     LoginComponent,
@@ -410,11 +400,9 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     OrgCollectionsComponent,
     OrgEntityEventsComponent,
     OrgEventsComponent,
-    OrgExportComponent,
     OrgExposedPasswordsReportComponent,
     OrgGroupAddEditComponent,
     OrgGroupsComponent,
-    OrgImportComponent,
     OrgInactiveTwoFactorReportComponent,
     OrgManageCollectionsComponent,
     OrgManageComponent,
