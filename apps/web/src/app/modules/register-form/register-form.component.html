@@ -105,16 +105,7 @@
     </div>
 
     <div class="tw-flex tw-mb-3">
-      <button
-        type="submit"
-        bitButton
-        buttonType="primary"
-        class="btn-submit"
-        [disabled]="form.loading"
-      >
-        <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
-        <span>{{ "createAccount" | i18n }}</span>
-      </button>
+      <bit-submit-button [loading]="form.loading">{{ "createAccount" | i18n }}</bit-submit-button>
       <a
         bitButton
         buttonType="secondary"
