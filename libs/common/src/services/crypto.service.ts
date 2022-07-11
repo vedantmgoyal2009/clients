@@ -337,7 +337,6 @@ export class CryptoService implements CryptoServiceAbstraction {
 
   async clearKey(clearSecretStorage = true, userId?: string): Promise<any> {
     await this.stateService.setCryptoMasterKey(null, { userId: userId });
-    await this.stateService.setLegacyEtmKey(null, { userId: userId });
     if (clearSecretStorage) {
       await this.clearSecretKeyStore(userId);
     }
