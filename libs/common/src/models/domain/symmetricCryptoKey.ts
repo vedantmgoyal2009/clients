@@ -55,6 +55,22 @@ export class SymmetricCryptoKey {
     }
   }
 
+  /**
+   * Transform into new key for the old encrypt-then-mac scheme if required
+   * Otherwise return the current key unchanged
+   * @param encryptedThing The encrypted object (e.g. encString or encArrayBuffer) that you want to decrypt
+   */
+  resolveLegacyKey(encryptedThing: { encryptionType?: EncryptionType }): SymmetricCryptoKey {
+    if (
+      encryptedThing.encryptionType === EncryptionType.AesCbc128_HmacSha256_B64 &&
+      this.encType === EncryptionType.AesCbc256_B64
+    ) {
+      return new SymmetricCryptoKey(this.key, EncryptionType.AesCbc128_HmacSha256_B64);
+    }
+
+    return this;
+  }
+
   static initFromJson(jsonResult: SymmetricCryptoKey): SymmetricCryptoKey {
     if (jsonResult == null) {
       return jsonResult;

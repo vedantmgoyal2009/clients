@@ -66,4 +66,25 @@ describe("SymmetricCryptoKey", () => {
       expect(t).toThrowError("Unable to determine encType.");
     });
   });
+
+  describe("resolveLegacyKey", () => {
+    it("creates a legacy key if required", async () => {
+      const encType = EncryptionType.AesCbc128_HmacSha256_B64;
+      const key = new SymmetricCryptoKey(makeStaticByteArray(32), EncryptionType.AesCbc256_B64);
+
+      const actual = key.resolveLegacyKey({ encryptionType: encType });
+
+      const expected = new SymmetricCryptoKey(key.key, EncryptionType.AesCbc128_HmacSha256_B64);
+      expect(actual).toEqual(expected);
+    });
+
+    it("does not create a legacy key if not required", async () => {
+      const encType = EncryptionType.AesCbc256_HmacSha256_B64;
+      const key = new SymmetricCryptoKey(makeStaticByteArray(64), encType);
+
+      const actual = key.resolveLegacyKey({ encryptionType: encType });
+
+      expect(actual).toEqual(key);
+    });
+  });
 });

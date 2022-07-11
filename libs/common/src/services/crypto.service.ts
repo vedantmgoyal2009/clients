@@ -710,20 +710,7 @@ export class CryptoService implements CryptoServiceAbstraction {
     encType: EncryptionType,
     key: SymmetricCryptoKey
   ): Promise<SymmetricCryptoKey> {
-    if (
-      encType === EncryptionType.AesCbc128_HmacSha256_B64 &&
-      key.encType === EncryptionType.AesCbc256_B64
-    ) {
-      // Old encrypt-then-mac scheme, make a new key
-      let legacyKey = await this.stateService.getLegacyEtmKey();
-      if (legacyKey == null) {
-        legacyKey = new SymmetricCryptoKey(key.key, EncryptionType.AesCbc128_HmacSha256_B64);
-        await this.stateService.setLegacyEtmKey(legacyKey);
-      }
-      return legacyKey;
-    }
-
-    return key;
+    return key.resolveLegacyKey({ encryptionType: encType });
   }
 
   private async stretchKey(key: SymmetricCryptoKey): Promise<SymmetricCryptoKey> {
