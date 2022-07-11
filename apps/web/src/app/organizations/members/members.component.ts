@@ -38,10 +38,10 @@ import { UserAddEditComponent } from "./user-add-edit.component";
 import { UserGroupsComponent } from "./user-groups.component";
 
 @Component({
-  selector: "app-org-people",
-  templateUrl: "people.component.html",
+  selector: "app-org-members",
+  templateUrl: "members.component.html",
 })
-export class PeopleComponent
+export class MembersComponent
   extends BasePeopleComponent<OrganizationUserUserDetailsResponse>
   implements OnInit
 {
@@ -108,7 +108,7 @@ export class PeopleComponent
   }
 
   async ngOnInit() {
-    this.route.parent.parent.params.subscribe(async (params) => {
+    this.route.parent.params.subscribe(async (params) => {
       this.organizationId = params.organizationId;
       const organization = await this.organizationService.get(this.organizationId);
       if (!organization.canManageUsers) {

@@ -12,8 +12,8 @@ import { CollectionsComponent } from "./manage/collections.component";
 import { EventsComponent } from "./manage/events.component";
 import { GroupsComponent } from "./manage/groups.component";
 import { ManageComponent } from "./manage/manage.component";
-import { PeopleComponent } from "./manage/people.component";
 import { PoliciesComponent } from "./manage/policies.component";
+import { MembersComponent } from "./members/members.component";
 import { NavigationPermissionsService } from "./services/navigation-permissions.service";
 import { AccountComponent } from "./settings/account.component";
 import { OrganizationBillingComponent } from "./settings/organization-billing.component";
@@ -117,7 +117,7 @@ const routes: Routes = [
           {
             path: "",
             pathMatch: "full",
-            redirectTo: "people",
+            redirectTo: "collections",
           },
           {
             path: "collections",
@@ -150,15 +150,6 @@ const routes: Routes = [
             data: {
               titleId: "groups",
               permissions: [Permissions.ManageGroups],
-            },
-          },
-          {
-            path: "people",
-            component: PeopleComponent,
-            canActivate: [PermissionsGuard],
-            data: {
-              titleId: "people",
-              permissions: [Permissions.ManageUsers, Permissions.ManageUsersPassword],
             },
           },
           {
@@ -197,6 +188,15 @@ const routes: Routes = [
             data: { titleId: "subscription" },
           },
         ],
+      },
+      {
+        path: "members",
+        component: MembersComponent,
+        canActivate: [PermissionsGuard],
+        data: {
+          titleId: "members",
+          permissions: [Permissions.ManageUsers, Permissions.ManageUsersPassword],
+        },
       },
     ],
   },

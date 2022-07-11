@@ -23,8 +23,8 @@ import { ProviderUserBulkResponse } from "@bitwarden/common/models/response/prov
 import { ProviderUserUserDetailsResponse } from "@bitwarden/common/models/response/provider/providerUserResponse";
 
 import { BasePeopleComponent } from "src/app/common/base.people.component";
-import { BulkStatusComponent } from "src/app/organizations/manage/bulk/bulk-status.component";
-import { EntityEventsComponent } from "src/app/organizations/manage/entity-events.component";
+import { BulkStatusComponent } from "src/app/organizations/members/bulk/bulk-status.component";
+import { EntityEventsComponent } from "src/app/organizations/members/entity-events.component";
 
 import { BulkConfirmComponent } from "./bulk/bulk-confirm.component";
 import { BulkRemoveComponent } from "./bulk/bulk-remove.component";
