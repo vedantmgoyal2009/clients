@@ -595,7 +595,6 @@ export class CryptoService implements CryptoServiceAbstraction {
 
   async decryptToUtf8(encString: EncString, key?: SymmetricCryptoKey): Promise<string> {
     key = await this.getKeyForEncryption(key);
-    key = await this.resolveLegacyKey(encString.encryptionType, key);
     return await this.encryptService.decryptToUtf8(encString, key);
   }
 
