@@ -62,6 +62,22 @@ export class OrganizationLayoutComponent implements OnInit, OnDestroy {
     return NavigationPermissionsService.canAccessSettings(this.organization);
   }
 
+  get showMembersTab(): boolean {
+    return this.organization.canManageUsers;
+  }
+
+  get showGroupsTab(): boolean {
+    return this.organization.canManageGroups;
+  }
+
+  get showReportsTab(): boolean {
+    return this.organization.canAccessReports;
+  }
+
+  get showBillingTab(): boolean {
+    return this.organization.canManageBilling;
+  }
+
   get toolsRoute(): string {
     return this.organization.canAccessImportExport
       ? "tools/import"
