@@ -14,6 +14,8 @@ import { EventsComponent } from "./manage/events.component";
 import { ManageComponent } from "./manage/manage.component";
 import { PoliciesComponent } from "./manage/policies.component";
 import { MembersComponent } from "./members/members.component";
+import { ReportListComponent } from "./reporting/report-list.component";
+import { ReportingComponent } from "./reporting/reporting.component";
 import { NavigationPermissionsService } from "./services/navigation-permissions.service";
 import { AccountComponent } from "./settings/account.component";
 import { OrganizationBillingComponent } from "./settings/organization-billing.component";
@@ -197,6 +199,82 @@ const routes: Routes = [
           titleId: "groups",
           permissions: [Permissions.ManageGroups],
         },
+      },
+      {
+        path: "reporting",
+        component: ReportingComponent,
+        canActivate: [PermissionsGuard],
+        data: {
+          permissions: [Permissions.AccessReports],
+        },
+        children: [
+          { path: "", pathMatch: "full", redirectTo: "reports" },
+          {
+            path: "reports",
+            component: ReportListComponent,
+            canActivate: [PermissionsGuard],
+            data: {
+              titleId: "reports",
+              permissions: [Permissions.AccessReports],
+            },
+            children: [
+              {
+                path: "exposed-passwords-report",
+                component: ExposedPasswordsReportComponent,
+                canActivate: [PermissionsGuard],
+                data: {
+                  titleId: "exposedPasswordsReport",
+                  permissions: [Permissions.AccessReports],
+                },
+              },
+              {
+                path: "inactive-two-factor-report",
+                component: InactiveTwoFactorReportComponent,
+                canActivate: [PermissionsGuard],
+                data: {
+                  titleId: "inactive2faReport",
+                  permissions: [Permissions.AccessReports],
+                },
+              },
+              {
+                path: "reused-passwords-report",
+                component: ReusedPasswordsReportComponent,
+                canActivate: [PermissionsGuard],
+                data: {
+                  titleId: "reusedPasswordsReport",
+                  permissions: [Permissions.AccessReports],
+                },
+              },
+              {
+                path: "unsecured-websites-report",
+                component: UnsecuredWebsitesReportComponent,
+                canActivate: [PermissionsGuard],
+                data: {
+                  titleId: "unsecuredWebsitesReport",
+                  permissions: [Permissions.AccessReports],
+                },
+              },
+              {
+                path: "weak-passwords-report",
+                component: WeakPasswordsReportComponent,
+                canActivate: [PermissionsGuard],
+                data: {
+                  titleId: "weakPasswordsReport",
+                  permissions: [Permissions.AccessReports],
+                },
+              },
+            ],
+          },
+          {
+            path: "events",
+            component: EventsComponent,
+            canActivate: [PermissionsGuard],
+            data: {
+              titleId: "eventLogs",
+              permissions: [Permissions.AccessEventLogs],
+            },
+          },
+        ],
       },
     ],
   },
