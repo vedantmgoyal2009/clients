@@ -43,13 +43,8 @@ workerApi.addEventListener("message", async (event) => {
 });
 
 export class EncryptWorker {
-  containerService: ContainerService;
-  encryptService: EncryptService;
-
-  constructor() {
-    // TODO: set up services and dependencies
-    // this.containerService = new ContainerService();
-    // this.encryptService = new EncryptService()
+  initEncryptService() {
+    // TODO: init ContainerService and EncryptService and attach to GlobalThis
   }
 
   async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherInstruction) {
