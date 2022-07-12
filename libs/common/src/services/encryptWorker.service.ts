@@ -1,10 +1,13 @@
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
+import { LogService } from "../abstractions/log.service";
 import { WorkerCommand } from "../enums/workerCommand";
 import { CipherData } from "../models/data/cipherData";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
+  constructor(private logService: LogService) {}
+
   async decryptCiphers(
     cipherData: { [id: string]: CipherData },
     localData: any[],
@@ -30,6 +33,11 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
         // TODO: handle result (just deserialize?)
         this.terminateWorker(worker);
         resolve(null);
+      });
+
+      // Caution: this may not work/be supported in node. Need to test
+      worker.addEventListener("error", (event) => {
+        reject("An unexpected error occurred in a worker: " + event.message);
       });
 
       worker.postMessage(message);
