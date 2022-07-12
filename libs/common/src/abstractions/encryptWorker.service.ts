@@ -6,7 +6,7 @@ export abstract class AbstractEncryptWorkerService {
   decryptCiphers: (
     cipherData: { [id: string]: CipherData },
     localData: any[],
-    orgKeys: { [orgId: string]: SymmetricCryptoKey },
+    orgKeys: Map<string, SymmetricCryptoKey>,
     userKey: SymmetricCryptoKey
   ) => Promise<CipherView[]>;
 }

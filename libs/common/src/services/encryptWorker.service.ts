@@ -8,14 +8,18 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
   async decryptCiphers(
     cipherData: { [id: string]: CipherData },
     localData: any[],
-    orgKeys: { [orgId: string]: SymmetricCryptoKey },
+    orgKeys: Map<string, SymmetricCryptoKey>,
     userKey: SymmetricCryptoKey
   ): Promise<CipherView[]> {
+    // We can't serialize a map, convert to plain JS object
+    const orgKeysObj: { [orgId: string]: SymmetricCryptoKey } = {};
+    orgKeys.forEach((orgKey, orgId) => (orgKeysObj[orgId] = orgKey));
+
     const message = {
       command: WorkerCommand.decryptCiphers,
       cipherData: cipherData,
       localData: localData,
-      orgKeys: orgKeys,
+      orgKeys: orgKeysObj,
       userKey: userKey,
     };
 
@@ -24,6 +28,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
 
       worker.addEventListener("message", (response) => {
         // TODO: handle result (just deserialize?)
+        this.terminateWorker(worker);
         resolve(null);
       });
 
@@ -31,11 +36,13 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     });
   }
 
+  // TODO: public method to terminate all workers on lock/logout
+
   private createWorker() {
     return new Worker(new URL("../workers/encrypt.worker.ts", import.meta.url));
   }
 
-  private terminate(worker: Worker) {
+  private terminateWorker(worker: Worker) {
     worker.terminate();
   }
 }

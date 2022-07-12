@@ -340,6 +340,11 @@ export class CipherService implements CipherServiceAbstraction {
       return await this.getDecryptedCipherCache();
     }
 
+    const hasKey = await this.cryptoService.hasKey();
+    if (!hasKey) {
+      throw new Error("No key.");
+    }
+
     const decCiphers = this.platformUtilsService.supportsWorkers(this.win)
       ? await this.decryptCiphersWithWorker()
       : await this.decryptCiphers();
@@ -350,11 +355,6 @@ export class CipherService implements CipherServiceAbstraction {
   }
 
   private async decryptCiphers(): Promise<CipherView[]> {
-    const hasKey = await this.cryptoService.hasKey();
-    if (!hasKey) {
-      throw new Error("No key.");
-    }
-
     const promises: any[] = [];
     const ciphers = await this.getAll();
     const decCiphers: CipherView[] = [];
@@ -367,15 +367,11 @@ export class CipherService implements CipherServiceAbstraction {
   }
 
   private async decryptCiphersWithWorker(): Promise<CipherView[]> {
-    // Get all data required to decrypt the ciphers
+    // Get all data that the worker needs to decrypt the ciphers
     const cipherData = await this.stateService.getEncryptedCiphers();
     const localData = await this.stateService.getLocalData();
-    const userKey: SymmetricCryptoKey = null; // TODO: await this.cryptoService.getKeyForUserDecryption
-
-    // We can't serialize a map, convert to plain JS object
-    const orgKeysMap = await this.cryptoService.getOrgKeys();
-    const orgKeys: { [orgId: string]: SymmetricCryptoKey } = {};
-    orgKeysMap.forEach((orgKey, orgId) => (orgKeys[orgId] = orgKey));
+    const orgKeys = await this.cryptoService.getOrgKeys();
+    const userKey: any = null; // TODO: await this.cryptoService.getKeyForUserDecryption
 
     // TODO: return this value
     await this.encryptWorkerService.decryptCiphers(cipherData, localData, orgKeys, userKey);
