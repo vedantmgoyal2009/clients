@@ -46,8 +46,6 @@ import { FieldView } from "../models/view/fieldView";
 import { PasswordHistoryView } from "../models/view/passwordHistoryView";
 import { View } from "../models/view/view";
 
-import { EncryptWorkerService } from "./encryptWorker.service";
-
 const DomainMatchBlacklist = new Map<string, Set<string>>([
   ["google.com", new Set(["script.google.com"])],
 ]);
@@ -342,11 +340,13 @@ export class CipherService implements CipherServiceAbstraction {
       return await this.getDecryptedCipherCache();
     }
 
-    if (this.platformUtilsService.supportsWorkers(this.win)) {
-      return this.decryptCiphersWithWorker();
-    } else {
-      return this.decryptCiphers();
-    }
+    const decCiphers = this.platformUtilsService.supportsWorkers(this.win)
+      ? await this.decryptCiphersWithWorker()
+      : await this.decryptCiphers();
+
+    decCiphers.sort(this.getLocaleSortingFunction());
+    await this.setDecryptedCipherCache(decCiphers);
+    return decCiphers;
   }
 
   private async decryptCiphers(): Promise<CipherView[]> {
@@ -363,13 +363,24 @@ export class CipherService implements CipherServiceAbstraction {
     });
 
     await Promise.all(promises);
-    decCiphers.sort(this.getLocaleSortingFunction());
-    await this.setDecryptedCipherCache(decCiphers);
     return decCiphers;
   }
 
   private async decryptCiphersWithWorker(): Promise<CipherView[]> {
-    await this.encryptWorkerService.decryptCiphers(null, null);
+    // Get all data required to decrypt the ciphers
+    const cipherData = await this.stateService.getEncryptedCiphers();
+    const localData = await this.stateService.getLocalData();
+    const userKey: SymmetricCryptoKey = null; // TODO: await this.cryptoService.getKeyForUserDecryption
+
+    // We can't serialize a map, convert to plain JS object
+    const orgKeysMap = await this.cryptoService.getOrgKeys();
+    const orgKeys: { [orgId: string]: SymmetricCryptoKey } = {};
+    orgKeysMap.forEach((orgKey, orgId) => (orgKeys[orgId] = orgKey));
+
+    // TODO: return this value
+    await this.encryptWorkerService.decryptCiphers(cipherData, localData, orgKeys, userKey);
+
+    // But for now we'll just return the normal call
     return this.decryptCiphers();
   }
 

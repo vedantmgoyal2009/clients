@@ -1,17 +1,75 @@
+import { WorkerCommand } from "../enums/workerCommand";
+import { CipherData } from "../models/data/cipherData";
 import { Cipher } from "../models/domain/cipher";
+import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
+import { ContainerService } from "../services/container.service";
+import { EncryptService } from "../services/encrypt.service";
 
 const workerApi: Worker = self as any;
 
-// workerApi.addEventListener('message', async event => {
-//     if (event.data.type !== 'decryptManyRequest' || !firstRun) {
-//         return;
-//     }
-//     firstRun = false;
-//     const decryptAllWorker = new CryptoWorker(event.data, workerApi);
-//     await decryptAllWorker.decryptMany();
-// });
+type WorkerInstruction = DecryptCipherInstruction;
+
+type DecryptCipherInstruction = {
+  command: WorkerCommand.decryptCiphers;
+  cipherData: { [id: string]: CipherData };
+  localData: any;
+  orgKeys: { [orgId: string]: SymmetricCryptoKey };
+  userKey: SymmetricCryptoKey;
+};
 
 workerApi.addEventListener("message", async (event) => {
-  workerApi.postMessage("The command received was: " + event.data.command);
+  const message: WorkerInstruction = event.data;
+
+  switch (message.command) {
+    case WorkerCommand.decryptCiphers: {
+      const decryptAllWorker = new EncryptWorker();
+      let result = await decryptAllWorker.decryptCiphers(message);
+
+      workerApi.postMessage({
+        command: WorkerCommand.decryptCiphers,
+        data: result,
+      });
+
+      // Clean up memory
+      result = null;
+      event = null;
+      break;
+    }
+
+    default:
+      break;
+  }
 });
+
+export class EncryptWorker {
+  containerService: ContainerService;
+  encryptService: EncryptService;
+
+  constructor() {
+    // TODO: set up services and dependencies
+    // this.containerService = new ContainerService();
+    // this.encryptService = new EncryptService()
+  }
+
+  async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherInstruction) {
+    const promises: any[] = [];
+    const result: CipherView[] = [];
+
+    for (const [id, cd] of Object.entries(cipherData)) {
+      // Construct domain object with localData
+      const cipher = new Cipher(cd, localData ? localData[id] : null);
+
+      // Get key
+      const key = cipher.organizationId == null ? userKey : orgKeys[cipher.organizationId];
+
+      // TODO: what if key is null?
+
+      // Decrypt
+      promises.push(cipher.decrypt(key).then((c) => result.push(c)));
+    }
+
+    await Promise.all(promises);
+    return result;
+  }
+}
