@@ -6,11 +6,11 @@ import { Permissions } from "@bitwarden/common/enums/permissions";
 
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
 
+import { GroupsComponent } from "./groups/groups.component";
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
 import { CollectionsComponent } from "./manage/collections.component";
 import { EventsComponent } from "./manage/events.component";
-import { GroupsComponent } from "./manage/groups.component";
 import { ManageComponent } from "./manage/manage.component";
 import { PoliciesComponent } from "./manage/policies.component";
 import { MembersComponent } from "./members/members.component";
@@ -144,15 +144,6 @@ const routes: Routes = [
             },
           },
           {
-            path: "groups",
-            component: GroupsComponent,
-            canActivate: [PermissionsGuard],
-            data: {
-              titleId: "groups",
-              permissions: [Permissions.ManageGroups],
-            },
-          },
-          {
             path: "policies",
             component: PoliciesComponent,
             canActivate: [PermissionsGuard],
@@ -196,6 +187,15 @@ const routes: Routes = [
         data: {
           titleId: "members",
           permissions: [Permissions.ManageUsers, Permissions.ManageUsersPassword],
+        },
+      },
+      {
+        path: "groups",
+        component: GroupsComponent,
+        canActivate: [PermissionsGuard],
+        data: {
+          titleId: "groups",
+          permissions: [Permissions.ManageGroups],
         },
       },
     ],
