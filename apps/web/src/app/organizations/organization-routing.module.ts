@@ -4,12 +4,12 @@ import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "@bitwarden/angular/guards/auth.guard";
 import { Permissions } from "@bitwarden/common/enums/permissions";
 
+import { OrganizationBillingHistoryComponent } from "../modules/organizations/billing/organization-billing-history.component";
+import { OrganizationBillingTabComponent } from "../modules/organizations/billing/organization-billing-tab.component";
+import { OrganizationPaymentMethodComponent } from "../modules/organizations/billing/organization-payment-method.component";
+import { OrganizationSubscriptionComponent } from "../modules/organizations/billing/organization-subscription.component";
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
 
-import { OrganizationBillingHistoryComponent } from "./billing/organization-billing-history.component";
-import { OrganizationBillingTabComponent } from "./billing/organization-billing-tab.component";
-import { OrganizationPaymentMethodComponent } from "./billing/organization-payment-method.component";
-import { OrganizationSubscriptionComponent } from "./billing/organization-subscription.component";
 import { GroupsComponent } from "./groups/groups.component";
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
