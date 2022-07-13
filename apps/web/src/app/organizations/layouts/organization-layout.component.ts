@@ -50,14 +50,6 @@ export class OrganizationLayoutComponent implements OnInit, OnDestroy {
     this.organization = await this.organizationService.get(this.organizationId);
   }
 
-  get showManageTab(): boolean {
-    return NavigationPermissionsService.canAccessManage(this.organization);
-  }
-
-  get showToolsTab(): boolean {
-    return NavigationPermissionsService.canAccessTools(this.organization);
-  }
-
   get showSettingsTab(): boolean {
     return NavigationPermissionsService.canAccessSettings(this.organization);
   }
@@ -80,36 +72,5 @@ export class OrganizationLayoutComponent implements OnInit, OnDestroy {
 
   get reportTabLabel(): string {
     return this.organization.useEvents ? "reporting" : "reports";
-  }
-
-  get toolsRoute(): string {
-    return this.organization.canAccessImportExport
-      ? "tools/import"
-      : "tools/exposed-passwords-report";
-  }
-
-  get manageRoute(): string {
-    let route: string;
-    switch (true) {
-      case this.organization.canManageUsers:
-        route = "manage/people";
-        break;
-      case this.organization.canViewAssignedCollections || this.organization.canViewAllCollections:
-        route = "manage/collections";
-        break;
-      case this.organization.canManageGroups:
-        route = "manage/groups";
-        break;
-      case this.organization.canManagePolicies:
-        route = "manage/policies";
-        break;
-      case this.organization.canManageSso:
-        route = "manage/sso";
-        break;
-      case this.organization.canAccessEventLogs:
-        route = "manage/events";
-        break;
-    }
-    return route;
   }
 }
