@@ -27,6 +27,10 @@ import { FooterComponent } from "../layouts/footer.component";
 import { FrontendLayoutComponent } from "../layouts/frontend-layout.component";
 import { NavbarComponent } from "../layouts/navbar.component";
 import { UserLayoutComponent } from "../layouts/user-layout.component";
+import { BillingSyncApiKeyComponent } from "../organizations/billing/billing-sync-api-key.component";
+import { OrganizationBillingTabComponent } from "../organizations/billing/organization-billing-tab.component";
+import { OrganizationBillingComponent } from "../organizations/billing/organization-billing.component";
+import { OrganizationSubscriptionComponent } from "../organizations/billing/organization-subscription.component";
 import { GroupAddEditComponent as OrgGroupAddEditComponent } from "../organizations/groups/group-add-edit.component";
 import { GroupsComponent as OrgGroupsComponent } from "../organizations/groups/groups.component";
 import { OrganizationLayoutComponent } from "../organizations/layouts/organization-layout.component";
@@ -59,13 +63,10 @@ import { ReportListComponent as OrgReportListComponent } from "../organizations/
 import { ReportingComponent as OrgReportingComponent } from "../organizations/reporting/reporting.component";
 import { AccountComponent as OrgAccountComponent } from "../organizations/settings/account.component";
 import { AdjustSubscription } from "../organizations/settings/adjust-subscription.component";
-import { BillingSyncApiKeyComponent } from "../organizations/settings/billing-sync-api-key.component";
 import { ChangePlanComponent } from "../organizations/settings/change-plan.component";
 import { DeleteOrganizationComponent } from "../organizations/settings/delete-organization.component";
 import { DownloadLicenseComponent } from "../organizations/settings/download-license.component";
 import { ImageSubscriptionHiddenComponent as OrgSubscriptionHiddenComponent } from "../organizations/settings/image-subscription-hidden.component";
-import { OrganizationBillingComponent } from "../organizations/settings/organization-billing.component";
-import { OrganizationSubscriptionComponent } from "../organizations/settings/organization-subscription.component";
 import { SettingsComponent as OrgSettingComponent } from "../organizations/settings/settings.component";
 import { TwoFactorSetupComponent as OrgTwoFactorSetupComponent } from "../organizations/settings/two-factor-setup.component";
 import { AcceptFamilySponsorshipComponent } from "../organizations/sponsorships/accept-family-sponsorship.component";
@@ -235,6 +236,7 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     OrganizationSwitcherComponent,
     OrgAccountComponent,
     OrgAddEditComponent,
+    OrganizationBillingTabComponent,
     OrganizationBillingComponent,
     OrganizationLayoutComponent,
     OrganizationPlansComponent,

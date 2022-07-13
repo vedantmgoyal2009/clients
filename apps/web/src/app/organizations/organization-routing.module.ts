@@ -6,6 +6,9 @@ import { Permissions } from "@bitwarden/common/enums/permissions";
 
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
 
+import { OrganizationBillingTabComponent } from "./billing/organization-billing-tab.component";
+import { OrganizationBillingComponent } from "./billing/organization-billing.component";
+import { OrganizationSubscriptionComponent } from "./billing/organization-subscription.component";
 import { GroupsComponent } from "./groups/groups.component";
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
@@ -18,8 +21,6 @@ import { ReportListComponent } from "./reporting/report-list.component";
 import { ReportingComponent } from "./reporting/reporting.component";
 import { NavigationPermissionsService } from "./services/navigation-permissions.service";
 import { AccountComponent } from "./settings/account.component";
-import { OrganizationBillingComponent } from "./settings/organization-billing.component";
-import { OrganizationSubscriptionComponent } from "./settings/organization-subscription.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { TwoFactorSetupComponent } from "./settings/two-factor-setup.component";
 import { ExposedPasswordsReportComponent } from "./tools/exposed-passwords-report.component";
@@ -273,6 +274,34 @@ const routes: Routes = [
               titleId: "eventLogs",
               permissions: [Permissions.AccessEventLogs],
             },
+          },
+        ],
+      },
+      {
+        path: "billing",
+        component: OrganizationBillingTabComponent,
+        canActivate: [PermissionsGuard],
+        data: {
+          permissions: [Permissions.ManageBilling],
+        },
+        children: [
+          { path: "", pathMatch: "full", redirectTo: "subscription" },
+          {
+            path: "subscription",
+            component: OrganizationSubscriptionComponent,
+            data: { titleId: "subscription" },
+          },
+          {
+            path: "payment-method",
+            component: OrganizationBillingComponent,
+            canActivate: [PermissionsGuard],
+            data: { titleId: "paymentMethod", permissions: [Permissions.ManageBilling] },
+          },
+          {
+            path: "history",
+            component: OrganizationBillingComponent,
+            canActivate: [PermissionsGuard],
+            data: { titleId: "billingHistory", permissions: [Permissions.ManageBilling] },
           },
         ],
       },
