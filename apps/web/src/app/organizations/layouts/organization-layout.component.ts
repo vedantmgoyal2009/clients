@@ -55,19 +55,21 @@ export class OrganizationLayoutComponent implements OnInit, OnDestroy {
   }
 
   get showMembersTab(): boolean {
-    return this.organization.canManageUsers;
+    return NavigationPermissionsService.canAccessMembers(this.organization);
   }
 
   get showGroupsTab(): boolean {
-    return this.organization.useGroups && this.organization.canManageGroups;
+    return (
+      this.organization.useGroups && NavigationPermissionsService.canAccessGroups(this.organization)
+    );
   }
 
   get showReportsTab(): boolean {
-    return this.organization.canAccessReports;
+    return NavigationPermissionsService.canAccessReporting(this.organization);
   }
 
   get showBillingTab(): boolean {
-    return this.organization.canManageBilling;
+    return NavigationPermissionsService.canAccessBilling(this.organization);
   }
 
   get reportTabLabel(): string {
