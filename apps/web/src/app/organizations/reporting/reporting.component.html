@@ -1,6 +1,6 @@
 <div class="container page-content">
   <div class="row">
-    <div class="col-3">
+    <div class="col-3" *ngIf="showLeftNav">
       <div class="card" *ngIf="organization">
         <div class="card-header">{{ "reporting" | i18n }}</div>
         <div class="list-group list-group-flush">
@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <div class="col-9">
+    <div class="col-9" [ngClass]="showLeftNav ? 'col-9' : 'col-12'">
       <router-outlet></router-outlet>
     </div>
   </div>

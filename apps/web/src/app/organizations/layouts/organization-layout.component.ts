@@ -67,7 +67,7 @@ export class OrganizationLayoutComponent implements OnInit, OnDestroy {
   }
 
   get showGroupsTab(): boolean {
-    return this.organization.canManageGroups;
+    return this.organization.useGroups && this.organization.canManageGroups;
   }
 
   get showReportsTab(): boolean {
@@ -76,6 +76,10 @@ export class OrganizationLayoutComponent implements OnInit, OnDestroy {
 
   get showBillingTab(): boolean {
     return this.organization.canManageBilling;
+  }
+
+  get reportTabLabel(): string {
+    return this.organization.useEvents ? "reporting" : "reports";
   }
 
   get toolsRoute(): string {
