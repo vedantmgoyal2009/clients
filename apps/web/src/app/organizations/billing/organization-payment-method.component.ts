@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -6,29 +6,32 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PaymentMethodType } from "@bitwarden/common/enums/paymentMethodType";
-import { TransactionType } from "@bitwarden/common/enums/transactionType";
 import { VerifyBankRequest } from "@bitwarden/common/models/request/verifyBankRequest";
 import { BillingResponse } from "@bitwarden/common/models/response/billingResponse";
+import { OrganizationResponse } from "@bitwarden/common/models/response/organizationResponse";
+
+import { TaxInfoComponent } from "src/app/settings/tax-info.component";
 
 @Component({
-  selector: "app-org-billing",
-  templateUrl: "./organization-billing.component.html",
+  selector: "app-org-payment-method",
+  templateUrl: "./organization-payment-method.component.html",
 })
-export class OrganizationBillingComponent implements OnInit {
+export class OrganizationPaymentMethodComponent implements OnInit {
+  @ViewChild(TaxInfoComponent) taxInfo: TaxInfoComponent;
+
   loading = false;
   firstLoaded = false;
   showAdjustPayment = false;
   showAddCredit = false;
   billing: BillingResponse;
+  org: OrganizationResponse;
   paymentMethodType = PaymentMethodType;
-  transactionType = TransactionType;
   organizationId: string;
   verifyAmount1: number;
   verifyAmount2: number;
 
   verifyBankPromise: Promise<any>;
-
-  // TODO - Make sure to properly split out the billing/invoice and payment method/account during org admin refresh
+  taxFormPromise: Promise<any>;
 
   constructor(
     private apiService: ApiService,
@@ -52,7 +55,13 @@ export class OrganizationBillingComponent implements OnInit {
     }
     this.loading = true;
     if (this.organizationId != null) {
-      this.billing = await this.apiService.getOrganizationBilling(this.organizationId);
+      const billingPromise = this.apiService.getOrganizationBilling(this.organizationId);
+      const orgPromise = this.apiService.getOrganization(this.organizationId);
+
+      const results = await Promise.all([billingPromise, orgPromise]);
+
+      this.billing = results[0];
+      this.org = results[1];
     }
     this.loading = false;
   }
@@ -80,6 +89,12 @@ export class OrganizationBillingComponent implements OnInit {
     } catch (e) {
       this.logService.error(e);
     }
+  }
+
+  async submitTaxInfo() {
+    this.taxFormPromise = this.taxInfo.submitTaxInfo();
+    await this.taxFormPromise;
+    this.platformUtilsService.showToast("success", null, this.i18nService.t("taxInfoUpdated"));
   }
 
   addCredit() {
@@ -142,13 +157,5 @@ export class OrganizationBillingComponent implements OnInit {
       (this.paymentSource.type === PaymentMethodType.AppleInApp ||
         this.paymentSource.type === PaymentMethodType.GoogleInApp)
     );
-  }
-
-  get invoices() {
-    return this.billing != null ? this.billing.invoices : null;
-  }
-
-  get transactions() {
-    return this.billing != null ? this.billing.transactions : null;
   }
 }

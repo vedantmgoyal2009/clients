@@ -28,8 +28,9 @@ import { FrontendLayoutComponent } from "../layouts/frontend-layout.component";
 import { NavbarComponent } from "../layouts/navbar.component";
 import { UserLayoutComponent } from "../layouts/user-layout.component";
 import { BillingSyncApiKeyComponent } from "../organizations/billing/billing-sync-api-key.component";
+import { OrganizationBillingHistoryComponent } from "../organizations/billing/organization-billing-history.component";
 import { OrganizationBillingTabComponent } from "../organizations/billing/organization-billing-tab.component";
-import { OrganizationBillingComponent } from "../organizations/billing/organization-billing.component";
+import { OrganizationPaymentMethodComponent } from "../organizations/billing/organization-payment-method.component";
 import { OrganizationSubscriptionComponent } from "../organizations/billing/organization-subscription.component";
 import { GroupAddEditComponent as OrgGroupAddEditComponent } from "../organizations/groups/group-add-edit.component";
 import { GroupsComponent as OrgGroupsComponent } from "../organizations/groups/groups.component";
@@ -237,7 +238,8 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     OrgAccountComponent,
     OrgAddEditComponent,
     OrganizationBillingTabComponent,
-    OrganizationBillingComponent,
+    OrganizationPaymentMethodComponent,
+    OrganizationBillingHistoryComponent,
     OrganizationLayoutComponent,
     OrganizationPlansComponent,
     OrganizationSubscriptionComponent,
@@ -394,7 +396,7 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     OrganizationSwitcherComponent,
     OrgAccountComponent,
     OrgAddEditComponent,
-    OrganizationBillingComponent,
+    OrganizationPaymentMethodComponent,
     OrganizationLayoutComponent,
     OrganizationPlansComponent,
     OrganizationSubscriptionComponent,

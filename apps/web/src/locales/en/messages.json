@@ -2890,6 +2890,9 @@
   "myOrganization": {
     "message": "My Organization"
   },
+  "organizationInfo": {
+    "message": "Organization Info"
+  },
   "deleteOrganization": {
     "message": "Delete Organization"
   },
