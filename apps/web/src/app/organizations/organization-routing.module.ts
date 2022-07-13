@@ -8,6 +8,8 @@ import { OrganizationBillingHistoryComponent } from "../modules/organizations/bi
 import { OrganizationBillingTabComponent } from "../modules/organizations/billing/organization-billing-tab.component";
 import { OrganizationPaymentMethodComponent } from "../modules/organizations/billing/organization-payment-method.component";
 import { OrganizationSubscriptionComponent } from "../modules/organizations/billing/organization-subscription.component";
+import { ReportListComponent } from "../modules/organizations/reporting/report-list.component";
+import { ReportingComponent } from "../modules/organizations/reporting/reporting.component";
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
 
 import { GroupsComponent } from "./groups/groups.component";
@@ -15,8 +17,6 @@ import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
 import { EventsComponent } from "./manage/events.component";
 import { MembersComponent } from "./members/members.component";
-import { ReportListComponent } from "./reporting/report-list.component";
-import { ReportingComponent } from "./reporting/reporting.component";
 import { NavigationPermissionsService } from "./services/navigation-permissions.service";
 import { AccountComponent } from "./settings/account.component";
 import { SettingsComponent } from "./settings/settings.component";

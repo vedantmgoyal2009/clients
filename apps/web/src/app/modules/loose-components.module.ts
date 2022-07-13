@@ -55,8 +55,6 @@ import { ResetPasswordPolicyComponent } from "../organizations/policies/reset-pa
 import { SendOptionsPolicyComponent } from "../organizations/policies/send-options.component";
 import { SingleOrgPolicyComponent } from "../organizations/policies/single-org.component";
 import { TwoFactorAuthenticationPolicyComponent } from "../organizations/policies/two-factor-authentication.component";
-import { ReportListComponent as OrgReportListComponent } from "../organizations/reporting/report-list.component";
-import { ReportingComponent as OrgReportingComponent } from "../organizations/reporting/reporting.component";
 import { AccountComponent as OrgAccountComponent } from "../organizations/settings/account.component";
 import { AdjustSubscription } from "../organizations/settings/adjust-subscription.component";
 import { ChangePlanComponent } from "../organizations/settings/change-plan.component";
@@ -263,8 +261,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     OrgUserConfirmComponent,
     OrgUserGroupsComponent,
     OrgWeakPasswordsReportComponent,
-    OrgReportingComponent,
-    OrgReportListComponent,
     GeneratorComponent,
     PasswordGeneratorHistoryComponent,
     PasswordGeneratorPolicyComponent,
