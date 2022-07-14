@@ -26,6 +26,7 @@ import { ColorPasswordPipe } from "./pipes/color-password.pipe";
 import { CreditCardNumberPipe } from "./pipes/credit-card-number.pipe";
 import { EllipsisPipe } from "./pipes/ellipsis.pipe";
 import { I18nPipe } from "./pipes/i18n.pipe";
+import { OrderByPipe } from "./pipes/order-by.pipe";
 import { SearchCiphersPipe } from "./pipes/search-ciphers.pipe";
 import { SearchPipe } from "./pipes/search.pipe";
 import { UserNamePipe } from "./pipes/user-name.pipe";
@@ -61,6 +62,7 @@ import { UserNamePipe } from "./pipes/user-name.pipe";
     InputStripSpacesDirective,
     InputVerbatimDirective,
     NotPremiumDirective,
+    OrderByPipe,
     SearchCiphersPipe,
     SearchPipe,
     SelectCopyDirective,
@@ -90,6 +92,7 @@ import { UserNamePipe } from "./pipes/user-name.pipe";
     InputStripSpacesDirective,
     InputVerbatimDirective,
     NotPremiumDirective,
+    OrderByPipe,
     SearchCiphersPipe,
     SearchPipe,
     SelectCopyDirective,

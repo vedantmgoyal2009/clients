@@ -4,7 +4,7 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 
 @Pipe({
-  name: "orderBy",
+  name: "appOrderBy",
 })
 export class OrderByPipe implements PipeTransform {
   constructor(private i18nService: I18nService) {}
