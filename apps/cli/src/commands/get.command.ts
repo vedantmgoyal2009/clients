@@ -358,7 +358,7 @@ export class GetCommand extends DownloadCommand {
         decFolder = await folder.decrypt();
       }
     } else if (id.trim() !== "") {
-      let folders = await this.folderService.getAllDecrypted();
+      let folders = await this.folderService.getAllDecryptedFromState();
       folders = CliUtils.searchFolders(folders, id);
       if (folders.length > 1) {
         return Response.multipleResults(folders.map((f) => f.id));

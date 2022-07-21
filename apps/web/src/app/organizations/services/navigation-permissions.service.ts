@@ -13,6 +13,7 @@ const permissions = {
     Permissions.ManageUsers,
     Permissions.ManagePolicies,
     Permissions.ManageSso,
+    Permissions.ManageScim,
   ],
   members: [Permissions.ManageUsers, Permissions.ManageUsersPassword],
   groups: [Permissions.ManageGroups],

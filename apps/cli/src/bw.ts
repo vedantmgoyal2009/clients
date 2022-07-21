@@ -14,6 +14,7 @@ import { GlobalState } from "@bitwarden/common/models/domain/globalState";
 import { AppIdService } from "@bitwarden/common/services/appId.service";
 import { AuditService } from "@bitwarden/common/services/audit.service";
 import { AuthService } from "@bitwarden/common/services/auth.service";
+import { BroadcasterService } from "@bitwarden/common/services/broadcaster.service";
 import { CipherService } from "@bitwarden/common/services/cipher.service";
 import { CollectionService } from "@bitwarden/common/services/collection.service";
 import { ContainerService } from "@bitwarden/common/services/container.service";
@@ -103,6 +104,7 @@ export class Main {
   organizationService: OrganizationService;
   providerService: ProviderService;
   twoFactorService: TwoFactorService;
+  broadcasterService: BroadcasterService;
   folderApiService: FolderApiService;
 
   constructor() {
@@ -197,6 +199,8 @@ export class Main {
       this.logService,
       this.stateService
     );
+
+    this.broadcasterService = new BroadcasterService();
 
     this.folderService = new FolderService(
       this.cryptoService,

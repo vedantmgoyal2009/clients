@@ -43,22 +43,24 @@ export class OrganizationPlansComponent implements OnInit {
   @Input() providerId: string;
   @Output() onSuccess = new EventEmitter();
   @Output() onCanceled = new EventEmitter();
+  @Output() onTrialBillingSuccess = new EventEmitter();
 
   loading = true;
   selfHosted = false;
   productTypes = ProductType;
   formPromise: Promise<any>;
   singleOrgPolicyBlock = false;
+  isInTrialFlow = false;
   discount = 0;
 
   formGroup = this.formBuilder.group({
-    name: ["", [Validators.required]],
-    billingEmail: ["", [Validators.required, Validators.email]],
+    name: [""],
+    billingEmail: ["", [Validators.email]],
     businessOwned: [false],
     premiumAccessAddon: [false],
     additionalStorage: [0, [Validators.min(0), Validators.max(99)]],
     additionalSeats: [0, [Validators.min(0), Validators.max(100000)]],
-    clientOwnerEmail: [""],
+    clientOwnerEmail: ["", [Validators.email]],
     businessName: [""],
     plan: [this.plan],
     product: [this.product],
@@ -94,6 +96,16 @@ export class OrganizationPlansComponent implements OnInit {
     if (this.providerId) {
       this.formGroup.controls.businessOwned.setValue(true);
       this.changedOwnedBusiness();
+    }
+
+    if (!this.createOrganization || this.acceptingSponsorship) {
+      this.formGroup.controls.product.setValue(ProductType.Families);
+      this.changedProduct();
+    }
+
+    if (this.createOrganization) {
+      this.formGroup.controls.name.addValidators(Validators.required);
+      this.formGroup.controls.billingEmail.addValidators(Validators.required);
     }
 
     this.loading = false;
@@ -139,7 +151,7 @@ export class OrganizationPlansComponent implements OnInit {
   }
 
   get selectablePlans() {
-    return this.plans.filter(
+    return this.plans?.filter(
       (plan) =>
         !plan.legacyYear && !plan.disabled && plan.product === this.formGroup.controls.product.value
     );
@@ -250,6 +262,7 @@ export class OrganizationPlansComponent implements OnInit {
     }
     this.formGroup.controls.product.setValue(ProductType.Teams);
     this.formGroup.controls.plan.setValue(PlanType.TeamsAnnually);
+    this.changedProduct();
   }
 
   changedCountry() {
@@ -310,8 +323,16 @@ export class OrganizationPlansComponent implements OnInit {
 
         await this.apiService.refreshIdentityToken();
         await this.syncService.fullSync(true);
-        if (!this.acceptingSponsorship) {
+
+        if (!this.acceptingSponsorship && !this.isInTrialFlow) {
           this.router.navigate(["/organizations/" + orgId]);
+        }
+
+        if (this.isInTrialFlow) {
+          this.onTrialBillingSuccess.emit({
+            orgId: orgId,
+            subLabelText: this.billingSubLabelText(),
+          });
         }
 
         return orgId;
@@ -436,5 +457,19 @@ export class OrganizationPlansComponent implements OnInit {
     await this.apiService.postOrganizationKeys(orgId, request);
 
     return orgId;
+  }
+
+  private billingSubLabelText(): string {
+    const selectedPlan = this.selectedPlan;
+    const price = selectedPlan.basePrice === 0 ? selectedPlan.seatPrice : selectedPlan.basePrice;
+    let text = "";
+
+    if (selectedPlan.isAnnual) {
+      text += `${this.i18nService.t("annual")} ($${price}/${this.i18nService.t("yr")})`;
+    } else {
+      text += `${this.i18nService.t("monthly")} ($${price}/${this.i18nService.t("monthAbbr")})`;
+    }
+
+    return text;
   }
 }

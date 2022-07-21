@@ -111,7 +111,6 @@ import { EmergencyAccessComponent } from "../settings/emergency-access.component
 import { EmergencyAddEditComponent } from "../settings/emergency-add-edit.component";
 import { OrganizationPlansComponent } from "../settings/organization-plans.component";
 import { PaymentMethodComponent } from "../settings/payment-method.component";
-import { PaymentComponent } from "../settings/payment.component";
 import { PreferencesComponent } from "../settings/preferences.component";
 import { PremiumComponent } from "../settings/premium.component";
 import { ProfileComponent } from "../settings/profile.component";
@@ -122,7 +121,6 @@ import { SettingsComponent } from "../settings/settings.component";
 import { SponsoredFamiliesComponent } from "../settings/sponsored-families.component";
 import { SponsoringOrgRowComponent } from "../settings/sponsoring-org-row.component";
 import { SubscriptionComponent } from "../settings/subscription.component";
-import { TaxInfoComponent } from "../settings/tax-info.component";
 import { TwoFactorAuthenticatorComponent } from "../settings/two-factor-authenticator.component";
 import { TwoFactorDuoComponent } from "../settings/two-factor-duo.component";
 import { TwoFactorEmailComponent } from "../settings/two-factor-email.component";
@@ -265,7 +263,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     PasswordGeneratorHistoryComponent,
     PasswordGeneratorPolicyComponent,
     PasswordRepromptComponent,
-    PaymentComponent,
     PaymentMethodComponent,
     PersonalOwnershipPolicyComponent,
     PreferencesComponent,
@@ -298,7 +295,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     SponsoringOrgRowComponent,
     SsoComponent,
     SubscriptionComponent,
-    TaxInfoComponent,
     ToolsComponent,
     TwoFactorAuthenticationPolicyComponent,
     TwoFactorAuthenticatorComponent,
@@ -417,7 +413,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     PasswordGeneratorHistoryComponent,
     PasswordGeneratorPolicyComponent,
     PasswordRepromptComponent,
-    PaymentComponent,
     PaymentMethodComponent,
     PersonalOwnershipPolicyComponent,
     PreferencesComponent,
@@ -450,7 +445,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     SponsoringOrgRowComponent,
     SsoComponent,
     SubscriptionComponent,
-    TaxInfoComponent,
     ToolsComponent,
     TwoFactorAuthenticationPolicyComponent,
     TwoFactorAuthenticatorComponent,

@@ -126,7 +126,7 @@ export class ListCommand {
   }
 
   private async listFolders(options: Options) {
-    let folders = await this.folderService.getAllDecrypted();
+    let folders = await this.folderService.getAllDecryptedFromState();
 
     if (options.search != null && options.search.trim() !== "") {
       folders = CliUtils.searchFolders(folders, options.search);

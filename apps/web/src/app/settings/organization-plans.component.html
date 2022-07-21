@@ -34,6 +34,9 @@
   <app-org-info
     (changedBusinessOwned)="changedOwnedBusiness()"
     [formGroup]="formGroup"
+    [createOrganization]="createOrganization"
+    [isProvider]="!!providerId"
+    [acceptingSponsorship]="acceptingSponsorship"
   ></app-org-info>
   <h2 class="mt-5">{{ "chooseYourPlan" | i18n }}</h2>
   <div *ngFor="let selectableProduct of selectableProducts" class="form-check form-check-block">
@@ -128,8 +131,6 @@
             type="number"
             name="additionalSeats"
             formControlName="additionalSeats"
-            min="1"
-            max="100000"
             placeholder="{{ 'userSeatsDesc' | i18n }}"
             required
           />
@@ -147,8 +148,6 @@
           type="number"
           name="additionalSeats"
           formControlName="additionalSeats"
-          min="0"
-          max="100000"
           placeholder="{{ 'userSeatsDesc' | i18n }}"
         />
         <small class="text-muted form-text">{{
@@ -166,8 +165,6 @@
           type="number"
           name="additionalStorageGb"
           formControlName="additionalStorage"
-          min="0"
-          max="99"
           step="1"
           placeholder="{{ 'additionalStorageGbDesc' | i18n }}"
         />
@@ -237,7 +234,8 @@
             }}
           </small>
           <small *ngIf="selectablePlan.hasAdditionalStorageOption">
-            {{ "additionalStorageGb" | i18n }}: {{ additionalStorage || 0 }} &times;
+            {{ "additionalStorageGb" | i18n }}:
+            {{ formGroup.controls["additionalStorage"].value || 0 }} &times;
             {{ selectablePlan.additionalStoragePricePerGb / 12 | currency: "$" }} &times; 12
             {{ "monthAbbr" | i18n }} =
             {{ additionalStorageTotal(selectablePlan) | currency: "$" }} /{{ "year" | i18n }}
@@ -320,10 +318,9 @@
     <app-callout [type]="'error'">{{ "singleOrgBlockCreateMessage" | i18n }}</app-callout>
   </div>
   <div class="mt-4">
-    <button type="submit" class="btn btn-primary btn-submit" [disabled]="form.loading">
-      <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
-      <span>{{ "submit" | i18n }}</span>
-    </button>
+    <bit-submit-button [loading]="form.loading" [disabled]="!formGroup.valid">{{
+      "submit" | i18n
+    }}</bit-submit-button>
     <button type="button" class="btn btn-outline-secondary" (click)="cancel()" *ngIf="showCancel">
       {{ "cancel" | i18n }}
     </button>
