@@ -68,7 +68,7 @@ export class EncryptService implements AbstractEncryptService {
 
     key = key.resolveLegacyKey(encString);
 
-    if (key?.macKey != null && encString?.mac == null) {
+    if (key.macKey != null && encString?.mac == null) {
       this.logService.error("mac required.");
       return null;
     }
@@ -163,8 +163,6 @@ export class EncryptService implements AbstractEncryptService {
 
     return obj;
   }
-
-  // TODO: add resolveLegacyKey to other decryption methods
 
   private logMacFailed(msg: string) {
     if (this.logMacFailures) {
