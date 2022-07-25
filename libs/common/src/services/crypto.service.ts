@@ -496,7 +496,7 @@ export class CryptoService implements CryptoServiceAbstraction {
   }
 
   async makeEncKey(key: SymmetricCryptoKey): Promise<[SymmetricCryptoKey, EncString]> {
-    const theKey = await this.getKeyForEncryption(key);
+    const theKey = await this.getKeyForUserEncryption(key);
     const encKey = await this.cryptoFunctionService.randomBytes(64);
     return this.buildEncKey(theKey, encKey);
   }
@@ -512,12 +512,12 @@ export class CryptoService implements CryptoServiceAbstraction {
   }
 
   async encrypt(plainValue: string | ArrayBuffer, key?: SymmetricCryptoKey): Promise<EncString> {
-    key = await this.getKeyForEncryption(key);
+    key = await this.getKeyForUserEncryption(key);
     return await this.encryptService.encrypt(plainValue, key);
   }
 
   async encryptToBytes(plainValue: ArrayBuffer, key?: SymmetricCryptoKey): Promise<EncArrayBuffer> {
-    key = await this.getKeyForEncryption(key);
+    key = await this.getKeyForUserEncryption(key);
     return this.encryptService.encryptToBytes(plainValue, key);
   }
 
@@ -587,12 +587,12 @@ export class CryptoService implements CryptoServiceAbstraction {
   }
 
   async decryptToBytes(encString: EncString, key?: SymmetricCryptoKey): Promise<ArrayBuffer> {
-    const keyForEnc = await this.getKeyForEncryption(key);
+    const keyForEnc = await this.getKeyForUserEncryption(key);
     return this.encryptService.decryptToBytes(encString, keyForEnc);
   }
 
   async decryptToUtf8(encString: EncString, key?: SymmetricCryptoKey): Promise<string> {
-    key = await this.getKeyForEncryption(key);
+    key = await this.getKeyForUserEncryption(key);
     return await this.encryptService.decryptToUtf8(encString, key);
   }
 
@@ -689,7 +689,7 @@ export class CryptoService implements CryptoServiceAbstraction {
       : await this.stateService.getCryptoMasterKeyBiometric({ userId: userId });
   }
 
-  private async getKeyForEncryption(key?: SymmetricCryptoKey): Promise<SymmetricCryptoKey> {
+  async getKeyForUserEncryption(key?: SymmetricCryptoKey): Promise<SymmetricCryptoKey> {
     if (key != null) {
       return key;
     }
@@ -699,6 +699,8 @@ export class CryptoService implements CryptoServiceAbstraction {
       return encKey;
     }
 
+    // Legacy support: encryption used to be done with the user key (derived from master password)
+    // These users will have a null encKey
     return await this.getKey();
   }
 
