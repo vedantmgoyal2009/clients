@@ -719,8 +719,8 @@ export class CryptoService implements CryptoServiceAbstraction {
       return encKey;
     }
 
-    // Legacy support: encryption used to be done with the user key (derived from master password)
-    // These users will have a null encKey
+    // Legacy support: encryption used to be done with the user key (derived from master password).
+    // Users who have not migrated will have a null encKey and must use the user key instead.
     return await this.getKey();
   }
 
