@@ -1,4 +1,7 @@
+import { mock } from "jest-mock-extended";
+
 import { EncryptionType } from "@bitwarden/common/enums/encryptionType";
+import { EncString } from "@bitwarden/common/models/domain/encString";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 
 import { makeStaticByteArray } from "../utils";
@@ -69,10 +72,11 @@ describe("SymmetricCryptoKey", () => {
 
   describe("resolveLegacyKey", () => {
     it("creates a legacy key if required", async () => {
-      const encType = EncryptionType.AesCbc128_HmacSha256_B64;
       const key = new SymmetricCryptoKey(makeStaticByteArray(32), EncryptionType.AesCbc256_B64);
+      const encString = mock<EncString>();
+      encString.encryptionType = EncryptionType.AesCbc128_HmacSha256_B64;
 
-      const actual = key.resolveLegacyKey({ encryptionType: encType });
+      const actual = key.resolveLegacyKey(encString);
 
       const expected = new SymmetricCryptoKey(key.key, EncryptionType.AesCbc128_HmacSha256_B64);
       expect(actual).toEqual(expected);
@@ -81,8 +85,10 @@ describe("SymmetricCryptoKey", () => {
     it("does not create a legacy key if not required", async () => {
       const encType = EncryptionType.AesCbc256_HmacSha256_B64;
       const key = new SymmetricCryptoKey(makeStaticByteArray(64), encType);
+      const encString = mock<EncString>();
+      encString.encryptionType = encType;
 
-      const actual = key.resolveLegacyKey({ encryptionType: encType });
+      const actual = key.resolveLegacyKey(encString);
 
       expect(actual).toEqual(key);
     });
