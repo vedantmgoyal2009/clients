@@ -66,7 +66,6 @@ export class EncryptService implements AbstractEncryptService {
       throw new Error("No key provided for decryption.");
     }
 
-    // Resolve legacy key if required for old encrypt-then-mac scheme
     key = key.resolveLegacyKey(encString);
 
     if (key?.macKey != null && encString?.mac == null) {
@@ -109,6 +108,8 @@ export class EncryptService implements AbstractEncryptService {
     if (encThing == null) {
       throw new Error("Nothing provided for decryption.");
     }
+
+    key = key.resolveLegacyKey(encThing);
 
     if (key.macKey != null && encThing.macBytes == null) {
       return null;
