@@ -588,8 +588,7 @@ export class CryptoService implements CryptoServiceAbstraction {
 
   async decryptToBytes(encString: EncString, key?: SymmetricCryptoKey): Promise<ArrayBuffer> {
     const keyForEnc = await this.getKeyForEncryption(key);
-    const theKey = keyForEnc.resolveLegacyKey(encString);
-    return this.encryptService.decryptToBytes(encString, theKey);
+    return this.encryptService.decryptToBytes(encString, keyForEnc);
   }
 
   async decryptToUtf8(encString: EncString, key?: SymmetricCryptoKey): Promise<string> {
@@ -603,7 +602,6 @@ export class CryptoService implements CryptoServiceAbstraction {
     }
 
     key = await this.getKeyForEncryption(key);
-    key = key.resolveLegacyKey(encBuffer);
 
     return this.encryptService.decryptToBytes(encBuffer, key);
   }
