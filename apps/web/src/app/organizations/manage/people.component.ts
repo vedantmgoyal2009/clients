@@ -38,10 +38,10 @@ import { UserAddEditComponent } from "./user-add-edit.component";
 import { UserGroupsComponent } from "./user-groups.component";
 
 @Component({
-  selector: "app-org-members",
-  templateUrl: "members.component.html",
+  selector: "app-org-people",
+  templateUrl: "people.component.html",
 })
-export class MembersComponent
+export class PeopleComponent
   extends BasePeopleComponent<OrganizationUserUserDetailsResponse>
   implements OnInit
 {
