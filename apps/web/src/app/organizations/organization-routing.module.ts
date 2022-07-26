@@ -12,10 +12,10 @@ import { ReportListComponent } from "../modules/organizations/reporting/report-l
 import { ReportingComponent } from "../modules/organizations/reporting/reporting.component";
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
 
-import { GroupsComponent } from "./groups/groups.component";
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
 import { EventsComponent } from "./manage/events.component";
+import { GroupsComponent } from "./manage/groups.component";
 import { PeopleComponent } from "./manage/people.component";
 import { NavigationPermissionsService } from "./services/navigation-permissions.service";
 import { AccountComponent } from "./settings/account.component";

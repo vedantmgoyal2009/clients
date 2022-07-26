@@ -27,17 +27,17 @@ import { FooterComponent } from "../layouts/footer.component";
 import { FrontendLayoutComponent } from "../layouts/frontend-layout.component";
 import { NavbarComponent } from "../layouts/navbar.component";
 import { UserLayoutComponent } from "../layouts/user-layout.component";
-import { GroupAddEditComponent as OrgGroupAddEditComponent } from "../organizations/groups/group-add-edit.component";
-import { GroupsComponent as OrgGroupsComponent } from "../organizations/groups/groups.component";
 import { OrganizationLayoutComponent } from "../organizations/layouts/organization-layout.component";
 import { BulkConfirmComponent as OrgBulkConfirmComponent } from "../organizations/manage/bulk/bulk-confirm.component";
-import { BulkDeactivateComponent as OrgBulkDeactivateomponent } from "../organizations/manage/bulk/bulk-deactivate.component";
 import { BulkRemoveComponent as OrgBulkRemoveComponent } from "../organizations/manage/bulk/bulk-remove.component";
+import { BulkRestoreRevokeComponent as OrgBulkRestoreRevokeComponent } from "../organizations/manage/bulk/bulk-restore-revoke.component";
 import { BulkStatusComponent as OrgBulkStatusComponent } from "../organizations/manage/bulk/bulk-status.component";
 import { CollectionAddEditComponent as OrgCollectionAddEditComponent } from "../organizations/manage/collection-add-edit.component";
 import { CollectionsComponent as OrgManageCollectionsComponent } from "../organizations/manage/collections.component";
 import { EntityEventsComponent as OrgEntityEventsComponent } from "../organizations/manage/entity-events.component";
 import { EventsComponent as OrgEventsComponent } from "../organizations/manage/events.component";
+import { GroupAddEditComponent as OrgGroupAddEditComponent } from "../organizations/manage/group-add-edit.component";
+import { GroupsComponent as OrgGroupsComponent } from "../organizations/manage/groups.component";
 import { ManageComponent as OrgManageComponent } from "../organizations/manage/manage.component";
 import { PeopleComponent as OrgPeopleComponent } from "../organizations/manage/people.component";
 import { PoliciesComponent as OrgPoliciesComponent } from "../organizations/manage/policies.component";
@@ -231,7 +231,7 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     OrganizationPlansComponent,
     OrgAttachmentsComponent,
     OrgBulkConfirmComponent,
-    OrgBulkDeactivateomponent,
+    OrgBulkRestoreRevokeComponent,
     OrgBulkRemoveComponent,
     OrgBulkStatusComponent,
     OrgCiphersComponent,
@@ -382,7 +382,7 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     OrganizationPlansComponent,
     OrgAttachmentsComponent,
     OrgBulkConfirmComponent,
-    OrgBulkDeactivateomponent,
+    OrgBulkRestoreRevokeComponent,
     OrgBulkRemoveComponent,
     OrgBulkStatusComponent,
     OrgCiphersComponent,
