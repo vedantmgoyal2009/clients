@@ -621,7 +621,7 @@ export class CryptoService implements CryptoServiceAbstraction {
       throw new Error("No buffer provided for decryption.");
     }
 
-    key = await this.getKeyForEncryption(key);
+    key = await this.getKeyForUserEncryption(key);
 
     return this.encryptService.decryptToBytes(encBuffer, key);
   }
