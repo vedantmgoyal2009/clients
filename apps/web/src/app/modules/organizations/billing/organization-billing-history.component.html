@@ -72,14 +72,7 @@
             class="bwi bwi-fw"
             *ngIf="t.paymentMethodType"
             aria-hidden="true"
-            [ngClass]="{
-              'bwi-credit-card': t.paymentMethodType === paymentMethodType.Card,
-              'bwi-bank':
-                t.paymentMethodType === paymentMethodType.BankAccount ||
-                t.paymentMethodType === paymentMethodType.WireTransfer,
-              'bwi-bitcoin text-warning': t.paymentMethodType === paymentMethodType.BitPay,
-              'bwi-paypal text-primary': t.paymentMethodType === paymentMethodType.PayPal
-            }"
+            [ngClass]="paymentMethodClasses(t.paymentMethodType)"
           ></i>
           {{ t.details }}
         </td>

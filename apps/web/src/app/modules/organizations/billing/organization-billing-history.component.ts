@@ -46,4 +46,20 @@ export class OrganizationBillingHistoryComponent implements OnInit {
   get transactions() {
     return this.billing != null ? this.billing.transactions : null;
   }
+
+  paymentMethodClasses(type: PaymentMethodType) {
+    switch (type) {
+      case PaymentMethodType.Card:
+        return ["bwi-credit-card"];
+      case PaymentMethodType.BankAccount:
+      case PaymentMethodType.WireTransfer:
+        return ["bwi-bank"];
+      case PaymentMethodType.BitPay:
+        return ["bwi-bitcoin text-warning"];
+      case PaymentMethodType.PayPal:
+        return ["bwi-paypal text-primary"];
+      default:
+        return [];
+    }
+  }
 }

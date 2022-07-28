@@ -58,10 +58,7 @@ export class OrganizationPaymentMethodComponent implements OnInit {
       const billingPromise = this.apiService.getOrganizationBilling(this.organizationId);
       const orgPromise = this.apiService.getOrganization(this.organizationId);
 
-      const results = await Promise.all([billingPromise, orgPromise]);
-
-      this.billing = results[0];
-      this.org = results[1];
+      [this.billing, this.org] = await Promise.all([billingPromise, orgPromise]);
     }
     this.loading = false;
   }
