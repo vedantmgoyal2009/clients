@@ -40,7 +40,15 @@
   <h2 class="spaced-header">{{ "paymentMethod" | i18n }}</h2>
   <p *ngIf="!paymentSource">{{ "noPaymentMethod" | i18n }}</p>
   <ng-container *ngIf="paymentSource">
-    <app-callout type="warning" title="{{ 'verifyBankAccount' | i18n }}">
+    <app-callout
+      type="warning"
+      title="{{ 'verifyBankAccount' | i18n }}"
+      *ngIf="
+        forOrganization &&
+        paymentSource.type === paymentMethodType.BankAccount &&
+        paymentSource.needsVerification
+      "
+    >
       <p>{{ "verifyBankAccountDesc" | i18n }} {{ "verifyBankAccountFailureWarning" | i18n }}</p>
       <form
         #verifyForm
