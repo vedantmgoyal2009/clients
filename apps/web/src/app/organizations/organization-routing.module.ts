@@ -4,7 +4,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "@bitwarden/angular/guards/auth.guard";
 import { Permissions } from "@bitwarden/common/enums/permissions";
 
-import { OrganizationBillingHistoryComponent } from "../modules/organizations/billing/organization-billing-history.component";
 import { OrganizationBillingTabComponent } from "../modules/organizations/billing/organization-billing-tab.component";
 import { OrganizationPaymentMethodComponent } from "../modules/organizations/billing/organization-payment-method.component";
 import { OrganizationSubscriptionComponent } from "../modules/organizations/billing/organization-subscription.component";
@@ -12,6 +11,7 @@ import { ReportListComponent } from "../modules/organizations/reporting/report-l
 import { ReportingComponent } from "../modules/organizations/reporting/reporting.component";
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
 
+import { UserBillingHistoryComponent } from "./../settings/user-billing-history.component";
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
 import { EventsComponent } from "./manage/events.component";
@@ -168,7 +168,7 @@ const routes: Routes = [
           },
           {
             path: "history",
-            component: OrganizationBillingHistoryComponent,
+            component: UserBillingHistoryComponent,
             canActivate: [PermissionsGuard],
             data: { titleId: "billingHistory", permissions: [Permissions.ManageBilling] },
           },
