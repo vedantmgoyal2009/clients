@@ -5,12 +5,12 @@ import { AuthGuard } from "@bitwarden/angular/guards/auth.guard";
 import { Permissions } from "@bitwarden/common/enums/permissions";
 
 import { OrganizationBillingTabComponent } from "../modules/organizations/billing/organization-billing-tab.component";
-import { OrganizationPaymentMethodComponent } from "../modules/organizations/billing/organization-payment-method.component";
 import { OrganizationSubscriptionComponent } from "../modules/organizations/billing/organization-subscription.component";
 import { ReportListComponent } from "../modules/organizations/reporting/report-list.component";
 import { ReportingComponent } from "../modules/organizations/reporting/reporting.component";
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
 import { BillingHistoryComponent } from "../settings/billing-history.component";
+import { PaymentMethodComponent } from "../settings/payment-method.component";
 
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
@@ -162,7 +162,7 @@ const routes: Routes = [
           },
           {
             path: "payment-method",
-            component: OrganizationPaymentMethodComponent,
+            component: PaymentMethodComponent,
             canActivate: [PermissionsGuard],
             data: { titleId: "paymentMethod", permissions: [Permissions.ManageBilling] },
           },
