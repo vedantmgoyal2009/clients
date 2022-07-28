@@ -94,6 +94,7 @@ import { AddCreditComponent } from "../settings/add-credit.component";
 import { AdjustPaymentComponent } from "../settings/adjust-payment.component";
 import { AdjustStorageComponent } from "../settings/adjust-storage.component";
 import { ApiKeyComponent } from "../settings/api-key.component";
+import { BillingHistoryComponent } from "../settings/billing-history.component";
 import { BillingSyncKeyComponent } from "../settings/billing-sync-key.component";
 import { ChangeEmailComponent } from "../settings/change-email.component";
 import { ChangeKdfComponent } from "../settings/change-kdf.component";
@@ -131,7 +132,6 @@ import { TwoFactorWebAuthnComponent } from "../settings/two-factor-webauthn.comp
 import { TwoFactorYubiKeyComponent } from "../settings/two-factor-yubikey.component";
 import { UpdateKeyComponent } from "../settings/update-key.component";
 import { UpdateLicenseComponent } from "../settings/update-license.component";
-import { UserBillingHistoryComponent } from "../settings/user-billing-history.component";
 import { UserSubscriptionComponent } from "../settings/user-subscription.component";
 import { VaultTimeoutInputComponent } from "../settings/vault-timeout-input.component";
 import { VerifyEmailComponent } from "../settings/verify-email.component";
@@ -312,7 +312,7 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     UpdateLicenseComponent,
     UpdatePasswordComponent,
     UpdateTempPasswordComponent,
-    UserBillingHistoryComponent,
+    BillingHistoryComponent,
     UserLayoutComponent,
     UserSubscriptionComponent,
     UserVerificationComponent,
@@ -462,7 +462,7 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     UpdateLicenseComponent,
     UpdatePasswordComponent,
     UpdateTempPasswordComponent,
-    UserBillingHistoryComponent,
+    BillingHistoryComponent,
     UserLayoutComponent,
     UserSubscriptionComponent,
     UserVerificationComponent,

@@ -9,10 +9,10 @@ import { TransactionType } from "@bitwarden/common/enums/transactionType";
 import { BillingHistoryResponse } from "@bitwarden/common/models/response/billingHistoryResponse";
 
 @Component({
-  selector: "app-user-billing",
-  templateUrl: "user-billing-history.component.html",
+  selector: "app-billing-history",
+  templateUrl: "billing-history.component.html",
 })
-export class UserBillingHistoryComponent implements OnInit {
+export class BillingHistoryComponent implements OnInit {
   loading = false;
   firstLoaded = false;
   billing: BillingHistoryResponse;

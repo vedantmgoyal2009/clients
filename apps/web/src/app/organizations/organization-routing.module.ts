@@ -10,8 +10,8 @@ import { OrganizationSubscriptionComponent } from "../modules/organizations/bill
 import { ReportListComponent } from "../modules/organizations/reporting/report-list.component";
 import { ReportingComponent } from "../modules/organizations/reporting/reporting.component";
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
+import { BillingHistoryComponent } from "../settings/billing-history.component";
 
-import { UserBillingHistoryComponent } from "./../settings/user-billing-history.component";
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
 import { EventsComponent } from "./manage/events.component";
@@ -168,7 +168,7 @@ const routes: Routes = [
           },
           {
             path: "history",
-            component: UserBillingHistoryComponent,
+            component: BillingHistoryComponent,
             canActivate: [PermissionsGuard],
             data: { titleId: "billingHistory", permissions: [Permissions.ManageBilling] },
           },
