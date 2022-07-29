@@ -4,7 +4,6 @@ import { LooseComponentsModule } from "./modules/loose-components.module";
 import { OrganizationBillingModule } from "./modules/organizations/billing/organization-billing.module";
 import { OrganizationCreateModule } from "./modules/organizations/create/organization-create.module";
 import { OrganizationManageModule } from "./modules/organizations/manage/organization-manage.module";
-import { OrganizationReportingModule } from "./modules/organizations/reporting/organization-reporting.module";
 import { OrganizationUserModule } from "./modules/organizations/users/organization-user.module";
 import { PipesModule } from "./modules/pipes/pipes.module";
 import { SharedModule } from "./modules/shared.module";
@@ -24,7 +23,6 @@ import { OrganizationBadgeModule } from "./modules/vault/modules/organization-ba
     OrganizationUserModule,
     OrganizationCreateModule,
     OrganizationBillingModule,
-    OrganizationReportingModule,
   ],
   exports: [
     SharedModule,

@@ -6,26 +6,18 @@ import { Permissions } from "@bitwarden/common/enums/permissions";
 
 import { OrganizationBillingTabComponent } from "../modules/organizations/billing/organization-billing-tab.component";
 import { OrganizationSubscriptionComponent } from "../modules/organizations/billing/organization-subscription.component";
-import { ReportListComponent } from "../modules/organizations/reporting/report-list.component";
-import { ReportingComponent } from "../modules/organizations/reporting/reporting.component";
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
 import { BillingHistoryComponent } from "../settings/billing-history.component";
 import { PaymentMethodComponent } from "../settings/payment-method.component";
 
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
-import { EventsComponent } from "./manage/events.component";
 import { GroupsComponent } from "./manage/groups.component";
 import { PeopleComponent } from "./manage/people.component";
 import { NavigationPermissionsService } from "./services/navigation-permissions.service";
 import { AccountComponent } from "./settings/account.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { TwoFactorSetupComponent } from "./settings/two-factor-setup.component";
-import { ExposedPasswordsReportComponent } from "./tools/exposed-passwords-report.component";
-import { InactiveTwoFactorReportComponent } from "./tools/inactive-two-factor-report.component";
-import { ReusedPasswordsReportComponent } from "./tools/reused-passwords-report.component";
-import { UnsecuredWebsitesReportComponent } from "./tools/unsecured-websites-report.component";
-import { WeakPasswordsReportComponent } from "./tools/weak-passwords-report.component";
 
 const routes: Routes = [
   {
@@ -76,77 +68,10 @@ const routes: Routes = [
       },
       {
         path: "reporting",
-        component: ReportingComponent,
-        canActivate: [PermissionsGuard],
-        data: { permissions: NavigationPermissionsService.getPermissions("reporting") },
-        children: [
-          { path: "", pathMatch: "full", redirectTo: "reports" },
-          {
-            path: "reports",
-            component: ReportListComponent,
-            canActivate: [PermissionsGuard],
-            data: {
-              titleId: "reports",
-              permissions: [Permissions.AccessReports],
-            },
-            children: [
-              {
-                path: "exposed-passwords-report",
-                component: ExposedPasswordsReportComponent,
-                canActivate: [PermissionsGuard],
-                data: {
-                  titleId: "exposedPasswordsReport",
-                  permissions: [Permissions.AccessReports],
-                },
-              },
-              {
-                path: "inactive-two-factor-report",
-                component: InactiveTwoFactorReportComponent,
-                canActivate: [PermissionsGuard],
-                data: {
-                  titleId: "inactive2faReport",
-                  permissions: [Permissions.AccessReports],
-                },
-              },
-              {
-                path: "reused-passwords-report",
-                component: ReusedPasswordsReportComponent,
-                canActivate: [PermissionsGuard],
-                data: {
-                  titleId: "reusedPasswordsReport",
-                  permissions: [Permissions.AccessReports],
-                },
-              },
-              {
-                path: "unsecured-websites-report",
-                component: UnsecuredWebsitesReportComponent,
-                canActivate: [PermissionsGuard],
-                data: {
-                  titleId: "unsecuredWebsitesReport",
-                  permissions: [Permissions.AccessReports],
-                },
-              },
-              {
-                path: "weak-passwords-report",
-                component: WeakPasswordsReportComponent,
-                canActivate: [PermissionsGuard],
-                data: {
-                  titleId: "weakPasswordsReport",
-                  permissions: [Permissions.AccessReports],
-                },
-              },
-            ],
-          },
-          {
-            path: "events",
-            component: EventsComponent,
-            canActivate: [PermissionsGuard],
-            data: {
-              titleId: "eventLogs",
-              permissions: [Permissions.AccessEventLogs],
-            },
-          },
-        ],
+        loadChildren: () =>
+          import("../modules/organizations/reporting/organization-reporting.module").then(
+            (m) => m.OrganizationReportingModule
+          ),
       },
       {
         path: "billing",
