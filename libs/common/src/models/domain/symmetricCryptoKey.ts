@@ -1,3 +1,5 @@
+import { IEncrypted } from "@bitwarden/common/interfaces/IEncrypted";
+
 import { EncryptionType } from "../../enums/encryptionType";
 import { Utils } from "../../misc/utils";
 
@@ -53,6 +55,21 @@ export class SymmetricCryptoKey {
     if (this.macKey != null) {
       this.macKeyB64 = Utils.fromBufferToB64(this.macKey);
     }
+  }
+
+  /**
+   * Transform into new key for the old encrypt-then-mac scheme if required, otherwise return the current key unchanged
+   * @param encThing The encrypted object (e.g. encString or encArrayBuffer) that you want to decrypt
+   */
+  resolveLegacyKey(encThing: IEncrypted): SymmetricCryptoKey {
+    if (
+      encThing.encryptionType === EncryptionType.AesCbc128_HmacSha256_B64 &&
+      this.encType === EncryptionType.AesCbc256_B64
+    ) {
+      return new SymmetricCryptoKey(this.key, EncryptionType.AesCbc128_HmacSha256_B64);
+    }
+
+    return this;
   }
 
   static initFromJson(jsonResult: SymmetricCryptoKey): SymmetricCryptoKey {

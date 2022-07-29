@@ -63,8 +63,10 @@ export class EncryptService implements AbstractEncryptService {
 
   async decryptToUtf8(encString: EncString, key: SymmetricCryptoKey): Promise<string> {
     if (key == null) {
-      throw new Error("No encryption key provided.");
+      throw new Error("No key provided for decryption.");
     }
+
+    key = key.resolveLegacyKey(encString);
 
     if (key.macKey != null && encString?.mac == null) {
       this.logService.error("mac required.");
@@ -106,6 +108,8 @@ export class EncryptService implements AbstractEncryptService {
     if (encThing == null) {
       throw new Error("Nothing provided for decryption.");
     }
+
+    key = key.resolveLegacyKey(encThing);
 
     if (key.macKey != null && encThing.macBytes == null) {
       return null;
