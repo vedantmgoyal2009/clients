@@ -4,17 +4,13 @@ import { LooseComponentsModule } from "../../loose-components.module";
 import { SharedModule } from "../../shared.module";
 
 import { BillingSyncApiKeyComponent } from "./billing-sync-api-key.component";
+import { OrganizationBillingRoutingModule } from "./organization-billing-routing.module";
 import { OrganizationBillingTabComponent } from "./organization-billing-tab.component";
 import { OrganizationSubscriptionComponent } from "./organization-subscription.component";
 
 @NgModule({
-  imports: [SharedModule, LooseComponentsModule],
+  imports: [SharedModule, LooseComponentsModule, OrganizationBillingRoutingModule],
   declarations: [
-    BillingSyncApiKeyComponent,
-    OrganizationBillingTabComponent,
-    OrganizationSubscriptionComponent,
-  ],
-  exports: [
     BillingSyncApiKeyComponent,
     OrganizationBillingTabComponent,
     OrganizationSubscriptionComponent,

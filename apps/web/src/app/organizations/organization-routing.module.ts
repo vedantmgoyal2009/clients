@@ -2,13 +2,8 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 import { AuthGuard } from "@bitwarden/angular/guards/auth.guard";
-import { Permissions } from "@bitwarden/common/enums/permissions";
 
-import { OrganizationBillingTabComponent } from "../modules/organizations/billing/organization-billing-tab.component";
-import { OrganizationSubscriptionComponent } from "../modules/organizations/billing/organization-subscription.component";
 import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
-import { BillingHistoryComponent } from "../settings/billing-history.component";
-import { PaymentMethodComponent } from "../settings/payment-method.component";
 
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
@@ -75,29 +70,10 @@ const routes: Routes = [
       },
       {
         path: "billing",
-        component: OrganizationBillingTabComponent,
-        canActivate: [PermissionsGuard],
-        data: { permissions: NavigationPermissionsService.getPermissions("billing") },
-        children: [
-          { path: "", pathMatch: "full", redirectTo: "subscription" },
-          {
-            path: "subscription",
-            component: OrganizationSubscriptionComponent,
-            data: { titleId: "subscription" },
-          },
-          {
-            path: "payment-method",
-            component: PaymentMethodComponent,
-            canActivate: [PermissionsGuard],
-            data: { titleId: "paymentMethod", permissions: [Permissions.ManageBilling] },
-          },
-          {
-            path: "history",
-            component: BillingHistoryComponent,
-            canActivate: [PermissionsGuard],
-            data: { titleId: "billingHistory", permissions: [Permissions.ManageBilling] },
-          },
-        ],
+        loadChildren: () =>
+          import("../modules/organizations/billing/organization-billing.module").then(
+            (m) => m.OrganizationBillingModule
+          ),
       },
     ],
   },
