@@ -68,6 +68,9 @@ module.exports = {
       DEFAULT: theme("colors.background"),
       ...theme("colors"),
     }),
+    maxWidth: ({ theme }) => ({
+      ...theme("width"),
+    }),
   },
   plugins: [],
 };
