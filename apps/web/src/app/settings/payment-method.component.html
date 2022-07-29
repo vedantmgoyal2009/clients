@@ -54,48 +54,25 @@
         #verifyForm
         class="form-inline"
         (ngSubmit)="verifyBank()"
+        [formGroup]="verifyBankForm"
         [appApiAction]="verifyBankPromise"
         ngNativeValidate
       >
-        <label class="sr-only" for="verifyAmount1">{{ "amount" | i18n: "1" }}</label>
-        <div class="input-group mr-2">
-          <div class="input-group-prepend">
-            <div class="input-group-text">$0.</div>
-          </div>
-          <input
-            type="number"
-            class="form-control"
-            id="verifyAmount1"
-            placeholder="xx"
-            name="Amount1"
-            [(ngModel)]="verifyAmount1"
-            min="1"
-            max="99"
-            step="1"
-            required
-          />
-        </div>
-        <label class="sr-only" for="verifyAmount2">{{ "amount" | i18n: "2" }}</label>
-        <div class="input-group mr-2">
-          <div class="input-group-prepend">
-            <div class="input-group-text">$0.</div>
-          </div>
-          <input
-            type="number"
-            class="form-control"
-            id="verifyAmount2"
-            placeholder="xx"
-            name="Amount2"
-            [(ngModel)]="verifyAmount2"
-            min="1"
-            max="99"
-            step="1"
-            required
-          />
-        </div>
+        <bit-form-field class="tw-mr-2 tw-w-40">
+          <bit-label>{{ "amountX" | i18n: "1" }}</bit-label>
+          <input bitInput type="number" step="1" placeholder="xx" formControlName="amount1" />
+          <span bitPrefix>$0.</span>
+        </bit-form-field>
+        <bit-form-field class="tw-mr-2 tw-w-40">
+          <bit-label>{{ "amountX" | i18n: "2" }}</bit-label>
+          <input bitInput type="number" step="1" placeholder="xx" formControlName="amount2" />
+          <span bitPrefix>$0.</span>
+        </bit-form-field>
         <button
+          bitButton
+          buttonType="primary"
           type="submit"
-          class="btn btn-outline-primary btn-submit"
+          class="btn-submit"
           [disabled]="verifyForm.loading"
         >
           <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
@@ -138,7 +115,13 @@
       ngNativeValidate
     >
       <app-tax-info></app-tax-info>
-      <button type="submit" class="btn btn-primary btn-submit" [disabled]="formTax.loading">
+      <button
+        bitButton
+        buttonType="primary"
+        type="submit"
+        class="btn-submit"
+        [disabled]="formTax.loading"
+      >
         <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
         <span>{{ "save" | i18n }}</span>
       </button>

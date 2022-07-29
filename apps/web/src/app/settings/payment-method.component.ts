@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -27,11 +28,22 @@ export class PaymentMethodComponent implements OnInit {
   org: OrganizationResponse;
   paymentMethodType = PaymentMethodType;
   organizationId: string;
-  verifyAmount1: number;
-  verifyAmount2: number;
 
   verifyBankPromise: Promise<any>;
   taxFormPromise: Promise<any>;
+
+  verifyBankForm = this.formBuilder.group({
+    amount1: new FormControl<number>(null, [
+      Validators.required,
+      Validators.max(99),
+      Validators.min(0),
+    ]),
+    amount2: new FormControl<number>(null, [
+      Validators.required,
+      Validators.max(99),
+      Validators.min(0),
+    ]),
+  });
 
   constructor(
     protected apiService: ApiService,
@@ -39,7 +51,8 @@ export class PaymentMethodComponent implements OnInit {
     protected platformUtilsService: PlatformUtilsService,
     private router: Router,
     private logService: LogService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder
   ) {}
 
   async ngOnInit() {
@@ -123,8 +136,8 @@ export class PaymentMethodComponent implements OnInit {
 
     try {
       const request = new VerifyBankRequest();
-      request.amount1 = this.verifyAmount1;
-      request.amount2 = this.verifyAmount2;
+      request.amount1 = this.verifyBankForm.value.amount1;
+      request.amount2 = this.verifyBankForm.value.amount2;
       this.verifyBankPromise = this.apiService.postOrganizationVerifyBank(
         this.organizationId,
         request
