@@ -2,10 +2,10 @@
   <h1>{{ "reports" | i18n }}</h1>
 </div>
 
-<p>{{ "reportsDesc" | i18n }}</p>
+<p>{{ reportDescKey | i18n }}</p>
 
 <div class="tw-inline-grid tw-grid-cols-3 tw-gap-4">
-  <div *ngFor="let report of reports">
+  <div *ngFor="let report of reportTypes">
     <app-report-card [type]="report"></app-report-card>
   </div>
 </div>
