@@ -6,7 +6,7 @@
         class="my-auto pl-1"
         [activeOrganization]="organization"
       ></app-organization-switcher>
-      <bit-tab-group class="tw-mb-[-1px]">
+      <bit-tab-group class="-tw-mb-px">
         <bit-tab-item [route]="['vault']">{{ "vault" | i18n }}</bit-tab-item>
         <bit-tab-item *ngIf="showMembersTab" [route]="['members']">{{
           "members" | i18n
