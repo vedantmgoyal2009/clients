@@ -11,29 +11,27 @@ import { InactiveTwoFactorReportComponent } from "../../../organizations/tools/i
 import { ReusedPasswordsReportComponent } from "../../../organizations/tools/reused-passwords-report.component";
 import { UnsecuredWebsitesReportComponent } from "../../../organizations/tools/unsecured-websites-report.component";
 import { WeakPasswordsReportComponent } from "../../../organizations/tools/weak-passwords-report.component";
-import { ReportListComponent } from "../../../reports/report-list.component";
 
-import { ReportsComponent } from "./../../../reports/reports.component";
-import { ReportingTabComponent } from "./reporting-tab.component";
+import { ReportListComponent } from "./report-list.component";
+import { ReportingComponent } from "./reporting.component";
 
 const routes: Routes = [
   {
     path: "",
-    component: ReportingTabComponent,
+    component: ReportingComponent,
     canActivate: [PermissionsGuard],
     data: { permissions: NavigationPermissionsService.getPermissions("reporting") },
     children: [
       { path: "", pathMatch: "full", redirectTo: "reports" },
       {
         path: "reports",
-        component: ReportsComponent,
+        component: ReportListComponent,
         canActivate: [PermissionsGuard],
         data: {
           titleId: "reports",
           permissions: [Permissions.AccessReports],
         },
         children: [
-          { path: "", pathMatch: "full", component: ReportListComponent },
           {
             path: "exposed-passwords-report",
             component: ExposedPasswordsReportComponent,

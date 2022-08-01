@@ -6,9 +6,9 @@ import { Organization } from "@bitwarden/common/models/domain/organization";
 
 @Component({
   selector: "app-org-reporting",
-  templateUrl: "reporting-tab.component.html",
+  templateUrl: "reporting.component.html",
 })
-export class ReportingTabComponent implements OnInit {
+export class ReportingComponent implements OnInit {
   organization: Organization;
   accessEvents = false;
   showLeftNav = true;
