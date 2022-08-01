@@ -5,9 +5,9 @@ import { Permissions } from "@bitwarden/common/enums/permissions";
 
 import { PermissionsGuard } from "../../../organizations/guards/permissions.guard";
 import { NavigationPermissionsService } from "../../../organizations/services/navigation-permissions.service";
-import { BillingHistoryComponent } from "../../../settings/billing-history.component";
 import { PaymentMethodComponent } from "../../../settings/payment-method.component";
 
+import { OrgBillingHistoryViewComponent } from "./organization-billing-history-view.component";
 import { OrganizationBillingTabComponent } from "./organization-billing-tab.component";
 import { OrganizationSubscriptionComponent } from "./organization-subscription.component";
 
@@ -32,7 +32,7 @@ const routes: Routes = [
       },
       {
         path: "history",
-        component: BillingHistoryComponent,
+        component: OrgBillingHistoryViewComponent,
         canActivate: [PermissionsGuard],
         data: { titleId: "billingHistory", permissions: [Permissions.ManageBilling] },
       },

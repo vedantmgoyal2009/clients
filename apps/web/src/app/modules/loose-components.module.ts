@@ -94,6 +94,7 @@ import { AddCreditComponent } from "../settings/add-credit.component";
 import { AdjustPaymentComponent } from "../settings/adjust-payment.component";
 import { AdjustStorageComponent } from "../settings/adjust-storage.component";
 import { ApiKeyComponent } from "../settings/api-key.component";
+import { BillingHistoryViewComponent } from "../settings/billing-history-view.component";
 import { BillingHistoryComponent } from "../settings/billing-history.component";
 import { BillingSyncKeyComponent } from "../settings/billing-sync-key.component";
 import { ChangeEmailComponent } from "../settings/change-email.component";
@@ -313,6 +314,7 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     UpdatePasswordComponent,
     UpdateTempPasswordComponent,
     BillingHistoryComponent,
+    BillingHistoryViewComponent,
     UserLayoutComponent,
     UserSubscriptionComponent,
     UserVerificationComponent,
@@ -463,6 +465,7 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     UpdatePasswordComponent,
     UpdateTempPasswordComponent,
     BillingHistoryComponent,
+    BillingHistoryViewComponent,
     UserLayoutComponent,
     UserSubscriptionComponent,
     UserVerificationComponent,

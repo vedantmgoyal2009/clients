@@ -1,9 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, Input } from "@angular/core";
 
-import { ApiService } from "@bitwarden/common/abstractions/api.service";
-import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
-import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PaymentMethodType } from "@bitwarden/common/enums/paymentMethodType";
 import { TransactionType } from "@bitwarden/common/enums/transactionType";
 import { BillingHistoryResponse } from "@bitwarden/common/models/response/billingHistoryResponse";
@@ -12,49 +8,12 @@ import { BillingHistoryResponse } from "@bitwarden/common/models/response/billin
   selector: "app-billing-history",
   templateUrl: "billing-history.component.html",
 })
-export class BillingHistoryComponent implements OnInit {
-  loading = false;
-  firstLoaded = false;
+export class BillingHistoryComponent {
+  @Input()
   billing: BillingHistoryResponse;
+
   paymentMethodType = PaymentMethodType;
   transactionType = TransactionType;
-  organizationId?: string;
-
-  constructor(
-    protected apiService: ApiService,
-    protected i18nService: I18nService,
-    protected platformUtilsService: PlatformUtilsService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
-
-  async ngOnInit() {
-    this.route.params.subscribe(async (params) => {
-      if (params.organizationId) {
-        this.organizationId = params.organizationId;
-      } else if (this.platformUtilsService.isSelfHost()) {
-        this.router.navigate(["/settings/subscription"]);
-        return;
-      }
-      await this.load();
-      this.firstLoaded = true;
-    });
-  }
-
-  async load() {
-    if (this.loading) {
-      return;
-    }
-    this.loading = true;
-
-    if (this.forOrganization) {
-      this.billing = await this.apiService.getOrganizationBilling(this.organizationId);
-    } else {
-      this.billing = await this.apiService.getUserBillingHistory();
-    }
-
-    this.loading = false;
-  }
 
   get invoices() {
     return this.billing != null ? this.billing.invoices : null;
@@ -62,14 +21,6 @@ export class BillingHistoryComponent implements OnInit {
 
   get transactions() {
     return this.billing != null ? this.billing.transactions : null;
-  }
-
-  get forOrganization() {
-    return this.organizationId != null;
-  }
-
-  get headerClass() {
-    return this.forOrganization ? ["page-header"] : ["tabbed-header"];
   }
 
   paymentMethodClasses(type: PaymentMethodType) {

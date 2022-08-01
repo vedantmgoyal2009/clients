@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { BillingHistoryComponent } from "./billing-history.component";
+import { BillingHistoryViewComponent } from "./billing-history-view.component";
 import { PaymentMethodComponent } from "./payment-method.component";
 import { PremiumComponent } from "./premium.component";
 import { SubscriptionComponent } from "./subscription.component";
@@ -31,7 +31,7 @@ const routes: Routes = [
       },
       {
         path: "billing-history",
-        component: BillingHistoryComponent,
+        component: BillingHistoryViewComponent,
         data: { titleId: "billingHistory" },
       },
     ],
