@@ -76,15 +76,6 @@ import { AttachmentsComponent as OrgAttachmentsComponent } from "../organization
 import { CiphersComponent as OrgCiphersComponent } from "../organizations/vault/ciphers.component";
 import { CollectionsComponent as OrgCollectionsComponent } from "../organizations/vault/collections.component";
 import { ProvidersComponent } from "../providers/providers.component";
-import { BreachReportComponent } from "../reports/breach-report.component";
-import { ExposedPasswordsReportComponent } from "../reports/exposed-passwords-report.component";
-import { InactiveTwoFactorReportComponent } from "../reports/inactive-two-factor-report.component";
-import { ReportCardComponent } from "../reports/report-card.component";
-import { ReportListComponent } from "../reports/report-list.component";
-import { ReportsComponent } from "../reports/reports.component";
-import { ReusedPasswordsReportComponent } from "../reports/reused-passwords-report.component";
-import { UnsecuredWebsitesReportComponent } from "../reports/unsecured-websites-report.component";
-import { WeakPasswordsReportComponent } from "../reports/weak-passwords-report.component";
 import { AccessComponent } from "../send/access.component";
 import { AddEditComponent as SendAddEditComponent } from "../send/add-edit.component";
 import { EffluxDatesComponent as SendEffluxDatesComponent } from "../send/efflux-dates.component";
@@ -187,7 +178,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     ApiKeyComponent,
     AttachmentsComponent,
     BillingSyncKeyComponent,
-    BreachReportComponent,
     BulkActionsComponent,
     BulkDeleteComponent,
     BulkMoveComponent,
@@ -213,13 +203,11 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     EmergencyAccessTakeoverComponent,
     EmergencyAccessViewComponent,
     EmergencyAddEditComponent,
-    ExposedPasswordsReportComponent,
     FamiliesForEnterpriseSetupComponent,
     FolderAddEditComponent,
     FooterComponent,
     FrontendLayoutComponent,
     HintComponent,
-    InactiveTwoFactorReportComponent,
     LockComponent,
     LoginComponent,
     MasterPasswordPolicyComponent,
@@ -276,12 +264,8 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     RecoverTwoFactorComponent,
     RegisterComponent,
     RemovePasswordComponent,
-    ReportCardComponent,
-    ReportListComponent,
-    ReportsComponent,
     RequireSsoPolicyComponent,
     ResetPasswordPolicyComponent,
-    ReusedPasswordsReportComponent,
     SecurityComponent,
     SecurityKeysComponent,
     SendAddEditComponent,
@@ -308,7 +292,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     TwoFactorVerifyComponent,
     TwoFactorWebAuthnComponent,
     TwoFactorYubiKeyComponent,
-    UnsecuredWebsitesReportComponent,
     UpdateKeyComponent,
     UpdateLicenseComponent,
     UpdatePasswordComponent,
@@ -322,7 +305,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     VerifyEmailComponent,
     VerifyEmailTokenComponent,
     VerifyRecoverDeleteComponent,
-    WeakPasswordsReportComponent,
   ],
   exports: [
     PremiumBadgeComponent,
@@ -339,7 +321,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     AdjustSubscription,
     ApiKeyComponent,
     AttachmentsComponent,
-    BreachReportComponent,
     BulkActionsComponent,
     BulkDeleteComponent,
     BulkMoveComponent,
@@ -365,13 +346,11 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     EmergencyAccessTakeoverComponent,
     EmergencyAccessViewComponent,
     EmergencyAddEditComponent,
-    ExposedPasswordsReportComponent,
     FamiliesForEnterpriseSetupComponent,
     FolderAddEditComponent,
     FooterComponent,
     FrontendLayoutComponent,
     HintComponent,
-    InactiveTwoFactorReportComponent,
     LockComponent,
     LoginComponent,
     MasterPasswordPolicyComponent,
@@ -427,12 +406,8 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     RecoverTwoFactorComponent,
     RegisterComponent,
     RemovePasswordComponent,
-    ReportCardComponent,
-    ReportListComponent,
-    ReportsComponent,
     RequireSsoPolicyComponent,
     ResetPasswordPolicyComponent,
-    ReusedPasswordsReportComponent,
     SecurityComponent,
     SecurityKeysComponent,
     SendAddEditComponent,
@@ -459,7 +434,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     TwoFactorVerifyComponent,
     TwoFactorWebAuthnComponent,
     TwoFactorYubiKeyComponent,
-    UnsecuredWebsitesReportComponent,
     UpdateKeyComponent,
     UpdateLicenseComponent,
     UpdatePasswordComponent,
@@ -473,7 +447,6 @@ import { OrganizationBadgeModule } from "./vault/modules/organization-badge/orga
     VerifyEmailComponent,
     VerifyEmailTokenComponent,
     VerifyRecoverDeleteComponent,
-    WeakPasswordsReportComponent,
   ],
 })
 export class LooseComponentsModule {}

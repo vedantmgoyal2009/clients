@@ -2,20 +2,12 @@ import { Component } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { filter, Subscription } from "rxjs";
 
-import { ReportTypes } from "../../../reports/report-card.component";
-
 @Component({
   selector: "app-org-report-list",
   templateUrl: "report-list.component.html",
 })
 export class ReportListComponent {
-  reports = [
-    ReportTypes.exposedPasswords,
-    ReportTypes.reusedPasswords,
-    ReportTypes.weakPasswords,
-    ReportTypes.unsecuredWebsites,
-    ReportTypes.inactive2fa,
-  ];
+  reports: any[] = []; // Todo: Fix with latest report changes
 
   homepage = true;
   subscription: Subscription;

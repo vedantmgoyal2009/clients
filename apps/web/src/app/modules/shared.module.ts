@@ -65,6 +65,7 @@ import {
   SubmitButtonModule,
   MenuModule,
   TabsModule,
+  IconModule,
 } from "@bitwarden/components";
 
 import { PaymentComponent } from "../settings/payment.component";
@@ -141,6 +142,7 @@ registerLocaleData(localeZhTw, "zh-TW");
     FormFieldModule,
     SubmitButtonModule,
     TabsModule,
+    IconModule,
   ],
   exports: [
     CommonModule,
@@ -162,6 +164,7 @@ registerLocaleData(localeZhTw, "zh-TW");
     TabsModule,
     PaymentComponent,
     TaxInfoComponent,
+    IconModule,
   ],
   providers: [DatePipe],
   bootstrap: [],
