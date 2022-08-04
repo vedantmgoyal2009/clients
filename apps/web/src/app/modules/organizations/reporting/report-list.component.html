@@ -5,11 +5,7 @@
 
   <p>{{ "orgsReportsDesc" | i18n }}</p>
 
-  <div class="tw-inline-grid tw-grid-cols-3 tw-gap-4">
-    <div *ngFor="let report of reports">
-      <app-report-card [type]="report"></app-report-card>
-    </div>
-  </div>
+  <app-report-list [reports]="reports"></app-report-list>
 </ng-container>
 
 <router-outlet></router-outlet>
