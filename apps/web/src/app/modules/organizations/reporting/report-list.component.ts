@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
-import { filter, Subscription } from "rxjs";
+import { filter, Subject, takeUntil } from "rxjs";
 
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 
@@ -14,11 +14,14 @@ export class ReportListComponent implements OnInit, OnDestroy {
   reports: ReportEntry[];
 
   homepage = true;
-  subscription: Subscription;
+  private destrory$: Subject<void> = new Subject<void>();
 
   constructor(private stateService: StateService, router: Router) {
-    this.subscription = router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+    router.events
+      .pipe(
+        takeUntil(this.destrory$),
+        filter((event) => event instanceof NavigationEnd)
+      )
       .subscribe((event) => {
         this.homepage = (event as NavigationEnd).urlAfterRedirects.endsWith("/reports");
       });
@@ -56,6 +59,7 @@ export class ReportListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.destrory$.next();
+    this.destrory$.complete();
   }
 }
