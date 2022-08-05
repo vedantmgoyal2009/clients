@@ -6,6 +6,7 @@ import { EncryptedObject } from "@bitwarden/common/models/domain/encryptedObject
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 
 import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
+import { EncryptionType } from "../enums/encryptionType";
 import { IEncrypted } from "../interfaces/IEncrypted";
 import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
 
@@ -66,7 +67,7 @@ export class EncryptService implements AbstractEncryptService {
       throw new Error("No key provided for decryption.");
     }
 
-    key = key.resolveLegacyKey(encString);
+    key = this.resolveLegacyKey(key, encString);
 
     if (key.macKey != null && encString?.mac == null) {
       this.logService.error("mac required.");
@@ -109,7 +110,7 @@ export class EncryptService implements AbstractEncryptService {
       throw new Error("Nothing provided for decryption.");
     }
 
-    key = key.resolveLegacyKey(encThing);
+    key = this.resolveLegacyKey(key, encThing);
 
     if (key.macKey != null && encThing.macBytes == null) {
       return null;
@@ -168,5 +169,20 @@ export class EncryptService implements AbstractEncryptService {
     if (this.logMacFailures) {
       this.logService.error(msg);
     }
+  }
+
+  /**
+   * Transform into new key for the old encrypt-then-mac scheme if required, otherwise return the current key unchanged
+   * @param encThing The encrypted object (e.g. encString or encArrayBuffer) that you want to decrypt
+   */
+  resolveLegacyKey(key: SymmetricCryptoKey, encThing: IEncrypted): SymmetricCryptoKey {
+    if (
+      encThing.encryptionType === EncryptionType.AesCbc128_HmacSha256_B64 &&
+      key.encType === EncryptionType.AesCbc256_B64
+    ) {
+      return new SymmetricCryptoKey(key.key, EncryptionType.AesCbc128_HmacSha256_B64);
+    }
+
+    return key;
   }
 }

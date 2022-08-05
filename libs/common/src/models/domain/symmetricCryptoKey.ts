@@ -1,7 +1,8 @@
-import { IEncrypted } from "@bitwarden/common/interfaces/IEncrypted";
+import { Jsonify } from "type-fest";
+
+import { Utils } from "@bitwarden/common/misc/utils";
 
 import { EncryptionType } from "../../enums/encryptionType";
-import { Utils } from "../../misc/utils";
 
 export class SymmetricCryptoKey {
   key: ArrayBuffer;
@@ -57,36 +58,17 @@ export class SymmetricCryptoKey {
     }
   }
 
-  /**
-   * Transform into new key for the old encrypt-then-mac scheme if required, otherwise return the current key unchanged
-   * @param encThing The encrypted object (e.g. encString or encArrayBuffer) that you want to decrypt
-   */
-  resolveLegacyKey(encThing: IEncrypted): SymmetricCryptoKey {
-    if (
-      encThing.encryptionType === EncryptionType.AesCbc128_HmacSha256_B64 &&
-      this.encType === EncryptionType.AesCbc256_B64
-    ) {
-      return new SymmetricCryptoKey(this.key, EncryptionType.AesCbc128_HmacSha256_B64);
-    }
-
-    return this;
+  toJSON() {
+    // The whole object is constructed from the initial key, so just store the B64 key
+    return { keyB64: this.keyB64 };
   }
 
-  static initFromJson(jsonResult: SymmetricCryptoKey): SymmetricCryptoKey {
-    if (jsonResult == null) {
-      return jsonResult;
+  static fromJSON(obj: Jsonify<SymmetricCryptoKey>): SymmetricCryptoKey {
+    if (obj == null) {
+      return null;
     }
 
-    if (jsonResult.keyB64 != null) {
-      jsonResult.key = Utils.fromB64ToArray(jsonResult.keyB64).buffer;
-    }
-    if (jsonResult.encKeyB64 != null) {
-      jsonResult.encKey = Utils.fromB64ToArray(jsonResult.encKeyB64).buffer;
-    }
-    if (jsonResult.macKeyB64 != null) {
-      jsonResult.macKey = Utils.fromB64ToArray(jsonResult.macKeyB64).buffer;
-    }
-
-    return jsonResult;
+    const arrayBuffer = Utils.fromB64ToArray(obj.keyB64).buffer;
+    return new SymmetricCryptoKey(arrayBuffer);
   }
 }
