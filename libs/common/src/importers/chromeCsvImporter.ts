@@ -14,7 +14,12 @@ export class ChromeCsvImporter extends BaseImporter implements Importer {
 
     results.forEach((value) => {
       const cipher = this.initLoginCipher();
-      cipher.name = this.getValueOrDefault(value.name, "--");
+      const regex = new RegExp("(?<=@)(.*)(?=\\/)");
+      let name = value.name;
+      if (!name && regex.test(value.url)) {
+        name = value.url.match(regex)[0];
+      }
+      cipher.name = this.getValueOrDefault(name, "--");
       cipher.login.username = this.getValueOrDefault(value.username);
       cipher.login.password = this.getValueOrDefault(value.password);
       cipher.login.uris = this.makeUriArray(value.url);
