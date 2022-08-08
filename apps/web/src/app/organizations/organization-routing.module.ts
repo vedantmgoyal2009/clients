@@ -3,8 +3,6 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { AuthGuard } from "@bitwarden/angular/guards/auth.guard";
 
-import { OrganizationVaultModule } from "../modules/vault/modules/organization-vault/organization-vault.module";
-
 import { PermissionsGuard } from "./guards/permissions.guard";
 import { OrganizationLayoutComponent } from "./layouts/organization-layout.component";
 import { GroupsComponent } from "./manage/groups.component";
@@ -13,6 +11,7 @@ import { NavigationPermissionsService } from "./services/navigation-permissions.
 import { AccountComponent } from "./settings/account.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { TwoFactorSetupComponent } from "./settings/two-factor-setup.component";
+import { VaultModule } from "./vault/vault.module";
 
 const routes: Routes = [
   {
@@ -26,7 +25,7 @@ const routes: Routes = [
       { path: "", pathMatch: "full", redirectTo: "vault" },
       {
         path: "vault",
-        loadChildren: () => OrganizationVaultModule,
+        loadChildren: () => VaultModule,
       },
       {
         path: "settings",
