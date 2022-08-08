@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 
-import { ReportsSharedModule } from "../../../reports";
-import { LooseComponentsModule } from "../../loose-components.module";
-import { SharedModule } from "../../shared.module";
+import { LooseComponentsModule } from "../../modules/loose-components.module";
+import { SharedModule } from "../../modules/shared.module";
+import { ReportsSharedModule } from "../../reports";
 
 import { OrganizationReportingRoutingModule } from "./organization-reporting-routing.module";
 import { ReportListComponent } from "./report-list.component";

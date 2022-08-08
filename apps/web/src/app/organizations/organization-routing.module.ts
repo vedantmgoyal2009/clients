@@ -64,7 +64,7 @@ const routes: Routes = [
       {
         path: "reporting",
         loadChildren: () =>
-          import("../modules/organizations/reporting/organization-reporting.module").then(
+          import("./reporting/organization-reporting.module").then(
             (m) => m.OrganizationReportingModule
           ),
       },

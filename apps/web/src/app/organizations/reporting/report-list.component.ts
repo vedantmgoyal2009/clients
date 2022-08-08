@@ -4,7 +4,7 @@ import { filter, Subject, takeUntil } from "rxjs";
 
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 
-import { ReportVariant, reports, ReportType, ReportEntry } from "../../../reports";
+import { ReportVariant, reports, ReportType, ReportEntry } from "../../reports";
 
 @Component({
   selector: "app-org-report-list",
