@@ -12,8 +12,8 @@ import { ReusedPasswordsReportComponent } from "../tools/reused-passwords-report
 import { UnsecuredWebsitesReportComponent } from "../tools/unsecured-websites-report.component";
 import { WeakPasswordsReportComponent } from "../tools/weak-passwords-report.component";
 
-import { ReportListComponent } from "./report-list.component";
 import { ReportingComponent } from "./reporting.component";
+import { ReportsHomeComponent } from "./reports-home.component";
 
 const routes: Routes = [
   {
@@ -25,7 +25,7 @@ const routes: Routes = [
       { path: "", pathMatch: "full", redirectTo: "reports" },
       {
         path: "reports",
-        component: ReportListComponent,
+        component: ReportsHomeComponent,
         canActivate: [PermissionsGuard],
         data: {
           titleId: "reports",

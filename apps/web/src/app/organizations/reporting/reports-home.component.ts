@@ -7,10 +7,10 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { ReportVariant, reports, ReportType, ReportEntry } from "../../reports";
 
 @Component({
-  selector: "app-org-report-list",
-  templateUrl: "report-list.component.html",
+  selector: "app-org-reports-home",
+  templateUrl: "reports-home.component.html",
 })
-export class ReportListComponent implements OnInit, OnDestroy {
+export class ReportsHomeComponent implements OnInit, OnDestroy {
   reports: ReportEntry[];
 
   homepage = true;
