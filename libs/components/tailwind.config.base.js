@@ -73,14 +73,14 @@ module.exports = {
       DEFAULT: theme("colors.background"),
       ...theme("colors"),
     }),
-    maxWidth: ({ theme }) => ({
-      ...theme("width"),
-    }),
     extend: {
       width: {
         "50vw": "50vw",
         "75vw": "75vw",
       },
+      maxWidth: ({ theme }) => ({
+        ...theme("width"),
+      }),
     },
   },
   plugins: [],
