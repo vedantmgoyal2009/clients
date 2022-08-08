@@ -3,9 +3,9 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { Permissions } from "@bitwarden/common/enums/permissions";
 
-import { PermissionsGuard } from "../../../organizations/guards/permissions.guard";
-import { NavigationPermissionsService } from "../../../organizations/services/navigation-permissions.service";
-import { PaymentMethodComponent } from "../../../settings/payment-method.component";
+import { PaymentMethodComponent } from "../../settings/payment-method.component";
+import { PermissionsGuard } from "../guards/permissions.guard";
+import { NavigationPermissionsService } from "../services/navigation-permissions.service";
 
 import { OrgBillingHistoryViewComponent } from "./organization-billing-history-view.component";
 import { OrganizationBillingTabComponent } from "./organization-billing-tab.component";

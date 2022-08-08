@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 
-import { LooseComponentsModule } from "../../loose-components.module";
-import { SharedModule } from "../../shared.module";
+import { LooseComponentsModule } from "../../modules/loose-components.module";
+import { SharedModule } from "../../modules/shared.module";
 
 import { BillingSyncApiKeyComponent } from "./billing-sync-api-key.component";
 import { OrgBillingHistoryViewComponent } from "./organization-billing-history-view.component";

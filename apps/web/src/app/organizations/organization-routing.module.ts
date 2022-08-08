@@ -71,9 +71,7 @@ const routes: Routes = [
       {
         path: "billing",
         loadChildren: () =>
-          import("../modules/organizations/billing/organization-billing.module").then(
-            (m) => m.OrganizationBillingModule
-          ),
+          import("./billing/organization-billing.module").then((m) => m.OrganizationBillingModule),
       },
     ],
   },
