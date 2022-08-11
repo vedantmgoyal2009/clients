@@ -1570,6 +1570,12 @@
   "enableBrowserIntegrationDesc": {
     "message": "Used for biometrics in browser."
   },
+  "enableDuckDuckGoBrowserIntegration": {
+    "message": "Allow DuckDuckGo browser integration"
+  },
+  "enableDuckDuckGoBrowserIntegrationDesc": {
+    "message": "Use your Bitwarden vault when browsing with DuckDuckGo."
+  },
   "browserIntegrationUnsupportedTitle": {
     "message": "Browser integration not supported"
   },
@@ -1985,8 +1991,8 @@
   "organizationIsDisabled": {
     "message": "Organization is disabled."
   },
-  "disabledOrganizationFilterError" : {
-    "message" : "Items in disabled Organizations cannot be accessed. Contact your Organization owner for assistance."
+  "disabledOrganizationFilterError": {
+    "message": "Items in disabled Organizations cannot be accessed. Contact your Organization owner for assistance."
   },
   "neverLockWarning": {
     "message": "Are you sure you want to use the \"Never\" option? Setting your lock options to \"Never\" stores your vault's encryption key on your device. If you use this option you should ensure that you keep your device properly protected."

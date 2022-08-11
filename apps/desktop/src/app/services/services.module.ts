@@ -42,6 +42,7 @@ import { ElectronRendererStorageService } from "@bitwarden/electron/services/ele
 
 import { Account } from "../../models/account";
 import { I18nService } from "../../services/i18n.service";
+import { NativeMessageHandler } from "../../services/nativeMessageHandler.service";
 import { NativeMessagingService } from "../../services/nativeMessaging.service";
 import { PasswordRepromptService } from "../../services/passwordReprompt.service";
 import { StateService } from "../../services/state.service";
@@ -146,6 +147,10 @@ const RELOAD_CALLBACK = new InjectionToken<() => any>("RELOAD_CALLBACK");
     {
       provide: AbstractThemingService,
       useClass: DesktopThemingService,
+    },
+    {
+      provide: NativeMessageHandler,
+      deps: [StateServiceAbstraction, CryptoServiceAbstraction, CryptoFunctionServiceAbstraction],
     },
   ],
 })
