@@ -1,0 +1,28 @@
+{
+  "name": "native-messaging-test-runner",
+  "version": "1.0.0",
+  "description": "Test runner for Desktop native messaging",
+  "main": "dist/bw-handshake.ts",
+  "scripts": {
+    "handshake": "tsc && node dist/apps/desktop/native-messaging-test-runner/src/bw-handshake.js"
+  },
+  "author": "Bitwarden Inc. <hello@bitwarden.com> (https://bitwarden.com)",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@bitwarden/common": "file:../../../libs/common",
+    "@bitwarden/node": "file:../../../libs/node",
+    "module-alias": "^2.2.2",
+    "node-ipc": "^11.1.0",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/node": "^18.6.5",
+    "@types/node-ipc": "^9.2.0",
+    "typescript": "^4.7.4"
+  },
+  "_moduleAliases": {
+    "@bitwarden/common": "dist/libs/common/src",
+    "@bitwarden/node/services/nodeCryptoFunction.service": "dist/libs/node/src/services/nodeCryptoFunction.service"
+  }
+}
