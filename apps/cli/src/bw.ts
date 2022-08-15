@@ -21,6 +21,7 @@ import { CollectionService } from "@bitwarden/common/services/collection.service
 import { ContainerService } from "@bitwarden/common/services/container.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
 import { EncryptService } from "@bitwarden/common/services/encrypt.service";
+import { EncryptWorkerService } from "@bitwarden/common/services/encryptWorker.service";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
 import { FileUploadService } from "@bitwarden/common/services/fileUpload.service";
@@ -109,6 +110,7 @@ export class Main {
   broadcasterService: BroadcasterService;
   folderApiService: FolderApiService;
   userVerificationApiService: UserVerificationApiService;
+  encryptWorkerService: AbstractEncryptWorkerService;
 
   constructor() {
     let p = null;
@@ -192,6 +194,12 @@ export class Main {
 
     this.fileUploadService = new FileUploadService(this.logService, this.apiService);
 
+    this.encryptWorkerService = new EncryptWorkerService(
+      this.logService,
+      this.platformUtilsService,
+      window
+    );
+
     this.cipherService = new CipherService(
       this.cryptoService,
       this.settingsService,
@@ -201,9 +209,7 @@ export class Main {
       null,
       this.logService,
       this.stateService,
-      null as AbstractEncryptWorkerService, // not used in CLI
-      this.platformUtilsService,
-      window
+      this.encryptWorkerService
     );
 
     this.broadcasterService = new BroadcasterService();

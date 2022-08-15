@@ -1,12 +1,21 @@
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { LogService } from "../abstractions/log.service";
+import { PlatformUtilsService } from "../abstractions/platformUtils.service";
 import { WorkerCommand } from "../enums/workerCommand";
 import { CipherData } from "../models/data/cipherData";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
-  constructor(private logService: LogService) {}
+  constructor(
+    private logService: LogService,
+    private platformUtilsService: PlatformUtilsService,
+    private win: Window
+  ) {}
+
+  isSupported() {
+    return this.platformUtilsService.supportsWorkers(this.win);
+  }
 
   async decryptCiphers(
     cipherData: { [id: string]: CipherData },

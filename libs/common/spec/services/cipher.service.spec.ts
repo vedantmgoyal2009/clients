@@ -6,7 +6,6 @@ import { AbstractEncryptWorkerService } from "@bitwarden/common/abstractions/enc
 import { FileUploadService } from "@bitwarden/common/abstractions/fileUpload.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
-import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { SettingsService } from "@bitwarden/common/abstractions/settings.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
@@ -29,8 +28,6 @@ describe("Cipher Service", () => {
   let searchService: SubstituteOf<SearchService>;
   let logService: SubstituteOf<LogService>;
   let encryptWorkerService: SubstituteOf<AbstractEncryptWorkerService>;
-  let platformUtilsService: SubstituteOf<PlatformUtilsService>;
-  let window: SubstituteOf<Window>;
 
   let cipherService: CipherService;
 
@@ -44,8 +41,6 @@ describe("Cipher Service", () => {
     searchService = Substitute.for<SearchService>();
     logService = Substitute.for<LogService>();
     encryptWorkerService = Substitute.for<AbstractEncryptWorkerService>();
-    platformUtilsService = Substitute.for<PlatformUtilsService>();
-    window = Substitute.for<Window>();
 
     cryptoService.encryptToBytes(Arg.any(), Arg.any()).resolves(ENCRYPTED_BYTES);
     cryptoService.encrypt(Arg.any(), Arg.any()).resolves(new EncString(ENCRYPTED_TEXT));
@@ -59,9 +54,7 @@ describe("Cipher Service", () => {
       () => searchService,
       logService,
       stateService,
-      encryptWorkerService,
-      platformUtilsService,
-      window
+      encryptWorkerService
     );
   });
 

@@ -33,7 +33,10 @@ import { NotificationsService as NotificationsServiceAbstraction } from "@bitwar
 import { OrganizationService as OrganizationServiceAbstraction } from "@bitwarden/common/abstractions/organization.service";
 import { PasswordGenerationService as PasswordGenerationServiceAbstraction } from "@bitwarden/common/abstractions/passwordGeneration.service";
 import { PasswordRepromptService as PasswordRepromptServiceAbstraction } from "@bitwarden/common/abstractions/passwordReprompt.service";
-import { PlatformUtilsService as PlatformUtilsServiceAbstraction } from "@bitwarden/common/abstractions/platformUtils.service";
+import {
+  PlatformUtilsService,
+  PlatformUtilsService as PlatformUtilsServiceAbstraction,
+} from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy-api.service.abstraction";
 import {
   PolicyService as PolicyServiceAbstraction,
@@ -206,9 +209,7 @@ export const LOG_MAC_FAILURES = new InjectionToken<string>("LOG_MAC_FAILURES");
         injector: Injector,
         logService: LogService,
         stateService: StateServiceAbstraction,
-        encryptWorkerService: AbstractEncryptWorkerService,
-        platformUtilService: PlatformUtilsServiceAbstraction,
-        win: Window
+        encryptWorkerService: AbstractEncryptWorkerService
       ) =>
         new CipherService(
           cryptoService,
@@ -219,9 +220,7 @@ export const LOG_MAC_FAILURES = new InjectionToken<string>("LOG_MAC_FAILURES");
           () => injector.get(SearchServiceAbstraction),
           logService,
           stateService,
-          encryptWorkerService,
-          platformUtilService,
-          win
+          encryptWorkerService
         ),
       deps: [
         CryptoServiceAbstraction,
@@ -233,8 +232,6 @@ export const LOG_MAC_FAILURES = new InjectionToken<string>("LOG_MAC_FAILURES");
         LogService,
         StateServiceAbstraction,
         AbstractEncryptWorkerService,
-        PlatformUtilsServiceAbstraction,
-        WINDOW,
       ],
     },
     {
@@ -522,6 +519,7 @@ export const LOG_MAC_FAILURES = new InjectionToken<string>("LOG_MAC_FAILURES");
     {
       provide: AbstractEncryptWorkerService,
       useClass: EncryptWorkerService,
+      deps: [LogService, PlatformUtilsService, WINDOW],
     },
     {
       provide: UserVerificationApiServiceAbstraction,

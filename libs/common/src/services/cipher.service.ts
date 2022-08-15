@@ -5,7 +5,6 @@ import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.serv
 import { FileUploadService } from "../abstractions/fileUpload.service";
 import { I18nService } from "../abstractions/i18n.service";
 import { LogService } from "../abstractions/log.service";
-import { PlatformUtilsService } from "../abstractions/platformUtils.service";
 import { SearchService } from "../abstractions/search.service";
 import { SettingsService } from "../abstractions/settings.service";
 import { StateService } from "../abstractions/state.service";
@@ -64,9 +63,7 @@ export class CipherService implements CipherServiceAbstraction {
     private searchService: () => SearchService,
     private logService: LogService,
     private stateService: StateService,
-    private encryptWorkerService: AbstractEncryptWorkerService,
-    private platformUtilsService: PlatformUtilsService,
-    private win: Window
+    private encryptWorkerService: AbstractEncryptWorkerService
   ) {}
 
   async getDecryptedCipherCache(): Promise<CipherView[]> {
@@ -345,7 +342,7 @@ export class CipherService implements CipherServiceAbstraction {
       throw new Error("No key.");
     }
 
-    const decCiphers = this.platformUtilsService.supportsWorkers(this.win)
+    const decCiphers = this.encryptWorkerService.isSupported()
       ? await this.decryptCiphersWithWorker()
       : await this.decryptCiphers();
 

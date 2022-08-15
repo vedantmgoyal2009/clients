@@ -268,7 +268,11 @@ export default class MainBackground {
     );
     this.settingsService = new SettingsService(this.stateService);
     this.fileUploadService = new FileUploadService(this.logService, this.apiService);
-    this.encryptWorkerService = new EncryptWorkerService(this.logService);
+    this.encryptWorkerService = new EncryptWorkerService(
+      this.logService,
+      this.platformUtilsService,
+      window
+    );
     this.cipherService = new CipherService(
       this.cryptoService,
       this.settingsService,
@@ -278,9 +282,7 @@ export default class MainBackground {
       () => this.searchService,
       this.logService,
       this.stateService,
-      this.encryptWorkerService,
-      this.platformUtilsService,
-      window
+      this.encryptWorkerService
     );
     this.folderService = new FolderService(
       this.cryptoService,
