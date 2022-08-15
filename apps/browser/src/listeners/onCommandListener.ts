@@ -88,6 +88,7 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
   // Don't love this pt.1
   let searchService: SearchService = null;
 
+  // TODO add encryptWorkerService
   const cipherService = new CipherService(
     cryptoService,
     settingsService,

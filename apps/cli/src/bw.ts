@@ -4,6 +4,7 @@ import * as path from "path";
 import * as program from "commander";
 import * as jsdom from "jsdom";
 
+import { AbstractEncryptWorkerService } from "@bitwarden/common/abstractions/encryptWorker.service";
 import { InternalFolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
 import { ClientType } from "@bitwarden/common/enums/clientType";
 import { KeySuffixOptions } from "@bitwarden/common/enums/keySuffixOptions";
@@ -185,7 +186,7 @@ export class Main {
       async (expired: boolean) => await this.logout(),
       customUserAgent
     );
-    this.containerService = new ContainerService(this.cryptoService);
+    this.containerService = new ContainerService(this.cryptoService, this.encryptService);
 
     this.settingsService = new SettingsService(this.stateService);
 
@@ -199,7 +200,10 @@ export class Main {
       this.i18nService,
       null,
       this.logService,
-      this.stateService
+      this.stateService,
+      null as AbstractEncryptWorkerService, // not used in CLI
+      this.platformUtilsService,
+      window
     );
 
     this.broadcasterService = new BroadcasterService();

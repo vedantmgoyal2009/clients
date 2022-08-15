@@ -2,9 +2,11 @@ import { Arg, Substitute, SubstituteOf } from "@fluffy-spoon/substitute";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
+import { AbstractEncryptWorkerService } from "@bitwarden/common/abstractions/encryptWorker.service";
 import { FileUploadService } from "@bitwarden/common/abstractions/fileUpload.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
+import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { SettingsService } from "@bitwarden/common/abstractions/settings.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
@@ -26,6 +28,9 @@ describe("Cipher Service", () => {
   let i18nService: SubstituteOf<I18nService>;
   let searchService: SubstituteOf<SearchService>;
   let logService: SubstituteOf<LogService>;
+  let encryptWorkerService: SubstituteOf<AbstractEncryptWorkerService>;
+  let platformUtilsService: SubstituteOf<PlatformUtilsService>;
+  let window: SubstituteOf<Window>;
 
   let cipherService: CipherService;
 
@@ -38,6 +43,9 @@ describe("Cipher Service", () => {
     i18nService = Substitute.for<I18nService>();
     searchService = Substitute.for<SearchService>();
     logService = Substitute.for<LogService>();
+    encryptWorkerService = Substitute.for<AbstractEncryptWorkerService>();
+    platformUtilsService = Substitute.for<PlatformUtilsService>();
+    window = Substitute.for<Window>();
 
     cryptoService.encryptToBytes(Arg.any(), Arg.any()).resolves(ENCRYPTED_BYTES);
     cryptoService.encrypt(Arg.any(), Arg.any()).resolves(new EncString(ENCRYPTED_TEXT));
@@ -50,7 +58,10 @@ describe("Cipher Service", () => {
       i18nService,
       () => searchService,
       logService,
-      stateService
+      stateService,
+      encryptWorkerService,
+      platformUtilsService,
+      window
     );
   });
 
