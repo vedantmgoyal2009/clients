@@ -47,7 +47,8 @@
     }
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "action": {
     "default_icon": {
@@ -72,7 +73,7 @@
     "extension_page": "script-src 'self' ; object-src 'self'"
   },
   "commands": {
-    "_execute_browser_action": {
+    "_execute_action": {
       "suggested_key": {
         "default": "Ctrl+Shift+Y",
         "linux": "Ctrl+Shift+U"
