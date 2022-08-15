@@ -3,8 +3,6 @@ import { CipherData } from "../models/data/cipherData";
 import { Cipher } from "../models/domain/cipher";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
-import { ContainerService } from "../services/container.service";
-import { EncryptService } from "../services/encrypt.service";
 
 const workerApi: Worker = self as any;
 
@@ -18,33 +16,39 @@ type DecryptCipherInstruction = {
   userKey: SymmetricCryptoKey;
 };
 
-workerApi.addEventListener("message", async (event) => {
-  const message: WorkerInstruction = event.data;
+type WorkerResponse = DecryptCipherResponse;
 
-  switch (message.command) {
-    case WorkerCommand.decryptCiphers: {
-      const decryptAllWorker = new EncryptWorker();
-      let result = await decryptAllWorker.decryptCiphers(message);
+type DecryptCipherResponse = {
+  command: WorkerCommand.decryptCiphers;
+  data: CipherView[];
+};
 
-      workerApi.postMessage({
-        command: WorkerCommand.decryptCiphers,
-        data: result,
-      });
+workerApi.addEventListener("message", async (event: { data: WorkerInstruction }) => {
+  // TODO: bootstrap services
+  const encryptWorker = new EncryptWorker();
 
-      // Clean up memory
-      result = null;
-      event = null;
-      break;
-    }
+  workerApi.postMessage({
+    command: WorkerCommand.decryptCiphers,
+    data: await encryptWorker.processMessage(event.data),
+  });
 
-    default:
-      break;
-  }
+  // Clean up memory
+  event = null;
 });
 
 export class EncryptWorker {
-  initEncryptService() {
-    // TODO: init ContainerService and EncryptService and attach to GlobalThis
+  async processMessage(message: WorkerInstruction): Promise<WorkerResponse> {
+    switch (message.command) {
+      case WorkerCommand.decryptCiphers: {
+        return {
+          command: WorkerCommand.decryptCiphers,
+          data: await this.decryptCiphers(message),
+        };
+      }
+
+      default:
+        break;
+    }
   }
 
   async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherInstruction) {
