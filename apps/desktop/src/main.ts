@@ -173,7 +173,7 @@ export class Main {
 
         if (
           (await this.stateService.getEnableBrowserIntegration()) ||
-          this.stateService.getEnableDuckDuckGoBrowserIntegration()
+          (await this.stateService.getEnableDuckDuckGoBrowserIntegration())
         ) {
           this.nativeMessagingMain.listen();
         }

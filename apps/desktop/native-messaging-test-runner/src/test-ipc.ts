@@ -24,7 +24,9 @@ export default class TestIPC {
 
         ipc.of.bitwarden.on("error", (err: any) => {
           console.error("error", err);
-          console.log("\x1b[33m Please make sure the desktop app is running locally \x1b[0m");
+          console.log(
+            "\x1b[33m Please make sure the desktop app is running locally and 'Allow DuckDuckGo browser integration' setting is enabled \x1b[0m"
+          );
         });
 
         ipc.of.bitwarden.on("disconnect", () => {

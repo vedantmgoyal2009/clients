@@ -444,7 +444,7 @@ export class SettingsComponent implements OnInit {
       this.enableDuckDuckGoBrowserIntegration
     );
     this.messagingService.send(
-      this.enableBrowserIntegration
+      this.enableDuckDuckGoBrowserIntegration
         ? "enableDuckDuckGoBrowserIntegration"
         : "disableDuckDuckGoBrowserIntegration"
     );
