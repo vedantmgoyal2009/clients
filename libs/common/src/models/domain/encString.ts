@@ -1,3 +1,4 @@
+import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { IEncrypted } from "@bitwarden/common/interfaces/IEncrypted";
 
 import { CryptoService } from "../../abstractions/crypto.service";
@@ -103,23 +104,58 @@ export class EncString implements IEncrypted {
       return this.decryptedValue;
     }
 
-    let cryptoService: CryptoService;
-    const containerService = Utils.global.bitwardenContainerService;
-    if (containerService) {
-      cryptoService = containerService.getCryptoService();
-    } else {
-      throw new Error("global bitwardenContainerService not initialized.");
+    if (key == null) {
+      key = await this.getKeyForDecryption(orgId);
+    }
+    if (key == null) {
+      this.decryptedValue = "[error: cannot decrypt]";
+      return this.decryptedValue;
     }
 
+    const encryptService = this.getEncryptService();
     try {
-      if (key == null) {
-        key = await cryptoService.getOrgKey(orgId);
-      }
-      this.decryptedValue = await cryptoService.decryptToUtf8(this, key);
+      this.decryptedValue = await encryptService.decryptToUtf8(this, key);
     } catch (e) {
       this.decryptedValue = "[error: cannot decrypt]";
     }
     return this.decryptedValue;
+  }
+
+  private async getKeyForDecryption(orgId: string) {
+    const cryptoService = this.getCryptoService();
+
+    try {
+      const orgKey = await cryptoService.getOrgKey(orgId);
+      if (orgKey != null) {
+        return orgKey;
+      }
+
+      return cryptoService.getKeyForUserEncryption();
+    } catch {
+      return null;
+    }
+  }
+
+  private getCryptoService() {
+    const containerService = Utils.global.bitwardenContainerService;
+    const cryptoService: CryptoService = containerService?.getCryptoService();
+
+    if (cryptoService == null) {
+      throw new Error("global bitwardenContainerService or cryptoService not initialized.");
+    }
+
+    return cryptoService;
+  }
+
+  private getEncryptService() {
+    const containerService = Utils.global.bitwardenContainerService;
+    const encryptService: AbstractEncryptService = containerService?.getEncryptService();
+
+    if (encryptService == null) {
+      throw new Error("global bitwardenContainerService or encryptService not initialized.");
+    }
+
+    return encryptService;
   }
 
   get ivBytes(): ArrayBuffer {
