@@ -66,9 +66,9 @@ describe("Attachment", () => {
 
     const cryptoService = Substitute.for<CryptoService>();
     cryptoService.getOrgKey(null).resolves(null);
-    cryptoService.decryptToBytes(Arg.any(), Arg.any()).resolves(makeStaticByteArray(32));
 
     const encryptService = Substitute.for<AbstractEncryptService>();
+    encryptService.decryptToBytes(Arg.any(), Arg.any()).resolves(makeStaticByteArray(32));
 
     (window as any).bitwardenContainerService = new ContainerService(cryptoService, encryptService);
 

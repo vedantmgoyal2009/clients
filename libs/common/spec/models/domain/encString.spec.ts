@@ -49,9 +49,9 @@ describe("EncString", () => {
 
       const cryptoService = Substitute.for<CryptoService>();
       cryptoService.getOrgKey(null).resolves(null);
-      cryptoService.decryptToUtf8(encString, Arg.any()).resolves("decrypted");
 
       const encryptService = Substitute.for<AbstractEncryptService>();
+      encryptService.decryptToUtf8(encString, Arg.any()).resolves("decrypted");
 
       beforeEach(() => {
         (window as any).bitwardenContainerService = new ContainerService(
@@ -68,7 +68,7 @@ describe("EncString", () => {
 
       it("result should be cached", async () => {
         const decrypted = await encString.decrypt(null);
-        cryptoService.received(1).decryptToUtf8(Arg.any(), Arg.any());
+        encryptService.received(1).decryptToUtf8(Arg.any(), Arg.any());
 
         expect(decrypted).toBe("decrypted");
       });
@@ -159,9 +159,9 @@ describe("EncString", () => {
 
       const cryptoService = Substitute.for<CryptoService>();
       cryptoService.getOrgKey(null).resolves(null);
-      cryptoService.decryptToUtf8(encString, Arg.any()).throws("error");
 
       const encryptService = Substitute.for<AbstractEncryptService>();
+      encryptService.decryptToUtf8(encString, Arg.any()).throws("error");
 
       (window as any).bitwardenContainerService = new ContainerService(
         cryptoService,
@@ -194,7 +194,7 @@ describe("EncString", () => {
 
       await encString.decrypt(null, key);
 
-      cryptoService.received().decryptToUtf8(encString, key);
+      encryptService.received().decryptToUtf8(encString, key);
     });
   });
 });
