@@ -368,7 +368,7 @@ export class CipherService implements CipherServiceAbstraction {
     const cipherData = await this.stateService.getEncryptedCiphers();
     const localData = await this.stateService.getLocalData();
     const orgKeys = await this.cryptoService.getOrgKeys();
-    const userKey: any = null; // TODO: await this.cryptoService.getKeyForUserDecryption
+    const userKey = await this.cryptoService.getKeyForUserEncryption();
 
     // TODO: return this value
     await this.encryptWorkerService.decryptCiphers(cipherData, localData, orgKeys, userKey);
