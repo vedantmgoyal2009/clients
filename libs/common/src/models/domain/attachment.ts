@@ -57,7 +57,7 @@ export class Attachment extends Domain {
       encKey = await this.getKeyForDecryption(orgId);
     }
 
-    const encryptService = this.getEncryptService();
+    const encryptService = Utils.getContainerService().getEncryptService();
     try {
       const decValue = await encryptService.decryptToBytes(this.key, encKey);
       return new SymmetricCryptoKey(decValue);
@@ -67,7 +67,7 @@ export class Attachment extends Domain {
   }
 
   private async getKeyForDecryption(orgId: string) {
-    const cryptoService = this.getCryptoService();
+    const cryptoService = Utils.getContainerService().getCryptoService();
 
     try {
       const orgKey = await cryptoService.getOrgKey(orgId);
@@ -77,30 +77,8 @@ export class Attachment extends Domain {
 
       return cryptoService.getKeyForUserEncryption();
     } catch {
-      return null;
+      // TODO: error?
     }
-  }
-
-  private getCryptoService() {
-    const containerService = Utils.global.bitwardenContainerService;
-    const cryptoService = containerService?.getCryptoService();
-
-    if (cryptoService == null) {
-      throw new Error("global bitwardenContainerService or cryptoService not initialized.");
-    }
-
-    return cryptoService;
-  }
-
-  private getEncryptService() {
-    const containerService = Utils.global.bitwardenContainerService;
-    const encryptService = containerService?.getEncryptService();
-
-    if (encryptService == null) {
-      throw new Error("global bitwardenContainerService or encryptService not initialized.");
-    }
-
-    return encryptService;
   }
 
   toAttachmentData(): AttachmentData {

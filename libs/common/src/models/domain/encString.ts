@@ -110,7 +110,7 @@ export class EncString implements IEncrypted {
       return this.decryptedValue;
     }
 
-    const encryptService = this.getEncryptService();
+    const encryptService = Utils.getContainerService().getEncryptService();
     try {
       this.decryptedValue = await encryptService.decryptToUtf8(this, key);
     } catch (e) {
@@ -120,7 +120,7 @@ export class EncString implements IEncrypted {
   }
 
   private async getKeyForDecryption(orgId: string) {
-    const cryptoService = this.getCryptoService();
+    const cryptoService = Utils.getContainerService().getCryptoService();
 
     try {
       const orgKey = await cryptoService.getOrgKey(orgId);
@@ -132,28 +132,6 @@ export class EncString implements IEncrypted {
     } catch {
       return null;
     }
-  }
-
-  private getCryptoService() {
-    const containerService = Utils.global.bitwardenContainerService;
-    const cryptoService = containerService?.getCryptoService();
-
-    if (cryptoService == null) {
-      throw new Error("global bitwardenContainerService or cryptoService not initialized.");
-    }
-
-    return cryptoService;
-  }
-
-  private getEncryptService() {
-    const containerService = Utils.global.bitwardenContainerService;
-    const encryptService = containerService?.getEncryptService();
-
-    if (encryptService == null) {
-      throw new Error("global bitwardenContainerService or encryptService not initialized.");
-    }
-
-    return encryptService;
   }
 
   get ivBytes(): ArrayBuffer {

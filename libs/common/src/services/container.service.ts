@@ -14,10 +14,16 @@ export class ContainerService {
   }
 
   getCryptoService(): CryptoService {
+    if (this.cryptoService == null) {
+      throw new Error("ContainerService.cryptoService not initialized.");
+    }
     return this.cryptoService;
   }
 
   getEncryptService(): AbstractEncryptService {
+    if (this.encryptService == null) {
+      throw new Error("ContainerService.cryptoService not initialized.");
+    }
     return this.encryptService;
   }
 }

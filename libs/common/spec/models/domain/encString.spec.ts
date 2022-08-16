@@ -154,17 +154,6 @@ describe("EncString", () => {
   });
 
   describe("decrypt", () => {
-    it("throws exception when bitwarden container not initialized", async () => {
-      const encString = new EncString(null);
-
-      expect.assertions(1);
-      try {
-        await encString.decrypt(null);
-      } catch (e) {
-        expect(e.message).toEqual("global bitwardenContainerService not initialized.");
-      }
-    });
-
     it("handles value it can't decrypt", async () => {
       const encString = new EncString(null);
 

@@ -370,6 +370,13 @@ export class Utils {
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
+  static getContainerService(): BitwardenContainerService {
+    if (this.global.bitwardenContainerService == null) {
+      throw new Error("global bitwardenContainerService not initialized.");
+    }
+    return this.global.bitwardenContainerService;
+  }
+
   private static validIpAddress(ipString: string): boolean {
     const ipRegex =
       /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
