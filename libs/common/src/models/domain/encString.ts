@@ -1,7 +1,5 @@
-import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { IEncrypted } from "@bitwarden/common/interfaces/IEncrypted";
 
-import { CryptoService } from "../../abstractions/crypto.service";
 import { EncryptionType } from "../../enums/encryptionType";
 import { Utils } from "../../misc/utils";
 
@@ -138,7 +136,7 @@ export class EncString implements IEncrypted {
 
   private getCryptoService() {
     const containerService = Utils.global.bitwardenContainerService;
-    const cryptoService: CryptoService = containerService?.getCryptoService();
+    const cryptoService = containerService?.getCryptoService();
 
     if (cryptoService == null) {
       throw new Error("global bitwardenContainerService or cryptoService not initialized.");
@@ -149,7 +147,7 @@ export class EncString implements IEncrypted {
 
   private getEncryptService() {
     const containerService = Utils.global.bitwardenContainerService;
-    const encryptService: AbstractEncryptService = containerService?.getEncryptService();
+    const encryptService = containerService?.getEncryptService();
 
     if (encryptService == null) {
       throw new Error("global bitwardenContainerService or encryptService not initialized.");
