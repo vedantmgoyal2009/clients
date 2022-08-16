@@ -370,11 +370,7 @@ export class CipherService implements CipherServiceAbstraction {
     const orgKeys = await this.cryptoService.getOrgKeys();
     const userKey = await this.cryptoService.getKeyForUserEncryption();
 
-    // TODO: return this value
-    await this.encryptWorkerService.decryptCiphers(cipherData, localData, orgKeys, userKey);
-
-    // But for now we'll just return the normal call
-    return this.decryptCiphers();
+    return this.encryptWorkerService.decryptCiphers(cipherData, localData, orgKeys, userKey);
   }
 
   async getAllDecryptedForGrouping(groupingId: string, folder = true): Promise<CipherView[]> {

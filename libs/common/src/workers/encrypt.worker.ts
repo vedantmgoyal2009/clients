@@ -8,11 +8,9 @@ import { ContainerService } from "../services/container.service";
 import { EncryptService } from "../services/encrypt.service";
 import { WebCryptoFunctionService } from "../services/webCryptoFunction.service";
 
-const workerApi: Worker = self as any;
+type WorkerCommand = DecryptCipherCommand;
 
-type WorkerInstruction = DecryptCipherCommand;
-
-type DecryptCipherCommand = {
+export type DecryptCipherCommand = {
   command: WorkerMessageType.decryptCiphersCommand;
   cipherData: { [id: string]: CipherData };
   localData: any;
@@ -22,19 +20,18 @@ type DecryptCipherCommand = {
 
 type WorkerResponse = DecryptCipherResponse;
 
-type DecryptCipherResponse = {
+export type DecryptCipherResponse = {
   command: WorkerMessageType.decryptCiphersResponse;
-  data: CipherView[];
+  cipherViews: string;
 };
 
-workerApi.addEventListener("message", async (event: { data: WorkerInstruction }) => {
+const workerApi: Worker = self as any;
+
+workerApi.addEventListener("message", async (event: { data: WorkerCommand }) => {
   initServices();
   const encryptWorker = new EncryptWorker();
-
-  workerApi.postMessage({
-    command: WorkerMessageType.decryptCiphersResponse,
-    data: await encryptWorker.processMessage(event.data),
-  });
+  const response = await encryptWorker.processMessage(event.data);
+  workerApi.postMessage(response);
 
   // Clean up memory
   event = null;
@@ -50,13 +47,13 @@ function initServices() {
 }
 
 export class EncryptWorker {
-  async processMessage(message: WorkerInstruction): Promise<WorkerResponse> {
+  async processMessage(message: WorkerCommand): Promise<WorkerResponse> {
     switch (message.command) {
       case WorkerMessageType.decryptCiphersCommand: {
         const decCiphers = await this.decryptCiphers(message);
         return {
           command: WorkerMessageType.decryptCiphersResponse,
-          data: decCiphers,
+          cipherViews: JSON.stringify(decCiphers),
         };
       }
 

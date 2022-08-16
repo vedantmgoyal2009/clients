@@ -1,3 +1,5 @@
+import { Jsonify } from "type-fest";
+
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { LogService } from "../abstractions/log.service";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
@@ -5,6 +7,7 @@ import { WorkerMessageType } from "../enums/workerCommand";
 import { CipherData } from "../models/data/cipherData";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
+import { DecryptCipherResponse, DecryptCipherCommand } from "../workers/encrypt.worker";
 
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
   constructor(
@@ -27,7 +30,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     const orgKeysObj: { [orgId: string]: SymmetricCryptoKey } = {};
     orgKeys.forEach((orgKey, orgId) => (orgKeysObj[orgId] = orgKey));
 
-    const message = {
+    const message: DecryptCipherCommand = {
       command: WorkerMessageType.decryptCiphersCommand,
       cipherData: cipherData,
       localData: localData,
@@ -37,11 +40,9 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
 
     return new Promise((resolve, reject) => {
       const worker = this.createWorker();
-
-      worker.addEventListener("message", (response) => {
-        // TODO: handle result (just deserialize?)
+      worker.addEventListener("message", (response: { data: DecryptCipherResponse }) => {
         this.terminateWorker(worker);
-        resolve(null);
+        resolve(this.parseCipherResponse(response.data));
       });
 
       // Caution: this may not work/be supported in node. Need to test
@@ -51,6 +52,14 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
 
       worker.postMessage(message);
     });
+  }
+
+  parseCipherResponse(data: DecryptCipherResponse) {
+    const serializedCiphers: Jsonify<CipherView>[] =
+      data.cipherViews != null ? JSON.parse(data.cipherViews) : [];
+
+    const decCiphers = serializedCiphers.map((c) => CipherView.fromJSON(c));
+    return decCiphers;
   }
 
   // TODO: public method to terminate all workers on lock/logout
