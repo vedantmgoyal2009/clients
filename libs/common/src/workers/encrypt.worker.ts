@@ -1,15 +1,19 @@
-import { WorkerCommand } from "../enums/workerCommand";
+import { WorkerMessageType } from "../enums/workerCommand";
 import { CipherData } from "../models/data/cipherData";
 import { Cipher } from "../models/domain/cipher";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
+import { ConsoleLogService } from "../services/consoleLog.service";
+import { ContainerService } from "../services/container.service";
+import { EncryptService } from "../services/encrypt.service";
+import { WebCryptoFunctionService } from "../services/webCryptoFunction.service";
 
 const workerApi: Worker = self as any;
 
-type WorkerInstruction = DecryptCipherInstruction;
+type WorkerInstruction = DecryptCipherCommand;
 
-type DecryptCipherInstruction = {
-  command: WorkerCommand.decryptCiphers;
+type DecryptCipherCommand = {
+  command: WorkerMessageType.decryptCiphersCommand;
   cipherData: { [id: string]: CipherData };
   localData: any;
   orgKeys: { [orgId: string]: SymmetricCryptoKey };
@@ -19,16 +23,16 @@ type DecryptCipherInstruction = {
 type WorkerResponse = DecryptCipherResponse;
 
 type DecryptCipherResponse = {
-  command: WorkerCommand.decryptCiphers;
+  command: WorkerMessageType.decryptCiphersResponse;
   data: CipherView[];
 };
 
 workerApi.addEventListener("message", async (event: { data: WorkerInstruction }) => {
-  // TODO: bootstrap services
+  initServices();
   const encryptWorker = new EncryptWorker();
 
   workerApi.postMessage({
-    command: WorkerCommand.decryptCiphers,
+    command: WorkerMessageType.decryptCiphersResponse,
     data: await encryptWorker.processMessage(event.data),
   });
 
@@ -36,13 +40,23 @@ workerApi.addEventListener("message", async (event: { data: WorkerInstruction })
   event = null;
 });
 
+function initServices() {
+  const cryptoFunctionService = new WebCryptoFunctionService(self);
+  const logService = new ConsoleLogService(false); // TODO: this probably needs to be a custom logservice to send log messages back to main thread
+  const encryptService = new EncryptService(cryptoFunctionService, logService, true);
+
+  const bitwardenContainerService = new ContainerService(null, encryptService);
+  bitwardenContainerService.attachToGlobal(self);
+}
+
 export class EncryptWorker {
   async processMessage(message: WorkerInstruction): Promise<WorkerResponse> {
     switch (message.command) {
-      case WorkerCommand.decryptCiphers: {
+      case WorkerMessageType.decryptCiphersCommand: {
+        const decCiphers = await this.decryptCiphers(message);
         return {
-          command: WorkerCommand.decryptCiphers,
-          data: await this.decryptCiphers(message),
+          command: WorkerMessageType.decryptCiphersResponse,
+          data: decCiphers,
         };
       }
 
@@ -51,7 +65,7 @@ export class EncryptWorker {
     }
   }
 
-  async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherInstruction) {
+  async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherCommand) {
     const promises: any[] = [];
     const result: CipherView[] = [];
 
@@ -61,8 +75,11 @@ export class EncryptWorker {
 
       // Get key
       const key = cipher.organizationId == null ? userKey : orgKeys[cipher.organizationId];
-
-      // TODO: what if key is null?
+      if (key == null) {
+        throw new Error(
+          "No key provided for " + cipher.id + " (org Id: " + cipher.organizationId + ")"
+        );
+      }
 
       // Decrypt
       promises.push(cipher.decrypt(key).then((c) => result.push(c)));

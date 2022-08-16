@@ -1,7 +1,7 @@
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { LogService } from "../abstractions/log.service";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
-import { WorkerCommand } from "../enums/workerCommand";
+import { WorkerMessageType } from "../enums/workerCommand";
 import { CipherData } from "../models/data/cipherData";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
@@ -28,7 +28,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     orgKeys.forEach((orgKey, orgId) => (orgKeysObj[orgId] = orgKey));
 
     const message = {
-      command: WorkerCommand.decryptCiphers,
+      command: WorkerMessageType.decryptCiphersCommand,
       cipherData: cipherData,
       localData: localData,
       orgKeys: orgKeysObj,

@@ -1,3 +1,4 @@
-export enum WorkerCommand {
-  decryptCiphers = 0,
+export enum WorkerMessageType {
+  decryptCiphersCommand = 0,
+  decryptCiphersResponse = 1,
 }
