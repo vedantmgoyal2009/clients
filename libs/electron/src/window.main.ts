@@ -123,6 +123,7 @@ export class WindowMain {
       webPreferences: {
         spellcheck: false,
         nodeIntegration: true,
+        nodeIntegrationInWorker: true,
         backgroundThrottling: false,
         contextIsolation: false,
       },
