@@ -12,6 +12,7 @@ import {
 } from "@bitwarden/angular/services/jslib-services.module";
 import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
+import { AuthService as AuthServiceAbstraction } from "@bitwarden/common/abstractions/auth.service";
 import { BroadcasterService as BroadcasterServiceAbstraction } from "@bitwarden/common/abstractions/broadcaster.service";
 import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "@bitwarden/common/abstractions/cryptoFunction.service";
@@ -150,7 +151,12 @@ const RELOAD_CALLBACK = new InjectionToken<() => any>("RELOAD_CALLBACK");
     },
     {
       provide: NativeMessageHandler,
-      deps: [StateServiceAbstraction, CryptoServiceAbstraction, CryptoFunctionServiceAbstraction],
+      deps: [
+        StateServiceAbstraction,
+        AuthServiceAbstraction,
+        CryptoServiceAbstraction,
+        CryptoFunctionServiceAbstraction,
+      ],
     },
   ],
 })
