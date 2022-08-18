@@ -1,41 +1,16 @@
-import { WorkerMessageType } from "../enums/workerCommand";
-import { CipherData } from "../models/data/cipherData";
 import { Cipher } from "../models/domain/cipher";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 import { ConsoleLogService } from "../services/consoleLog.service";
 import { ContainerService } from "../services/container.service";
 import { EncryptService } from "../services/encrypt.service";
 import { WebCryptoFunctionService } from "../services/webCryptoFunction.service";
-
-type WorkerCommand = DecryptCipherCommand;
-
-export type DecryptCipherCommand = {
-  command: WorkerMessageType.decryptCiphersCommand;
-  cipherData: { [id: string]: CipherData };
-  localData: any;
-  orgKeys: { [orgId: string]: SymmetricCryptoKey };
-  userKey: SymmetricCryptoKey;
-};
-
-type WorkerResponse = DecryptCipherResponse;
-
-export type DecryptCipherResponse = {
-  command: WorkerMessageType.decryptCiphersResponse;
-  cipherViews: string;
-};
+import {
+  DecryptCipherRequest,
+  WebWorkerRequest,
+  WebWorkerResponse,
+} from "../types/webWorkerRequestResponse";
 
 const workerApi: Worker = self as any;
-
-workerApi.addEventListener("message", async (event: { data: WorkerCommand }) => {
-  initServices();
-  const encryptWorker = new EncryptWorker();
-  const response = await encryptWorker.processMessage(event.data);
-  workerApi.postMessage(response);
-
-  // Clean up memory
-  event = null;
-});
 
 function initServices() {
   const cryptoFunctionService = new WebCryptoFunctionService(self);
@@ -46,13 +21,24 @@ function initServices() {
   bitwardenContainerService.attachToGlobal(self);
 }
 
+workerApi.addEventListener("message", async (event: { data: WebWorkerRequest }) => {
+  initServices();
+
+  const encryptWorker = new EncryptWorker();
+  const response = await encryptWorker.processMessage(event.data);
+  workerApi.postMessage(response);
+
+  // Clean up memory
+  event = null;
+});
+
 export class EncryptWorker {
-  async processMessage(message: WorkerCommand): Promise<WorkerResponse> {
-    switch (message.command) {
-      case WorkerMessageType.decryptCiphersCommand: {
+  async processMessage(message: WebWorkerRequest): Promise<WebWorkerResponse> {
+    switch (message.type) {
+      case "decryptCipherRequest": {
         const decCiphers = await this.decryptCiphers(message);
         return {
-          command: WorkerMessageType.decryptCiphersResponse,
+          type: "decryptCipherResponse",
           cipherViews: JSON.stringify(decCiphers),
         };
       }
@@ -62,7 +48,7 @@ export class EncryptWorker {
     }
   }
 
-  async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherCommand) {
+  async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherRequest) {
     const promises: any[] = [];
     const result: CipherView[] = [];
 

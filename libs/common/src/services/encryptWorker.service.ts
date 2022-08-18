@@ -3,11 +3,10 @@ import { Jsonify } from "type-fest";
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { LogService } from "../abstractions/log.service";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
-import { WorkerMessageType } from "../enums/workerCommand";
 import { CipherData } from "../models/data/cipherData";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
-import { DecryptCipherResponse, DecryptCipherCommand } from "../workers/encrypt.worker";
+import { DecryptCipherResponse, DecryptCipherRequest } from "../types/webWorkerRequestResponse";
 
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
   constructor(
@@ -30,8 +29,8 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     const orgKeysObj: { [orgId: string]: SymmetricCryptoKey } = {};
     orgKeys.forEach((orgKey, orgId) => (orgKeysObj[orgId] = orgKey));
 
-    const message: DecryptCipherCommand = {
-      command: WorkerMessageType.decryptCiphersCommand,
+    const message: DecryptCipherRequest = {
+      type: "decryptCipherRequest",
       cipherData: cipherData,
       localData: localData,
       orgKeys: orgKeysObj,
