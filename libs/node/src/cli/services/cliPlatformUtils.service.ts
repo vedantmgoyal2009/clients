@@ -101,7 +101,7 @@ export class CliPlatformUtilsService implements PlatformUtilsService {
   }
 
   supportsWorkers(): boolean {
-    // CLI probably could support workers, but there's no advantage at the command line
+    // Web Workers are not supported in node
     return false;
   }
 
