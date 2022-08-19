@@ -3,6 +3,7 @@ import { Jsonify } from "type-fest";
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { LogService } from "../abstractions/log.service";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
+import { Utils } from "../misc/utils";
 import { CipherData } from "../models/data/cipherData";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
@@ -29,8 +30,9 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     const orgKeysObj: { [orgId: string]: SymmetricCryptoKey } = {};
     orgKeys.forEach((orgKey, orgId) => (orgKeysObj[orgId] = orgKey));
 
-    const message: DecryptCipherRequest = {
-      type: "decryptCipherRequest",
+    const request: DecryptCipherRequest = {
+      id: Utils.newGuid(),
+      type: "decryptCiphers",
       cipherData: cipherData,
       localData: localData,
       orgKeys: orgKeysObj,
@@ -40,7 +42,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     return new Promise((resolve, reject) => {
       const worker = this.createWorker();
       worker.addEventListener("message", (response: { data: DecryptCipherResponse }) => {
-        if (response.data.type != "decryptCipherResponse") {
+        if (response.data.id != request.id) {
           return;
         }
         this.terminateWorker(worker);
@@ -52,7 +54,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
         reject("An unexpected error occurred in a worker: " + event.message);
       });
 
-      worker.postMessage(message);
+      worker.postMessage(request);
     });
   }
 

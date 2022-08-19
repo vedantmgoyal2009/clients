@@ -33,12 +33,12 @@ workerApi.addEventListener("message", async (event: { data: WebWorkerRequest }) 
 });
 
 export class EncryptWorker {
-  async processMessage(message: WebWorkerRequest): Promise<WebWorkerResponse> {
-    switch (message.type) {
-      case "decryptCipherRequest": {
-        const decCiphers = await this.decryptCiphers(message);
+  async processMessage(request: WebWorkerRequest): Promise<WebWorkerResponse> {
+    switch (request.type) {
+      case "decryptCiphers": {
+        const decCiphers = await this.decryptCiphers(request);
         return {
-          type: "decryptCipherResponse",
+          id: request.id,
           cipherViews: JSON.stringify(decCiphers),
         };
       }

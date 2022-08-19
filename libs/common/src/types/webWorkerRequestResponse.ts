@@ -4,7 +4,8 @@ import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 export type WebWorkerRequest = DecryptCipherRequest;
 
 export type DecryptCipherRequest = {
-  type: "decryptCipherRequest";
+  id: string;
+  type: "decryptCiphers";
   cipherData: { [id: string]: CipherData };
   localData: any;
   orgKeys: { [orgId: string]: SymmetricCryptoKey };
@@ -14,6 +15,6 @@ export type DecryptCipherRequest = {
 export type WebWorkerResponse = DecryptCipherResponse;
 
 export type DecryptCipherResponse = {
-  type: "decryptCipherResponse";
+  id: string;
   cipherViews: string;
 };
