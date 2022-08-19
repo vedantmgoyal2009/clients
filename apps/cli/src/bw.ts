@@ -21,7 +21,6 @@ import { CollectionService } from "@bitwarden/common/services/collection.service
 import { ContainerService } from "@bitwarden/common/services/container.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
 import { EncryptService } from "@bitwarden/common/services/encrypt.service";
-import { EncryptWorkerService } from "@bitwarden/common/services/encryptWorker.service";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
 import { FileUploadService } from "@bitwarden/common/services/fileUpload.service";
@@ -57,6 +56,7 @@ import { SendProgram } from "./send.program";
 import { I18nService } from "./services/i18n.service";
 import { LowdbStorageService } from "./services/lowdbStorage.service";
 import { NodeEnvSecureStorageService } from "./services/nodeEnvSecureStorage.service";
+import { NoopEncryptWorkerService } from "./services/noopEncryptWorker.service";
 import { VaultProgram } from "./vault.program";
 
 // Polyfills
@@ -194,12 +194,7 @@ export class Main {
 
     this.fileUploadService = new FileUploadService(this.logService, this.apiService);
 
-    this.encryptWorkerService = new EncryptWorkerService(
-      this.logService,
-      this.platformUtilsService,
-      window,
-      this.stateService
-    );
+    this.encryptWorkerService = new NoopEncryptWorkerService();
 
     this.cipherService = new CipherService(
       this.cryptoService,
