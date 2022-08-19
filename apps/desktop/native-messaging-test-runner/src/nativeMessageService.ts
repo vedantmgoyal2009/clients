@@ -70,6 +70,23 @@ export default class NativeMessageService {
     return this.decryptResponsePayload(response.encryptedPayload, key);
   }
 
+  async credentialRetrieval(key: string, uri: string): Promise<DecryptedCommandData> {
+    const encryptedCommand = await this.encryptCommandData(
+      {
+        command: "bw-credential-retrieval",
+        payload: {
+          uri: uri,
+        },
+      },
+      key
+    );
+    const response = await this.sendEncryptedMessage({
+      encryptedCommand,
+    });
+
+    return this.decryptResponsePayload(response.encryptedPayload, key);
+  }
+
   // Private message sending
 
   private async sendEncryptedMessage(

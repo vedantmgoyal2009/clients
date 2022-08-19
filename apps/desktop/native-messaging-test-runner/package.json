@@ -5,7 +5,8 @@
   "main": "dist/bw-handshake.ts",
   "scripts": {
     "handshake": "tsc && node dist/apps/desktop/native-messaging-test-runner/src/bw-handshake.js",
-    "status": "tsc && node dist/apps/desktop/native-messaging-test-runner/src/bw-status.js"
+    "status": "tsc && node dist/apps/desktop/native-messaging-test-runner/src/bw-status.js",
+    "retrieve": "tsc && node dist/apps/desktop/native-messaging-test-runner/src/bw-credential-retrieval.js"
   },
   "author": "Bitwarden Inc. <hello@bitwarden.com> (https://bitwarden.com)",
   "license": "GPL-3.0",
@@ -15,7 +16,8 @@
     "module-alias": "^2.2.2",
     "node-ipc": "9.2.1",
     "ts-node": "^10.9.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
