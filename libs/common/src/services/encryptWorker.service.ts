@@ -30,7 +30,9 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
   ): Promise<CipherView[]> {
     // We can't serialize a map, convert to plain JS object
     const orgKeysObj: { [orgId: string]: SymmetricCryptoKey } = {};
-    orgKeys.forEach((orgKey, orgId) => (orgKeysObj[orgId] = orgKey));
+    if (orgKeys != null) {
+      orgKeys.forEach((orgKey, orgId) => (orgKeysObj[orgId] = orgKey));
+    }
 
     const request: DecryptCipherRequest = {
       id: Utils.newGuid(),
@@ -40,6 +42,8 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
       orgKeys: orgKeysObj,
       userKey: userKey,
     };
+    this.logService.info("Starting vault decryption using web worker");
+
     // Store the current userId at the start in case it changes while the worker is running
     const userId = await this.stateService.getUserId();
     const worker = await this.createWorker(userId);
