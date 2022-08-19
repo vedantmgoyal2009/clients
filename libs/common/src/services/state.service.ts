@@ -2263,6 +2263,23 @@ export class StateService<
     );
   }
 
+  async getWebWorkers(options?: StorageOptions): Promise<Set<Worker>> {
+    return (
+      await this.getAccount(this.reconcileOptions(options, await this.defaultInMemoryOptions()))
+    )?.data?.webWorkers;
+  }
+
+  async setWebWorkers(value: Set<Worker>, options?: StorageOptions): Promise<void> {
+    const account = await this.getAccount(
+      this.reconcileOptions(options, await this.defaultInMemoryOptions())
+    );
+    account.data.webWorkers = value;
+    await this.saveAccount(
+      account,
+      this.reconcileOptions(options, await this.defaultInMemoryOptions())
+    );
+  }
+
   protected async getGlobals(options: StorageOptions): Promise<TGlobalState> {
     let globals: TGlobalState;
     if (this.useMemory(options.storageLocation)) {
