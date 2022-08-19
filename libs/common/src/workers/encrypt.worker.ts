@@ -12,20 +12,9 @@ import {
 
 const workerApi: Worker = self as any;
 
-function initServices() {
-  const cryptoFunctionService = new WebCryptoFunctionService(self);
-  const logService = new ConsoleLogService(false); // TODO: this probably needs to be a custom logservice to send log messages back to main thread
-  const encryptService = new EncryptService(cryptoFunctionService, logService, true);
-
-  const bitwardenContainerService = new ContainerService(null, encryptService);
-  bitwardenContainerService.attachToGlobal(self);
-}
-
 workerApi.addEventListener("message", async (event: { data: WebWorkerRequest }) => {
-  initServices();
-
-  const encryptWorker = new EncryptWorker();
-  const response = await encryptWorker.processMessage(event.data);
+  EncryptWorker.init();
+  const response = await EncryptWorker.processMessage(event.data);
   workerApi.postMessage(response);
 
   // Clean up memory
@@ -33,7 +22,16 @@ workerApi.addEventListener("message", async (event: { data: WebWorkerRequest }) 
 });
 
 export class EncryptWorker {
-  async processMessage(request: WebWorkerRequest): Promise<WebWorkerResponse> {
+  static init() {
+    const cryptoFunctionService = new WebCryptoFunctionService(self);
+    const logService = new ConsoleLogService(false); // TODO: this probably needs to be a custom logservice to send log messages back to main thread
+    const encryptService = new EncryptService(cryptoFunctionService, logService, true);
+
+    const bitwardenContainerService = new ContainerService(null, encryptService);
+    bitwardenContainerService.attachToGlobal(self);
+  }
+
+  static async processMessage(request: WebWorkerRequest): Promise<WebWorkerResponse> {
     switch (request.type) {
       case "decryptCiphers": {
         const decCiphers = await this.decryptCiphers(request);
@@ -48,7 +46,7 @@ export class EncryptWorker {
     }
   }
 
-  async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherRequest) {
+  static async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherRequest) {
     const promises: any[] = [];
     const result: CipherView[] = [];
 
