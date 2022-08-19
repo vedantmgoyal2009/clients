@@ -2,6 +2,7 @@ import { AuthService } from "../abstractions/auth.service";
 import { CipherService } from "../abstractions/cipher.service";
 import { CollectionService } from "../abstractions/collection.service";
 import { CryptoService } from "../abstractions/crypto.service";
+import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { FolderService } from "../abstractions/folder/folder.service.abstraction";
 import { KeyConnectorService } from "../abstractions/keyConnector.service";
 import { MessagingService } from "../abstractions/messaging.service";
@@ -30,6 +31,7 @@ export class VaultTimeoutService implements VaultTimeoutServiceAbstraction {
     private keyConnectorService: KeyConnectorService,
     private stateService: StateService,
     private authService: AuthService,
+    private encryptWorkerService: AbstractEncryptWorkerService,
     private lockedCallback: (userId?: string) => Promise<void> = null,
     private loggedOutCallback: (expired: boolean, userId?: string) => Promise<void> = null
   ) {}
@@ -93,6 +95,8 @@ export class VaultTimeoutService implements VaultTimeoutServiceAbstraction {
 
     await this.cipherService.clearCache(userId);
     await this.collectionService.clearCache(userId);
+
+    await this.encryptWorkerService.terminateAll(userId);
 
     this.messagingService.send("locked", { userId: userId });
 

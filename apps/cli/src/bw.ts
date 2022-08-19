@@ -197,7 +197,8 @@ export class Main {
     this.encryptWorkerService = new EncryptWorkerService(
       this.logService,
       this.platformUtilsService,
-      window
+      window,
+      this.stateService
     );
 
     this.cipherService = new CipherService(
@@ -290,6 +291,7 @@ export class Main {
       this.keyConnectorService,
       this.stateService,
       this.authService,
+      this.encryptWorkerService,
       lockedCallback,
       null
     );

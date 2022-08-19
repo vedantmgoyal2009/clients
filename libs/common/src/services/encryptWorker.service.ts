@@ -3,13 +3,13 @@ import { Jsonify } from "type-fest";
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { LogService } from "../abstractions/log.service";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
+import { StateService } from "../abstractions/state.service";
 import { Utils } from "../misc/utils";
 import { CipherData } from "../models/data/cipherData";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 import { DecryptCipherResponse, DecryptCipherRequest } from "../types/webWorkerRequestResponse";
 
-import { StateService } from "./state.service";
 
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
   constructor(
