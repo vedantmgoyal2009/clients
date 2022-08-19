@@ -40,6 +40,9 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     return new Promise((resolve, reject) => {
       const worker = this.createWorker();
       worker.addEventListener("message", (response: { data: DecryptCipherResponse }) => {
+        if (response.data.type != "decryptCipherResponse") {
+          return;
+        }
         this.terminateWorker(worker);
         resolve(this.parseCipherResponse(response.data));
       });
@@ -53,11 +56,11 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     });
   }
 
-  parseCipherResponse(data: DecryptCipherResponse) {
-    const serializedCiphers: Jsonify<CipherView>[] =
+  private parseCipherResponse(data: DecryptCipherResponse) {
+    const parsedCiphers: Jsonify<CipherView>[] =
       data.cipherViews != null ? JSON.parse(data.cipherViews) : [];
 
-    const decCiphers = serializedCiphers.map((c) => CipherView.fromJSON(c));
+    const decCiphers = parsedCiphers.map((c) => CipherView.fromJSON(c));
     return decCiphers;
   }
 
