@@ -380,6 +380,7 @@ export class Main {
       this.collectionService.clear(userId),
       this.policyService.clear(userId),
       this.passwordGenerationService.clear(),
+      this.encryptWorkerService.terminateAll(userId),
     ]);
     await this.stateService.clean();
     process.env.BW_SESSION = null;

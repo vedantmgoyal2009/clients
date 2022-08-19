@@ -638,6 +638,7 @@ export default class MainBackground {
       this.vaultTimeoutService.clear(userId),
       this.keyConnectorService.clear(),
       this.vaultFilterService.clear(),
+      this.encryptWorkerService.terminateAll(userId),
     ]);
 
     await this.stateService.clean({ userId: userId });

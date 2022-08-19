@@ -9,12 +9,17 @@ import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 import { DecryptCipherResponse, DecryptCipherRequest } from "../types/webWorkerRequestResponse";
 
+import { StateService } from "./state.service";
+
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
   constructor(
     private logService: LogService,
     private platformUtilsService: PlatformUtilsService,
-    private win: Window
+    private win: Window,
+    private stateService: StateService
   ) {}
+
+  activeWorkers = new Map<string, Set<Worker>>();
 
   isSupported() {
     return this.platformUtilsService.supportsWorkers(this.win);
@@ -39,13 +44,14 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
       userKey: userKey,
     };
 
+    const worker = await this.createWorker();
+
     return new Promise((resolve, reject) => {
-      const worker = this.createWorker();
-      worker.addEventListener("message", (response: { data: DecryptCipherResponse }) => {
+      worker.addEventListener("message", async (response: { data: DecryptCipherResponse }) => {
         if (response.data.id != request.id) {
           return;
         }
-        this.terminateWorker(worker);
+        await this.terminateWorker(worker);
         resolve(this.parseCipherResponse(response.data));
       });
 
@@ -66,13 +72,34 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     return decCiphers;
   }
 
-  // TODO: public method to terminate all workers on lock/logout
+  async terminateAll(userId?: string) {
+    if (userId == null) {
+      userId = await this.stateService.getUserId();
+    }
 
-  private createWorker() {
-    return new Worker(new URL("../workers/encrypt.worker.ts", import.meta.url));
+    if (this.activeWorkers.has(userId)) {
+      this.activeWorkers.get(userId).forEach((w) => w.terminate());
+      this.activeWorkers.delete(userId);
+    }
   }
 
-  private terminateWorker(worker: Worker) {
+  private async createWorker() {
+    const worker = new Worker(new URL("../workers/encrypt.worker.ts", import.meta.url));
+
+    const userId = await this.stateService.getUserId();
+    if (!this.activeWorkers.has(userId)) {
+      this.activeWorkers.set(userId, new Set());
+    }
+    this.activeWorkers.get(userId).add(worker);
+
+    return worker;
+  }
+
+  private async terminateWorker(worker: Worker, userId?: string) {
+    if (userId == null) {
+      userId = await this.stateService.getUserId();
+    }
+    this.activeWorkers.get(userId).delete(worker);
     worker.terminate();
   }
 }

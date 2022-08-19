@@ -20,6 +20,7 @@ import { BroadcasterService } from "@bitwarden/common/abstractions/broadcaster.s
 import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
+import { AbstractEncryptWorkerService } from "@bitwarden/common/abstractions/encryptWorker.service";
 import { EventService } from "@bitwarden/common/abstractions/event.service";
 import { InternalFolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
@@ -126,7 +127,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private policyService: InternalPolicyService,
     private modalService: ModalService,
-    private keyConnectorService: KeyConnectorService
+    private keyConnectorService: KeyConnectorService,
+    private encryptWorkerService: AbstractEncryptWorkerService
   ) {}
 
   ngOnInit() {
@@ -469,6 +471,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.vaultTimeoutService.clear(userBeingLoggedOut),
       this.policyService.clear(userBeingLoggedOut),
       this.keyConnectorService.clear(),
+      this.encryptWorkerService.terminateAll(userBeingLoggedOut),
     ]);
 
     if (userBeingLoggedOut === this.activeUserId) {
