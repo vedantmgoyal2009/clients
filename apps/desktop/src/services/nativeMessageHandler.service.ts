@@ -43,6 +43,7 @@ export class NativeMessageHandler {
   }
 
   private async handleDecryptedMessage(message: UnencryptedMessage) {
+    let encryptedSecret: ArrayBuffer;
     const { messageId, payload } = message;
     const { publicKey } = payload;
     if (!publicKey) {
@@ -56,28 +57,39 @@ export class NativeMessageHandler {
       return;
     }
 
-    const remotePublicKey = Utils.fromB64ToArray(publicKey).buffer;
-    const ddgEnabled = await this.stateService.getEnableDuckDuckGoBrowserIntegration();
+    try {
+      const remotePublicKey = Utils.fromB64ToArray(publicKey).buffer;
+      const ddgEnabled = await this.stateService.getEnableDuckDuckGoBrowserIntegration();
 
-    if (!ddgEnabled) {
+      if (!ddgEnabled) {
+        this.sendResponse({
+          messageId: messageId,
+          version: 1,
+          payload: {
+            status: "cancelled",
+          },
+        });
+
+        return;
+      }
+
+      const secret = await this.cryptoFunctionService.randomBytes(64);
+      this.ddgSharedSecret = new SymmetricCryptoKey(secret);
+      encryptedSecret = await this.cryptoFunctionService.rsaEncrypt(
+        secret,
+        remotePublicKey,
+        EncryptionAlgorithm
+      );
+    } catch (error) {
       this.sendResponse({
         messageId: messageId,
         version: 1,
         payload: {
-          status: "cancelled",
+          error: "cannot-decrypt",
         },
       });
-
-      return;
     }
 
-    const secret = await this.cryptoFunctionService.randomBytes(64);
-    this.ddgSharedSecret = new SymmetricCryptoKey(secret);
-    const encryptedSecret = await this.cryptoFunctionService.rsaEncrypt(
-      secret,
-      remotePublicKey,
-      EncryptionAlgorithm
-    );
     await this.stateService.setDuckDuckGoSharedKey(Utils.fromBufferToB64(encryptedSecret));
 
     this.sendResponse({
