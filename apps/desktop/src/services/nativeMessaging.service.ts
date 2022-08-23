@@ -39,10 +39,10 @@ export class NativeMessagingService {
   ) {}
 
   init() {
-    window.setTimeout(() => {
-      ipcRenderer.send("timeoutMessage", {
-        message: "Sending message out to anyone who is listening!",
-      });
+    setInterval(() => {
+      ipcRenderer.send("nativeMessagingReply", { command: "Sending to whoever is listening" });
+      // eslint-disable-next-line
+      console.log("sent message");
     }, 5000);
     ipcRenderer.on("nativeMessaging", async (_event: any, message: any) => {
       this.messageHandler(message);
@@ -51,9 +51,9 @@ export class NativeMessagingService {
 
   private async messageHandler(msg: LegacyMessageWrapper | Message) {
     const outerMessage = msg as Message;
-    ipcRenderer.send("reply", { message: "Hello, I got your message! :)" });
     if (outerMessage.version) {
-      this.nativeMessageHandler.handleMessage(outerMessage);
+      ipcRenderer.send("nativeMessagingReply", { message: "Hello, I got your message! :)" });
+      //this.nativeMessageHandler.handleMessage(outerMessage);
       return;
     }
 
