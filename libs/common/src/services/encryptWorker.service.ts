@@ -1,3 +1,4 @@
+import { filter, Subject, take } from "rxjs";
 import { Jsonify } from "type-fest";
 
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
@@ -11,6 +12,8 @@ import { CipherView } from "../models/view/cipherView";
 import { DecryptCipherResponse, DecryptCipherRequest } from "../types/webWorkerRequestResponse";
 
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
+  private terminatingWorkers = new Subject<Worker>();
+
   constructor(
     private logService: LogService,
     private platformUtilsService: PlatformUtilsService,
@@ -49,6 +52,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     const worker = await this.createWorker(userId);
 
     return new Promise((resolve, reject) => {
+      // Listen for completed work
       worker.addEventListener("message", async (response: { data: DecryptCipherResponse }) => {
         if (response.data.id != request.id) {
           return;
@@ -56,6 +60,12 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
         await this.terminateWorker(worker, userId);
         resolve(this.parseCipherResponse(response.data));
       });
+
+      // Listen for early termination so we're not left hanging if a worker is terminated
+      this.terminatingWorkers
+        .pipe(filter((w) => w === worker))
+        .pipe(take(1))
+        .subscribe(() => resolve([]));
 
       // Caution: this may not work/be supported in node. Need to test
       worker.addEventListener("error", (event) => {
@@ -80,7 +90,10 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
       return;
     }
 
-    activeWorkers.forEach((w) => w.terminate());
+    activeWorkers.forEach((w) => {
+      this.terminatingWorkers.next(w);
+      w.terminate();
+    });
 
     this.stateService.setWebWorkers(null, { userId });
   }
@@ -103,6 +116,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     activeWorkers.delete(worker);
     await this.stateService.setWebWorkers(activeWorkers, { userId });
 
+    this.terminatingWorkers.next(worker);
     worker.terminate();
   }
 }
