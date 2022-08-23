@@ -39,6 +39,11 @@ export class NativeMessagingService {
   ) {}
 
   init() {
+    window.setTimeout(() => {
+      ipcRenderer.send("timeoutMessage", {
+        message: "Sending message out to anyone who is listening!",
+      });
+    }, 5000);
     ipcRenderer.on("nativeMessaging", async (_event: any, message: any) => {
       this.messageHandler(message);
     });
@@ -46,6 +51,7 @@ export class NativeMessagingService {
 
   private async messageHandler(msg: LegacyMessageWrapper | Message) {
     const outerMessage = msg as Message;
+    ipcRenderer.send("reply", { message: "Hello, I got your message! :)" });
     if (outerMessage.version) {
       this.nativeMessageHandler.handleMessage(outerMessage);
       return;
