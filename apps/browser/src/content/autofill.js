@@ -42,12 +42,17 @@
   9. Add new handler, for new command that responds with page details in response callback
   */
 
+  // This function is responsible for collecting the page details to be fed into the Autofill service.  It is triggered via
+  // messages from the extension sent through chrome.runtime.OnMessage
   function collect(document, undefined) {
       // START MODIFICATION
       var isFirefox = navigator.userAgent.indexOf('Firefox') !== -1 || navigator.userAgent.indexOf('Gecko/') !== -1;
       // END MODIFICATION
 
+      // Create an array of elements by a unique identifier assigned by the collection script
       document.elementsByOPID = {};
+
+      // Attach a bitwarden custom data attribute on any input element set to `yes` when it's edited
       document.addEventListener('input', function (inputevent) {
           inputevent.a !== false &&
               inputevent.target.tagName.toLowerCase() === 'input' &&
@@ -55,9 +60,12 @@
       }, true);
 
       function getPageDetails(theDoc, oneShotId) {
+          
+          //
           // start helpers
+          //
 
-          // get the value of a dom element's attribute
+          // Get the value of a DOM element's attribute of a given name
           function getElementAttrValue(el, attrName) {
               var attrVal = el[attrName];
               if ('string' == typeof attrVal) {
@@ -65,32 +73,11 @@
               }
               attrVal = el.getAttribute(attrName);
               return 'string' == typeof attrVal ? attrVal : null;
-          }
+          }    
 
-          // has the element been fake tested?
-          function checkIfFakeTested(field, el) {
-              if (-1 === ['text', 'password'].indexOf(el.type.toLowerCase()) ||
-                  !(passwordRegEx.test(field.value) ||
-                      passwordRegEx.test(field.htmlID) || passwordRegEx.test(field.htmlName) ||
-                      passwordRegEx.test(field.placeholder) || passwordRegEx.test(field['label-tag']) ||
-                      passwordRegEx.test(field['label-data']) || passwordRegEx.test(field['label-aria']))) {
-                  return false;
-              }
-
-              if (!field.visible) {
-                  return true;
-              }
-
-              if ('password' == el.type.toLowerCase()) {
-                  return false;
-              }
-
-              var elType = el.type;
-              focusElement(el, true);
-              return elType !== el.type;
-          }
-
-          // get the value of a dom element
+          // Get the "value" of a DOM element
+          // Because we are storing the attribute value in an array of strings, we must have special logic
+          // to handle elements that have "values" that are not strings.
           function getElementValue(el) {
               switch (toLowerString(el.type)) {
                   case 'checkbox':
@@ -233,10 +220,9 @@
 
           // end helpers
 
-          var theView = theDoc.defaultView ? theDoc.defaultView : window,
-              passwordRegEx = RegExp('((\\\\b|_|-)pin(\\\\b|_|-)|password|passwort|kennwort|(\\\\b|_|-)passe(\\\\b|_|-)|contraseña|senha|密码|adgangskode|hasło|wachtwoord)', 'i');
+          var theView = theDoc.defaultView ? theDoc.defaultView : window;
 
-          // get all the docs
+          // get all the forms on the page
           var theForms = Array.prototype.slice.call(queryDoc(theDoc, 'form')).map(function (formEl, elIndex) {
               var op = {},
                   formOpId = '__form__' + elIndex;
@@ -333,50 +319,7 @@
                   field.form = getElementAttrValue(el.form, 'opid');
               }
 
-              // START MODIFICATION
-              //addProp(field, 'fakeTested', checkIfFakeTested(field, el), false);
-              // END MODIFICATION
-
               return field;
-          });
-
-          // test form fields
-          theFields.filter(function (f) {
-              return f.fakeTested;
-          }).forEach(function (f) {
-              var el = theDoc.elementsByOPID[f.opid];
-              el.getBoundingClientRect();
-
-              var originalValue = el.value;
-              // click it
-              !el || el && 'function' !== typeof el.click || el.click();
-              focusElement(el, false);
-
-              el.dispatchEvent(doEventOnElement(el, 'keydown'));
-              el.dispatchEvent(doEventOnElement(el, 'keypress'));
-              el.dispatchEvent(doEventOnElement(el, 'keyup'));
-
-              el.value !== originalValue && (el.value = originalValue);
-
-              el.click && el.click();
-              f.postFakeTestVisible = isElementVisible(el);
-              f.postFakeTestViewable = isElementViewable(el);
-              f.postFakeTestType = el.type;
-
-              var elValue = el.value;
-
-              var event1 = el.ownerDocument.createEvent('HTMLEvents'),
-                  event2 = el.ownerDocument.createEvent('HTMLEvents');
-              el.dispatchEvent(doEventOnElement(el, 'keydown'));
-              el.dispatchEvent(doEventOnElement(el, 'keypress'));
-              el.dispatchEvent(doEventOnElement(el, 'keyup'));
-              event2.initEvent('input', true, true);
-              el.dispatchEvent(event2);
-              event1.initEvent('change', true, true);
-              el.dispatchEvent(event1);
-
-              el.blur();
-              el.value !== elValue && (el.value = elValue);
           });
 
           // build out the page details object. this is the final result
