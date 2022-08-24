@@ -13,7 +13,7 @@ import { CipherView } from "../models/view/cipherView";
 import { DecryptCipherResponse, DecryptCipherRequest } from "../types/webWorkerRequestResponse";
 
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
-  private terminatingWorkers = new Subject<Worker>();
+  private earlyTermination$ = new Subject<Worker>();
 
   constructor(
     private logService: LogService,
@@ -54,13 +54,21 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     const worker = await this.createWorker(userId);
 
     return new Promise((resolve, reject) => {
+      // Listen for early termination so we're not left hanging if a worker is terminated
+      const terminationSub = this.earlyTermination$
+        .pipe(filter((w) => w === worker))
+        .pipe(take(1))
+        .subscribe(() => resolve([]));
+
       // Listen for completed work
       worker.addEventListener("message", async (event: { data: string }) => {
         const response: Jsonify<DecryptCipherResponse> = JSON.parse(event.data);
         if (response.id != request.id) {
           return;
         }
-        await this.terminateWorker(worker, userId);
+
+        await this.completeWorker(worker, userId);
+        terminationSub.unsubscribe();
 
         resolve(
           response.cipherViews == null
@@ -69,17 +77,12 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
         );
       });
 
-      // Listen for early termination so we're not left hanging if a worker is terminated
-      this.terminatingWorkers
-        .pipe(filter((w) => w === worker))
-        .pipe(take(1))
-        .subscribe(() => resolve([]));
-
       // Caution: this may not work/be supported in node. Need to test
       worker.addEventListener("error", (event) => {
         reject("An unexpected error occurred in a worker: " + event.message);
       });
 
+      // Send the instruction to the worker
       worker.postMessage(JSON.stringify(request));
     });
   }
@@ -91,7 +94,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     }
 
     activeWorkers.forEach((w) => {
-      this.terminatingWorkers.next(w);
+      this.earlyTermination$.next(w);
       w.terminate();
     });
 
@@ -111,7 +114,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     return worker;
   }
 
-  private async terminateWorker(worker: Worker, userId: string) {
+  private async completeWorker(worker: Worker, userId: string) {
     const activeWorkers = await this.stateService.getWebWorkers({ userId });
     activeWorkers.delete(worker);
     await this.stateService.setWebWorkers(activeWorkers, { userId });
