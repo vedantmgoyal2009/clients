@@ -10,7 +10,7 @@ import { CipherData } from "../models/data/cipherData";
 import { LocalData } from "../models/data/localData";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
-import { DecryptCipherResponse, DecryptCipherRequest } from "../types/webWorkerRequestResponse";
+import { DecryptCipherResponse, DecryptCipherRequest } from "../workers/workerRequestResponse";
 
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
   private earlyTermination$ = new Subject<Worker>();

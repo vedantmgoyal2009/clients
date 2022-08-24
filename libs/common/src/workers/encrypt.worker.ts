@@ -6,11 +6,8 @@ import { ConsoleLogService } from "../services/consoleLog.service";
 import { ContainerService } from "../services/container.service";
 import { EncryptService } from "../services/encrypt.service";
 import { WebCryptoFunctionService } from "../services/webCryptoFunction.service";
-import {
-  DecryptCipherRequest,
-  WebWorkerRequest,
-  WebWorkerResponse,
-} from "../types/webWorkerRequestResponse";
+
+import { DecryptCipherRequest, WebWorkerRequest, WebWorkerResponse } from "./workerRequestResponse";
 
 const workerApi: Worker = self as any;
 let inited = false;

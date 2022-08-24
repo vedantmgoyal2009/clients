@@ -6,6 +6,7 @@ import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 
 export type WebWorkerRequest = DecryptCipherRequest;
+export type WebWorkerResponse = DecryptCipherResponse;
 
 export class DecryptCipherRequest {
   readonly type = "decryptCiphers";
@@ -21,6 +22,7 @@ export class DecryptCipherRequest {
     if (orgKeys == null) {
       return;
     } else if (orgKeys instanceof Map) {
+      Array.from(orgKeys);
       orgKeys.forEach((key, orgId) => (this.orgKeys[orgId] = key));
     } else {
       this.orgKeys = orgKeys;
@@ -29,6 +31,7 @@ export class DecryptCipherRequest {
 
   static fromJSON(obj: Jsonify<DecryptCipherRequest>): DecryptCipherRequest {
     const userKey = obj.userKey == null ? null : SymmetricCryptoKey.fromJSON(obj.userKey);
+
     const orgKeys: { [orgId: string]: SymmetricCryptoKey } = {};
     if (obj.orgKeys != null) {
       for (const [orgId, key] of Object.entries(obj.orgKeys)) {
@@ -39,8 +42,6 @@ export class DecryptCipherRequest {
     return new DecryptCipherRequest(obj.id, obj.cipherData, obj.localData, userKey, orgKeys);
   }
 }
-
-export type WebWorkerResponse = DecryptCipherResponse;
 
 export class DecryptCipherResponse {
   constructor(public id: string, public cipherViews: CipherView[]) {}
