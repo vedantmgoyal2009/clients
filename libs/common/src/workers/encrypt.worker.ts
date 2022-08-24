@@ -1,7 +1,6 @@
 import { Jsonify } from "type-fest";
 
 import { Cipher } from "../models/domain/cipher";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 import { ConsoleLogService } from "../services/consoleLog.service";
 import { ContainerService } from "../services/container.service";
@@ -45,7 +44,7 @@ export class EncryptWorker {
   static async processMessage(request: Jsonify<WebWorkerRequest>): Promise<WebWorkerResponse> {
     switch (request.type) {
       case "decryptCiphers": {
-        const decCiphers = await this.decryptCiphers(request);
+        const decCiphers = await this.decryptCiphers(DecryptCipherRequest.fromJSON(request));
         return {
           id: request.id,
           cipherViews: decCiphers,
@@ -57,15 +56,7 @@ export class EncryptWorker {
     }
   }
 
-  static async decryptCiphers(request: Jsonify<DecryptCipherRequest>) {
-    // Reconstruct stringified objects
-    const { localData, cipherData } = request;
-    const userKey = SymmetricCryptoKey.fromJSON(request.userKey);
-    const orgKeys: { [orgId: string]: SymmetricCryptoKey } = {};
-    for (const [orgId, key] of Object.entries(request.orgKeys)) {
-      orgKeys[orgId] = SymmetricCryptoKey.fromJSON(key);
-    }
-
+  static async decryptCiphers({ localData, cipherData, userKey, orgKeys }: DecryptCipherRequest) {
     const promises: any[] = [];
     const result: CipherView[] = [];
 

@@ -32,22 +32,15 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     orgKeys: Map<string, SymmetricCryptoKey>,
     userKey: SymmetricCryptoKey
   ): Promise<CipherView[]> {
-    // We can't serialize a map, convert to plain JS object
-    const orgKeysObj: { [orgId: string]: SymmetricCryptoKey } = {};
-    if (orgKeys != null) {
-      orgKeys.forEach((orgKey, orgId) => (orgKeysObj[orgId] = orgKey));
-    }
-
-    const request: DecryptCipherRequest = {
-      id: Utils.newGuid(),
-      type: "decryptCiphers",
-      cipherData: cipherData,
-      localData: localData,
-      orgKeys: orgKeysObj,
-      userKey: userKey,
-    };
-
     this.logService.info("Starting vault decryption using web worker");
+
+    const request = new DecryptCipherRequest(
+      Utils.newGuid(),
+      cipherData,
+      localData,
+      userKey,
+      orgKeys
+    );
 
     // Store the current userId at the start in case it changes while the worker is running
     const userId = await this.stateService.getUserId();
@@ -70,11 +63,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
         await this.completeWorker(worker, userId);
         terminationSub.unsubscribe();
 
-        resolve(
-          response.cipherViews == null
-            ? []
-            : response.cipherViews.map((c) => CipherView.fromJSON(c))
-        );
+        resolve(DecryptCipherResponse.fromJSON(response).cipherViews);
       });
 
       // Caution: this may not work/be supported in node. Need to test
