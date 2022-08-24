@@ -238,7 +238,6 @@ export default class MainBackground {
     });
     this.platformUtilsService = new BrowserPlatformUtilsService(
       this.messagingService,
-      this.stateService,
       (clipboardValue, clearMs) => {
         if (this.systemService != null) {
           this.systemService.clearClipboard(clipboardValue, clearMs);

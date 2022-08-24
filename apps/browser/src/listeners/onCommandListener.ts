@@ -67,7 +67,6 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
 
   const platformUtils = new BrowserPlatformUtilsService(
     null, // MessagingService
-    stateService,
     null, // clipboardWriteCallback
     null // biometricCallback
   );
