@@ -1,4 +1,7 @@
+import { Jsonify } from "type-fest";
+
 import { Cipher } from "../models/domain/cipher";
+import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 import { ConsoleLogService } from "../services/consoleLog.service";
 import { ContainerService } from "../services/container.service";
@@ -11,11 +14,13 @@ import {
 } from "../types/webWorkerRequestResponse";
 
 const workerApi: Worker = self as any;
+let inited = false;
 
-workerApi.addEventListener("message", async (event: { data: WebWorkerRequest }) => {
+workerApi.addEventListener("message", async (event: { data: string }) => {
   EncryptWorker.init();
-  const response = await EncryptWorker.processMessage(event.data);
-  workerApi.postMessage(response);
+  const request: Jsonify<WebWorkerRequest> = JSON.parse(event.data);
+  const response = await EncryptWorker.processMessage(request);
+  workerApi.postMessage(JSON.stringify(response));
 
   // Clean up memory
   event = null;
@@ -23,21 +28,27 @@ workerApi.addEventListener("message", async (event: { data: WebWorkerRequest }) 
 
 export class EncryptWorker {
   static init() {
+    if (inited) {
+      return;
+    }
+
     const cryptoFunctionService = new WebCryptoFunctionService(self);
     const logService = new ConsoleLogService(false); // TODO: this probably needs to be a custom logservice to send log messages back to main thread
     const encryptService = new EncryptService(cryptoFunctionService, logService, true);
 
     const bitwardenContainerService = new ContainerService(null, encryptService);
     bitwardenContainerService.attachToGlobal(self);
+
+    inited = true;
   }
 
-  static async processMessage(request: WebWorkerRequest): Promise<WebWorkerResponse> {
+  static async processMessage(request: Jsonify<WebWorkerRequest>): Promise<WebWorkerResponse> {
     switch (request.type) {
       case "decryptCiphers": {
         const decCiphers = await this.decryptCiphers(request);
         return {
           id: request.id,
-          cipherViews: JSON.stringify(decCiphers),
+          cipherViews: decCiphers,
         };
       }
 
@@ -46,7 +57,15 @@ export class EncryptWorker {
     }
   }
 
-  static async decryptCiphers({ cipherData, localData, orgKeys, userKey }: DecryptCipherRequest) {
+  static async decryptCiphers(request: Jsonify<DecryptCipherRequest>) {
+    // Reconstruct stringified objects
+    const { localData, cipherData } = request;
+    const userKey = SymmetricCryptoKey.fromJSON(request.userKey);
+    const orgKeys: { [orgId: string]: SymmetricCryptoKey } = {};
+    for (const [orgId, key] of Object.entries(request.orgKeys)) {
+      orgKeys[orgId] = SymmetricCryptoKey.fromJSON(key);
+    }
+
     const promises: any[] = [];
     const result: CipherView[] = [];
 

@@ -7,6 +7,7 @@ import { PlatformUtilsService } from "../abstractions/platformUtils.service";
 import { StateService } from "../abstractions/state.service";
 import { Utils } from "../misc/utils";
 import { CipherData } from "../models/data/cipherData";
+import { LocalData } from "../models/data/localData";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 import { DecryptCipherResponse, DecryptCipherRequest } from "../types/webWorkerRequestResponse";
@@ -27,7 +28,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
 
   async decryptCiphers(
     cipherData: { [id: string]: CipherData },
-    localData: any[],
+    localData: { [cipherId: string]: LocalData },
     orgKeys: Map<string, SymmetricCryptoKey>,
     userKey: SymmetricCryptoKey
   ): Promise<CipherView[]> {
@@ -45,6 +46,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
       orgKeys: orgKeysObj,
       userKey: userKey,
     };
+
     this.logService.info("Starting vault decryption using web worker");
 
     // Store the current userId at the start in case it changes while the worker is running
@@ -53,12 +55,18 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
 
     return new Promise((resolve, reject) => {
       // Listen for completed work
-      worker.addEventListener("message", async (response: { data: DecryptCipherResponse }) => {
-        if (response.data.id != request.id) {
+      worker.addEventListener("message", async (event: { data: string }) => {
+        const response: Jsonify<DecryptCipherResponse> = JSON.parse(event.data);
+        if (response.id != request.id) {
           return;
         }
         await this.terminateWorker(worker, userId);
-        resolve(this.parseCipherResponse(response.data));
+
+        resolve(
+          response.cipherViews == null
+            ? []
+            : response.cipherViews.map((c) => CipherView.fromJSON(c))
+        );
       });
 
       // Listen for early termination so we're not left hanging if a worker is terminated
@@ -72,16 +80,8 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
         reject("An unexpected error occurred in a worker: " + event.message);
       });
 
-      worker.postMessage(request);
+      worker.postMessage(JSON.stringify(request));
     });
-  }
-
-  private parseCipherResponse(data: DecryptCipherResponse) {
-    const parsedCiphers: Jsonify<CipherView>[] =
-      data.cipherViews != null ? JSON.parse(data.cipherViews) : [];
-
-    const decCiphers = parsedCiphers.map((c) => CipherView.fromJSON(c));
-    return decCiphers;
   }
 
   async terminateAll(userId?: string) {
@@ -116,7 +116,6 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     activeWorkers.delete(worker);
     await this.stateService.setWebWorkers(activeWorkers, { userId });
 
-    this.terminatingWorkers.next(worker);
     worker.terminate();
   }
 }
