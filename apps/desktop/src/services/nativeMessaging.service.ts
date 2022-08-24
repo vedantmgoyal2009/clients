@@ -45,6 +45,8 @@ export class NativeMessagingService {
       console.log("sent message");
     }, 5000);
     ipcRenderer.on("nativeMessaging", async (_event: any, message: any) => {
+      // eslint-disable-next-line
+      console.log("I'm the desktop app and I got a message!", message);
       this.messageHandler(message);
     });
   }
@@ -53,7 +55,7 @@ export class NativeMessagingService {
     const outerMessage = msg as Message;
     if (outerMessage.version) {
       ipcRenderer.send("nativeMessagingReply", { message: "Hello, I got your message! :)" });
-      //this.nativeMessageHandler.handleMessage(outerMessage);
+      this.nativeMessageHandler.handleMessage(outerMessage);
       return;
     }
 

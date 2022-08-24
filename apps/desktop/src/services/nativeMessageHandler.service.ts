@@ -35,9 +35,15 @@ export class NativeMessageHandler {
 
   async handleMessage(message: Message) {
     const decryptedCommand = message as UnencryptedMessage;
+    // eslint-disable-next-line
+    console.log("Decrypted command:", decryptedCommand);
     if (decryptedCommand.command === "bw-handshake") {
+      // eslint-disable-next-line
+      console.log("This is the handshake commaned handler");
       await this.handleDecryptedMessage(decryptedCommand);
     } else {
+      // eslint-disable-next-line
+      console.log("Handling non-handshake command");
       await this.handleEncryptedMessage(message as EncryptedMessage);
     }
   }
@@ -47,6 +53,8 @@ export class NativeMessageHandler {
     const { messageId, payload } = message;
     const { publicKey } = payload;
     if (!publicKey) {
+      // eslint-disable-next-line
+      console.log("No public key, sending cancelled response");
       this.sendResponse({
         messageId: messageId,
         version: 1,
@@ -62,6 +70,8 @@ export class NativeMessageHandler {
       const ddgEnabled = await this.stateService.getEnableDuckDuckGoBrowserIntegration();
 
       if (!ddgEnabled) {
+        // eslint-disable-next-line
+        console.log("Setting isn't enabled, sending cancelled response");
         this.sendResponse({
           messageId: messageId,
           version: 1,
@@ -81,6 +91,8 @@ export class NativeMessageHandler {
         EncryptionAlgorithm
       );
     } catch (error) {
+      // eslint-disable-next-line
+      console.log("Error rsaEncrypting, sending cannot-decrypt response", error);
       this.sendResponse({
         messageId: messageId,
         version: 1,
@@ -92,6 +104,8 @@ export class NativeMessageHandler {
 
     await this.stateService.setDuckDuckGoSharedKey(Utils.fromBufferToB64(encryptedSecret));
 
+    // eslint-disable-next-line
+    console.log("Woohoo, sending success response!");
     this.sendResponse({
       messageId: messageId,
       version: 1,

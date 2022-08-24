@@ -33,6 +33,8 @@ export class NativeMessagingMain {
 
     ipc.serve(() => {
       ipc.server.on("message", (data: any, socket: any) => {
+        // eslint-disable-next-line
+        console.log("ipc server on message!!!!!!!", data);
         this.socket = socket;
         this.windowMain.win.webContents.send("nativeMessaging", data);
       });
