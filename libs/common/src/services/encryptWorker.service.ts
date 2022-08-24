@@ -32,6 +32,10 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     orgKeys: Map<string, SymmetricCryptoKey>,
     userKey: SymmetricCryptoKey
   ): Promise<CipherView[]> {
+    if (cipherData == null || Object.keys(cipherData).length < 1) {
+      return [];
+    }
+
     this.logService.info("Starting vault decryption using web worker");
 
     const request = new DecryptCipherRequest(
