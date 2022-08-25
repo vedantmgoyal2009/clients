@@ -59,7 +59,6 @@ export class AccountData {
   eventCollection?: EventData[];
   organizations?: { [id: string]: OrganizationData };
   providers?: { [id: string]: ProviderData };
-  webWorkers?: Set<Worker>;
 }
 
 export class AccountKeys {

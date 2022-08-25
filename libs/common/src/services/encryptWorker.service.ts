@@ -1,10 +1,8 @@
-import { filter, Subject, take } from "rxjs";
 import { Jsonify } from "type-fest";
 
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { LogService } from "../abstractions/log.service";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
-import { StateService } from "../abstractions/state.service";
 import { Utils } from "../misc/utils";
 import { CipherData } from "../models/data/cipherData";
 import { LocalData } from "../models/data/localData";
@@ -12,14 +10,17 @@ import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 import { DecryptCipherResponse, DecryptCipherRequest } from "../workers/workerRequestResponse";
 
+// TTL (time to live) is not strictly required but avoids tying up memory resources if inactive
+const workerTTL = 3 * 60000; // 3 minutes
+
 export class EncryptWorkerService implements AbstractEncryptWorkerService {
-  private earlyTermination$ = new Subject<Worker>();
+  private worker: Worker;
+  private timeout: any;
 
   constructor(
     private logService: LogService,
     private platformUtilsService: PlatformUtilsService,
-    private win: Window,
-    private stateService: StateService
+    private win: Window
   ) {}
 
   isSupported() {
@@ -38,6 +39,12 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
 
     this.logService.info("Starting vault decryption using web worker");
 
+    if (this.worker == null) {
+      this.worker = this.createWorker();
+    } else {
+      this.restartTimeout();
+    }
+
     const request = new DecryptCipherRequest(
       Utils.newGuid(),
       cipherData,
@@ -46,72 +53,46 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
       orgKeys
     );
 
-    // Store the current userId at the start in case it changes while the worker is running
-    const userId = await this.stateService.getUserId();
-    const worker = await this.createWorker(userId);
-
     return new Promise((resolve, reject) => {
-      // Listen for early termination so we're not left hanging if a worker is terminated
-      const terminationSub = this.earlyTermination$
-        .pipe(filter((w) => w === worker))
-        .pipe(take(1))
-        .subscribe(() => resolve([]));
-
-      // Listen for completed work
-      worker.addEventListener("message", async (event: { data: string }) => {
+      this.worker.addEventListener("message", async (event: { data: string }) => {
         const response: Jsonify<DecryptCipherResponse> = JSON.parse(event.data);
         if (response.id != request.id) {
           return;
         }
 
-        await this.completeWorker(worker, userId);
-        terminationSub.unsubscribe();
-
         resolve(DecryptCipherResponse.fromJSON(response).cipherViews);
       });
 
       // Caution: this may not work/be supported in node. Need to test
-      worker.addEventListener("error", (event) => {
+      this.worker.addEventListener("error", (event) => {
         reject("An unexpected error occurred in a worker: " + event.message);
       });
 
       // Send the instruction to the worker
-      worker.postMessage(JSON.stringify(request));
+      this.worker.postMessage(JSON.stringify(request));
     });
   }
 
-  async terminateAll(userId?: string) {
-    const activeWorkers = await this.stateService.getWebWorkers({ userId });
-    if (activeWorkers == null) {
-      return;
-    }
-
-    activeWorkers.forEach((w) => {
-      this.earlyTermination$.next(w);
-      w.terminate();
-    });
-
-    this.stateService.setWebWorkers(null, { userId });
+  clear() {
+    this.logService.info("Terminating encryption worker");
+    this.worker?.terminate();
+    this.worker = null;
+    this.clearTimeout();
   }
 
-  private async createWorker(userId: string) {
-    const worker = new Worker(new URL("../workers/encrypt.worker.ts", import.meta.url));
-
-    let activeWorkers = await this.stateService.getWebWorkers({ userId });
-    if (activeWorkers == null) {
-      activeWorkers = new Set();
-    }
-    activeWorkers.add(worker);
-    await this.stateService.setWebWorkers(activeWorkers, { userId });
-
-    return worker;
+  private createWorker() {
+    this.restartTimeout();
+    return new Worker(new URL("../workers/encrypt.worker.ts", import.meta.url));
   }
 
-  private async completeWorker(worker: Worker, userId: string) {
-    const activeWorkers = await this.stateService.getWebWorkers({ userId });
-    activeWorkers.delete(worker);
-    await this.stateService.setWebWorkers(activeWorkers, { userId });
+  private restartTimeout() {
+    this.clearTimeout();
+    this.timeout = setTimeout(() => this.clear(), workerTTL);
+  }
 
-    worker.terminate();
+  private clearTimeout() {
+    if (this.timeout != null) {
+      clearTimeout(this.timeout);
+    }
   }
 }

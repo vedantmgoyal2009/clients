@@ -1,5 +1,6 @@
 import { AbstractEncryptWorkerService } from "@bitwarden/common/abstractions/encryptWorker.service";
 import { CipherData } from "@bitwarden/common/models/data/cipherData";
+import { LocalData } from "@bitwarden/common/models/data/localData";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 import { CipherView } from "@bitwarden/common/models/view/cipherView";
 
@@ -9,16 +10,16 @@ export class NoopEncryptWorkerService implements AbstractEncryptWorkerService {
     return false;
   }
 
-  terminateAll(userId?: string): Promise<void> {
-    return;
-  }
-
   decryptCiphers(
     cipherData: { [id: string]: CipherData },
-    localData: any[],
+    localData: { [cipherId: string]: LocalData },
     orgKeys: Map<string, SymmetricCryptoKey>,
     userKey: SymmetricCryptoKey
   ): Promise<CipherView[]> {
+    return;
+  }
+
+  clear() {
     return;
   }
 }

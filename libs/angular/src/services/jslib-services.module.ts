@@ -366,7 +366,6 @@ export const LOG_MAC_FAILURES = new InjectionToken<string>("LOG_MAC_FAILURES");
         KeyConnectorServiceAbstraction,
         StateServiceAbstraction,
         AuthServiceAbstraction,
-        AbstractEncryptWorkerService,
         LOCKED_CALLBACK,
         LOGOUT_CALLBACK,
       ],
@@ -520,7 +519,7 @@ export const LOG_MAC_FAILURES = new InjectionToken<string>("LOG_MAC_FAILURES");
     {
       provide: AbstractEncryptWorkerService,
       useClass: EncryptWorkerService,
-      deps: [LogService, PlatformUtilsService, WINDOW, StateServiceAbstraction],
+      deps: [LogService, PlatformUtilsService, WINDOW],
     },
     {
       provide: UserVerificationApiServiceAbstraction,

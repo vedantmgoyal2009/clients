@@ -11,5 +11,5 @@ export abstract class AbstractEncryptWorkerService {
     orgKeys: Map<string, SymmetricCryptoKey>,
     userKey: SymmetricCryptoKey
   ) => Promise<CipherView[]>;
-  terminateAll: (userId?: string) => Promise<void>;
+  clear: () => void;
 }

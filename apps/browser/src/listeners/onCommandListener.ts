@@ -83,19 +83,13 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
 
   const i18nService = new I18nService(chrome.i18n.getUILanguage());
 
-  const encryptWorkerService = new EncryptWorkerService(
-    logService,
-    platformUtils,
-    window,
-    stateService
-  );
+  const encryptWorkerService = new EncryptWorkerService(logService, platformUtils, window);
 
   await i18nService.init();
 
   // Don't love this pt.1
   let searchService: SearchService = null;
 
-  // TODO add encryptWorkerService
   const cipherService = new CipherService(
     cryptoService,
     settingsService,

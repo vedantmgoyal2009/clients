@@ -292,8 +292,7 @@ export default class MainBackground {
     this.encryptWorkerService = new EncryptWorkerService(
       this.logService,
       this.platformUtilsService,
-      window,
-      this.stateService
+      window
     );
     this.cipherService = new CipherService(
       this.cryptoService,
@@ -661,7 +660,7 @@ export default class MainBackground {
       this.vaultTimeoutService.clear(userId),
       this.keyConnectorService.clear(),
       this.vaultFilterService.clear(),
-      this.encryptWorkerService.terminateAll(userId),
+      this.encryptWorkerService.clear(),
     ]);
 
     await this.stateService.clean({ userId: userId });

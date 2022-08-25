@@ -10,16 +10,16 @@ import { WebCryptoFunctionService } from "../services/webCryptoFunction.service"
 import { DecryptCipherRequest, WebWorkerRequest, WebWorkerResponse } from "./workerRequestResponse";
 
 const workerApi: Worker = self as any;
+
 let inited = false;
 
 workerApi.addEventListener("message", async (event: { data: string }) => {
   EncryptWorker.init();
+
   const request: Jsonify<WebWorkerRequest> = JSON.parse(event.data);
   const response = await EncryptWorker.processMessage(request);
-  workerApi.postMessage(JSON.stringify(response));
 
-  // Clean up memory
-  event = null;
+  workerApi.postMessage(JSON.stringify(response));
 });
 
 export class EncryptWorker {

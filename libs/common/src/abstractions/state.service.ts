@@ -313,6 +313,4 @@ export abstract class StateService<T extends Account = Account> {
   setStateVersion: (value: number) => Promise<void>;
   getWindow: () => Promise<WindowState>;
   setWindow: (value: WindowState) => Promise<void>;
-  getWebWorkers: (options?: StorageOptions) => Promise<Set<Worker>>;
-  setWebWorkers: (value: Set<Worker>, options?: StorageOptions) => Promise<void>;
 }
