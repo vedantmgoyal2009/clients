@@ -1,11 +1,10 @@
 import { mock } from "jest-mock-extended";
 
+import { mockFromJson } from "../../spec/utils";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 
 import { DecryptCipherRequest, DecryptCipherResponse } from "./workerRequestResponse";
-
-const mockFromJson = (stub: any) => (stub + "_fromJSON") as any;
 
 describe("DecryptCipherRequest", () => {
   it("initializes from a Map of orgKeys", () => {
