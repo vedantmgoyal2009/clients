@@ -292,7 +292,6 @@ export class Main {
       this.keyConnectorService,
       this.stateService,
       this.authService,
-      this.encryptWorkerService,
       lockedCallback,
       null
     );
