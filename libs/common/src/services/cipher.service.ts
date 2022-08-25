@@ -499,8 +499,16 @@ export class CipherService implements CipherServiceAbstraction {
 
   async getAllFromApiForOrganization(organizationId: string): Promise<CipherView[]> {
     const ciphers = await this.apiService.getCiphersOrganization(organizationId);
-    if (ciphers != null && ciphers.data != null && ciphers.data.length) {
-      const decCiphers: CipherView[] = [];
+    if (ciphers?.data == null || !ciphers.data.length) {
+      return [];
+    }
+
+    let decCiphers: CipherView[] = [];
+    if (this.encryptWorkerService.isSupported()) {
+      decCiphers = await this.encryptWorkerService.decryptOrgCiphers(
+        ciphers.data.map((r) => new CipherData(r))
+      );
+    } else {
       const promises: any[] = [];
       ciphers.data.forEach((r) => {
         const data = new CipherData(r);
@@ -508,11 +516,10 @@ export class CipherService implements CipherServiceAbstraction {
         promises.push(cipher.decrypt().then((c) => decCiphers.push(c)));
       });
       await Promise.all(promises);
-      decCiphers.sort(this.getLocaleSortingFunction());
-      return decCiphers;
-    } else {
-      return [];
     }
+
+    decCiphers.sort(this.getLocaleSortingFunction());
+    return decCiphers;
   }
 
   async getLastUsedForUrl(url: string, autofillOnPageLoad = false): Promise<CipherView> {
