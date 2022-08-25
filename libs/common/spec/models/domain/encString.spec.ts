@@ -1,5 +1,6 @@
 import Substitute, { Arg } from "@fluffy-spoon/substitute";
 
+import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { EncryptionType } from "@bitwarden/common/enums/encryptionType";
 import { EncString } from "@bitwarden/common/models/domain/encString";
@@ -48,10 +49,15 @@ describe("EncString", () => {
 
       const cryptoService = Substitute.for<CryptoService>();
       cryptoService.getOrgKey(null).resolves(null);
-      cryptoService.decryptToUtf8(encString, Arg.any()).resolves("decrypted");
+
+      const encryptService = Substitute.for<AbstractEncryptService>();
+      encryptService.decryptToUtf8(encString, Arg.any()).resolves("decrypted");
 
       beforeEach(() => {
-        (window as any).bitwardenContainerService = new ContainerService(cryptoService);
+        (window as any).bitwardenContainerService = new ContainerService(
+          cryptoService,
+          encryptService
+        );
       });
 
       it("decrypts correctly", async () => {
@@ -62,7 +68,7 @@ describe("EncString", () => {
 
       it("result should be cached", async () => {
         const decrypted = await encString.decrypt(null);
-        cryptoService.received(1).decryptToUtf8(Arg.any(), Arg.any());
+        encryptService.received(1).decryptToUtf8(Arg.any(), Arg.any());
 
         expect(decrypted).toBe("decrypted");
       });
@@ -148,25 +154,19 @@ describe("EncString", () => {
   });
 
   describe("decrypt", () => {
-    it("throws exception when bitwarden container not initialized", async () => {
-      const encString = new EncString(null);
-
-      expect.assertions(1);
-      try {
-        await encString.decrypt(null);
-      } catch (e) {
-        expect(e.message).toEqual("global bitwardenContainerService not initialized.");
-      }
-    });
-
     it("handles value it can't decrypt", async () => {
       const encString = new EncString(null);
 
       const cryptoService = Substitute.for<CryptoService>();
       cryptoService.getOrgKey(null).resolves(null);
-      cryptoService.decryptToUtf8(encString, Arg.any()).throws("error");
 
-      (window as any).bitwardenContainerService = new ContainerService(cryptoService);
+      const encryptService = Substitute.for<AbstractEncryptService>();
+      encryptService.decryptToUtf8(encString, Arg.any()).throws("error");
+
+      (window as any).bitwardenContainerService = new ContainerService(
+        cryptoService,
+        encryptService
+      );
 
       const decrypted = await encString.decrypt(null);
 
@@ -185,11 +185,16 @@ describe("EncString", () => {
       const cryptoService = Substitute.for<CryptoService>();
       cryptoService.getOrgKey(null).resolves(null);
 
-      (window as any).bitwardenContainerService = new ContainerService(cryptoService);
+      const encryptService = Substitute.for<AbstractEncryptService>();
+
+      (window as any).bitwardenContainerService = new ContainerService(
+        cryptoService,
+        encryptService
+      );
 
       await encString.decrypt(null, key);
 
-      cryptoService.received().decryptToUtf8(encString, key);
+      encryptService.received().decryptToUtf8(encString, key);
     });
   });
 

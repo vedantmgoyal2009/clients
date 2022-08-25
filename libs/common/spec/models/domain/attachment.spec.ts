@@ -1,5 +1,6 @@
 import Substitute, { Arg } from "@fluffy-spoon/substitute";
 
+import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { AttachmentData } from "@bitwarden/common/models/data/attachmentData";
 import { Attachment } from "@bitwarden/common/models/domain/attachment";
@@ -65,9 +66,11 @@ describe("Attachment", () => {
 
     const cryptoService = Substitute.for<CryptoService>();
     cryptoService.getOrgKey(null).resolves(null);
-    cryptoService.decryptToBytes(Arg.any(), Arg.any()).resolves(makeStaticByteArray(32));
 
-    (window as any).bitwardenContainerService = new ContainerService(cryptoService);
+    const encryptService = Substitute.for<AbstractEncryptService>();
+    encryptService.decryptToBytes(Arg.any(), Arg.any()).resolves(makeStaticByteArray(32));
+
+    (window as any).bitwardenContainerService = new ContainerService(cryptoService, encryptService);
 
     const view = await attachment.decrypt(null);
 

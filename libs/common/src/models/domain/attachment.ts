@@ -1,4 +1,3 @@
-import { CryptoService } from "../../abstractions/crypto.service";
 import { Utils } from "../../misc/utils";
 import { AttachmentData } from "../data/attachmentData";
 import { AttachmentView } from "../view/attachmentView";
@@ -47,24 +46,39 @@ export class Attachment extends Domain {
     );
 
     if (this.key != null) {
-      let cryptoService: CryptoService;
-      const containerService = Utils.global.bitwardenContainerService;
-      if (containerService) {
-        cryptoService = containerService.getCryptoService();
-      } else {
-        throw new Error("global bitwardenContainerService not initialized.");
-      }
-
-      try {
-        const orgKey = await cryptoService.getOrgKey(orgId);
-        const decValue = await cryptoService.decryptToBytes(this.key, orgKey ?? encKey);
-        view.key = new SymmetricCryptoKey(decValue);
-      } catch (e) {
-        // TODO: error?
-      }
+      view.key = await this.decryptAttachmentKey(orgId, encKey);
     }
 
     return view;
+  }
+
+  private async decryptAttachmentKey(orgId: string, encKey?: SymmetricCryptoKey) {
+    if (encKey == null) {
+      encKey = await this.getKeyForDecryption(orgId);
+    }
+
+    const encryptService = Utils.getContainerService().getEncryptService();
+    try {
+      const decValue = await encryptService.decryptToBytes(this.key, encKey);
+      return new SymmetricCryptoKey(decValue);
+    } catch (e) {
+      // TODO: error?
+    }
+  }
+
+  private async getKeyForDecryption(orgId: string) {
+    const cryptoService = Utils.getContainerService().getCryptoService();
+
+    try {
+      const orgKey = await cryptoService.getOrgKey(orgId);
+      if (orgKey != null) {
+        return orgKey;
+      }
+
+      return cryptoService.getKeyForUserEncryption();
+    } catch {
+      // TODO: error?
+    }
   }
 
   toAttachmentData(): AttachmentData {
