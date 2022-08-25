@@ -6,6 +6,7 @@ import * as jsdom from "jsdom";
 
 import { AbstractEncryptWorkerService } from "@bitwarden/common/abstractions/encryptWorker.service";
 import { InternalFolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
+import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { ClientType } from "@bitwarden/common/enums/clientType";
 import { KeySuffixOptions } from "@bitwarden/common/enums/keySuffixOptions";
 import { LogLevelType } from "@bitwarden/common/enums/logLevelType";
@@ -31,6 +32,7 @@ import { KeyConnectorService } from "@bitwarden/common/services/keyConnector.ser
 import { MemoryStorageService } from "@bitwarden/common/services/memoryStorage.service";
 import { NoopMessagingService } from "@bitwarden/common/services/noopMessaging.service";
 import { OrganizationService } from "@bitwarden/common/services/organization.service";
+import { OrganizationApiService } from "@bitwarden/common/services/organization/organization-api.service";
 import { PasswordGenerationService } from "@bitwarden/common/services/passwordGeneration.service";
 import { PolicyService } from "@bitwarden/common/services/policy/policy.service";
 import { ProviderService } from "@bitwarden/common/services/provider.service";
@@ -60,7 +62,7 @@ import { NoopEncryptWorkerService } from "./services/noopEncryptWorker.service";
 import { VaultProgram } from "./vault.program";
 
 // Polyfills
-(global as any).DOMParser = new jsdom.JSDOM().window.DOMParser;
+global.DOMParser = new jsdom.JSDOM().window.DOMParser;
 
 // eslint-disable-next-line
 const packageJson = require("../package.json");
@@ -111,6 +113,7 @@ export class Main {
   folderApiService: FolderApiService;
   userVerificationApiService: UserVerificationApiService;
   encryptWorkerService: AbstractEncryptWorkerService;
+  organizationApiService: OrganizationApiServiceAbstraction;
 
   constructor() {
     let p = null;
@@ -188,6 +191,9 @@ export class Main {
       async (expired: boolean) => await this.logout(),
       customUserAgent
     );
+
+    this.organizationApiService = new OrganizationApiService(this.apiService);
+
     this.containerService = new ContainerService(this.cryptoService, this.encryptService);
 
     this.settingsService = new SettingsService(this.stateService);
