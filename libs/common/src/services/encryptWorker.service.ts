@@ -1,12 +1,12 @@
 import { Jsonify } from "type-fest";
 
+import { CryptoService } from "../abstractions/crypto.service";
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { LogService } from "../abstractions/log.service";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
 import { Utils } from "../misc/utils";
 import { CipherData } from "../models/data/cipherData";
 import { LocalData } from "../models/data/localData";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { CipherView } from "../models/view/cipherView";
 import { DecryptCipherResponse, DecryptCipherRequest } from "../workers/workerRequestResponse";
 
@@ -20,7 +20,8 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
   constructor(
     private logService: LogService,
     private platformUtilsService: PlatformUtilsService,
-    private win: Window
+    private win: Window,
+    private cryptoService: CryptoService
   ) {}
 
   isSupported() {
@@ -29,9 +30,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
 
   async decryptCiphers(
     cipherData: { [id: string]: CipherData },
-    localData: { [cipherId: string]: LocalData },
-    orgKeys: Map<string, SymmetricCryptoKey>,
-    userKey: SymmetricCryptoKey
+    localData?: { [cipherId: string]: LocalData }
   ): Promise<CipherView[]> {
     if (cipherData == null || Object.keys(cipherData).length < 1) {
       return [];
@@ -45,6 +44,8 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
       this.restartTimeout();
     }
 
+    const orgKeys = await this.cryptoService.getOrgKeys();
+    const userKey = await this.cryptoService.getKeyForUserEncryption();
     const request = new DecryptCipherRequest(
       Utils.newGuid(),
       cipherData,
@@ -71,6 +72,12 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
       // Send the instruction to the worker
       this.worker.postMessage(JSON.stringify(request));
     });
+  }
+
+  decryptOrgCiphers(cipherData: CipherData[]): Promise<CipherView[]> {
+    const ciphersDict: { [orgId: string]: CipherData } = {};
+    cipherData.forEach((cd) => (ciphersDict[cd.id] = cd));
+    return this.decryptCiphers(ciphersDict);
   }
 
   clear() {

@@ -292,7 +292,8 @@ export default class MainBackground {
     this.encryptWorkerService = new EncryptWorkerService(
       this.logService,
       this.platformUtilsService,
-      window
+      window,
+      this.cryptoService
     );
     this.cipherService = new CipherService(
       this.cryptoService,

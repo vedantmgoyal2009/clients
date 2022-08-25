@@ -365,13 +365,9 @@ export class CipherService implements CipherServiceAbstraction {
   }
 
   private async decryptCiphersWithWorker(): Promise<CipherView[]> {
-    // Get all data that the worker needs to decrypt the ciphers
     const cipherData = await this.stateService.getEncryptedCiphers();
     const localData = await this.stateService.getLocalData();
-    const orgKeys = await this.cryptoService.getOrgKeys();
-    const userKey = await this.cryptoService.getKeyForUserEncryption();
-
-    return this.encryptWorkerService.decryptCiphers(cipherData, localData, orgKeys, userKey);
+    return this.encryptWorkerService.decryptCiphers(cipherData, localData);
   }
 
   async getAllDecryptedForGrouping(groupingId: string, folder = true): Promise<CipherView[]> {
