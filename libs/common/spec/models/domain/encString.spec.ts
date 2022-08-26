@@ -1,5 +1,5 @@
 import Substitute, { Arg } from "@fluffy-spoon/substitute";
-import { mock, MockProxy } from 'jest-mock-extended';
+import { mock, MockProxy } from "jest-mock-extended";
 
 import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
@@ -157,10 +157,12 @@ describe("EncString", () => {
   describe("decrypt", () => {
     let cryptoService: MockProxy<CryptoService>;
     let encryptService: MockProxy<AbstractEncryptService>;
+    let encString: EncString;
 
     beforeEach(() => {
       cryptoService = mock<CryptoService>();
       encryptService = mock<AbstractEncryptService>();
+      encString = new EncString(null);
 
       (window as any).bitwardenContainerService = new ContainerService(
         cryptoService,
@@ -169,8 +171,6 @@ describe("EncString", () => {
     });
 
     it("handles value it can't decrypt", async () => {
-      const encString = new EncString(null);
-
       encryptService.decryptToUtf8.mockRejectedValue("error");
 
       (window as any).bitwardenContainerService = new ContainerService(
@@ -189,17 +189,15 @@ describe("EncString", () => {
     });
 
     it("uses provided key without depending on CryptoService", async () => {
-      const encString = new EncString(null);
       const key = mock<SymmetricCryptoKey>();
 
       await encString.decrypt(null, key);
 
-        expect(cryptoService.getKeyForUserEncryption).not.toHaveBeenCalled();
-        expect(encryptService.decryptToUtf8).toHaveBeenCalledWith(encString, key);
+      expect(cryptoService.getKeyForUserEncryption).not.toHaveBeenCalled();
+      expect(encryptService.decryptToUtf8).toHaveBeenCalledWith(encString, key);
     });
 
     it("gets an organization key if required", async () => {
-      const encString = new EncString(null);
       const orgKey = mock<SymmetricCryptoKey>();
 
       cryptoService.getOrgKey.calledWith("orgId").mockResolvedValue(orgKey);
@@ -211,7 +209,6 @@ describe("EncString", () => {
     });
 
     it("gets the user's decryption key if required", async () => {
-      const encString = new EncString(null);
       const userKey = mock<SymmetricCryptoKey>();
 
       cryptoService.getKeyForUserEncryption.mockResolvedValue(userKey);

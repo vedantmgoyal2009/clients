@@ -1,6 +1,6 @@
 import { mock, MockProxy } from "jest-mock-extended";
 
-import { AbstractEncryptService } from '@bitwarden/common/abstractions/abstractEncrypt.service';
+import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { AttachmentData } from "@bitwarden/common/models/data/attachmentData";
 import { Attachment } from "@bitwarden/common/models/domain/attachment";
@@ -94,10 +94,15 @@ describe("Attachment", () => {
     });
 
     describe("decrypts attachment.key", () => {
+      let attachment: Attachment;
+
+      beforeEach(() => {
+        attachment = new Attachment();
+        attachment.key = mock<EncString>();
+      });
+
       it("uses the provided key without depending on CryptoService", async () => {
         const providedKey = mock<SymmetricCryptoKey>();
-        const attachment = new Attachment();
-        attachment.key = mock<EncString>();
 
         await attachment.decrypt(null, providedKey);
 
@@ -109,9 +114,6 @@ describe("Attachment", () => {
         const orgKey = mock<SymmetricCryptoKey>();
         cryptoService.getOrgKey.calledWith("orgId").mockResolvedValue(orgKey);
 
-        const attachment = new Attachment();
-        attachment.key = mock<EncString>();
-
         await attachment.decrypt("orgId", null);
 
         expect(cryptoService.getOrgKey).toHaveBeenCalledWith("orgId");
@@ -121,9 +123,6 @@ describe("Attachment", () => {
       it("gets the user's decryption key if required", async () => {
         const userKey = mock<SymmetricCryptoKey>();
         cryptoService.getKeyForUserEncryption.mockResolvedValue(userKey);
-
-        const attachment = new Attachment();
-        attachment.key = mock<EncString>();
 
         await attachment.decrypt(null, null);
 
