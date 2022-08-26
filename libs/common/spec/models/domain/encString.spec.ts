@@ -178,13 +178,10 @@ describe("EncString", () => {
       });
     });
 
-    it("passes along key", async () => {
+    it("uses provided key without depending on CryptoService", async () => {
       const encString = new EncString(null);
       const key = Substitute.for<SymmetricCryptoKey>();
-
       const cryptoService = Substitute.for<CryptoService>();
-      cryptoService.getOrgKey(null).resolves(null);
-
       const encryptService = Substitute.for<AbstractEncryptService>();
 
       (window as any).bitwardenContainerService = new ContainerService(
@@ -194,7 +191,47 @@ describe("EncString", () => {
 
       await encString.decrypt(null, key);
 
+      cryptoService.didNotReceive().getKeyForUserEncryption(Arg.any());
       encryptService.received().decryptToUtf8(encString, key);
+    });
+
+    it("gets an organization key if required", async () => {
+      const encString = new EncString(null);
+      const orgKey = Substitute.for<SymmetricCryptoKey>();
+      const cryptoService = Substitute.for<CryptoService>();
+      const encryptService = Substitute.for<AbstractEncryptService>();
+
+      cryptoService.getOrgKey("orgId").resolves(orgKey);
+
+      (window as any).bitwardenContainerService = new ContainerService(
+        cryptoService,
+        encryptService
+      );
+
+      await encString.decrypt("orgId", null);
+
+      cryptoService.received(1).getOrgKey("orgId");
+      encryptService.received().decryptToUtf8(encString, orgKey);
+    });
+
+    it("gets the user's decryption key if required", async () => {
+      const encString = new EncString(null);
+      const userKey = Substitute.for<SymmetricCryptoKey>();
+      const cryptoService = Substitute.for<CryptoService>();
+      const encryptService = Substitute.for<AbstractEncryptService>();
+
+      cryptoService.getOrgKey(null).resolves(null);
+      cryptoService.getKeyForUserEncryption().resolves(userKey);
+
+      (window as any).bitwardenContainerService = new ContainerService(
+        cryptoService,
+        encryptService
+      );
+
+      await encString.decrypt(null, null);
+
+      cryptoService.received(1).getKeyForUserEncryption();
+      encryptService.received().decryptToUtf8(encString, userKey);
     });
   });
 
