@@ -4,6 +4,7 @@ import { CryptoService } from "../abstractions/crypto.service";
 import { AbstractEncryptWorkerService } from "../abstractions/encryptWorker.service";
 import { LogService } from "../abstractions/log.service";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
+import { flagEnabled } from "../misc/flags";
 import { Utils } from "../misc/utils";
 import { CipherData } from "../models/data/cipherData";
 import { LocalData } from "../models/data/localData";
@@ -25,7 +26,9 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
   ) {}
 
   isSupported() {
-    return this.platformUtilsService.supportsWorkers(this.win);
+    return (
+      this.platformUtilsService.supportsWorkers(this.win) && flagEnabled("webWorkerDecryption")
+    );
   }
 
   async decryptCiphers(
