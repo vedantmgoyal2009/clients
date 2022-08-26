@@ -1,14 +1,14 @@
-import { Substitute, Arg } from "@fluffy-spoon/substitute";
+import { mock, MockProxy } from "jest-mock-extended";
 
-import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { AttachmentData } from "@bitwarden/common/models/data/attachmentData";
 import { Attachment } from "@bitwarden/common/models/domain/attachment";
+import { EncString } from "@bitwarden/common/models/domain/encString";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 import { ContainerService } from "@bitwarden/common/services/container.service";
+import { EncryptService } from "@bitwarden/common/services/encrypt.service";
 
 import { makeStaticByteArray, mockEnc } from "../../utils";
-import { EncString } from "@bitwarden/common/models/domain/encString";
 
 describe("Attachment", () => {
   let data: AttachmentData;
@@ -57,6 +57,19 @@ describe("Attachment", () => {
   });
 
   describe("decrypt", () => {
+    let cryptoService: MockProxy<CryptoService>;
+    let encryptService: MockProxy<EncryptService>;
+
+    beforeEach(() => {
+      cryptoService = mock<CryptoService>();
+      encryptService = mock<EncryptService>();
+
+      (window as any).bitwardenContainerService = new ContainerService(
+        cryptoService,
+        encryptService
+      );
+    });
+
     it("expected output", async () => {
       const attachment = new Attachment();
       attachment.id = "id";
@@ -66,16 +79,7 @@ describe("Attachment", () => {
       attachment.key = mockEnc("key");
       attachment.fileName = mockEnc("fileName");
 
-      const cryptoService = Substitute.for<CryptoService>();
-      cryptoService.getOrgKey(null).resolves(null);
-
-      const encryptService = Substitute.for<AbstractEncryptService>();
-      encryptService.decryptToBytes(Arg.any(), Arg.any()).resolves(makeStaticByteArray(32));
-
-      (window as any).bitwardenContainerService = new ContainerService(
-        cryptoService,
-        encryptService
-      );
+      encryptService.decryptToBytes.mockResolvedValue(makeStaticByteArray(32));
 
       const view = await attachment.decrypt(null);
 
@@ -91,65 +95,40 @@ describe("Attachment", () => {
 
     describe("decrypts attachment.key", () => {
       it("uses the provided key without depending on CryptoService", async () => {
-        const providedKey = Substitute.for<SymmetricCryptoKey>();
-        const cryptoService = Substitute.for<CryptoService>();
-        const encryptService = Substitute.for<AbstractEncryptService>();
-
+        const providedKey = mock<SymmetricCryptoKey>();
         const attachment = new Attachment();
-        attachment.key = Substitute.for<EncString>();
-
-        (window as any).bitwardenContainerService = new ContainerService(
-          cryptoService,
-          encryptService
-        );
+        attachment.key = mock<EncString>();
 
         await attachment.decrypt(null, providedKey);
 
-        cryptoService.didNotReceive().getKeyForUserEncryption(Arg.any());
-        encryptService.received(1).decryptToBytes(attachment.key, providedKey);
+        expect(cryptoService.getKeyForUserEncryption).not.toHaveBeenCalled();
+        expect(encryptService.decryptToBytes).toHaveBeenCalledWith(attachment.key, providedKey);
       });
 
       it("gets an organization key if required", async () => {
-        const orgKey = Substitute.for<SymmetricCryptoKey>();
-        const cryptoService = Substitute.for<CryptoService>();
-        const encryptService = Substitute.for<AbstractEncryptService>();
+        const orgKey = mock<SymmetricCryptoKey>();
+        cryptoService.getOrgKey.calledWith("orgId").mockResolvedValue(orgKey);
 
         const attachment = new Attachment();
-        attachment.key = Substitute.for<EncString>();
-
-        cryptoService.getOrgKey("orgId").resolves(orgKey);
-
-        (window as any).bitwardenContainerService = new ContainerService(
-          cryptoService,
-          encryptService
-        );
+        attachment.key = mock<EncString>();
 
         await attachment.decrypt("orgId", null);
 
-        cryptoService.received(1).getOrgKey("orgId");
-        encryptService.received(1).decryptToBytes(attachment.key, orgKey);
+        expect(cryptoService.getOrgKey).toHaveBeenCalledWith("orgId");
+        expect(encryptService.decryptToBytes).toHaveBeenCalledWith(attachment.key, orgKey);
       });
 
       it("gets the user's decryption key if required", async () => {
-        const userKey = Substitute.for<SymmetricCryptoKey>();
-        const cryptoService = Substitute.for<CryptoService>();
-        const encryptService = Substitute.for<AbstractEncryptService>();
+        const userKey = mock<SymmetricCryptoKey>();
+        cryptoService.getKeyForUserEncryption.mockResolvedValue(userKey);
 
         const attachment = new Attachment();
-        attachment.key = Substitute.for<EncString>();
-
-        cryptoService.getOrgKey(null).resolves(null);
-        cryptoService.getKeyForUserEncryption().resolves(userKey);
-
-        (window as any).bitwardenContainerService = new ContainerService(
-          cryptoService,
-          encryptService
-        );
+        attachment.key = mock<EncString>();
 
         await attachment.decrypt(null, null);
 
-        cryptoService.received(1).getKeyForUserEncryption();
-        encryptService.received(1).decryptToBytes(attachment.key, userKey);
+        expect(cryptoService.getKeyForUserEncryption).toHaveBeenCalled();
+        expect(encryptService.decryptToBytes).toHaveBeenCalledWith(attachment.key, userKey);
       });
     });
   });
