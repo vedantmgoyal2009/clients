@@ -34,7 +34,6 @@ export class InitService {
     private platformUtilsService: PlatformUtilsServiceAbstraction,
     private stateService: StateServiceAbstraction,
     private cryptoService: CryptoServiceAbstraction,
-    private encryptService: AbstractEncryptService,
     private nativeMessagingService: NativeMessagingService,
     private themingService: AbstractThemingService,
     private encryptService: AbstractEncryptService
