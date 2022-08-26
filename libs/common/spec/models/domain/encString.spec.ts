@@ -1,4 +1,5 @@
 import Substitute, { Arg } from "@fluffy-spoon/substitute";
+import { mock, MockProxy } from 'jest-mock-extended';
 
 import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
@@ -154,14 +155,23 @@ describe("EncString", () => {
   });
 
   describe("decrypt", () => {
+    let cryptoService: MockProxy<CryptoService>;
+    let encryptService: MockProxy<AbstractEncryptService>;
+
+    beforeEach(() => {
+      cryptoService = mock<CryptoService>();
+      encryptService = mock<AbstractEncryptService>();
+
+      (window as any).bitwardenContainerService = new ContainerService(
+        cryptoService,
+        encryptService
+      );
+    });
+
     it("handles value it can't decrypt", async () => {
       const encString = new EncString(null);
 
-      const cryptoService = Substitute.for<CryptoService>();
-      cryptoService.getOrgKey(null).resolves(null);
-
-      const encryptService = Substitute.for<AbstractEncryptService>();
-      encryptService.decryptToUtf8(encString, Arg.any()).throws("error");
+      encryptService.decryptToUtf8.mockRejectedValue("error");
 
       (window as any).bitwardenContainerService = new ContainerService(
         cryptoService,
@@ -180,58 +190,36 @@ describe("EncString", () => {
 
     it("uses provided key without depending on CryptoService", async () => {
       const encString = new EncString(null);
-      const key = Substitute.for<SymmetricCryptoKey>();
-      const cryptoService = Substitute.for<CryptoService>();
-      const encryptService = Substitute.for<AbstractEncryptService>();
-
-      (window as any).bitwardenContainerService = new ContainerService(
-        cryptoService,
-        encryptService
-      );
+      const key = mock<SymmetricCryptoKey>();
 
       await encString.decrypt(null, key);
 
-      cryptoService.didNotReceive().getKeyForUserEncryption(Arg.any());
-      encryptService.received().decryptToUtf8(encString, key);
+        expect(cryptoService.getKeyForUserEncryption).not.toHaveBeenCalled();
+        expect(encryptService.decryptToUtf8).toHaveBeenCalledWith(encString, key);
     });
 
     it("gets an organization key if required", async () => {
       const encString = new EncString(null);
-      const orgKey = Substitute.for<SymmetricCryptoKey>();
-      const cryptoService = Substitute.for<CryptoService>();
-      const encryptService = Substitute.for<AbstractEncryptService>();
+      const orgKey = mock<SymmetricCryptoKey>();
 
-      cryptoService.getOrgKey("orgId").resolves(orgKey);
-
-      (window as any).bitwardenContainerService = new ContainerService(
-        cryptoService,
-        encryptService
-      );
+      cryptoService.getOrgKey.calledWith("orgId").mockResolvedValue(orgKey);
 
       await encString.decrypt("orgId", null);
 
-      cryptoService.received(1).getOrgKey("orgId");
-      encryptService.received().decryptToUtf8(encString, orgKey);
+      expect(cryptoService.getOrgKey).toHaveBeenCalledWith("orgId");
+      expect(encryptService.decryptToUtf8).toHaveBeenCalledWith(encString, orgKey);
     });
 
     it("gets the user's decryption key if required", async () => {
       const encString = new EncString(null);
-      const userKey = Substitute.for<SymmetricCryptoKey>();
-      const cryptoService = Substitute.for<CryptoService>();
-      const encryptService = Substitute.for<AbstractEncryptService>();
+      const userKey = mock<SymmetricCryptoKey>();
 
-      cryptoService.getOrgKey(null).resolves(null);
-      cryptoService.getKeyForUserEncryption().resolves(userKey);
-
-      (window as any).bitwardenContainerService = new ContainerService(
-        cryptoService,
-        encryptService
-      );
+      cryptoService.getKeyForUserEncryption.mockResolvedValue(userKey);
 
       await encString.decrypt(null, null);
 
-      cryptoService.received(1).getKeyForUserEncryption();
-      encryptService.received().decryptToUtf8(encString, userKey);
+      expect(cryptoService.getKeyForUserEncryption).toHaveBeenCalledWith();
+      expect(encryptService.decryptToUtf8).toHaveBeenCalledWith(encString, userKey);
     });
   });
 

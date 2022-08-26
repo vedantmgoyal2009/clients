@@ -1,12 +1,12 @@
 import { mock, MockProxy } from "jest-mock-extended";
 
+import { AbstractEncryptService } from '@bitwarden/common/abstractions/abstractEncrypt.service';
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { AttachmentData } from "@bitwarden/common/models/data/attachmentData";
 import { Attachment } from "@bitwarden/common/models/domain/attachment";
 import { EncString } from "@bitwarden/common/models/domain/encString";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 import { ContainerService } from "@bitwarden/common/services/container.service";
-import { EncryptService } from "@bitwarden/common/services/encrypt.service";
 
 import { makeStaticByteArray, mockEnc } from "../../utils";
 
@@ -58,11 +58,11 @@ describe("Attachment", () => {
 
   describe("decrypt", () => {
     let cryptoService: MockProxy<CryptoService>;
-    let encryptService: MockProxy<EncryptService>;
+    let encryptService: MockProxy<AbstractEncryptService>;
 
     beforeEach(() => {
       cryptoService = mock<CryptoService>();
-      encryptService = mock<EncryptService>();
+      encryptService = mock<AbstractEncryptService>();
 
       (window as any).bitwardenContainerService = new ContainerService(
         cryptoService,
