@@ -32,8 +32,8 @@ export class InitService {
     private twoFactorService: TwoFactorServiceAbstraction,
     private stateService: StateServiceAbstraction,
     private cryptoService: CryptoServiceAbstraction,
-    private encryptService: AbstractEncryptService,
-    private themingService: AbstractThemingService
+    private themingService: AbstractThemingService,
+    private encryptService: AbstractEncryptService
   ) {}
 
   init() {
