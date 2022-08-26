@@ -39,7 +39,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
       return [];
     }
 
-    this.logService.info("Starting vault decryption using web worker");
+    this.logService.info("Starting decryption using web worker");
 
     if (this.worker == null) {
       this.worker = this.createWorker();
