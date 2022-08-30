@@ -13,7 +13,7 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { SyncService } from "@bitwarden/common/abstractions/sync.service";
+import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout.service";
 
 const BroadcasterSubscriptionId = "LockComponent";
@@ -69,6 +69,7 @@ export class LockComponent extends BaseLockComponent {
     const forcePasswordReset = await this.stateService.getForcePasswordReset();
     this.successRoute = forcePasswordReset === true ? this.unAuthenicatedUrl : this.authenicatedUrl;
 
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil
     this.route.queryParams.subscribe((params) => {
       if (this.supportsBiometric && params.promptBiometric && autoPromptBiometric) {
         setTimeout(async () => {

@@ -23,7 +23,7 @@ import { InternalPolicyService } from "@bitwarden/common/abstractions/policy/pol
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { SettingsService } from "@bitwarden/common/abstractions/settings.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { SyncService } from "@bitwarden/common/abstractions/sync.service";
+import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout.service";
 
 import { PolicyListService, RouterService } from "./core";
@@ -215,7 +215,7 @@ export class AppComponent implements OnDestroy, OnInit {
   ngOnDestroy() {
     this.broadcasterService.unsubscribe(BroadcasterSubscriptionId);
     this.destroy$.next();
-    this.destroy$.unsubscribe();
+    this.destroy$.complete();
   }
 
   private async logOut(expired: boolean) {
