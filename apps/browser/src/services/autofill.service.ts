@@ -6,6 +6,7 @@ import { CipherRepromptType } from "@bitwarden/common/enums/cipherRepromptType";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { EventType } from "@bitwarden/common/enums/eventType";
 import { FieldType } from "@bitwarden/common/enums/fieldType";
+import { CardView } from "@bitwarden/common/models/view/cardView";
 import { CipherView } from "@bitwarden/common/models/view/cipherView";
 import { FieldView } from "@bitwarden/common/models/view/fieldView";
 
@@ -230,47 +231,9 @@ export default class AutofillService implements AutofillServiceInterface {
     }
 
     let fillScript = new AutofillScript(pageDetails.documentUUID);
-    const filledFields: { [id: string]: AutofillField } = {};
-    const fields = options.cipher.fields;
+    let filledFields: { [id: string]: AutofillField } = {};
 
-    if (fields && fields.length) {
-      const fieldNames: string[] = [];
-
-      fields.forEach((f) => {
-        if (AutofillService.hasValue(f.name)) {
-          fieldNames.push(f.name.toLowerCase());
-        }
-      });
-
-      pageDetails.fields.forEach((field) => {
-        // eslint-disable-next-line
-        if (filledFields.hasOwnProperty(field.opid)) {
-          return;
-        }
-
-        if (!field.viewable && field.tagName !== "span") {
-          return;
-        }
-
-        const matchingIndex = this.findMatchingFieldIndex(field, fieldNames);
-        if (matchingIndex > -1) {
-          const matchingField: FieldView = fields[matchingIndex];
-          let val: string;
-          if (matchingField.type === FieldType.Linked) {
-            // Assumption: Linked Field is not being used to autofill a boolean value
-            val = options.cipher.linkedFieldValue(matchingField.linkedId) as string;
-          } else {
-            val = matchingField.value;
-            if (val == null && matchingField.type === FieldType.Boolean) {
-              val = "false";
-            }
-          }
-
-          filledFields[field.opid] = field;
-          AutofillService.fillByOpid(fillScript, field, val);
-        }
-      });
-    }
+    filledFields = this.generateCipherFieldsFillScript(fillScript, pageDetails, options);
 
     switch (options.cipher.type) {
       case CipherType.Login:
@@ -292,6 +255,56 @@ export default class AutofillService implements AutofillServiceInterface {
     }
 
     return fillScript;
+  }
+
+  private generateCipherFieldsFillScript(
+    fillScript: AutofillScript,
+    pageDetails: AutofillPageDetails,
+    options: GenerateFillScriptOptions
+  ): { [id: string]: AutofillField } {
+    const fields = options.cipher.fields;
+    const filledFields: { [id: string]: AutofillField } = {};
+
+    if (fields && fields.length) {
+      const cipherFieldNames: string[] = [];
+
+      fields.forEach((f) => {
+        if (AutofillService.hasValue(f.name)) {
+          cipherFieldNames.push(f.name.toLowerCase());
+        }
+      });
+
+      pageDetails.fields.forEach((field) => {
+        // eslint-disable-next-line
+        if (filledFields.hasOwnProperty(field.opid)) {
+          return;
+        }
+
+        if (!field.viewable && field.tagName !== "span") {
+          return;
+        }
+
+        const matchingIndex = this.findMatchingFieldIndex(field, cipherFieldNames);
+        if (matchingIndex > -1) {
+          const matchingField: FieldView = fields[matchingIndex];
+          let val: string;
+          if (matchingField.type === FieldType.Linked) {
+            // Assumption: Linked Field is not being used to autofill a boolean value
+            val = options.cipher.linkedFieldValue(matchingField.linkedId) as string;
+          } else {
+            val = matchingField.value;
+            if (val == null && matchingField.type === FieldType.Boolean) {
+              val = "false";
+            }
+          }
+
+          filledFields[field.opid] = field;
+          AutofillService.fillByOpid(fillScript, field, val);
+        }
+      });
+    }
+
+    return filledFields;
   }
 
   private generateLoginFillScript(
@@ -340,12 +353,13 @@ export default class AutofillService implements AutofillServiceInterface {
         continue;
       }
 
-      const passwordFieldsForForm: AutofillField[] = [];
-      passwordFields.forEach((passField) => {
-        if (formKey === passField.form) {
-          passwordFieldsForForm.push(passField);
-        }
-      });
+      // This is not used anywhere.
+      // const passwordFieldsForForm: AutofillField[] = [];
+      // passwordFields.forEach((passField) => {
+      //   if (formKey === passField.form) {
+      //     passwordFieldsForForm.push(passField);
+      //   }
+      // });
 
       passwordFields.forEach((passField) => {
         pf = passField;
@@ -434,6 +448,38 @@ export default class AutofillService implements AutofillServiceInterface {
       return null;
     }
 
+    let fillFields: { [id: string]: AutofillField } = {};
+
+    fillFields = this.mapPageDetailsToCardFillFields(pageDetails);
+
+    const card = options.cipher.card;
+    this.makeScriptAction(fillScript, card, fillFields, filledFields, "cardholderName");
+    this.makeScriptAction(fillScript, card, fillFields, filledFields, "number");
+    this.makeScriptAction(fillScript, card, fillFields, filledFields, "code");
+    this.makeScriptAction(fillScript, card, fillFields, filledFields, "brand");
+
+    if (fillFields.expMonth && AutofillService.hasValue(card.expMonth)) {
+      this.fillCardExpirationMonth(fillScript, fillFields, card, filledFields);
+    }
+
+    if (fillFields.expYear && AutofillService.hasValue(card.expYear)) {
+      this.fillCardExpirationYear(fillScript, fillFields, card, filledFields);
+    }
+
+    if (
+      fillFields.exp &&
+      AutofillService.hasValue(card.expMonth) &&
+      AutofillService.hasValue(card.expYear)
+    ) {
+      this.fillCardExpirationWithSingleField(fillScript, fillFields, card, filledFields);
+    }
+
+    return fillScript;
+  }
+
+  private mapPageDetailsToCardFillFields(pageDetails: AutofillPageDetails): {
+    [id: string]: AutofillField;
+  } {
     const fillFields: { [id: string]: AutofillField } = {};
 
     pageDetails.fields.forEach((f) => {
@@ -512,238 +558,269 @@ export default class AutofillService implements AutofillServiceInterface {
       }
     });
 
-    const card = options.cipher.card;
-    this.makeScriptAction(fillScript, card, fillFields, filledFields, "cardholderName");
-    this.makeScriptAction(fillScript, card, fillFields, filledFields, "number");
-    this.makeScriptAction(fillScript, card, fillFields, filledFields, "code");
-    this.makeScriptAction(fillScript, card, fillFields, filledFields, "brand");
+    return fillFields;
+  }
 
-    if (fillFields.expMonth && AutofillService.hasValue(card.expMonth)) {
-      let expMonth: string = card.expMonth;
+  private fillCardExpirationMonth(
+    fillScript: AutofillScript,
+    fillFields: { [id: string]: AutofillField },
+    card: CardView,
+    filledFields: { [id: string]: AutofillField }
+  ) {
+    let expMonth: string = card.expMonth;
 
-      if (fillFields.expMonth.selectInfo && fillFields.expMonth.selectInfo.options) {
-        let index: number = null;
-        const siOptions = fillFields.expMonth.selectInfo.options;
-        if (siOptions.length === 12) {
-          index = parseInt(card.expMonth, null) - 1;
-        } else if (siOptions.length === 13) {
-          if (
-            siOptions[0][0] != null &&
-            siOptions[0][0] !== "" &&
-            (siOptions[12][0] == null || siOptions[12][0] === "")
-          ) {
-            index = parseInt(card.expMonth, null) - 1;
-          } else {
-            index = parseInt(card.expMonth, null);
-          }
-        }
-
-        if (index != null) {
-          const option = siOptions[index];
-          if (option.length > 1) {
-            expMonth = option[1];
-          }
-        }
-      } else if (
-        (this.fieldAttrsContain(fillFields.expMonth, "mm") ||
-          fillFields.expMonth.maxLength === 2) &&
-        expMonth.length === 1
-      ) {
-        expMonth = "0" + expMonth;
-      }
-
-      filledFields[fillFields.expMonth.opid] = fillFields.expMonth;
-      AutofillService.fillByOpid(fillScript, fillFields.expMonth, expMonth);
+    if (fillFields.expMonth.selectInfo && fillFields.expMonth.selectInfo.options) {
+      expMonth = this.updateCardExpirationMonthValueFromSelectControl(fillFields, card);
+    } else {
+      expMonth = this.padCardExpirationMonthIfNecessary(fillFields.expMonth, card);
     }
 
-    if (fillFields.expYear && AutofillService.hasValue(card.expYear)) {
-      let expYear: string = card.expYear;
-      if (fillFields.expYear.selectInfo && fillFields.expYear.selectInfo.options) {
-        for (let i = 0; i < fillFields.expYear.selectInfo.options.length; i++) {
-          const o: [string, string] = fillFields.expYear.selectInfo.options[i];
-          if (o[0] === card.expYear || o[1] === card.expYear) {
-            expYear = o[1];
-            break;
-          }
-          if (
-            o[1].length === 2 &&
-            card.expYear.length === 4 &&
-            o[1] === card.expYear.substring(2)
-          ) {
-            expYear = o[1];
-            break;
-          }
-          const colonIndex = o[1].indexOf(":");
-          if (colonIndex > -1 && o[1].length > colonIndex + 1) {
-            const val = o[1].substring(colonIndex + 2);
-            if (val != null && val.trim() !== "" && val === card.expYear) {
-              expYear = o[1];
-              break;
-            }
-          }
-        }
-      } else if (
-        this.fieldAttrsContain(fillFields.expYear, "yyyy") ||
-        fillFields.expYear.maxLength === 4
-      ) {
-        if (expYear.length === 2) {
-          expYear = "20" + expYear;
-        }
-      } else if (
-        this.fieldAttrsContain(fillFields.expYear, "yy") ||
-        fillFields.expYear.maxLength === 2
-      ) {
-        if (expYear.length === 4) {
-          expYear = expYear.substr(2);
-        }
-      }
+    filledFields[fillFields.expMonth.opid] = fillFields.expMonth;
+    AutofillService.fillByOpid(fillScript, fillFields.expMonth, expMonth);
+  }
 
-      filledFields[fillFields.expYear.opid] = fillFields.expYear;
-      AutofillService.fillByOpid(fillScript, fillFields.expYear, expYear);
-    }
-
+  private padCardExpirationMonthIfNecessary(monthField: AutofillField, card: CardView): string {
+    let result: string = card.expMonth;
     if (
-      fillFields.exp &&
-      AutofillService.hasValue(card.expMonth) &&
-      AutofillService.hasValue(card.expYear)
+      (this.cardFieldAttributesContain(monthField, "mm") || monthField.maxLength === 2) &&
+      card.expMonth.length === 1
     ) {
-      const fullMonth = ("0" + card.expMonth).slice(-2);
+      result = "0" + card.expMonth;
+    }
+    return result;
+  }
 
-      let fullYear: string = card.expYear;
-      let partYear: string = null;
-      if (fullYear.length === 2) {
-        partYear = fullYear;
-        fullYear = "20" + fullYear;
-      } else if (fullYear.length === 4) {
-        partYear = fullYear.substr(2, 2);
+  private updateCardExpirationMonthValueFromSelectControl(
+    fillFields: { [id: string]: AutofillField },
+    card: CardView
+  ) {
+    let result: string = card.expMonth;
+    let index: number = null;
+    const siOptions = fillFields.expMonth.selectInfo.options;
+    if (siOptions.length === 12) {
+      index = parseInt(card.expMonth, null) - 1;
+    } else if (siOptions.length === 13) {
+      if (
+        siOptions[0][0] != null &&
+        siOptions[0][0] !== "" &&
+        (siOptions[12][0] == null || siOptions[12][0] === "")
+      ) {
+        index = parseInt(card.expMonth, null) - 1;
+      } else {
+        index = parseInt(card.expMonth, null);
       }
+    }
 
-      let exp: string = null;
-      for (let i = 0; i < CreditCardAutoFillConstants.MonthAbbr.length; i++) {
-        if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.MonthAbbr[i] +
-              "/" +
-              CreditCardAutoFillConstants.YearAbbrShort[i]
-          ) &&
-          partYear != null
-        ) {
-          exp = fullMonth + "/" + partYear;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.MonthAbbr[i] +
-              "/" +
-              CreditCardAutoFillConstants.YearAbbrLong[i]
-          )
-        ) {
-          exp = fullMonth + "/" + fullYear;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.YearAbbrShort[i] +
-              "/" +
-              CreditCardAutoFillConstants.MonthAbbr[i]
-          ) &&
-          partYear != null
-        ) {
-          exp = partYear + "/" + fullMonth;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.YearAbbrLong[i] +
-              "/" +
-              CreditCardAutoFillConstants.MonthAbbr[i]
-          )
-        ) {
-          exp = fullYear + "/" + fullMonth;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.MonthAbbr[i] +
-              "-" +
-              CreditCardAutoFillConstants.YearAbbrShort[i]
-          ) &&
-          partYear != null
-        ) {
-          exp = fullMonth + "-" + partYear;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.MonthAbbr[i] +
-              "-" +
-              CreditCardAutoFillConstants.YearAbbrLong[i]
-          )
-        ) {
-          exp = fullMonth + "-" + fullYear;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.YearAbbrShort[i] +
-              "-" +
-              CreditCardAutoFillConstants.MonthAbbr[i]
-          ) &&
-          partYear != null
-        ) {
-          exp = partYear + "-" + fullMonth;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.YearAbbrLong[i] +
-              "-" +
-              CreditCardAutoFillConstants.MonthAbbr[i]
-          )
-        ) {
-          exp = fullYear + "-" + fullMonth;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.YearAbbrShort[i] + CreditCardAutoFillConstants.MonthAbbr[i]
-          ) &&
-          partYear != null
-        ) {
-          exp = partYear + fullMonth;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.YearAbbrLong[i] + CreditCardAutoFillConstants.MonthAbbr[i]
-          )
-        ) {
-          exp = fullYear + fullMonth;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.MonthAbbr[i] + CreditCardAutoFillConstants.YearAbbrShort[i]
-          ) &&
-          partYear != null
-        ) {
-          exp = fullMonth + partYear;
-        } else if (
-          this.fieldAttrsContain(
-            fillFields.exp,
-            CreditCardAutoFillConstants.MonthAbbr[i] + CreditCardAutoFillConstants.YearAbbrLong[i]
-          )
-        ) {
-          exp = fullMonth + fullYear;
-        }
+    if (index != null) {
+      const option = siOptions[index];
+      if (option.length > 1) {
+        result = option[1];
+      }
+    }
+    return result;
+  }
 
-        if (exp != null) {
+  private fillCardExpirationYear(
+    fillScript: AutofillScript,
+    fillFields: { [id: string]: AutofillField },
+    card: CardView,
+    filledFields: { [id: string]: AutofillField }
+  ) {
+    let expYear: string = card.expYear;
+    if (fillFields.expYear.selectInfo && fillFields.expYear.selectInfo.options) {
+      expYear = this.updateCardExpirationYearValueFromSelectControl(fillFields, card);
+    } else {
+      expYear = this.padCardExpirationYearIfNecessary(fillFields.expYear, card);
+    }
+
+    filledFields[fillFields.expYear.opid] = fillFields.expYear;
+    AutofillService.fillByOpid(fillScript, fillFields.expYear, expYear);
+  }
+
+  private updateCardExpirationYearValueFromSelectControl(
+    fillFields: { [id: string]: AutofillField },
+    card: CardView
+  ): string {
+    let result: string = card.expYear;
+    for (let i = 0; i < fillFields.expYear.selectInfo.options.length; i++) {
+      const o: [string, string] = fillFields.expYear.selectInfo.options[i];
+      if (o[0] === card.expYear || o[1] === card.expYear) {
+        result = o[1];
+        break;
+      }
+      if (o[1].length === 2 && card.expYear.length === 4 && o[1] === card.expYear.substring(2)) {
+        result = o[1];
+        break;
+      }
+      const colonIndex = o[1].indexOf(":");
+      if (colonIndex > -1 && o[1].length > colonIndex + 1) {
+        const val = o[1].substring(colonIndex + 2);
+        if (val != null && val.trim() !== "" && val === card.expYear) {
+          result = o[1];
           break;
         }
       }
-
-      if (exp == null) {
-        exp = fullYear + "-" + fullMonth;
-      }
-
-      this.makeScriptActionWithValue(fillScript, exp, fillFields.exp, filledFields);
     }
-
-    return fillScript;
+    return result;
   }
 
-  private fieldAttrsContain(field: AutofillField, containsVal: string) {
+  private padCardExpirationYearIfNecessary(yearField: AutofillField, card: CardView): string {
+    let result: string = card.expYear;
+    if (
+      (this.cardFieldAttributesContain(yearField, "yyyy") || yearField.maxLength === 4) &&
+      card.expYear.length === 2
+    ) {
+      result = "20" + card.expYear;
+    } else if (
+      (this.cardFieldAttributesContain(yearField, "yy") || yearField.maxLength === 2) &&
+      card.expYear.length === 4
+    ) {
+      result = card.expYear.substr(2);
+    }
+    return result;
+  }
+
+  private fillCardExpirationWithSingleField(
+    fillScript: AutofillScript,
+    fillFields: { [id: string]: AutofillField },
+    card: CardView,
+    filledFields: { [id: string]: AutofillField }
+  ) {
+    const fullMonth = ("0" + card.expMonth).slice(-2);
+
+    let fullYear: string = card.expYear;
+    let partYear: string = null;
+    if (fullYear.length === 2) {
+      partYear = fullYear;
+      fullYear = "20" + fullYear;
+    } else if (fullYear.length === 4) {
+      partYear = fullYear.substr(2, 2);
+    }
+
+    let exp: string = null;
+    for (let i = 0; i < CreditCardAutoFillConstants.MonthAbbr.length; i++) {
+      if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.MonthAbbr[i] +
+            "/" +
+            CreditCardAutoFillConstants.YearAbbrShort[i]
+        ) &&
+        partYear != null
+      ) {
+        exp = fullMonth + "/" + partYear;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.MonthAbbr[i] +
+            "/" +
+            CreditCardAutoFillConstants.YearAbbrLong[i]
+        )
+      ) {
+        exp = fullMonth + "/" + fullYear;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.YearAbbrShort[i] +
+            "/" +
+            CreditCardAutoFillConstants.MonthAbbr[i]
+        ) &&
+        partYear != null
+      ) {
+        exp = partYear + "/" + fullMonth;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.YearAbbrLong[i] +
+            "/" +
+            CreditCardAutoFillConstants.MonthAbbr[i]
+        )
+      ) {
+        exp = fullYear + "/" + fullMonth;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.MonthAbbr[i] +
+            "-" +
+            CreditCardAutoFillConstants.YearAbbrShort[i]
+        ) &&
+        partYear != null
+      ) {
+        exp = fullMonth + "-" + partYear;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.MonthAbbr[i] +
+            "-" +
+            CreditCardAutoFillConstants.YearAbbrLong[i]
+        )
+      ) {
+        exp = fullMonth + "-" + fullYear;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.YearAbbrShort[i] +
+            "-" +
+            CreditCardAutoFillConstants.MonthAbbr[i]
+        ) &&
+        partYear != null
+      ) {
+        exp = partYear + "-" + fullMonth;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.YearAbbrLong[i] +
+            "-" +
+            CreditCardAutoFillConstants.MonthAbbr[i]
+        )
+      ) {
+        exp = fullYear + "-" + fullMonth;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.YearAbbrShort[i] + CreditCardAutoFillConstants.MonthAbbr[i]
+        ) &&
+        partYear != null
+      ) {
+        exp = partYear + fullMonth;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.YearAbbrLong[i] + CreditCardAutoFillConstants.MonthAbbr[i]
+        )
+      ) {
+        exp = fullYear + fullMonth;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.MonthAbbr[i] + CreditCardAutoFillConstants.YearAbbrShort[i]
+        ) &&
+        partYear != null
+      ) {
+        exp = fullMonth + partYear;
+      } else if (
+        this.cardFieldAttributesContain(
+          fillFields.exp,
+          CreditCardAutoFillConstants.MonthAbbr[i] + CreditCardAutoFillConstants.YearAbbrLong[i]
+        )
+      ) {
+        exp = fullMonth + fullYear;
+      }
+
+      if (exp != null) {
+        break;
+      }
+    }
+
+    if (exp == null) {
+      exp = fullYear + "-" + fullMonth;
+    }
+
+    this.makeScriptActionWithValue(fillScript, exp, fillFields.exp, filledFields);
+  }
+
+  // Check the card-specific attributes of the field to see if any of the attributes have the specified value
+  private cardFieldAttributesContain(field: AutofillField, containsVal: string): boolean {
     if (!field) {
       return false;
     }
@@ -773,139 +850,9 @@ export default class AutofillService implements AutofillServiceInterface {
       return null;
     }
 
-    const fillFields: { [id: string]: AutofillField } = {};
+    let fillFields: { [id: string]: AutofillField } = {};
 
-    pageDetails.fields.forEach((f) => {
-      if (AutofillService.forCustomFieldsOnly(f)) {
-        return;
-      }
-
-      if (this.isExcludedType(f.type, AutoFillConstants.ExcludedAutofillTypes)) {
-        return;
-      }
-
-      for (let i = 0; i < IdentityAutoFillConstants.IdentityAttributes.length; i++) {
-        const attr = IdentityAutoFillConstants.IdentityAttributes[i];
-        // eslint-disable-next-line
-        if (!f.hasOwnProperty(attr) || !f[attr] || !f.viewable) {
-          continue;
-        }
-
-        // ref https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
-        // ref https://developers.google.com/web/fundamentals/design-and-ux/input/forms/
-        if (
-          !fillFields.name &&
-          AutofillService.isFieldMatch(
-            f[attr],
-            IdentityAutoFillConstants.FullNameFieldNames,
-            IdentityAutoFillConstants.FullNameFieldNameValues
-          )
-        ) {
-          fillFields.name = f;
-          break;
-        } else if (
-          !fillFields.firstName &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.FirstnameFieldNames)
-        ) {
-          fillFields.firstName = f;
-          break;
-        } else if (
-          !fillFields.middleName &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.MiddlenameFieldNames)
-        ) {
-          fillFields.middleName = f;
-          break;
-        } else if (
-          !fillFields.lastName &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.LastnameFieldNames)
-        ) {
-          fillFields.lastName = f;
-          break;
-        } else if (
-          !fillFields.title &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.TitleFieldNames)
-        ) {
-          fillFields.title = f;
-          break;
-        } else if (
-          !fillFields.email &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.EmailFieldNames)
-        ) {
-          fillFields.email = f;
-          break;
-        } else if (
-          !fillFields.address &&
-          AutofillService.isFieldMatch(
-            f[attr],
-            IdentityAutoFillConstants.AddressFieldNames,
-            IdentityAutoFillConstants.AddressFieldNameValues
-          )
-        ) {
-          fillFields.address = f;
-          break;
-        } else if (
-          !fillFields.address1 &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.Address1FieldNames)
-        ) {
-          fillFields.address1 = f;
-          break;
-        } else if (
-          !fillFields.address2 &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.Address2FieldNames)
-        ) {
-          fillFields.address2 = f;
-          break;
-        } else if (
-          !fillFields.address3 &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.Address3FieldNames)
-        ) {
-          fillFields.address3 = f;
-          break;
-        } else if (
-          !fillFields.postalCode &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.PostalCodeFieldNames)
-        ) {
-          fillFields.postalCode = f;
-          break;
-        } else if (
-          !fillFields.city &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.CityFieldNames)
-        ) {
-          fillFields.city = f;
-          break;
-        } else if (
-          !fillFields.state &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.StateFieldNames)
-        ) {
-          fillFields.state = f;
-          break;
-        } else if (
-          !fillFields.country &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.CountryFieldNames)
-        ) {
-          fillFields.country = f;
-          break;
-        } else if (
-          !fillFields.phone &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.PhoneFieldNames)
-        ) {
-          fillFields.phone = f;
-          break;
-        } else if (
-          !fillFields.username &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.UserNameFieldNames)
-        ) {
-          fillFields.username = f;
-          break;
-        } else if (
-          !fillFields.company &&
-          AutofillService.isFieldMatch(f[attr], IdentityAutoFillConstants.CompanyFieldNames)
-        ) {
-          fillFields.company = f;
-          break;
-        }
-      }
-    });
+    fillFields = this.mapPageDetailsToIdentityFillFields(pageDetails);
 
     const identity = options.cipher.identity;
     this.makeScriptAction(fillScript, identity, fillFields, filledFields, "title");
@@ -997,10 +944,210 @@ export default class AutofillService implements AutofillServiceInterface {
     return fillScript;
   }
 
+  private mapPageDetailsToIdentityFillFields(pageDetails: AutofillPageDetails): {
+    [id: string]: AutofillField;
+  } {
+    const fillFields: { [id: string]: AutofillField } = {};
+
+    pageDetails.fields.forEach((fieldOnPage) => {
+      if (AutofillService.forCustomFieldsOnly(fieldOnPage)) {
+        return;
+      }
+
+      if (this.isExcludedType(fieldOnPage.type, AutoFillConstants.ExcludedAutofillTypes)) {
+        return;
+      }
+
+      for (
+        let fieldAttributeIndex = 0;
+        fieldAttributeIndex < IdentityAutoFillConstants.IdentityAttributes.length;
+        fieldAttributeIndex++
+      ) {
+        const fieldAttribute = IdentityAutoFillConstants.IdentityAttributes[fieldAttributeIndex];
+
+        if (
+          !fieldOnPage.hasOwn(fieldAttribute) ||
+          !fieldOnPage[fieldAttribute] ||
+          !fieldOnPage.viewable
+        ) {
+          continue;
+        }
+
+        // ref https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+        // ref https://developers.google.com/web/fundamentals/design-and-ux/input/forms/
+        if (
+          !fillFields.name &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.FullNameFieldNames,
+            IdentityAutoFillConstants.FullNameFieldNameValues
+          )
+        ) {
+          fillFields.name = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.firstName &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.FirstnameFieldNames
+          )
+        ) {
+          fillFields.firstName = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.middleName &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.MiddlenameFieldNames
+          )
+        ) {
+          fillFields.middleName = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.lastName &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.LastnameFieldNames
+          )
+        ) {
+          fillFields.lastName = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.title &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.TitleFieldNames
+          )
+        ) {
+          fillFields.title = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.email &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.EmailFieldNames
+          )
+        ) {
+          fillFields.email = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.address &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.AddressFieldNames,
+            IdentityAutoFillConstants.AddressFieldNameValues
+          )
+        ) {
+          fillFields.address = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.address1 &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.Address1FieldNames
+          )
+        ) {
+          fillFields.address1 = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.address2 &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.Address2FieldNames
+          )
+        ) {
+          fillFields.address2 = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.address3 &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.Address3FieldNames
+          )
+        ) {
+          fillFields.address3 = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.postalCode &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.PostalCodeFieldNames
+          )
+        ) {
+          fillFields.postalCode = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.city &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.CityFieldNames
+          )
+        ) {
+          fillFields.city = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.state &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.StateFieldNames
+          )
+        ) {
+          fillFields.state = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.country &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.CountryFieldNames
+          )
+        ) {
+          fillFields.country = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.phone &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.PhoneFieldNames
+          )
+        ) {
+          fillFields.phone = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.username &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.UserNameFieldNames
+          )
+        ) {
+          fillFields.username = fieldOnPage;
+          break;
+        } else if (
+          !fillFields.company &&
+          AutofillService.isFieldMatch(
+            fieldOnPage[fieldAttribute],
+            IdentityAutoFillConstants.CompanyFieldNames
+          )
+        ) {
+          fillFields.company = fieldOnPage;
+          break;
+        }
+      }
+    });
+
+    return fillFields;
+  }
+
   private isExcludedType(type: string, excludedTypes: string[]) {
     return excludedTypes.indexOf(type) > -1;
   }
 
+  /**
+   * Checks to see if the field attribute value passed in matches the options provided, either with an exact match or optional partial match.
+   * Ignores case or spaces when doing the matches.
+   * @param {string} value - The value of the attribute of a field on the page (e.g. if the page element HTML has id='userFirstName', the value is 'userFirstName')
+   * @param {string[]} options - The context-specific field names that we are looking to EXACT match against the `value` input (e.g. { 'name, 'firstName', etc. })
+   * @param {string[]} containsOptions - The optional context-specific field names that we will match if the input value CONTAINS any matches.
+   */
   private static isFieldMatch(
     value: string,
     options: string[],
@@ -1022,23 +1169,29 @@ export default class AutofillService implements AutofillServiceInterface {
     return false;
   }
 
+  /**
+   * Handles cases where the field data is presented as a select element with values for the user to pick. We must attempt to fill based on matching the data value with the options presented.
+   * Provides syntactic sugar to select the method from the cipherData[] and fillFields[] arrays based on the property name passed in.
+   */
   private makeScriptAction(
     fillScript: AutofillScript,
     cipherData: any,
     fillFields: { [id: string]: AutofillField },
     filledFields: { [id: string]: AutofillField },
-    dataProp: string,
-    fieldProp?: string
+    dataProp: string
   ) {
-    fieldProp = fieldProp || dataProp;
     this.makeScriptActionWithValue(
       fillScript,
       cipherData[dataProp],
-      fillFields[fieldProp],
+      fillFields[dataProp],
       filledFields
     );
   }
 
+  /**
+   * Handles cases where the field data is presented as a select element with values for the user to pick.
+   * We must attempt to fill based on matching the data value with the options presented.
+   */
   private makeScriptActionWithValue(
     fillScript: AutofillScript,
     dataValue: any,
@@ -1048,12 +1201,16 @@ export default class AutofillService implements AutofillServiceInterface {
     let doFill = false;
     if (AutofillService.hasValue(dataValue) && field) {
       if (field.type === "select-one" && field.selectInfo && field.selectInfo.options) {
-        for (let i = 0; i < field.selectInfo.options.length; i++) {
-          const option = field.selectInfo.options[i];
-          for (let j = 0; j < option.length; j++) {
+        // The selectInfo.options is a two-dimensional array of [ option text, option value ].
+        // First, loop through each option text.
+        for (let optionText = 0; optionText < field.selectInfo.options.length; optionText++) {
+          const option = field.selectInfo.options[optionText];
+          // Now, for each option text, loop through the option values.
+          for (let optionValue = 0; optionValue < option.length; optionValue++) {
+            // If this option value on the page matches the data value, we have our match
             if (
-              AutofillService.hasValue(option[j]) &&
-              option[j].toLowerCase() === dataValue.toLowerCase()
+              AutofillService.hasValue(option[optionValue]) &&
+              option[optionValue].toLowerCase() === dataValue.toLowerCase()
             ) {
               doFill = true;
               if (option.length > 1) {
@@ -1176,39 +1333,42 @@ export default class AutofillService implements AutofillServiceInterface {
     return usernameField;
   }
 
-  private findMatchingFieldIndex(field: AutofillField, names: string[]): number {
-    for (let i = 0; i < names.length; i++) {
-      if (names[i].indexOf("=") > -1) {
-        if (this.fieldPropertyIsPrefixMatch(field, "htmlID", names[i], "id")) {
+  // For a given field on the page, find the matching index in the array of cipher field names
+  private findMatchingFieldIndex(field: AutofillField, targetFieldNames: string[]): number {
+    for (let i = 0; i < targetFieldNames.length; i++) {
+      if (targetFieldNames[i].indexOf("=") > -1) {
+        if (this.fieldPropertyIsPrefixMatch(field, "htmlID", targetFieldNames[i], "id")) {
           return i;
         }
-        if (this.fieldPropertyIsPrefixMatch(field, "htmlName", names[i], "name")) {
+        if (this.fieldPropertyIsPrefixMatch(field, "htmlName", targetFieldNames[i], "name")) {
           return i;
         }
-        if (this.fieldPropertyIsPrefixMatch(field, "label-tag", names[i], "label")) {
+        if (this.fieldPropertyIsPrefixMatch(field, "label-tag", targetFieldNames[i], "label")) {
           return i;
         }
-        if (this.fieldPropertyIsPrefixMatch(field, "label-aria", names[i], "label")) {
+        if (this.fieldPropertyIsPrefixMatch(field, "label-aria", targetFieldNames[i], "label")) {
           return i;
         }
-        if (this.fieldPropertyIsPrefixMatch(field, "placeholder", names[i], "placeholder")) {
+        if (
+          this.fieldPropertyIsPrefixMatch(field, "placeholder", targetFieldNames[i], "placeholder")
+        ) {
           return i;
         }
       }
 
-      if (this.fieldPropertyIsMatch(field, "htmlID", names[i])) {
+      if (this.fieldPropertyIsMatch(field, "htmlID", targetFieldNames[i])) {
         return i;
       }
-      if (this.fieldPropertyIsMatch(field, "htmlName", names[i])) {
+      if (this.fieldPropertyIsMatch(field, "htmlName", targetFieldNames[i])) {
         return i;
       }
-      if (this.fieldPropertyIsMatch(field, "label-tag", names[i])) {
+      if (this.fieldPropertyIsMatch(field, "label-tag", targetFieldNames[i])) {
         return i;
       }
-      if (this.fieldPropertyIsMatch(field, "label-aria", names[i])) {
+      if (this.fieldPropertyIsMatch(field, "label-aria", targetFieldNames[i])) {
         return i;
       }
-      if (this.fieldPropertyIsMatch(field, "placeholder", names[i])) {
+      if (this.fieldPropertyIsMatch(field, "placeholder", targetFieldNames[i])) {
         return i;
       }
     }

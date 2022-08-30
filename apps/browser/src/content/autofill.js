@@ -1,3 +1,5 @@
+import AutofillScript from "src/models/autofillScript";
+
 !(function () {
   /*
   1Password Extension
@@ -101,7 +103,7 @@
               }
           }
 
-          // get all the options for a "select" element
+          // Get all the options for a "select" element
           function getSelectElementOptions(el) {
               if (!el.options) {
                   return null;
@@ -351,14 +353,6 @@
 
       document.elementForOPID = getElementForOPID;
 
-      function doEventOnElement(kedol, fonor) {
-          var quebo;
-          isFirefox ? (quebo = document.createEvent('KeyboardEvent'), quebo.initKeyEvent(fonor, true, false, null, false, false, false, false, 0, 0)) : (quebo = kedol.ownerDocument.createEvent('Events'),
-              quebo.initEvent(fonor, true, false), quebo.charCode = 0, quebo.keyCode = 0, quebo.which = 0,
-              quebo.srcElement = kedol, quebo.target = kedol);
-          return quebo;
-      }
-
       // clean up the text
       function cleanText(s) {
           var sVal = null;
@@ -549,20 +543,6 @@
           // END MODIFICATION
       }
 
-      // focus the element and optionally restore its original value
-      function focusElement(el, setVal) {
-          if (setVal) {
-              var initialValue = el.value;
-              el.focus();
-
-              if (el.value !== initialValue) {
-                  el.value = initialValue;
-              }
-          } else {
-              el.focus();
-          }
-      }
-
       return JSON.stringify(getPageDetails(document, 'oneshotUUID'));
   }
 
@@ -600,29 +580,43 @@
               return;
           }
 
-          doOperation = function (ops, theOperation) {
-              var op = ops[0];
-              if (void 0 === op) {
-                  theOperation();
-              } else {
-                  // should we delay?
-                  if ('delay' === op.operation || 'delay' === op[0]) {
-                      operationDelayMs = op.parameters ? op.parameters[0] : op[1];
-                  } else {
-                      if (op = normalizeOp(op)) {
-                          for (var opIndex = 0; opIndex < op.length; opIndex++) {
-                              -1 === operationsToDo.indexOf(op[opIndex]) && operationsToDo.push(op[opIndex]);
-                          }
-                      }
-                      theOpIds = theOpIds.concat(operationsToDo.map(function (operationToDo) {
-                          return operationToDo && operationToDo.hasOwnProperty('opid') ? operationToDo.opid : null;
-                      }));
-                  }
-                  setTimeout(function () {
-                      doOperation(ops.slice(1), theOperation);
-                  }, operationDelayMs);
-              }
-          };
+          // Define a function that takes an array of fill script instructions as 'ops[]' and a final operation in `theOperation`
+          // 'ops[]' is an array of instructions of the format:
+          // ["click_on_opid", field.opid]
+          // ["focus_by_opid", field.opid]
+          // ["fill_by_opid", field.opid, value]
+          // The function recursively processes all the elements in the script instruction array.
+          // When done, it will have produced two lists:
+          // - A list of operationsToDo
+          // - A list of opId values for all elements affected
+          doOperation = function (scriptInstructionArray, theOperation) {
+            var currentScriptInstruction = scriptInstructionArray[0];
+            // Recursion base case
+            if (void 0 === currentScriptInstruction)
+            {
+                theOperation();
+            } else
+            {
+                // Execute the script instruction
+                if (currentScriptInstruction = normalizeInstruction(currentScriptInstruction)) 
+                {
+                    // Now that the script instruction has executed, we need to add it to the list of operations that have been performed.
+                    for (var opIndex = 0; opIndex < currentScriptInstruction.length; opIndex++) {
+                        operationsToDo.indexOf(currentScriptInstruction[opIndex]) === -1 && operationsToDo.push(currentScriptInstruction[opIndex]);
+                    }
+                }
+                // Also add the unique identifier for the affected page element to a running list
+                theOpIds = theOpIds.concat(operationsToDo.map(function (operationToDo) {
+                    return operationToDo && operationToDo.hasOwnProperty('opid') ? operationToDo.opid : null;
+                }));
+   
+                setTimeout(function () {
+                    // Remove the first script instruction from the list (the one we just processed) 
+                    // and recursively call the same function after a delay
+                    doOperation(scriptInstructionArray.slice(1), theOperation);
+                }, operationDelayMs);
+            }
+        };
 
           if (fillScriptOps = fillScript.options) {
               fillScriptOps.hasOwnProperty('animate') && (animateTheFilling = fillScriptOps.animate),
@@ -636,9 +630,11 @@
               return;
           }
 
-          // custom fill script
-
+          // Set the custom fill script
           fillScriptOps = fillScript.script;
+          
+          // Call doOperation to start the recursive process of handling all the script instructions.
+          // Define a function to execute when the fill script has completed.
           doOperation(fillScriptOps, function () {
               // Done now
               // Do we have anything to autosubmit?
@@ -661,57 +657,37 @@
           });
       }
 
-      // fill for reference
+      // Define the function to perform for each of the script instructions
       var thisFill = {
           fill_by_opid: doFillByOpId,
-          fill_by_query: doFillByQuery,
           click_on_opid: doClickByOpId,
-          click_on_query: doClickByQuery,
-          touch_all_fields: touchAllFields,
-          simple_set_value_by_query: doSimpleSetByQuery,
-          focus_by_opid: doFocusByOpId,
-          delay: null
+          focus_by_opid: doFocusByOpId
       };
 
-      // normalize the op versus the reference
-      function normalizeOp(op) {
+      // normalize the operation versus the reference
+      // the script operation comes as ["instruction", opid]
+      function normalizeInstruction(scriptOperation) {
           var thisOperation;
-          if (op.hasOwnProperty('operation') && op.hasOwnProperty('parameters')) {
-              thisOperation = op.operation, op = op.parameters;
+          if (scriptOperation.hasOwnProperty('operation') && scriptOperation.hasOwnProperty('parameters')) {
+              thisOperation = scriptOperation.operation, scriptOperation = scriptOperation.parameters;
           } else {
-              if ('[object Array]' === Object.prototype.toString.call(op)) {
-                  thisOperation = op[0],
-                      op = op.splice(1);
+              if ('[object Array]' === Object.prototype.toString.call(scriptOperation)) {
+                    // Determine the operation we need to perform (fill, focus, etc.)
+                    thisOperation = scriptOperation[0];
+                    // Remove the first element from the array, leaving all the other properties
+                    scriptOperation = scriptOperation.splice(1);
               } else {
                   return null;
               }
           }
-          return thisFill.hasOwnProperty(thisOperation) ? thisFill[thisOperation].apply(this, op) : null;
+          // Use "apply()" to call the appropriate function (doFillByOpId, doClickByOpId, doFocusByOpId)
+          return thisFill.hasOwnProperty(thisOperation) ? thisFill[thisOperation].apply(this, scriptOperation) : null;
       }
 
       // do a fill by opid operation
       function doFillByOpId(opId, op) {
           var el = getElementByOpId(opId);
           return el ? (fillTheElement(el, op), [el]) : null;
-      }
-
-      // do a fill by query operation
-      function doFillByQuery(query, op) {
-          var elements = selectAllFromDoc(query);
-          return Array.prototype.map.call(Array.prototype.slice.call(elements), function (el) {
-              fillTheElement(el, op);
-              return el;
-          }, this);
-      }
-
-      // do a simple set value by query
-      function doSimpleSetByQuery(query, valueToSet) {
-          var elements = selectAllFromDoc(query),
-              arr = [];
-          Array.prototype.forEach.call(Array.prototype.slice.call(elements), function (el) {
-              el.disabled || el.a || el.readOnly || void 0 === el.value || (el.value = valueToSet, arr.push(el));
-          });
-          return arr;
       }
 
       // focus by opid
@@ -729,17 +705,6 @@
       function doClickByOpId(opId) {
           var el = getElementByOpId(opId);
           return el ? clickElement(el) ? [el] : null : null;
-      }
-
-      // do a click by query operation
-      function doClickByQuery(query) {
-          query = selectAllFromDoc(query);
-          return Array.prototype.map.call(Array.prototype.slice.call(query), function (el) {
-              clickElement(el);
-              'function' === typeof el.click && el.click();
-              'function' === typeof el.focus && doFocusElement(el, true);
-              return [el];
-          }, this);
       }
 
       var checkRadioTrueOps = {
@@ -780,10 +745,13 @@
           }
       }
 
-      // do all the full operations needed
+      // do all the fill operations needed for the given element.
       function doAllFillOperations(el, afterValSetFunc) {
+          // Set the value for the element by simulating click, focus, and keypress
           setValueForElement(el);
+          // Perform the afterValSetFunc function that is passed in
           afterValSetFunc(el);
+          // Set the value for the element by triggering `input` and `change` HTML events
           setValueForElementByEvent(el);
 
           // START MODIFICATION
@@ -857,23 +825,6 @@
           }
           el.click();
           return true;
-      }
-
-      // get all fields we care about
-      function getAllFields() {
-          var r = RegExp('((\\\\b|_|-)pin(\\\\b|_|-)|password|passwort|kennwort|passe|contraseña|senha|密码|adgangskode|hasło|wachtwoord)', 'i');
-          return Array.prototype.slice.call(selectAllFromDoc("input[type='text']")).filter(function (el) {
-              return el.value && r.test(el.value);
-          }, this);
-      }
-
-      // touch all the fields
-      function touchAllFields() {
-          getAllFields().forEach(function (el) {
-              setValueForElement(el);
-              el.click && el.click();
-              setValueForElementByEvent(el);
-          });
       }
 
       // can we see the element to apply some styling?
