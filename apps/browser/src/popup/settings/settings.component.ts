@@ -11,7 +11,7 @@ import { KeyConnectorService } from "@bitwarden/common/abstractions/keyConnector
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout.service";
+import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
 import { DeviceType } from "@bitwarden/common/enums/deviceType";
 
 import { BrowserApi } from "../../browser/browserApi";
@@ -37,6 +37,7 @@ const RateUrls = {
   selector: "app-settings",
   templateUrl: "settings.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class SettingsComponent implements OnInit {
   @ViewChild("vaultTimeoutActionSelect", { read: ElementRef, static: true })
   vaultTimeoutActionSelectRef: ElementRef;
@@ -102,6 +103,7 @@ export class SettingsComponent implements OnInit {
       this.vaultTimeout.setValue(timeout);
     }
     this.previousVaultTimeout = this.vaultTimeout.value;
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.vaultTimeout.valueChanges.subscribe(async (value) => {
       await this.saveVaultTimeout(value);
     });
@@ -302,7 +304,7 @@ export class SettingsComponent implements OnInit {
   }
 
   async lock() {
-    await this.vaultTimeoutService.lock(true);
+    await this.vaultTimeoutService.lock();
   }
 
   async logOut() {
