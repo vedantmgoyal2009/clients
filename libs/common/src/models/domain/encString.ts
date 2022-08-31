@@ -141,31 +141,26 @@ export class EncString implements IEncrypted {
       return this.decryptedValue;
     }
 
-    if (key == null) {
-      key = await this.getKeyForDecryption(orgId);
-    }
-    if (key == null) {
-      this.decryptedValue = "[error: cannot decrypt]";
-      return this.decryptedValue;
-    }
-
-    const encryptService = Utils.getContainerService().getEncryptService();
     try {
+      if (key == null) {
+        key = await this.getKeyForDecryption(orgId);
+      }
+      if (key == null) {
+        throw new Error("No key to decrypt EncString with orgId " + orgId);
+      }
+
+      const encryptService = Utils.getContainerService().getEncryptService();
       this.decryptedValue = await encryptService.decryptToUtf8(this, key);
     } catch (e) {
       this.decryptedValue = "[error: cannot decrypt]";
+      /* eslint-disable-next-line no-console */
+      console.error(e);
     }
     return this.decryptedValue;
   }
 
   private async getKeyForDecryption(orgId: string) {
     const cryptoService = Utils.getContainerService().getCryptoService();
-    try {
-      return orgId != null
-        ? cryptoService.getOrgKey(orgId)
-        : cryptoService.getKeyForUserEncryption();
-    } catch {
-      return null;
-    }
+    return orgId != null ? cryptoService.getOrgKey(orgId) : cryptoService.getKeyForUserEncryption();
   }
 }

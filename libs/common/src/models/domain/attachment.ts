@@ -53,12 +53,12 @@ export class Attachment extends Domain {
   }
 
   private async decryptAttachmentKey(orgId: string, encKey?: SymmetricCryptoKey) {
-    if (encKey == null) {
-      encKey = await this.getKeyForDecryption(orgId);
-    }
-
-    const encryptService = Utils.getContainerService().getEncryptService();
     try {
+      if (encKey == null) {
+        encKey = await this.getKeyForDecryption(orgId);
+      }
+
+      const encryptService = Utils.getContainerService().getEncryptService();
       const decValue = await encryptService.decryptToBytes(this.key, encKey);
       return new SymmetricCryptoKey(decValue);
     } catch (e) {
@@ -68,13 +68,7 @@ export class Attachment extends Domain {
 
   private async getKeyForDecryption(orgId: string) {
     const cryptoService = Utils.getContainerService().getCryptoService();
-    try {
-      return orgId != null
-        ? cryptoService.getOrgKey(orgId)
-        : cryptoService.getKeyForUserEncryption();
-    } catch {
-      return null;
-    }
+    return orgId != null ? cryptoService.getOrgKey(orgId) : cryptoService.getKeyForUserEncryption();
   }
 
   toAttachmentData(): AttachmentData {
