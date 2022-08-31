@@ -160,14 +160,10 @@ export class EncString implements IEncrypted {
 
   private async getKeyForDecryption(orgId: string) {
     const cryptoService = Utils.getContainerService().getCryptoService();
-
     try {
-      const orgKey = await cryptoService.getOrgKey(orgId);
-      if (orgKey != null) {
-        return orgKey;
-      }
-
-      return cryptoService.getKeyForUserEncryption();
+      return orgId != null
+        ? cryptoService.getOrgKey(orgId)
+        : cryptoService.getKeyForUserEncryption();
     } catch {
       return null;
     }

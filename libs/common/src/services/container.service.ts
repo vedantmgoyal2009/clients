@@ -22,7 +22,7 @@ export class ContainerService {
 
   getEncryptService(): AbstractEncryptService {
     if (this.encryptService == null) {
-      throw new Error("ContainerService.cryptoService not initialized.");
+      throw new Error("ContainerService.encryptService not initialized.");
     }
     return this.encryptService;
   }
