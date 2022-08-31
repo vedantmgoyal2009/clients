@@ -1,5 +1,6 @@
 import { Jsonify } from "type-fest";
 
+import { LogService } from "../abstractions/log.service";
 import { Cipher } from "../models/domain/cipher";
 import { CipherView } from "../models/view/cipherView";
 import { ConsoleLogService } from "../services/consoleLog.service";
@@ -7,45 +8,21 @@ import { ContainerService } from "../services/container.service";
 import { EncryptService } from "../services/encrypt.service";
 import { WebCryptoFunctionService } from "../services/webCryptoFunction.service";
 
-import { DecryptCipherRequest, WebWorkerRequest, WebWorkerResponse } from "./workerRequestResponse";
-
-const workerApi: Worker = self as any;
-
-let inited = false;
-
-workerApi.addEventListener("message", async (event: { data: string }) => {
-  EncryptWorker.init();
-
-  const request: Jsonify<WebWorkerRequest> = JSON.parse(event.data);
-  const response = await EncryptWorker.processMessage(request);
-
-  workerApi.postMessage(JSON.stringify(response));
-});
+import {
+  DecryptCipherRequest,
+  DecryptCipherResponse,
+  WebWorkerRequest,
+  WebWorkerResponse,
+} from "./workerRequestResponse";
 
 export class EncryptWorker {
-  static init() {
-    if (inited) {
-      return;
-    }
+  constructor(private logService: LogService) {}
 
-    const cryptoFunctionService = new WebCryptoFunctionService(self);
-    const logService = new ConsoleLogService(false); // TODO: this probably needs to be a custom logservice to send log messages back to main thread
-    const encryptService = new EncryptService(cryptoFunctionService, logService, true);
-
-    const bitwardenContainerService = new ContainerService(null, encryptService);
-    bitwardenContainerService.attachToGlobal(self);
-
-    inited = true;
-  }
-
-  static async processMessage(request: Jsonify<WebWorkerRequest>): Promise<WebWorkerResponse> {
+  async processMessage(request: Jsonify<WebWorkerRequest>): Promise<WebWorkerResponse> {
     switch (request.type) {
       case "decryptCiphers": {
         const decCiphers = await this.decryptCiphers(DecryptCipherRequest.fromJSON(request));
-        return {
-          id: request.id,
-          cipherViews: decCiphers,
-        };
+        return new DecryptCipherResponse(request.id, decCiphers);
       }
 
       default:
@@ -53,7 +30,7 @@ export class EncryptWorker {
     }
   }
 
-  static async decryptCiphers({ localData, cipherData, userKey, orgKeys }: DecryptCipherRequest) {
+  async decryptCiphers({ localData, cipherData, userKey, orgKeys }: DecryptCipherRequest) {
     const promises: any[] = [];
     const result: CipherView[] = [];
 
@@ -64,7 +41,9 @@ export class EncryptWorker {
       // Get key
       const key = cipher.organizationId == null ? userKey : orgKeys[cipher.organizationId];
       if (key == null) {
-        throw new Error(
+        // Log this but don't throw because it'll abort the whole vault decryption.
+        // Let the null propagate down so that it only affects that item and we get the [error: cannot decrypt] text
+        this.logService.error(
           "No key provided for " + cipher.id + " (org Id: " + cipher.organizationId + ")"
         );
       }
@@ -77,3 +56,22 @@ export class EncryptWorker {
     return result;
   }
 }
+
+// Init services and worker class
+const cryptoFunctionService = new WebCryptoFunctionService(self);
+const logService = new ConsoleLogService(false);
+const encryptService = new EncryptService(cryptoFunctionService, logService, true);
+const encryptWorker = new EncryptWorker(logService);
+
+const bitwardenContainerService = new ContainerService(null, encryptService);
+bitwardenContainerService.attachToGlobal(self);
+
+const workerApi: Worker = self as any;
+
+// Listen for messages
+workerApi.addEventListener("message", async (event: { data: string }) => {
+  const request: Jsonify<WebWorkerRequest> = JSON.parse(event.data);
+  const response = await encryptWorker.processMessage(request);
+
+  workerApi.postMessage(JSON.stringify(response));
+});
