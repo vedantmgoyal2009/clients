@@ -153,8 +153,6 @@ export class EncString implements IEncrypted {
       this.decryptedValue = await encryptService.decryptToUtf8(this, key);
     } catch (e) {
       this.decryptedValue = "[error: cannot decrypt]";
-      /* eslint-disable-next-line no-console */
-      console.error(e);
     }
     return this.decryptedValue;
   }
