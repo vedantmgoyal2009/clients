@@ -1,21 +1,27 @@
 import { mock, MockProxy } from "jest-mock-extended";
 
+import { LogService } from "../abstractions/log.service";
 import { CipherData } from "../models/data/cipherData";
 import { EncString } from "../models/domain/encString";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 import { ContainerService } from "../services/container.service";
 import { EncryptService } from "../services/encrypt.service";
 
-import { EncryptWorker } from "./encrypt.worker";
+import { EncryptWorker, init } from "./encrypt.worker";
 import { DecryptCipherRequest } from "./workerRequestResponse";
 
 describe("EncryptWorker", () => {
+  let encryptWorker: EncryptWorker;
+  let logService: MockProxy<LogService>;
+
   beforeEach(() => {
     (window as any).bitwardenContainerService = null;
+    logService = mock<LogService>();
+    encryptWorker = new EncryptWorker(logService);
   });
 
   it("initialises ContainerService", () => {
-    EncryptWorker.init();
+    init();
 
     const containerService: ContainerService = (window as any).bitwardenContainerService;
     expect(() => containerService.getEncryptService()).not.toThrow();
@@ -57,7 +63,7 @@ describe("EncryptWorker", () => {
         null
       );
 
-      const result = await EncryptWorker.decryptCiphers(request);
+      const result = await encryptWorker.decryptCiphers(request);
 
       expect(encryptService.decryptToUtf8).toHaveBeenCalledWith(expect.any(EncString), userKey);
       expect(result[0]).toMatchObject({
@@ -94,7 +100,7 @@ describe("EncryptWorker", () => {
         }
       );
 
-      const result = await EncryptWorker.decryptCiphers(request);
+      const result = await encryptWorker.decryptCiphers(request);
 
       expect(encryptService.decryptToUtf8).toHaveBeenCalledWith(expect.any(EncString), orgKey);
       expect(result[0]).toMatchObject({
@@ -104,29 +110,6 @@ describe("EncryptWorker", () => {
           lastLaunched: 123,
         },
       });
-    });
-
-    it("throws if a key is not provided", async () => {
-      const cipherData = {
-        id: "cipher1",
-        organizationId: "orgId",
-        name: "EncryptedString",
-      } as CipherData;
-
-      const request = new DecryptCipherRequest(
-        "id",
-        {
-          [cipherData.id]: cipherData,
-        },
-        {},
-        mock<SymmetricCryptoKey>(),
-        null
-      );
-
-      expect.assertions(1);
-      await expect(EncryptWorker.decryptCiphers(request)).rejects.toThrow(
-        "No key provided for " + cipherData.id
-      );
     });
   });
 });
