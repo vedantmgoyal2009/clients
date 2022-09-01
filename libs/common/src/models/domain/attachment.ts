@@ -68,7 +68,9 @@ export class Attachment extends Domain {
 
   private async getKeyForDecryption(orgId: string) {
     const cryptoService = Utils.getContainerService().getCryptoService();
-    return orgId != null ? cryptoService.getOrgKey(orgId) : cryptoService.getKeyForUserEncryption();
+    return orgId != null
+      ? await cryptoService.getOrgKey(orgId)
+      : await cryptoService.getKeyForUserEncryption();
   }
 
   toAttachmentData(): AttachmentData {
