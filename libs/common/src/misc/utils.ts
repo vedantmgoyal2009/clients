@@ -370,6 +370,9 @@ export class Utils {
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
+  /**
+   * @throws Will throw an error if the ContainerService has not been attached to the window object
+   */
   static getContainerService(): BitwardenContainerService {
     if (this.global.bitwardenContainerService == null) {
       throw new Error("global bitwardenContainerService not initialized.");
