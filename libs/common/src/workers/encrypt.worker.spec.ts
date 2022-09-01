@@ -36,13 +36,13 @@ describe("EncryptWorker", () => {
       containerService = mock<ContainerService>();
       encryptService = mock<EncryptService>();
 
+      (window as any).bitwardenContainerService = containerService;
+
       containerService.getEncryptService.mockReturnValue(encryptService);
       encryptService.decryptToUtf8.mockResolvedValue("DecryptedString");
     });
 
     it("decrypts personal ciphers", async () => {
-      (window as any).bitwardenContainerService = containerService;
-
       const cipherData = {
         id: "cipher1",
         organizationId: null,
@@ -76,8 +76,6 @@ describe("EncryptWorker", () => {
     });
 
     it("decrypts organization ciphers", async () => {
-      (window as any).bitwardenContainerService = containerService;
-
       const cipherData = {
         id: "cipher1",
         organizationId: "orgId",
