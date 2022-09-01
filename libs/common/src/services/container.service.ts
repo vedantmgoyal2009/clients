@@ -13,6 +13,9 @@ export class ContainerService {
     }
   }
 
+  /**
+   * @throws Will throw if CryptoService was not instantiated and provided to the ContainerService constructor
+   */
   getCryptoService(): CryptoService {
     if (this.cryptoService == null) {
       throw new Error("ContainerService.cryptoService not initialized.");
@@ -20,6 +23,9 @@ export class ContainerService {
     return this.cryptoService;
   }
 
+  /**
+   * @throws Will throw if EncryptService was not instantiated and provided to the ContainerService constructor
+   */
   getEncryptService(): AbstractEncryptService {
     if (this.encryptService == null) {
       throw new Error("ContainerService.encryptService not initialized.");
