@@ -77,10 +77,10 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     });
   }
 
-  decryptOrgCiphers(cipherData: CipherData[]): Promise<CipherView[]> {
+  async decryptOrgCiphers(cipherData: CipherData[]): Promise<CipherView[]> {
     const ciphersDict: { [orgId: string]: CipherData } = {};
     cipherData.forEach((cd) => (ciphersDict[cd.id] = cd));
-    return this.decryptCiphers(ciphersDict);
+    return await this.decryptCiphers(ciphersDict);
   }
 
   clear() {
