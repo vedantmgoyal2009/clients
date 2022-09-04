@@ -46,7 +46,8 @@ import { TotpService } from "@bitwarden/common/services/totp.service";
 import { TwoFactorService } from "@bitwarden/common/services/twoFactor.service";
 import { UserVerificationApiService } from "@bitwarden/common/services/userVerification/userVerification-api.service";
 import { UserVerificationService } from "@bitwarden/common/services/userVerification/userVerification.service";
-import { VaultTimeoutService } from "@bitwarden/common/services/vaultTimeout.service";
+import { VaultTimeoutService } from "@bitwarden/common/services/vaultTimeout/vaultTimeout.service";
+import { VaultTimeoutSettingsService } from "@bitwarden/common/services/vaultTimeout/vaultTimeoutSettings.service";
 import { CliPlatformUtilsService } from "@bitwarden/node/cli/services/cliPlatformUtils.service";
 import { ConsoleLogService } from "@bitwarden/node/cli/services/consoleLog.service";
 import { NodeApiService } from "@bitwarden/node/services/nodeApi.service";
@@ -82,6 +83,7 @@ export class Main {
   folderService: InternalFolderService;
   collectionService: CollectionService;
   vaultTimeoutService: VaultTimeoutService;
+  vaultTimeoutSettingsService: VaultTimeoutSettingsService;
   syncService: SyncService;
   passwordGenerationService: PasswordGenerationService;
   totpService: TotpService;
@@ -191,7 +193,7 @@ export class Main {
 
     this.organizationApiService = new OrganizationApiService(this.apiService);
 
-    this.containerService = new ContainerService(this.cryptoService);
+    this.containerService = new ContainerService(this.cryptoService, this.encryptService);
 
     this.settingsService = new SettingsService(this.stateService);
 
@@ -273,6 +275,13 @@ export class Main {
     const lockedCallback = async () =>
       await this.cryptoService.clearStoredKey(KeySuffixOptions.Auto);
 
+    this.vaultTimeoutSettingsService = new VaultTimeoutSettingsService(
+      this.cryptoService,
+      this.tokenService,
+      this.policyService,
+      this.stateService
+    );
+
     this.vaultTimeoutService = new VaultTimeoutService(
       this.cipherService,
       this.folderService,
@@ -281,11 +290,10 @@ export class Main {
       this.platformUtilsService,
       this.messagingService,
       this.searchService,
-      this.tokenService,
-      this.policyService,
       this.keyConnectorService,
       this.stateService,
       this.authService,
+      this.vaultTimeoutSettingsService,
       lockedCallback,
       null
     );

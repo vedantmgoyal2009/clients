@@ -8,11 +8,12 @@ import { CollectionData } from "../models/data/collectionData";
 import { EncryptedOrganizationKeyData } from "../models/data/encryptedOrganizationKeyData";
 import { EventData } from "../models/data/eventData";
 import { FolderData } from "../models/data/folderData";
+import { LocalData } from "../models/data/localData";
 import { OrganizationData } from "../models/data/organizationData";
 import { PolicyData } from "../models/data/policyData";
 import { ProviderData } from "../models/data/providerData";
 import { SendData } from "../models/data/sendData";
-import { Account } from "../models/domain/account";
+import { Account, AccountSettingsSettings } from "../models/domain/account";
 import { EncString } from "../models/domain/encString";
 import { EnvironmentUrls } from "../models/domain/environmentUrls";
 import { GeneratedPasswordHistory } from "../models/domain/generatedPasswordHistory";
@@ -245,8 +246,11 @@ export abstract class StateService<T extends Account = Account> {
   setLastActive: (value: number, options?: StorageOptions) => Promise<void>;
   getLastSync: (options?: StorageOptions) => Promise<string>;
   setLastSync: (value: string, options?: StorageOptions) => Promise<void>;
-  getLocalData: (options?: StorageOptions) => Promise<any>;
-  setLocalData: (value: string, options?: StorageOptions) => Promise<void>;
+  getLocalData: (options?: StorageOptions) => Promise<{ [cipherId: string]: LocalData }>;
+  setLocalData: (
+    value: { [cipherId: string]: LocalData },
+    options?: StorageOptions
+  ) => Promise<void>;
   getLocale: (options?: StorageOptions) => Promise<string>;
   setLocale: (value: string, options?: StorageOptions) => Promise<void>;
   getMainWindowSize: (options?: StorageOptions) => Promise<number>;
@@ -286,8 +290,14 @@ export abstract class StateService<T extends Account = Account> {
   setRememberedEmail: (value: string, options?: StorageOptions) => Promise<void>;
   getSecurityStamp: (options?: StorageOptions) => Promise<string>;
   setSecurityStamp: (value: string, options?: StorageOptions) => Promise<void>;
-  getSettings: (options?: StorageOptions) => Promise<any>;
-  setSettings: (value: string, options?: StorageOptions) => Promise<void>;
+  /**
+   * @deprecated Do not call this directly, use SettingsService
+   */
+  getSettings: (options?: StorageOptions) => Promise<AccountSettingsSettings>;
+  /**
+   * @deprecated Do not call this directly, use SettingsService
+   */
+  setSettings: (value: AccountSettingsSettings, options?: StorageOptions) => Promise<void>;
   getSsoCodeVerifier: (options?: StorageOptions) => Promise<string>;
   setSsoCodeVerifier: (value: string, options?: StorageOptions) => Promise<void>;
   getSsoOrgIdentifier: (options?: StorageOptions) => Promise<string>;

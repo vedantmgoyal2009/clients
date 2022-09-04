@@ -13,7 +13,8 @@ import { MessagingService } from "@bitwarden/common/abstractions/messaging.servi
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
-import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout.service";
+import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
+import { VaultTimeoutSettingsService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeoutSettings.service";
 import { AuthenticationStatus } from "@bitwarden/common/enums/authenticationStatus";
 
 import { BiometricErrors, BiometricErrorTypes } from "../../models/biometricErrors";
@@ -37,6 +38,7 @@ export class LockComponent extends BaseLockComponent {
     messagingService: MessagingService,
     cryptoService: CryptoService,
     vaultTimeoutService: VaultTimeoutService,
+    vaultTimeoutSettingsService: VaultTimeoutSettingsService,
     environmentService: EnvironmentService,
     stateService: StateService,
     apiService: ApiService,
@@ -53,6 +55,7 @@ export class LockComponent extends BaseLockComponent {
       messagingService,
       cryptoService,
       vaultTimeoutService,
+      vaultTimeoutSettingsService,
       environmentService,
       stateService,
       apiService,

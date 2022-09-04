@@ -34,7 +34,8 @@ import { TwoFactorService as TwoFactorServiceAbstraction } from "@bitwarden/comm
 import { UserVerificationApiServiceAbstraction } from "@bitwarden/common/abstractions/userVerification/userVerification-api.service.abstraction";
 import { UserVerificationService as UserVerificationServiceAbstraction } from "@bitwarden/common/abstractions/userVerification/userVerification.service.abstraction";
 import { UsernameGenerationService as UsernameGenerationServiceAbstraction } from "@bitwarden/common/abstractions/usernameGeneration.service";
-import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout.service";
+import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
+import { VaultTimeoutSettingsService as VaultTimeoutSettingsServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeoutSettings.service";
 import { AuthenticationStatus } from "@bitwarden/common/enums/authenticationStatus";
 import { CipherRepromptType } from "@bitwarden/common/enums/cipherRepromptType";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
@@ -74,6 +75,7 @@ import { TwoFactorService } from "@bitwarden/common/services/twoFactor.service";
 import { UserVerificationApiService } from "@bitwarden/common/services/userVerification/userVerification-api.service";
 import { UserVerificationService } from "@bitwarden/common/services/userVerification/userVerification.service";
 import { UsernameGenerationService } from "@bitwarden/common/services/usernameGeneration.service";
+import { VaultTimeoutSettingsService } from "@bitwarden/common/services/vaultTimeout/vaultTimeoutSettings.service";
 import { WebCryptoFunctionService } from "@bitwarden/common/services/webCryptoFunction.service";
 
 import { BrowserApi } from "../browser/browserApi";
@@ -95,7 +97,7 @@ import { KeyGenerationService } from "../services/keyGeneration.service";
 import { LocalBackedSessionStorageService } from "../services/localBackedSessionStorage.service";
 import { StateService } from "../services/state.service";
 import { VaultFilterService } from "../services/vaultFilter.service";
-import VaultTimeoutService from "../services/vaultTimeout.service";
+import VaultTimeoutService from "../services/vaultTimeout/vaultTimeout.service";
 
 import CommandsBackground from "./commands.background";
 import ContextMenusBackground from "./contextMenus.background";
@@ -126,6 +128,7 @@ export default class MainBackground {
   folderService: InternalFolderServiceAbstraction;
   collectionService: CollectionServiceAbstraction;
   vaultTimeoutService: VaultTimeoutServiceAbstraction;
+  vaultTimeoutSettingsService: VaultTimeoutSettingsServiceAbstraction;
   syncService: SyncServiceAbstraction;
   passwordGenerationService: PasswordGenerationServiceAbstraction;
   totpService: TotpServiceAbstraction;
@@ -348,6 +351,13 @@ export default class MainBackground {
       this.i18nService
     );
 
+    this.vaultTimeoutSettingsService = new VaultTimeoutSettingsService(
+      this.cryptoService,
+      this.tokenService,
+      this.policyService,
+      this.stateService
+    );
+
     this.vaultTimeoutService = new VaultTimeoutService(
       this.cipherService,
       this.folderService,
@@ -356,14 +366,14 @@ export default class MainBackground {
       this.platformUtilsService,
       this.messagingService,
       this.searchService,
-      this.tokenService,
-      this.policyService,
       this.keyConnectorService,
       this.stateService,
       this.authService,
+      this.vaultTimeoutSettingsService,
       lockedCallback,
       logoutCallback
     );
+
     this.providerService = new ProviderService(this.stateService);
     this.syncService = new SyncService(
       this.apiService,
@@ -403,7 +413,7 @@ export default class MainBackground {
       this.eventService,
       this.logService
     );
-    this.containerService = new ContainerService(this.cryptoService);
+    this.containerService = new ContainerService(this.cryptoService, this.encryptService);
     this.auditService = new AuditService(this.cryptoFunctionService, this.apiService);
     this.exportService = new ExportService(
       this.folderService,
@@ -625,7 +635,7 @@ export default class MainBackground {
       this.collectionService.clear(userId),
       this.policyService.clear(userId),
       this.passwordGenerationService.clear(userId),
-      this.vaultTimeoutService.clear(userId),
+      this.vaultTimeoutSettingsService.clear(userId),
       this.keyConnectorService.clear(),
       this.vaultFilterService.clear(),
     ]);
