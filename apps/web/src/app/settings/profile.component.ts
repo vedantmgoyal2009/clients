@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { ViewChild, ViewContainerRef, Component, OnInit } from "@angular/core";
 
+import { ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
@@ -9,6 +10,8 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { UpdateProfileRequest } from "@bitwarden/common/models/request/updateProfileRequest";
 import { ProfileResponse } from "@bitwarden/common/models/response/profileResponse";
+
+import { ChangeAvatarComponent } from "./change-avatar.component";
 
 @Component({
   selector: "app-profile",
@@ -20,6 +23,8 @@ export class ProfileComponent implements OnInit {
   fingerprint: string;
 
   formPromise: Promise<any>;
+  @ViewChild("avatarModalTemplate", { read: ViewContainerRef, static: true })
+  avatarModalRef: ViewContainerRef;
 
   constructor(
     private apiService: ApiService,
@@ -28,7 +33,8 @@ export class ProfileComponent implements OnInit {
     private cryptoService: CryptoService,
     private logService: LogService,
     private keyConnectorService: KeyConnectorService,
-    private stateService: StateService
+    private stateService: StateService,
+    private modalService: ModalService
   ) {}
 
   async ngOnInit() {
@@ -40,6 +46,13 @@ export class ProfileComponent implements OnInit {
     if (fingerprint != null) {
       this.fingerprint = fingerprint.join("-");
     }
+  }
+
+  async openChangeAvatar() {
+    this.profile.avatarColor = "#FFFFFF";
+    await this.modalService.openViewRef(ChangeAvatarComponent, this.avatarModalRef, (modal) => {
+      modal.profile = this.profile;
+    });
   }
 
   async submit() {

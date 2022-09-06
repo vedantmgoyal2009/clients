@@ -90,6 +90,7 @@ import { AdjustPaymentComponent } from "../settings/adjust-payment.component";
 import { AdjustStorageComponent } from "../settings/adjust-storage.component";
 import { ApiKeyComponent } from "../settings/api-key.component";
 import { BillingSyncKeyComponent } from "../settings/billing-sync-key.component";
+import { ChangeAvatarComponent } from "../settings/change-avatar.component";
 import { ChangeEmailComponent } from "../settings/change-email.component";
 import { ChangeKdfComponent } from "../settings/change-kdf.component";
 import { ChangePasswordComponent } from "../settings/change-password.component";
@@ -260,6 +261,7 @@ import { SharedModule } from ".";
     PremiumBadgeComponent,
     PremiumComponent,
     ProfileComponent,
+    ChangeAvatarComponent,
     ProvidersComponent,
     PurgeVaultComponent,
     RecoverDeleteComponent,
@@ -403,6 +405,7 @@ import { SharedModule } from ".";
     PremiumBadgeComponent,
     PremiumComponent,
     ProfileComponent,
+    ChangeAvatarComponent,
     ProvidersComponent,
     PurgeVaultComponent,
     RecoverDeleteComponent,

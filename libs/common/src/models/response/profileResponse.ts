@@ -14,6 +14,7 @@ export class ProfileResponse extends BaseResponse {
   culture: string;
   twoFactorEnabled: boolean;
   key: string;
+  avatarColor: string;
   privateKey: string;
   securityStamp: string;
   forcePasswordReset: boolean;

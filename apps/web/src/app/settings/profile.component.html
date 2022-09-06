@@ -41,6 +41,16 @@
           fontSize="35"
         >
         </app-avatar>
+        <button
+          type="button"
+          class="btn btn-outline-secondary tw-ml-3.5"
+          appStopClick
+          appStopProp
+          (click)="openChangeAvatar()"
+        >
+          <i class="bwi bwi-lg bwi-pencil-square" aria-hidden="true"></i>
+          Customize
+        </button>
       </div>
       <hr />
       <p *ngIf="fingerprint">
@@ -62,3 +72,4 @@
     <span>{{ "save" | i18n }}</span>
   </button>
 </form>
+<ng-template #avatarModalTemplate></ng-template>
