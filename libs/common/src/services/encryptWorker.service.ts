@@ -47,6 +47,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
       this.restartTimeout();
     }
 
+    // Construct the request packet to be sent to the worker
     const orgKeys = await this.cryptoService.getOrgKeys();
     const userKey = await this.cryptoService.getKeyForUserEncryption();
     const request = new DecryptCipherRequest(
@@ -58,6 +59,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     );
 
     return new Promise((resolve, reject) => {
+      // Listen for response containing decrypted items
       this.worker.addEventListener("message", async (event: { data: string }) => {
         const response: Jsonify<DecryptCipherResponse> = JSON.parse(event.data);
         if (response.id != request.id) {
@@ -67,12 +69,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
         resolve(DecryptCipherResponse.fromJSON(response).cipherViews);
       });
 
-      // Caution: this may not work/be supported in node. Need to test
-      this.worker.addEventListener("error", (event) => {
-        reject("An unexpected error occurred in a worker: " + event.message);
-      });
-
-      // Send the instruction to the worker
+      // Send the request to the worker
       this.worker.postMessage(JSON.stringify(request));
     });
   }
