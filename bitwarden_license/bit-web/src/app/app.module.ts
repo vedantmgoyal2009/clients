@@ -8,7 +8,7 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { JslibModule } from "@bitwarden/angular/jslib.module";
 
-import { CoreModule } from "src/app/core";
+import { CoreModule } from "src/app/core/core.module";
 import { OssRoutingModule } from "src/app/oss-routing.module";
 import { OssModule } from "src/app/oss.module";
 import { WildcardRoutingModule } from "src/app/wildcard-routing.module";
