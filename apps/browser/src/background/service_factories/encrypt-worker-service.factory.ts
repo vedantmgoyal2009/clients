@@ -29,7 +29,8 @@ export function EncryptWorkerServiceFactory(
         await logServiceFactory(cache, opts),
         await platformUtilsServiceFactory(cache, opts),
         window,
-        await cryptoServiceFactory(cache, opts)
+        await cryptoServiceFactory(cache, opts),
+        new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url)
       )
   );
 }

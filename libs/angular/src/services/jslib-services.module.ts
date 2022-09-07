@@ -121,7 +121,7 @@ import {
   LOCALES_DIRECTORY,
   SYSTEM_LANGUAGE,
   LOG_MAC_FAILURES,
-  CREATE_ENCRYPT_WORKER,
+  ENCRYPT_WORKER_URL,
 } from "./injection-tokens";
 import { ModalService } from "./modal.service";
 import { PasswordRepromptService } from "./passwordReprompt.service";
@@ -175,9 +175,8 @@ import { ValidationService } from "./validation.service";
     },
     {
       // import.meta is an ES2020 feature which isn't supported by node, this is here to keep it out of common code
-      provide: CREATE_ENCRYPT_WORKER,
-      useValue: () =>
-        new Worker(new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url)),
+      provide: ENCRYPT_WORKER_URL,
+      useValue: new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url),
     },
     {
       provide: AppIdServiceAbstraction,
@@ -543,7 +542,7 @@ import { ValidationService } from "./validation.service";
         PlatformUtilsService,
         WINDOW,
         CryptoServiceAbstraction,
-        CREATE_ENCRYPT_WORKER,
+        ENCRYPT_WORKER_URL,
       ],
     },
     {

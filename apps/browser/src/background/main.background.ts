@@ -274,7 +274,8 @@ export default class MainBackground {
       this.logService,
       this.platformUtilsService,
       window,
-      this.cryptoService
+      this.cryptoService,
+      new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url)
     );
     this.cipherService = new CipherService(
       this.cryptoService,

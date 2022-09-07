@@ -87,7 +87,8 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
     logService,
     platformUtils,
     window,
-    cryptoService
+    cryptoService,
+    new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url)
   );
 
   await i18nService.init();

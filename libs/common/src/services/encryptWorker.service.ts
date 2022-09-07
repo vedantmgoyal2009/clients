@@ -23,7 +23,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     private platformUtilsService: PlatformUtilsService,
     private win: Window,
     private cryptoService: CryptoService,
-    private createEncryptWorker: () => Worker
+    private encryptWorkerURL: URL
   ) {}
 
   isSupported() {
@@ -43,7 +43,7 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     this.logService.info("Starting decryption using web worker");
 
     if (this.worker == null) {
-      this.worker = this.createEncryptWorker();
+      this.worker = new Worker(this.encryptWorkerURL);
     }
 
     this.restartTimeout();
