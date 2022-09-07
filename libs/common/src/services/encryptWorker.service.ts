@@ -22,7 +22,8 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     private logService: LogService,
     private platformUtilsService: PlatformUtilsService,
     private win: Window,
-    private cryptoService: CryptoService
+    private cryptoService: CryptoService,
+    private createEncryptWorker: () => Worker
   ) {}
 
   isSupported() {
@@ -42,10 +43,10 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     this.logService.info("Starting decryption using web worker");
 
     if (this.worker == null) {
-      this.worker = this.createWorker();
-    } else {
-      this.restartTimeout();
+      this.worker = this.createEncryptWorker();
     }
+
+    this.restartTimeout();
 
     // Construct the request packet to be sent to the worker
     const orgKeys = await this.cryptoService.getOrgKeys();
@@ -85,11 +86,6 @@ export class EncryptWorkerService implements AbstractEncryptWorkerService {
     this.worker?.terminate();
     this.worker = null;
     this.clearTimeout();
-  }
-
-  private createWorker() {
-    this.restartTimeout();
-    return new Worker(new URL("../workers/encrypt.worker.ts", import.meta.url));
   }
 
   private restartTimeout() {

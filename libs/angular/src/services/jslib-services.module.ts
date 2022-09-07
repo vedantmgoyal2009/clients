@@ -127,6 +127,7 @@ export const CLIENT_TYPE = new InjectionToken<boolean>("CLIENT_TYPE");
 export const LOCALES_DIRECTORY = new InjectionToken<string>("LOCALES_DIRECTORY");
 export const SYSTEM_LANGUAGE = new InjectionToken<string>("SYSTEM_LANGUAGE");
 export const LOG_MAC_FAILURES = new InjectionToken<string>("LOG_MAC_FAILURES");
+export const CREATE_ENCRYPT_WORKER = new InjectionToken<() => Worker>("CREATE_ENCRYPT_WORKER");
 
 @NgModule({
   declarations: [],
@@ -173,6 +174,12 @@ export const LOG_MAC_FAILURES = new InjectionToken<string>("LOG_MAC_FAILURES");
     {
       provide: LOG_MAC_FAILURES,
       useValue: true,
+    },
+    {
+      // import.meta is an ES2020 feature which isn't supported by node, this is here to keep it out of common code
+      provide: CREATE_ENCRYPT_WORKER,
+      useValue: () =>
+        new Worker(new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url)),
     },
     {
       provide: AppIdServiceAbstraction,
@@ -533,7 +540,13 @@ export const LOG_MAC_FAILURES = new InjectionToken<string>("LOG_MAC_FAILURES");
     {
       provide: AbstractEncryptWorkerService,
       useClass: EncryptWorkerService,
-      deps: [LogService, PlatformUtilsService, WINDOW, CryptoServiceAbstraction],
+      deps: [
+        LogService,
+        PlatformUtilsService,
+        WINDOW,
+        CryptoServiceAbstraction,
+        CREATE_ENCRYPT_WORKER,
+      ],
     },
     {
       provide: UserVerificationApiServiceAbstraction,
