@@ -9,7 +9,11 @@ import {
   PlatformUtilsServiceInitOptions,
 } from "./platform-utils-service.factory";
 
-type EncryptWorkerServiceFactoryOptions = FactoryOptions;
+type EncryptWorkerServiceFactoryOptions = FactoryOptions & {
+  encryptWorkerServiceOptions: {
+    win: Window;
+  };
+};
 
 export type EncryptWorkerServiceInitOptions = EncryptWorkerServiceFactoryOptions &
   LogServiceInitOptions &
@@ -28,7 +32,7 @@ export function EncryptWorkerServiceFactory(
       new EncryptWorkerService(
         await logServiceFactory(cache, opts),
         await platformUtilsServiceFactory(cache, opts),
-        window,
+        opts.encryptWorkerServiceOptions.win,
         await cryptoServiceFactory(cache, opts),
         new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url)
       )
