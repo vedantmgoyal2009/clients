@@ -26,7 +26,7 @@ export function EncryptWorkerServiceFactory(
 ): Promise<AbstractEncryptWorkerService> {
   return factory(
     cache,
-    "vaultTimeoutService",
+    "encryptWorkerService",
     opts,
     async () =>
       new EncryptWorkerService(

@@ -11,7 +11,7 @@ describe("LoginView", () => {
   });
 
   it("fromJSON initializes nested objects", () => {
-    jest.spyOn(LoginUriView, "fromJSON").mockImplementation(mockFromJson as any);
+    jest.spyOn(LoginUriView, "fromJSON").mockImplementation(mockFromJson);
 
     const passwordRevisionDate = new Date();
 

@@ -7,7 +7,7 @@ jest.mock("@bitwarden/common/models/domain/symmetricCryptoKey");
 
 describe("AttachmentView", () => {
   it("fromJSON initializes nested objects", () => {
-    jest.spyOn(SymmetricCryptoKey, "fromJSON").mockImplementation(mockFromJson as any);
+    jest.spyOn(SymmetricCryptoKey, "fromJSON").mockImplementation(mockFromJson);
 
     const actual = AttachmentView.fromJSON({
       key: "encKeyB64" as any,
