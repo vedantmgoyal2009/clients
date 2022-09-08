@@ -115,6 +115,11 @@ export class BrowserApi {
     );
   }
 
+  static sendMessage(subscriber: string, arg: any = {}) {
+    const message = Object.assign({}, { command: subscriber }, arg);
+    return chrome.runtime.sendMessage(message);
+  }
+
   static async closeLoginTab() {
     const tabs = await BrowserApi.tabsQuery({
       active: true,
@@ -156,7 +161,7 @@ export class BrowserApi {
 
   static reloadExtension(win: Window) {
     if (win != null) {
-      return win.location.reload(true);
+      return (win.location as any).reload(true);
     } else {
       return chrome.runtime.reload();
     }

@@ -11,7 +11,6 @@ import { A11yInvalidDirective } from "./directives/a11y-invalid.directive";
 import { A11yTitleDirective } from "./directives/a11y-title.directive";
 import { ApiActionDirective } from "./directives/api-action.directive";
 import { AutofocusDirective } from "./directives/autofocus.directive";
-import { BlurClickDirective } from "./directives/blur-click.directive";
 import { BoxRowDirective } from "./directives/box-row.directive";
 import { FallbackSrcDirective } from "./directives/fallback-src.directive";
 import { InputStripSpacesDirective } from "./directives/input-strip-spaces.directive";
@@ -29,6 +28,7 @@ import { I18nPipe } from "./pipes/i18n.pipe";
 import { SearchCiphersPipe } from "./pipes/search-ciphers.pipe";
 import { SearchPipe } from "./pipes/search.pipe";
 import { UserNamePipe } from "./pipes/user-name.pipe";
+import { PasswordStrengthComponent } from "./shared/components/password-strength/password-strength.component";
 
 @NgModule({
   imports: [
@@ -47,7 +47,6 @@ import { UserNamePipe } from "./pipes/user-name.pipe";
     ApiActionDirective,
     AutofocusDirective,
     AvatarComponent,
-    BlurClickDirective,
     BoxRowDirective,
     CalloutComponent,
     ColorPasswordCountPipe,
@@ -68,6 +67,7 @@ import { UserNamePipe } from "./pipes/user-name.pipe";
     StopPropDirective,
     TrueFalseValueDirective,
     UserNamePipe,
+    PasswordStrengthComponent,
   ],
   exports: [
     A11yInvalidDirective,
@@ -76,7 +76,6 @@ import { UserNamePipe } from "./pipes/user-name.pipe";
     AutofocusDirective,
     AvatarComponent,
     BitwardenToastModule,
-    BlurClickDirective,
     BoxRowDirective,
     CalloutComponent,
     ColorPasswordCountPipe,
@@ -97,6 +96,7 @@ import { UserNamePipe } from "./pipes/user-name.pipe";
     StopPropDirective,
     TrueFalseValueDirective,
     UserNamePipe,
+    PasswordStrengthComponent,
   ],
   providers: [CreditCardNumberPipe, DatePipe, I18nPipe, SearchPipe, UserNamePipe],
 })

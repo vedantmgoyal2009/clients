@@ -6,6 +6,9 @@ import { EncryptedObject } from "@bitwarden/common/models/domain/encryptedObject
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 
 import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
+import { EncryptionType } from "../enums/encryptionType";
+import { IEncrypted } from "../interfaces/IEncrypted";
+import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
 
 export class EncryptService implements AbstractEncryptService {
   constructor(
@@ -16,7 +19,7 @@ export class EncryptService implements AbstractEncryptService {
 
   async encrypt(plainValue: string | ArrayBuffer, key: SymmetricCryptoKey): Promise<EncString> {
     if (key == null) {
-      throw new Error("no encryption key provided.");
+      throw new Error("No encryption key provided.");
     }
 
     if (plainValue == null) {
@@ -37,8 +40,36 @@ export class EncryptService implements AbstractEncryptService {
     return new EncString(encObj.key.encType, data, iv, mac);
   }
 
+  async encryptToBytes(plainValue: ArrayBuffer, key: SymmetricCryptoKey): Promise<EncArrayBuffer> {
+    if (key == null) {
+      throw new Error("No encryption key provided.");
+    }
+
+    const encValue = await this.aesEncrypt(plainValue, key);
+    let macLen = 0;
+    if (encValue.mac != null) {
+      macLen = encValue.mac.byteLength;
+    }
+
+    const encBytes = new Uint8Array(1 + encValue.iv.byteLength + macLen + encValue.data.byteLength);
+    encBytes.set([encValue.key.encType]);
+    encBytes.set(new Uint8Array(encValue.iv), 1);
+    if (encValue.mac != null) {
+      encBytes.set(new Uint8Array(encValue.mac), 1 + encValue.iv.byteLength);
+    }
+
+    encBytes.set(new Uint8Array(encValue.data), 1 + encValue.iv.byteLength + macLen);
+    return new EncArrayBuffer(encBytes.buffer);
+  }
+
   async decryptToUtf8(encString: EncString, key: SymmetricCryptoKey): Promise<string> {
-    if (key?.macKey != null && encString?.mac == null) {
+    if (key == null) {
+      throw new Error("No key provided for decryption.");
+    }
+
+    key = this.resolveLegacyKey(key, encString);
+
+    if (key.macKey != null && encString?.mac == null) {
       this.logService.error("mac required.");
       return null;
     }
@@ -70,6 +101,54 @@ export class EncryptService implements AbstractEncryptService {
     return this.cryptoFunctionService.aesDecryptFast(fastParams);
   }
 
+  async decryptToBytes(encThing: IEncrypted, key: SymmetricCryptoKey): Promise<ArrayBuffer> {
+    if (key == null) {
+      throw new Error("No encryption key provided.");
+    }
+
+    if (encThing == null) {
+      throw new Error("Nothing provided for decryption.");
+    }
+
+    key = this.resolveLegacyKey(key, encThing);
+
+    if (key.macKey != null && encThing.macBytes == null) {
+      return null;
+    }
+
+    if (key.encType !== encThing.encryptionType) {
+      return null;
+    }
+
+    if (key.macKey != null && encThing.macBytes != null) {
+      const macData = new Uint8Array(encThing.ivBytes.byteLength + encThing.dataBytes.byteLength);
+      macData.set(new Uint8Array(encThing.ivBytes), 0);
+      macData.set(new Uint8Array(encThing.dataBytes), encThing.ivBytes.byteLength);
+      const computedMac = await this.cryptoFunctionService.hmac(
+        macData.buffer,
+        key.macKey,
+        "sha256"
+      );
+      if (computedMac === null) {
+        return null;
+      }
+
+      const macsMatch = await this.cryptoFunctionService.compare(encThing.macBytes, computedMac);
+      if (!macsMatch) {
+        this.logMacFailed("mac failed.");
+        return null;
+      }
+    }
+
+    const result = await this.cryptoFunctionService.aesDecrypt(
+      encThing.dataBytes,
+      encThing.ivBytes,
+      key.encKey
+    );
+
+    return result ?? null;
+  }
+
   private async aesEncrypt(data: ArrayBuffer, key: SymmetricCryptoKey): Promise<EncryptedObject> {
     const obj = new EncryptedObject();
     obj.key = key;
@@ -90,5 +169,20 @@ export class EncryptService implements AbstractEncryptService {
     if (this.logMacFailures) {
       this.logService.error(msg);
     }
+  }
+
+  /**
+   * Transform into new key for the old encrypt-then-mac scheme if required, otherwise return the current key unchanged
+   * @param encThing The encrypted object (e.g. encString or encArrayBuffer) that you want to decrypt
+   */
+  resolveLegacyKey(key: SymmetricCryptoKey, encThing: IEncrypted): SymmetricCryptoKey {
+    if (
+      encThing.encryptionType === EncryptionType.AesCbc128_HmacSha256_B64 &&
+      key.encType === EncryptionType.AesCbc256_B64
+    ) {
+      return new SymmetricCryptoKey(key.key, EncryptionType.AesCbc128_HmacSha256_B64);
+    }
+
+    return key;
   }
 }

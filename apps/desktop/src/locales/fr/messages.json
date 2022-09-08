@@ -532,10 +532,13 @@
   "invalidEmail": {
     "message": "Adresse e-mail invalide."
   },
-  "masterPassRequired": {
+  "masterPasswordRequired": {
     "message": "Le mot de passe maître est requis."
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "Le mot de passe maître doit être entré de nouveau."
+  },
+  "masterPasswordMinlength": {
     "message": "Le mot de passe maître doit au moins contenir 8 caractères."
   },
   "masterPassDoesntMatch": {
@@ -895,10 +898,10 @@
     "description": "Clipboard is the operating system thing where you copy/paste data to on your device."
   },
   "enableFavicon": {
-    "message": "Show website icons"
+    "message": "Afficher les icônes du site web"
   },
   "faviconDesc": {
-    "message": "Show a recognizable image next to each login."
+    "message": "Afficher une image reconnaissable à côté de chaque identifiant."
   },
   "enableMinToTray": {
     "message": "Réduire dans la barre d'outils"
@@ -1390,6 +1393,21 @@
   "lockWithMasterPassOnRestart": {
     "message": "Verrouiller avec le mot de passe maître lors du redémarrage"
   },
+  "deleteAccount": {
+    "message": "Supprimer le compte"
+  },
+  "deleteAccountDesc": {
+    "message": "Continuez ci-dessous pour supprimer votre compte et toutes les données associées."
+  },
+  "deleteAccountWarning": {
+    "message": "La suppression de votre compte est définitive. Cette action ne peut pas être annulée."
+  },
+  "accountDeleted": {
+    "message": "Compte supprimé"
+  },
+  "accountDeletedDesc": {
+    "message": "Votre compte a été fermé et toutes les données associées ont été supprimées."
+  },
   "preferences": {
     "message": "Préférences"
   },
@@ -1543,8 +1561,8 @@
   "acceptPolicies": {
     "message": "En cochant cette case, vous acceptez les éléments suivants :"
   },
-  "acceptPoliciesError": {
-    "message": "Les conditions d'utilisation et la politique de confidentialité n'ont pas été acceptées."
+  "acceptPoliciesRequired": {
+    "message": "Les Conditions d'Utilisation et la Politique de Confidentialité n'ont pas été acceptées."
   },
   "enableBrowserIntegration": {
     "message": "Activer l'intégration avec le navigateur"
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "Clé d'IPA"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "Abonnement Premium requis"
+  },
+  "organizationIsDisabled": {
+    "message": "L'organisation est désactivée."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "Les éléments des Organisations désactivées ne sont pas accessibles. Contactez le propriétaire de votre Organisation pour obtenir de l'aide."
+  },
+  "neverLockWarning": {
+    "message": "Êtes-vous sûr de vouloir utiliser l'option \"Jamais\" ? Définir le verrouillage sur \"Jamais\" stocke la clé de chiffrement de votre coffre sur votre appareil. Si vous utilisez cette option, vous devez vous assurer de correctement protéger votre appareil."
+  },
+  "cardBrandMir": {
+    "message": "Mir"
   }
 }

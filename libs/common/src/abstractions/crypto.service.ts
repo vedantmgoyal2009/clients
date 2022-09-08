@@ -29,6 +29,7 @@ export abstract class CryptoService {
   getOrgKeys: () => Promise<Map<string, SymmetricCryptoKey>>;
   getOrgKey: (orgId: string) => Promise<SymmetricCryptoKey>;
   getProviderKey: (providerId: string) => Promise<SymmetricCryptoKey>;
+  getKeyForUserEncryption: (key?: SymmetricCryptoKey) => Promise<SymmetricCryptoKey>;
   hasKey: () => Promise<boolean>;
   hasKeyInMemory: (userId?: string) => Promise<boolean>;
   hasKeyStored: (keySuffix?: KeySuffixOptions, userId?: string) => Promise<boolean>;
@@ -80,7 +81,7 @@ export abstract class CryptoService {
   rsaDecrypt: (encValue: string, privateKeyValue?: ArrayBuffer) => Promise<ArrayBuffer>;
   decryptToBytes: (encString: EncString, key?: SymmetricCryptoKey) => Promise<ArrayBuffer>;
   decryptToUtf8: (encString: EncString, key?: SymmetricCryptoKey) => Promise<string>;
-  decryptFromBytes: (encBuf: ArrayBuffer, key: SymmetricCryptoKey) => Promise<ArrayBuffer>;
+  decryptFromBytes: (encBuffer: EncArrayBuffer, key: SymmetricCryptoKey) => Promise<ArrayBuffer>;
   randomNumber: (min: number, max: number) => Promise<number>;
   validateKey: (key: SymmetricCryptoKey) => Promise<boolean>;
 }

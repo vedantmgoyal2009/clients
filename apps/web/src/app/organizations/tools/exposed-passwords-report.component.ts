@@ -11,12 +11,14 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Cipher } from "@bitwarden/common/models/domain/cipher";
 import { CipherView } from "@bitwarden/common/models/view/cipherView";
 
-import { ExposedPasswordsReportComponent as BaseExposedPasswordsReportComponent } from "../../reports/exposed-passwords-report.component";
+// eslint-disable-next-line no-restricted-imports
+import { ExposedPasswordsReportComponent as BaseExposedPasswordsReportComponent } from "../../reports/pages/exposed-passwords-report.component";
 
 @Component({
   selector: "app-org-exposed-passwords-report",
-  templateUrl: "../../reports/exposed-passwords-report.component.html",
+  templateUrl: "../../reports/pages/exposed-passwords-report.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class ExposedPasswordsReportComponent extends BaseExposedPasswordsReportComponent {
   manageableCiphers: Cipher[];
 
@@ -41,6 +43,7 @@ export class ExposedPasswordsReportComponent extends BaseExposedPasswordsReportC
   }
 
   ngOnInit() {
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.parent.parent.params.subscribe(async (params) => {
       this.organization = await this.organizationService.get(params.organizationId);
       this.manageableCiphers = await this.cipherService.getAll();

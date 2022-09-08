@@ -9,7 +9,7 @@ import { PasswordRepromptService } from "@bitwarden/common/abstractions/password
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { SyncService } from "@bitwarden/common/abstractions/sync.service";
+import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { CipherRepromptType } from "@bitwarden/common/enums/cipherRepromptType";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { Utils } from "@bitwarden/common/misc/utils";
@@ -28,6 +28,7 @@ const BroadcasterSubscriptionId = "CurrentTabComponent";
 })
 export class CurrentTabComponent implements OnInit, OnDestroy {
   pageDetails: any[] = [];
+  tab: chrome.tabs.Tab;
   cardCiphers: CipherView[];
   identityCiphers: CipherView[];
   loginCiphers: CipherView[];
@@ -37,6 +38,7 @@ export class CurrentTabComponent implements OnInit, OnDestroy {
   inSidebar = false;
   searchTypeSearch = false;
   loaded = false;
+  isLoading = false;
   showOrganizations = false;
 
   private totpCode: string;
@@ -70,7 +72,7 @@ export class CurrentTabComponent implements OnInit, OnDestroy {
       this.ngZone.run(async () => {
         switch (message.command) {
           case "syncCompleted":
-            if (this.loaded) {
+            if (this.isLoading) {
               window.setTimeout(() => {
                 this.load();
               }, 500);
@@ -97,7 +99,7 @@ export class CurrentTabComponent implements OnInit, OnDestroy {
       await this.load();
     } else {
       this.loadedTimeout = window.setTimeout(async () => {
-        if (!this.loaded) {
+        if (!this.isLoading) {
           await this.load();
         }
       }, 5000);
@@ -151,6 +153,7 @@ export class CurrentTabComponent implements OnInit, OnDestroy {
 
     try {
       this.totpCode = await this.autofillService.doAutoFill({
+        tab: this.tab,
         cipher: cipher,
         pageDetails: this.pageDetails,
         doc: window.document,
@@ -195,21 +198,21 @@ export class CurrentTabComponent implements OnInit, OnDestroy {
   }
 
   private async load() {
-    this.loaded = false;
-    const tab = await BrowserApi.getTabFromCurrentWindow();
-    if (tab != null) {
-      this.url = tab.url;
+    this.isLoading = false;
+    this.tab = await BrowserApi.getTabFromCurrentWindow();
+    if (this.tab != null) {
+      this.url = this.tab.url;
     } else {
       this.loginCiphers = [];
-      this.loaded = true;
+      this.isLoading = this.loaded = true;
       return;
     }
 
     this.hostname = Utils.getHostname(this.url);
     this.pageDetails = [];
-    BrowserApi.tabSendMessage(tab, {
+    BrowserApi.tabSendMessage(this.tab, {
       command: "collectPageDetails",
-      tab: tab,
+      tab: this.tab,
       sender: BroadcasterSubscriptionId,
     });
 
@@ -254,6 +257,6 @@ export class CurrentTabComponent implements OnInit, OnDestroy {
     this.loginCiphers = this.loginCiphers.sort((a, b) =>
       this.cipherService.sortCiphersByLastUsedThenName(a, b)
     );
-    this.loaded = true;
+    this.isLoading = this.loaded = true;
   }
 }

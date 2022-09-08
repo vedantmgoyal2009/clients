@@ -532,11 +532,14 @@
   "invalidEmail": {
     "message": "Virheellinen sähköpostiosoite."
   },
-  "masterPassRequired": {
+  "masterPasswordRequired": {
     "message": "Pääsalasana vaaditaan."
   },
-  "masterPassLength": {
-    "message": "Pääsalasanan on oltava vähintään 8 merkkiä pitkä."
+  "confirmMasterPasswordRequired": {
+    "message": "Pääsalasanan uudelleensyöttö vaaditaan."
+  },
+  "masterPasswordMinlength": {
+    "message": "Pääsalasanan tulee sisältää ainakin 8 merkkiä."
   },
   "masterPassDoesntMatch": {
     "message": "Pääsalasanan vahvistus ei täsmää."
@@ -557,7 +560,7 @@
     "message": "Ei näytettäviä kohteita."
   },
   "sendVerificationCode": {
-    "message": "Lähetä vahvistuskoodi sähköpostiisi"
+    "message": "Lähetä todennuskoodi sähköpostiisi"
   },
   "sendCode": {
     "message": "Lähetä koodi"
@@ -575,7 +578,7 @@
     "message": "Todennuskoodi vaaditaan."
   },
   "invalidVerificationCode": {
-    "message": "Virheellinen vahvistuskoodi"
+    "message": "Virheellinen todennuskoodi"
   },
   "continue": {
     "message": "Jatka"
@@ -668,7 +671,7 @@
     "message": "Kaksivaiheisen kirjautumisen asetukset"
   },
   "selfHostedEnvironment": {
-    "message": "Oma palvelinympäristö"
+    "message": "Itse ylläpidetty palvelinympäristö"
   },
   "selfHostedEnvironmentFooter": {
     "message": "Määritä omassa palvelinympäristössäsi suoritettavan Bitwarden-asennuksen pääverkkotunnus."
@@ -1390,6 +1393,21 @@
   "lockWithMasterPassOnRestart": {
     "message": "Lukitse pääsalasanalla uudelleenkäynnistyksen yhteydessä"
   },
+  "deleteAccount": {
+    "message": "Poista tili"
+  },
+  "deleteAccountDesc": {
+    "message": "Jatka alla poistaaksesi tilisi ja kaikki holvin tiedot."
+  },
+  "deleteAccountWarning": {
+    "message": "Tilin poisto on pysyvä toimenpide, eikä sen peruminen ole mahdollista."
+  },
+  "accountDeleted": {
+    "message": "Tili poistettiin"
+  },
+  "accountDeletedDesc": {
+    "message": "Tilisi on suljettu ja kaikki siihen liittyvät tiedot on poistettu."
+  },
   "preferences": {
     "message": "Asetukset"
   },
@@ -1437,13 +1455,13 @@
     "message": "Yksi tai useampi organisaatiokäytäntö vaikuttaa generaattorisi asetuksiin."
   },
   "vaultTimeoutAction": {
-    "message": "Holvin aikakatkaisun toiminto"
+    "message": "Holvin aikakatkaisutoiminto"
   },
   "vaultTimeoutActionLockDesc": {
-    "message": "Holvin käyttö edellyttää pääsalasanaa tai muuta avaustapaa."
+    "message": "Holvisi käyttö edellyttää pääsalasanaa tai muuta avaustapaa."
   },
   "vaultTimeoutActionLogOutDesc": {
-    "message": "Holvin käyttö edellyttää uuttaa todennusta."
+    "message": "Holvisi käyttö edellyttää uutta todennusta."
   },
   "lock": {
     "message": "Lukitse",
@@ -1478,10 +1496,10 @@
     "message": "Poista pysyvästi"
   },
   "vaultTimeoutLogOutConfirmation": {
-    "message": "Uloskirjautuminen estää pääsyn holviisi ja vaatii ajan umpeuduttua todennuksen internet-yhteyden välityksellä. Haluatko varmasti käyttää asetusta?"
+    "message": "Uloskirjautuminen estää pääsyn holviisi ja vaatii ajan umpeuduttua todennuksen Internet-yhteyden välityksellä. Haluatko varmasti käyttää asetusta?"
   },
   "vaultTimeoutLogOutConfirmationTitle": {
-    "message": "Aikakatkaisun toiminnon vahvistus"
+    "message": "Aikakatkaisutoiminnon vahvistus"
   },
   "enterpriseSingleSignOn": {
     "message": "Yrityksen kertakirjautuminen (SSO)"
@@ -1543,14 +1561,14 @@
   "acceptPolicies": {
     "message": "Valitsemalla tämän ruudun hyväksyt seuraavat:"
   },
-  "acceptPoliciesError": {
+  "acceptPoliciesRequired": {
     "message": "Käyttöehtoja ja tietosuojakäytäntöä ei ole vahvistettu."
   },
   "enableBrowserIntegration": {
     "message": "Salli selainintegraatio"
   },
   "enableBrowserIntegrationDesc": {
-    "message": "Selainintegraatiota käytetään selaimessa biometriaa varten."
+    "message": "Käytetään selainten biometriatukeen."
   },
   "browserIntegrationUnsupportedTitle": {
     "message": "Selainintegraatiota ei tueta"
@@ -1785,7 +1803,7 @@
     "message": "Minuuttia"
   },
   "vaultTimeoutPolicyInEffect": {
-    "message": "Organisaatiosi käytännöt vaikuttavat holvisi aikakatkaisuun. Suurin sallittu viive on $HOURS$ tunti(a) ja $MINUTES$ minuutti(a)",
+    "message": "Organisaatiosi käytännöt vaikuttavat holvisi aikakatkaisuun. Suurin sallittu aika on $HOURS$ tunti(a) ja $MINUTES$ minuutti(a)",
     "placeholders": {
       "hours": {
         "content": "$1",
@@ -1798,7 +1816,7 @@
     }
   },
   "vaultTimeoutTooLarge": {
-    "message": "Holvisi aikakatkaisuviive ylittää organisaatiosi asettamat rajoitukset."
+    "message": "Holvisi aikakatkaisu ylittää organisaatiosi asettamat rajoitukset."
   },
   "resetPasswordPolicyAutoEnroll": {
     "message": "Automaattinen liitos"
@@ -1822,7 +1840,7 @@
     "message": "Pääsalasana on poistettu."
   },
   "convertOrganizationEncryptionDesc": {
-    "message": "$ORGANIZATION$ käyttää kertakirjautumista (SSO) oman avainpalvelimensa kanssa. Organisaation jäsenet eivät enää tarvitse pääsalasanaa kirjautumiseen.",
+    "message": "$ORGANIZATION$ käyttää kertakirjautumista (SSO) itse ylläpidetyllä avainpalvelimella. Organisaation jäsenet eivät enää tarvitse pääsalasanaa kirjautumiseen.",
     "placeholders": {
       "organization": {
         "content": "$1",
@@ -1912,17 +1930,17 @@
     "message": "Käyttäjätunnuksen tyyppi"
   },
   "plusAddressedEmail": {
-    "message": "Plus-osoitteinen sähköposti",
+    "message": "Plus+merkkinen sähköposti",
     "description": "Username generator option that appends a random sub-address to the username. For example: address+subaddress@email.com"
   },
   "plusAddressedEmailDesc": {
     "message": "Käytä sähköpostipalvelusi aliosoiteominaisuuksia."
   },
   "catchallEmail": {
-    "message": "Catch-all-sähköpostiosoite"
+    "message": "Catch-all-sähköposti"
   },
   "catchallEmailDesc": {
-    "message": "Käytä verkkotunnuksellesi määritettyä catch-all-postilaatikkoa."
+    "message": "Käytä verkkotunnuksesi catch-all-postilaatikkoa."
   },
   "random": {
     "message": "Satunnainen"
@@ -1946,7 +1964,7 @@
     "message": "Hae omasta holvista"
   },
   "forwardedEmail": {
-    "message": "Välitykseen käytetty sähköpostialias"
+    "message": "Sähköpostialias välitykseen"
   },
   "forwardedEmailDesc": {
     "message": "Luo sähköpostialias ulkoisella ohjauspalvelulla."
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "API-avain"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "Premium-tilaus vaaditaan"
+  },
+  "organizationIsDisabled": {
+    "message": "Organisaatio on poistettu käytöstä."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "Käytöstä poistettujen organisaatioiden kohteet eivät ole käytettävissä. Ole yhteydessä organisaation omistajaan saadaksesi apua."
+  },
+  "neverLockWarning": {
+    "message": "Haluatko varmasti käyttää asetusta \"Ei koskaan\"? Se tallentaa holvisi salausavaimen laitteellesi. Jos käytät asetusta, varmista, että laite on suojattu hyvin."
+  },
+  "cardBrandMir": {
+    "message": "Mir"
   }
 }

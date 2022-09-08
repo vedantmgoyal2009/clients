@@ -532,10 +532,13 @@
   "invalidEmail": {
     "message": "Geçersiz e-posta adresi."
   },
-  "masterPassRequired": {
+  "masterPasswordRequired": {
     "message": "Ana parola gereklidir."
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "Ana parolayı yeniden yazmalısınız."
+  },
+  "masterPasswordMinlength": {
     "message": "Ana parola en az 8 karakter uzunluğunda olmalıdır."
   },
   "masterPassDoesntMatch": {
@@ -1390,6 +1393,21 @@
   "lockWithMasterPassOnRestart": {
     "message": "Yeniden başlatmada ana şifre ile kilitle"
   },
+  "deleteAccount": {
+    "message": "Hesabı sil"
+  },
+  "deleteAccountDesc": {
+    "message": "Hesabınızı ve tüm kasa verilerini silmek için aşağıdan devam edin."
+  },
+  "deleteAccountWarning": {
+    "message": "Hesabınızı silmek kalıcıdır. Geri alınamaz."
+  },
+  "accountDeleted": {
+    "message": "Hesap silindi"
+  },
+  "accountDeletedDesc": {
+    "message": "Hesabınız kapatıldı ve ilişkili tüm veriler silindi."
+  },
   "preferences": {
     "message": "Tercihler"
   },
@@ -1543,7 +1561,7 @@
   "acceptPolicies": {
     "message": "Bu kutuyu işaretleyerek aşağıdakileri kabul etmiş olursunuz:"
   },
-  "acceptPoliciesError": {
+  "acceptPoliciesRequired": {
     "message": "Hizmet Koşulları ve Gizlilik Politikası kabul edilmemiş."
   },
   "enableBrowserIntegration": {
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "API anahtarı"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "Premium abonelik gerekli"
+  },
+  "organizationIsDisabled": {
+    "message": "Kuruluş devre dışı."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "Devre dışı kuruluşlardaki kayıtlara erişilemez. Destek almak için kuruluş sahibinizle iletişime geçin."
+  },
+  "neverLockWarning": {
+    "message": "Are you sure you want to use the \"Never\" option? Setting your lock options to \"Never\" stores your vault's encryption key on your device. If you use this option you should ensure that you keep your device properly protected."
+  },
+  "cardBrandMir": {
+    "message": "Mir"
   }
 }

@@ -17,9 +17,7 @@ export class BrowserFileDownloadService implements FileDownloadService {
       if (builder.blobOptions.type === "text/plain" && typeof request.blobData === "string") {
         data = request.blobData;
       } else {
-        builder.blob.arrayBuffer().then((buf) => {
-          data = Utils.fromBufferToB64(buf);
-        });
+        data = Utils.fromBufferToB64(request.blobData as ArrayBuffer);
       }
       SafariApp.sendMessageToApp(
         "downloadFile",
@@ -31,8 +29,8 @@ export class BrowserFileDownloadService implements FileDownloadService {
         true
       );
     } else {
-      if (navigator.msSaveOrOpenBlob) {
-        navigator.msSaveBlob(builder.blob, request.fileName);
+      if ((navigator as any).msSaveOrOpenBlob) {
+        (navigator as any).msSaveBlob(builder.blob, request.fileName);
       } else {
         const a = window.document.createElement("a");
         a.href = URL.createObjectURL(builder.blob);

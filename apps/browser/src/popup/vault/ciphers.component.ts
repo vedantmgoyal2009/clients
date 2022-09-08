@@ -4,11 +4,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { first } from "rxjs/operators";
 
 import { CiphersComponent as BaseCiphersComponent } from "@bitwarden/angular/components/ciphers.component";
-import { VaultFilter } from "@bitwarden/angular/modules/vault-filter/models/vault-filter.model";
+import { VaultFilter } from "@bitwarden/angular/vault/vault-filter/models/vault-filter.model";
 import { BroadcasterService } from "@bitwarden/common/abstractions/broadcaster.service";
 import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
-import { FolderService } from "@bitwarden/common/abstractions/folder.service";
+import { FolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
@@ -80,6 +80,7 @@ export class CiphersComponent extends BaseCiphersComponent implements OnInit, On
     this.searchTypeSearch = !this.platformUtilsService.isSafari();
     this.showOrganizations = await this.organizationService.hasOrganizations();
     this.vaultFilter = this.vaultFilterService.getVaultFilter();
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.queryParams.pipe(first()).subscribe(async (params) => {
       if (this.applySavedState) {
         this.state = await this.stateService.getBrowserCipherComponentState();
@@ -120,7 +121,7 @@ export class CiphersComponent extends BaseCiphersComponent implements OnInit, On
         this.searchPlaceholder = this.i18nService.t("searchFolder");
         if (this.folderId != null) {
           this.showOrganizations = false;
-          const folderNode = await this.folderService.getNested(this.folderId);
+          const folderNode = await this.vaultFilterService.getFolderNested(this.folderId);
           if (folderNode != null && folderNode.node != null) {
             this.groupingTitle = folderNode.node.name;
             this.nestedFolders =

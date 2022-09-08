@@ -14,12 +14,13 @@ import { Organization } from "@bitwarden/common/models/domain/organization";
 import { EventResponse } from "@bitwarden/common/models/response/eventResponse";
 
 import { BaseEventsComponent } from "../../common/base.events.component";
-import { EventService } from "../../services/event.service";
+import { EventService } from "../../core";
 
 @Component({
   selector: "app-org-events",
   templateUrl: "events.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class EventsComponent extends BaseEventsComponent implements OnInit {
   exportFileName = "org-events";
   organizationId: string;
@@ -52,6 +53,7 @@ export class EventsComponent extends BaseEventsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.parent.parent.params.subscribe(async (params) => {
       this.organizationId = params.organizationId;
       this.organization = await this.organizationService.get(this.organizationId);

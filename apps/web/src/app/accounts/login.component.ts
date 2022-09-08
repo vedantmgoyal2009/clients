@@ -12,20 +12,21 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { PasswordGenerationService } from "@bitwarden/common/abstractions/passwordGeneration.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
+import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy-api.service.abstraction";
+import { InternalPolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { PolicyData } from "@bitwarden/common/models/data/policyData";
 import { MasterPasswordPolicyOptions } from "@bitwarden/common/models/domain/masterPasswordPolicyOptions";
 import { Policy } from "@bitwarden/common/models/domain/policy";
 import { ListResponse } from "@bitwarden/common/models/response/listResponse";
 import { PolicyResponse } from "@bitwarden/common/models/response/policyResponse";
 
-import { StateService } from "../../abstractions/state.service";
-import { RouterService } from "../services/router.service";
+import { RouterService, StateService } from "../core";
 
 @Component({
   selector: "app-login",
   templateUrl: "login.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class LoginComponent extends BaseLoginComponent {
   showResetPasswordAutoEnrollWarning = false;
   enforcedPasswordPolicyOptions: MasterPasswordPolicyOptions;
@@ -41,7 +42,8 @@ export class LoginComponent extends BaseLoginComponent {
     passwordGenerationService: PasswordGenerationService,
     cryptoFunctionService: CryptoFunctionService,
     private apiService: ApiService,
-    private policyService: PolicyService,
+    private policyApiService: PolicyApiServiceAbstraction,
+    private policyService: InternalPolicyService,
     logService: LogService,
     ngZone: NgZone,
     protected stateService: StateService,
@@ -67,6 +69,7 @@ export class LoginComponent extends BaseLoginComponent {
   }
 
   async ngOnInit() {
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.queryParams.pipe(first()).subscribe(async (qParams) => {
       if (qParams.email != null && qParams.email.indexOf("@") > -1) {
         this.email = qParams.email;
@@ -95,7 +98,7 @@ export class LoginComponent extends BaseLoginComponent {
     if (invite != null) {
       let policyList: Policy[] = null;
       try {
-        this.policies = await this.apiService.getPoliciesByToken(
+        this.policies = await this.policyApiService.getPoliciesByToken(
           invite.organizationId,
           invite.token,
           invite.email,

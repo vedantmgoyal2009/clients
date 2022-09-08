@@ -260,6 +260,7 @@ export class Program extends BaseProgram {
             this.main.keyConnectorService,
             this.main.environmentService,
             this.main.syncService,
+            this.main.organizationApiService,
             async () => await this.main.logout()
           );
           const response = await command.run(password, cmd);
@@ -281,7 +282,7 @@ export class Program extends BaseProgram {
         writeLn("", true);
       })
       .action(async (cmd) => {
-        await this.exitIfLocked();
+        await this.exitIfNotAuthed();
         const command = new SyncCommand(this.main.syncService);
         const response = await command.run(cmd);
         this.processResponse(response);
@@ -470,32 +471,34 @@ export class Program extends BaseProgram {
         this.processResponse(response);
       });
 
-    if (CliUtils.flagEnabled("serve")) {
-      program
-        .command("serve")
-        .description("Start a RESTful API webserver.")
-        .option("--hostname <hostname>", "The hostname to bind your API webserver to.")
-        .option("--port <port>", "The port to run your API webserver on.")
-        .on("--help", () => {
-          writeLn("\n  Notes:");
-          writeLn("");
-          writeLn("    Default hostname is `localhost`.");
-          writeLn("    Use hostname `all` for no hostname binding.");
-          writeLn("    Default port is `8087`.");
-          writeLn("");
-          writeLn("  Examples:");
-          writeLn("");
-          writeLn("    bw serve");
-          writeLn("    bw serve --port 8080");
-          writeLn("    bw serve --hostname bwapi.mydomain.com --port 80");
-          writeLn("", true);
-        })
-        .action(async (cmd) => {
-          await this.exitIfNotAuthed();
-          const command = new ServeCommand(this.main);
-          await command.run(cmd);
-        });
-    }
+    program
+      .command("serve")
+      .description("Start a RESTful API webserver.")
+      .option("--hostname <hostname>", "The hostname to bind your API webserver to.")
+      .option("--port <port>", "The port to run your API webserver on.")
+      .option(
+        "--disable-origin-protection",
+        "If set, allows requests with origin header. Not recommended!"
+      )
+      .on("--help", () => {
+        writeLn("\n  Notes:");
+        writeLn("");
+        writeLn("    Default hostname is `localhost`.");
+        writeLn("    Use hostname `all` for no hostname binding.");
+        writeLn("    Default port is `8087`.");
+        writeLn("");
+        writeLn("  Examples:");
+        writeLn("");
+        writeLn("    bw serve");
+        writeLn("    bw serve --port 8080");
+        writeLn("    bw serve --hostname bwapi.mydomain.com --port 80");
+        writeLn("", true);
+      })
+      .action(async (cmd) => {
+        await this.exitIfNotAuthed();
+        const command = new ServeCommand(this.main);
+        await command.run(cmd);
+      });
   }
 
   protected processResponse(response: Response, exitImmediately = false) {
@@ -532,6 +535,7 @@ export class Program extends BaseProgram {
           this.main.keyConnectorService,
           this.main.environmentService,
           this.main.syncService,
+          this.main.organizationApiService,
           this.main.logout
         );
         const response = await command.run(null, null);

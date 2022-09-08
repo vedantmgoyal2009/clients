@@ -191,7 +191,6 @@ button.no-btn {
   border: none;
   padding: 0;
   color: inherit;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
@@ -200,54 +199,5 @@ button.no-btn {
     background: transparent;
     box-shadow: none;
     color: inherit;
-  }
-}
-
-.badge-primary {
-  @include themify($themes) {
-    background-color: themed("badgePrimaryBackground");
-    color: themed("badgePrimaryText");
-  }
-
-  &:hover {
-    @include themify($themes) {
-      background-color: themed("badgePrimaryBackgroundHover");
-      color: themed("badgePrimaryText");
-    }
-  }
-}
-
-.badge-secondary {
-  @include themify($themes) {
-    background-color: themed("badgeSecondaryBackground");
-    color: themed("badgeSecondaryText");
-  }
-}
-
-.badge-info {
-  @include themify($themes) {
-    background-color: themed("badgeInfoBackground");
-    color: themed("badgeInfoText");
-  }
-}
-
-.badge-danger {
-  @include themify($themes) {
-    background-color: themed("badgeDangerBackground");
-    color: themed("badgeDangerText");
-  }
-}
-
-.badge-warning {
-  @include themify($themes) {
-    background-color: themed("warning");
-    color: themed("textWarningColor");
-  }
-}
-
-.badge-success {
-  @include themify($themes) {
-    background-color: themed("success");
-    color: themed("textSuccessColor");
   }
 }

@@ -8,14 +8,14 @@ import { AuditService } from "@bitwarden/common/abstractions/audit.service";
 import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
 import { EventService } from "@bitwarden/common/abstractions/event.service";
-import { FolderService } from "@bitwarden/common/abstractions/folder.service";
+import { FolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
 import { PasswordRepromptService } from "@bitwarden/common/abstractions/passwordReprompt.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
+import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
@@ -27,6 +27,7 @@ import { PopupUtilsService } from "../services/popup-utils.service";
   selector: "app-vault-add-edit",
   templateUrl: "add-edit.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class AddEditComponent extends BaseAddEditComponent {
   currentUris: string[];
   showAttachments = true;
@@ -72,6 +73,7 @@ export class AddEditComponent extends BaseAddEditComponent {
   async ngOnInit() {
     await super.ngOnInit();
 
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.queryParams.pipe(first()).subscribe(async (params) => {
       if (params.cipherId) {
         this.cipherId = params.cipherId;

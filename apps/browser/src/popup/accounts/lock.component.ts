@@ -12,7 +12,9 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout.service";
+import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
+import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
+import { VaultTimeoutSettingsService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeoutSettings.service";
 import { AuthenticationStatus } from "@bitwarden/common/enums/authenticationStatus";
 
 import { BiometricErrors, BiometricErrorTypes } from "../../models/biometricErrors";
@@ -26,6 +28,8 @@ export class LockComponent extends BaseLockComponent {
 
   biometricError: string;
   pendingBiometric = false;
+  authenicatedUrl = "/tabs/current";
+  unAuthenicatedUrl = "/update-temp-password";
 
   constructor(
     router: Router,
@@ -34,13 +38,15 @@ export class LockComponent extends BaseLockComponent {
     messagingService: MessagingService,
     cryptoService: CryptoService,
     vaultTimeoutService: VaultTimeoutService,
+    vaultTimeoutSettingsService: VaultTimeoutSettingsService,
     environmentService: EnvironmentService,
     stateService: StateService,
     apiService: ApiService,
     logService: LogService,
     keyConnectorService: KeyConnectorService,
     ngZone: NgZone,
-    private authService: AuthService
+    private authService: AuthService,
+    private syncService: SyncService
   ) {
     super(
       router,
@@ -49,6 +55,7 @@ export class LockComponent extends BaseLockComponent {
       messagingService,
       cryptoService,
       vaultTimeoutService,
+      vaultTimeoutSettingsService,
       environmentService,
       stateService,
       apiService,
@@ -56,12 +63,17 @@ export class LockComponent extends BaseLockComponent {
       keyConnectorService,
       ngZone
     );
-    this.successRoute = "/tabs/current";
+
     this.isInitialLockScreen = (window as any).previousPopupUrl == null;
   }
 
   async ngOnInit() {
     await super.ngOnInit();
+    await this.syncService.fullSync(true);
+
+    const forcePasswordReset = await this.stateService.getForcePasswordReset();
+    this.successRoute = forcePasswordReset === true ? this.unAuthenicatedUrl : this.authenicatedUrl;
+
     const disableAutoBiometricsPrompt =
       (await this.stateService.getDisableAutoBiometricsPrompt()) ?? true;
 

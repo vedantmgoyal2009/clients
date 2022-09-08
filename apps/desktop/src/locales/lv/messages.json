@@ -532,10 +532,13 @@
   "invalidEmail": {
     "message": "Nederīga e-pasta adrese."
   },
-  "masterPassRequired": {
+  "masterPasswordRequired": {
     "message": "Ir jānorāda galvenā parole."
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "Ir nepieciešama galvenās paroles atkārtota ievadīšana."
+  },
+  "masterPasswordMinlength": {
     "message": "Galvenajai parolei ir jābūt vismaz 8 rakstzīmes garai."
   },
   "masterPassDoesntMatch": {
@@ -1390,6 +1393,21 @@
   "lockWithMasterPassOnRestart": {
     "message": "Aizslēgt ar galveno paroli pēc pārsāknēšanas"
   },
+  "deleteAccount": {
+    "message": "Dzēst kontu"
+  },
+  "deleteAccountDesc": {
+    "message": "Turpināt zemāk, lai izdzēstu kontu un visu glabātavas sasturu."
+  },
+  "deleteAccountWarning": {
+    "message": "Konta dzēšana ir paliekoša. To nevar atsaukt."
+  },
+  "accountDeleted": {
+    "message": "Konts tika izdzēsts"
+  },
+  "accountDeletedDesc": {
+    "message": "Konts ir slēgts, un visi saistītie dati ir izdzēsti."
+  },
   "preferences": {
     "message": "Uzstādījumi"
   },
@@ -1543,8 +1561,8 @@
   "acceptPolicies": {
     "message": "Atzīmējot šo rūtiņu, Tu piekrīti sekojošajam:"
   },
-  "acceptPoliciesError": {
-    "message": "Nav pieņemti izmantošanas nosacījumi un privātuma politika."
+  "acceptPoliciesRequired": {
+    "message": "Nav apstiprināti izmantošanas nosacījumi un privātuma politika."
   },
   "enableBrowserIntegration": {
     "message": "Iespējot pārlūka saistīšanu"
@@ -1798,7 +1816,7 @@
     }
   },
   "vaultTimeoutTooLarge": {
-    "message": "Glabātavas noildze pāŗsniedz apvienības uzstādītos ierobežojumus."
+    "message": "Glabātavas noildze pārsniedz apvienības uzstādītos ierobežojumus."
   },
   "resetPasswordPolicyAutoEnroll": {
     "message": "Automātiska ievietošana sarakstā"
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "API atslēga"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "Nepieciešams Premium abonements"
+  },
+  "organizationIsDisabled": {
+    "message": "Apvienība ir atspējota."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "Atspējotu apvienību vienumiem nevar piekļūt. Jāsazinās ar apvienības īpašnieku, lai iegūtu palīdzību."
+  },
+  "neverLockWarning": {
+    "message": "Vai tiešām izmantot uzstādījumu \"Nekad\"? Uzstādot aizslēgšanas iespēju uz \"Nekad\", šifrēšanas atslēga tiek glabāta ierīcē. Ja šī iespēja tiek izmantota, jāpārliecinās, ka ierīce tiek pienācīgi aizsargāta."
+  },
+  "cardBrandMir": {
+    "message": "Mir"
   }
 }

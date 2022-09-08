@@ -26,26 +26,19 @@
     >
       <button
         appStopClick
-        appBlurClick
         (click)="selectAllVaults()"
         [ngClass]="{ active: !myVaultOnly && !selectOrganizationId }"
       >
         <i class="bwi bwi-fw bwi-filter" aria-hidden="true"></i>
         &nbsp;{{ "allVaults" | i18n }}
       </button>
-      <button
-        *ngIf="!enforcePersonalOwnwership"
-        appStopClick
-        appBlurClick
-        (click)="selectMyVault()"
-      >
+      <button *ngIf="!enforcePersonalOwnwership" appStopClick (click)="selectMyVault()">
         <i class="bwi bwi-fw bwi-user" aria-hidden="true"></i>
         &nbsp;{{ "myVault" | i18n }}
       </button>
       <button
         *ngFor="let organization of organizations"
         appStopClick
-        appBlurClick
         (click)="selectOrganization(organization)"
       >
         <i
@@ -58,7 +51,13 @@
           class="bwi bwi-fw bwi-family"
           aria-hidden="true"
         ></i>
-        <span>&nbsp;{{ organization.name | ellipsis: 21:true }}</span>
+        <span>&nbsp;{{ organization.name | ellipsis: (organization.enabled ? 21 : 18):true }}</span>
+        <i
+          *ngIf="!organization.enabled"
+          class="bwi bwi-fw bwi-exclamation-triangle text-danger"
+          aria-label="{{ 'organizationIsDisabled' | i18n }}"
+          appA11yTitle="{{ 'organizationIsDisabled' | i18n }}"
+        ></i>
       </button>
     </div>
   </ng-template>

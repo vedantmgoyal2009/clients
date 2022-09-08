@@ -1,7 +1,7 @@
 import * as os from "os";
 
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { UntypedFormBuilder } from "@angular/forms";
 
 import { ExportComponent as BaseExportComponent } from "@bitwarden/angular/components/export.component";
 import { BroadcasterService } from "@bitwarden/common/abstractions/broadcaster.service";
@@ -12,8 +12,8 @@ import { FileDownloadService } from "@bitwarden/common/abstractions/fileDownload
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
-import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification.service";
+import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
+import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification/userVerification.service.abstraction";
 
 const BroadcasterSubscriptionId = "ExportComponent";
 
@@ -30,7 +30,7 @@ export class ExportComponent extends BaseExportComponent implements OnInit {
     eventService: EventService,
     policyService: PolicyService,
     userVerificationService: UserVerificationService,
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private broadcasterService: BroadcasterService,
     logService: LogService,
     fileDownloadService: FileDownloadService

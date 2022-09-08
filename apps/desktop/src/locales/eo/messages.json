@@ -15,7 +15,7 @@
     "message": "Types"
   },
   "typeLogin": {
-    "message": "Login"
+    "message": "Saluto"
   },
   "typeCard": {
     "message": "Card"
@@ -24,10 +24,10 @@
     "message": "Identity"
   },
   "typeSecureNote": {
-    "message": "Secure Note"
+    "message": "Sekura noto"
   },
   "folders": {
-    "message": "Folders"
+    "message": "Dosierujoj"
   },
   "collections": {
     "message": "Collections"
@@ -36,13 +36,13 @@
     "message": "Search Vault"
   },
   "addItem": {
-    "message": "Add Item"
+    "message": "Aldoni elementon"
   },
   "shared": {
-    "message": "Shared"
+    "message": "Kundividita"
   },
   "share": {
-    "message": "Share"
+    "message": "Kundividi"
   },
   "moveToOrganization": {
     "message": "Move to Organization"
@@ -64,13 +64,13 @@
     "message": "Choose an organization that you wish to move this item to. Moving to an organization transfers ownership of the item to that organization. You will no longer be the direct owner of this item once it has been moved."
   },
   "attachments": {
-    "message": "Attachments"
+    "message": "Aldonaĵoj"
   },
   "viewItem": {
-    "message": "View Item"
+    "message": "Vidi la elementon"
   },
   "name": {
-    "message": "Name"
+    "message": "Nomo"
   },
   "uri": {
     "message": "URI"
@@ -86,22 +86,22 @@
     }
   },
   "newUri": {
-    "message": "New URI"
+    "message": "Nova URI"
   },
   "username": {
-    "message": "Username"
+    "message": "Uzantnomo"
   },
   "password": {
-    "message": "Password"
+    "message": "Pasvorto"
   },
   "passphrase": {
-    "message": "Passphrase"
+    "message": "Pasfrazo"
   },
   "editItem": {
-    "message": "Edit Item"
+    "message": "Redakti la elementon"
   },
   "emailAddress": {
-    "message": "Email Address"
+    "message": "Retpoŝta adreso"
   },
   "verificationCodeTotp": {
     "message": "Verification Code (TOTP)"
@@ -110,10 +110,10 @@
     "message": "Website"
   },
   "notes": {
-    "message": "Notes"
+    "message": "Notoj"
   },
   "customFields": {
-    "message": "Custom Fields"
+    "message": "Propraj kampoj"
   },
   "launch": {
     "message": "Launch"
@@ -139,28 +139,28 @@
     "message": "Cardholder Name"
   },
   "number": {
-    "message": "Number"
+    "message": "Numero"
   },
   "brand": {
     "message": "Brand"
   },
   "expiration": {
-    "message": "Expiration"
+    "message": "Eksvalidiĝo"
   },
   "securityCode": {
-    "message": "Security Code"
+    "message": "Kodo de sekureco"
   },
   "identityName": {
-    "message": "Identity Name"
+    "message": "Nomo de la identilo"
   },
   "company": {
-    "message": "Company"
+    "message": "Kompanio"
   },
   "ssn": {
-    "message": "Social Security Number"
+    "message": "Numero de sociala asekuro"
   },
   "passportNumber": {
-    "message": "Passport Number"
+    "message": "Numero de pasporto"
   },
   "licenseNumber": {
     "message": "License Number"
@@ -532,10 +532,13 @@
   "invalidEmail": {
     "message": "Invalid email address."
   },
-  "masterPassRequired": {
+  "masterPasswordRequired": {
     "message": "Master password is required."
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "Master password retype is required."
+  },
+  "masterPasswordMinlength": {
     "message": "Master password must be at least 8 characters long."
   },
   "masterPassDoesntMatch": {
@@ -719,7 +722,7 @@
     "message": "Feature Unavailable"
   },
   "loggedOut": {
-    "message": "Logged out"
+    "message": "Adiaŭita"
   },
   "loginExpired": {
     "message": "Your login session has expired."
@@ -728,7 +731,7 @@
     "message": "Are you sure you want to log out?"
   },
   "logOut": {
-    "message": "Log out"
+    "message": "Adiaŭi"
   },
   "addNewLogin": {
     "message": "Add New Login"
@@ -931,7 +934,7 @@
     "message": "Always show an icon in the system tray."
   },
   "startToTray": {
-    "message": "Start To tray icon"
+    "message": "Start to tray icon"
   },
   "startToTrayDesc": {
     "message": "When the application is first started, only show an icon in the system tray."
@@ -1390,6 +1393,21 @@
   "lockWithMasterPassOnRestart": {
     "message": "Lock with master password on restart"
   },
+  "deleteAccount": {
+    "message": "Forviŝi la konton"
+  },
+  "deleteAccountDesc": {
+    "message": "Proceed below to delete your account and all vault data."
+  },
+  "deleteAccountWarning": {
+    "message": "Deleting your account is permanent. It cannot be undone."
+  },
+  "accountDeleted": {
+    "message": "Konto forviŝita"
+  },
+  "accountDeletedDesc": {
+    "message": "Via konto estas fermita, kaj ĉiuj rilataj datumoj estas forviŝitaj."
+  },
   "preferences": {
     "message": "Preferences"
   },
@@ -1543,14 +1561,14 @@
   "acceptPolicies": {
     "message": "By checking this box you agree to the following:"
   },
-  "acceptPoliciesError": {
+  "acceptPoliciesRequired": {
     "message": "Terms of Service and Privacy Policy have not been acknowledged."
   },
   "enableBrowserIntegration": {
     "message": "Allow browser integration"
   },
   "enableBrowserIntegrationDesc": {
-    "message": "Browser integration is used for biometrics in browser."
+    "message": "Used for biometrics in browser."
   },
   "browserIntegrationUnsupportedTitle": {
     "message": "Browser integration not supported"
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "API Key"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "Premium subscription required"
+  },
+  "organizationIsDisabled": {
+    "message": "Organization is disabled."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "Items in disabled Organizations cannot be accessed. Contact your Organization owner for assistance."
+  },
+  "neverLockWarning": {
+    "message": "Are you sure you want to use the \"Never\" option? Setting your lock options to \"Never\" stores your vault's encryption key on your device. If you use this option you should ensure that you keep your device properly protected."
+  },
+  "cardBrandMir": {
+    "message": "Mir"
   }
 }

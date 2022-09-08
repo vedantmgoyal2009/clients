@@ -5,8 +5,10 @@ import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
+import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
+import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy-api.service.abstraction";
+import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { Policy } from "@bitwarden/common/models/domain/policy";
@@ -31,8 +33,10 @@ export class AcceptOrganizationComponent extends BaseAcceptComponent {
     private apiService: ApiService,
     stateService: StateService,
     private cryptoService: CryptoService,
+    private policyApiService: PolicyApiServiceAbstraction,
     private policyService: PolicyService,
-    private logService: LogService
+    private logService: LogService,
+    private organizationApiService: OrganizationApiServiceAbstraction
   ) {
     super(router, platformUtilsService, i18nService, route, stateService);
   }
@@ -72,7 +76,7 @@ export class AcceptOrganizationComponent extends BaseAcceptComponent {
     request.token = qParams.token;
 
     if (await this.performResetPasswordAutoEnroll(qParams)) {
-      const response = await this.apiService.getOrganizationKeys(qParams.organizationId);
+      const response = await this.organizationApiService.getKeys(qParams.organizationId);
 
       if (response == null) {
         throw new Error(this.i18nService.t("resetPasswordOrgKeysError"));
@@ -90,10 +94,10 @@ export class AcceptOrganizationComponent extends BaseAcceptComponent {
     return request;
   }
 
-  private async performResetPasswordAutoEnroll(qParams: any): Promise<boolean> {
+  private async performResetPasswordAutoEnroll(qParams: Params): Promise<boolean> {
     let policyList: Policy[] = null;
     try {
-      const policies = await this.apiService.getPoliciesByToken(
+      const policies = await this.policyApiService.getPoliciesByToken(
         qParams.organizationId,
         qParams.token,
         qParams.email,

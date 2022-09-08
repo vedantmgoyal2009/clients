@@ -10,6 +10,7 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { SEND_KDF_ITERATIONS } from "@bitwarden/common/enums/kdfType";
 import { SendType } from "@bitwarden/common/enums/sendType";
 import { Utils } from "@bitwarden/common/misc/utils";
+import { EncArrayBuffer } from "@bitwarden/common/models/domain/encArrayBuffer";
 import { SendAccess } from "@bitwarden/common/models/domain/sendAccess";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 import { SendAccessRequest } from "@bitwarden/common/models/request/sendAccessRequest";
@@ -21,6 +22,7 @@ import { SendAccessView } from "@bitwarden/common/models/view/sendAccessView";
   selector: "app-send-access",
   templateUrl: "access.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class AccessComponent implements OnInit {
   send: SendAccessView;
   sendType = SendType;
@@ -71,6 +73,7 @@ export class AccessComponent implements OnInit {
   }
 
   ngOnInit() {
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.params.subscribe(async (params) => {
       this.id = params.sendId;
       this.key = params.key;
@@ -109,8 +112,8 @@ export class AccessComponent implements OnInit {
     }
 
     try {
-      const buf = await response.arrayBuffer();
-      const decBuf = await this.cryptoService.decryptFromBytes(buf, this.decKey);
+      const encBuf = await EncArrayBuffer.fromResponse(response);
+      const decBuf = await this.cryptoService.decryptFromBytes(encBuf, this.decKey);
       this.fileDownloadService.download({
         fileName: this.send.file.fileName,
         blobData: decBuf,

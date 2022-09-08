@@ -11,12 +11,14 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Cipher } from "@bitwarden/common/models/domain/cipher";
 import { CipherView } from "@bitwarden/common/models/view/cipherView";
 
-import { WeakPasswordsReportComponent as BaseWeakPasswordsReportComponent } from "../../reports/weak-passwords-report.component";
+// eslint-disable-next-line no-restricted-imports
+import { WeakPasswordsReportComponent as BaseWeakPasswordsReportComponent } from "../../reports/pages/weak-passwords-report.component";
 
 @Component({
   selector: "app-weak-passwords-report",
-  templateUrl: "../../reports/weak-passwords-report.component.html",
+  templateUrl: "../../reports/pages/weak-passwords-report.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class WeakPasswordsReportComponent extends BaseWeakPasswordsReportComponent {
   manageableCiphers: Cipher[];
 
@@ -41,6 +43,7 @@ export class WeakPasswordsReportComponent extends BaseWeakPasswordsReportCompone
   }
 
   async ngOnInit() {
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.parent.parent.params.subscribe(async (params) => {
       this.organization = await this.organizationService.get(params.organizationId);
       this.manageableCiphers = await this.cipherService.getAll();

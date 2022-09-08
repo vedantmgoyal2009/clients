@@ -10,12 +10,14 @@ import { PasswordRepromptService } from "@bitwarden/common/abstractions/password
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { CipherView } from "@bitwarden/common/models/view/cipherView";
 
-import { InactiveTwoFactorReportComponent as BaseInactiveTwoFactorReportComponent } from "../../reports/inactive-two-factor-report.component";
+// eslint-disable-next-line no-restricted-imports
+import { InactiveTwoFactorReportComponent as BaseInactiveTwoFactorReportComponent } from "../../reports/pages/inactive-two-factor-report.component";
 
 @Component({
   selector: "app-inactive-two-factor-report",
-  templateUrl: "../../reports/inactive-two-factor-report.component.html",
+  templateUrl: "../../reports/pages/inactive-two-factor-report.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class InactiveTwoFactorReportComponent extends BaseInactiveTwoFactorReportComponent {
   constructor(
     cipherService: CipherService,
@@ -38,6 +40,7 @@ export class InactiveTwoFactorReportComponent extends BaseInactiveTwoFactorRepor
   }
 
   async ngOnInit() {
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.parent.parent.params.subscribe(async (params) => {
       this.organization = await this.organizationService.get(params.organizationId);
       await super.ngOnInit();

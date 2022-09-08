@@ -10,12 +10,14 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Cipher } from "@bitwarden/common/models/domain/cipher";
 import { CipherView } from "@bitwarden/common/models/view/cipherView";
 
-import { ReusedPasswordsReportComponent as BaseReusedPasswordsReportComponent } from "../../reports/reused-passwords-report.component";
+// eslint-disable-next-line no-restricted-imports
+import { ReusedPasswordsReportComponent as BaseReusedPasswordsReportComponent } from "../../reports/pages/reused-passwords-report.component";
 
 @Component({
   selector: "app-reused-passwords-report",
-  templateUrl: "../../reports/reused-passwords-report.component.html",
+  templateUrl: "../../reports/pages/reused-passwords-report.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class ReusedPasswordsReportComponent extends BaseReusedPasswordsReportComponent {
   manageableCiphers: Cipher[];
 
@@ -32,6 +34,7 @@ export class ReusedPasswordsReportComponent extends BaseReusedPasswordsReportCom
   }
 
   async ngOnInit() {
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.parent.parent.params.subscribe(async (params) => {
       this.organization = await this.organizationService.get(params.organizationId);
       this.manageableCiphers = await this.cipherService.getAll();

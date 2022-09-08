@@ -532,10 +532,13 @@
   "invalidEmail": {
     "message": "Неисправан имејл."
   },
-  "masterPassRequired": {
+  "masterPasswordRequired": {
     "message": "Главна Лозинка је неопходна."
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "Поновно уписивање главне лозинке је неопходно."
+  },
+  "masterPasswordMinlength": {
     "message": "Главна Лозинка треба имати бар 8 знака."
   },
   "masterPassDoesntMatch": {
@@ -895,10 +898,10 @@
     "description": "Clipboard is the operating system thing where you copy/paste data to on your device."
   },
   "enableFavicon": {
-    "message": "Show website icons"
+    "message": "Прикажи иконе сајтова"
   },
   "faviconDesc": {
-    "message": "Show a recognizable image next to each login."
+    "message": "Прикажи препознатљиву слику поред сваке ставке за пријаву."
   },
   "enableMinToTray": {
     "message": "Минимизирај као иконицу у системској траци"
@@ -1382,13 +1385,28 @@
     "message": "Откључај свој сеф"
   },
   "autoPromptWindowsHello": {
-    "message": "Ask for Windows Hello on launch"
+    "message": "Захтевај Windows Hello при покретању"
   },
   "autoPromptTouchId": {
-    "message": "Ask for Touch ID on launch"
+    "message": "Захтевај Touch ID при покретању"
   },
   "lockWithMasterPassOnRestart": {
     "message": "Закључајте са главном лозинком при поновном покретању"
+  },
+  "deleteAccount": {
+    "message": "Брисање налога"
+  },
+  "deleteAccountDesc": {
+    "message": "Наставите доле да бисте избрисали свој налог и све податке сефа."
+  },
+  "deleteAccountWarning": {
+    "message": "Брисање налога је трајно. Не може се поништити."
+  },
+  "accountDeleted": {
+    "message": "Налог обрисан"
+  },
+  "accountDeletedDesc": {
+    "message": "Ваш налог је затворен и сви повезани подаци су избрисани."
   },
   "preferences": {
     "message": "Подешавања"
@@ -1543,7 +1561,7 @@
   "acceptPolicies": {
     "message": "Означавањем овог поља пристајете на следеће:"
   },
-  "acceptPoliciesError": {
+  "acceptPoliciesRequired": {
     "message": "Услови услуге и Политика приватности нису прихваћени."
   },
   "enableBrowserIntegration": {
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "АПИ Кључ"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "Premium претплата је потребна"
+  },
+  "organizationIsDisabled": {
+    "message": "Организација је онемогућена."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "Није могуће приступити ставкама у онемогућене организације. Обратите се власнику организације за помоћ."
+  },
+  "neverLockWarning": {
+    "message": "Да ли сте сигурни да желите да користите опцију „Никад“? Ако поставите опције закључавања на „Никада“, на вашем уређају се чува кључ за шифровање сефа. Ако користите ову опцију, осигурајте да је уређај правилно заштићен."
+  },
+  "cardBrandMir": {
+    "message": "Mir"
   }
 }

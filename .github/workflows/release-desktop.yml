@@ -13,6 +13,17 @@ on:
           - Initial Release
           - Redeploy
           - Dry Run
+      snap_publish:
+        description: 'Publish to snap store'
+        required: true
+        default: true
+        type: boolean
+      choco_publish:
+        description: 'Publish to chocolatey store'
+        required: true
+        default: true
+        type: boolean
+
 defaults:
   run:
     shell: bash
@@ -25,18 +36,18 @@ jobs:
       release-version: ${{ steps.version.outputs.version }}
       release-channel: ${{ steps.release-channel.outputs.channel }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # v3.0.2
+
       - name: Branch check
         if: ${{ github.event.inputs.release_type != 'Dry Run' }}
         run: |
-          if [[ "$GITHUB_REF" != "refs/heads/rc" ]] && [[ $GITHUB_REF != refs/heads/hotfix-rc/* ]]; then
+          if [[ "$GITHUB_REF" != "refs/heads/rc" ]] && [[ $GITHUB_REF != refs/heads/hotfix-rc-desktop ]]; then
             echo "==================================="
-            echo "[!] Can only release from the 'rc' or 'hotfix-rc/*' branches"
+            echo "[!] Can only release from the 'rc' or 'hotfix-rc-desktop' branches"
             echo "==================================="
             exit 1
           fi
-
-      - name: Checkout repo
-        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f  # v2.3.4
 
       - name: Check Release Version
         id: version
@@ -65,6 +76,16 @@ jobs:
               ;;
           esac
 
+      - name: Create GitHub deployment
+        uses: chrnorm/deployment-action@1b599fe41a0ef1f95191e7f2eec4743f2d7dfc48
+        id: deployment
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          initial-status: 'in_progress'
+          environment: 'Desktop - Production'
+          description: 'Deployment ${{ steps.version.outputs.version }} to channel ${{ steps.release-channel.outputs.channel }} from branch ${{ github.ref_name }}'
+          task: release
+
       - name: Login to Azure
         uses: Azure/login@ec3c14589bd3e9312b3cc8c41e6860e258df9010
         with:
@@ -72,17 +93,36 @@ jobs:
 
       - name: Retrieve secrets
         id: retrieve-secrets
-        uses: Azure/get-keyvault-secrets@b5c723b9ac7870c022b8c35befe620b7009b336f
-        with:
-          keyvault: "bitwarden-prod-kv"
-          secrets: "aws-electron-access-id, aws-electron-access-key, aws-electron-bucket-name"
+        env:
+          KEYVAULT: bitwarden-prod-kv
+          SECRETS: |
+            aws-electron-access-id,
+            aws-electron-access-key,
+            aws-electron-bucket-name
+        run: |
+          for i in ${SECRETS//,/ }
+          do
+            VALUE=$(az keyvault secret show --vault-name $KEYVAULT --name $i --query value --output tsv)
+            echo "::add-mask::$VALUE"
+            echo "::set-output name=$i::$VALUE"
+          done
 
       - name: Download all artifacts
+        if: ${{ github.event.inputs.release_type != 'Dry Run' }}
         uses: bitwarden/gh-actions/download-artifacts@23433be15ed6fd046ce12b6889c5184a8d9c8783
         with:
           workflow: build-desktop.yml
           workflow_conclusion: success
           branch: ${{ github.ref_name }}
+          path: apps/desktop/artifacts
+
+      - name: Download all artifacts
+        if: ${{ github.event.inputs.release_type == 'Dry Run' }}
+        uses: bitwarden/gh-actions/download-artifacts@23433be15ed6fd046ce12b6889c5184a8d9c8783
+        with:
+          workflow: build-desktop.yml
+          workflow_conclusion: success
+          branch: master
           path: apps/desktop/artifacts
 
       - name: Rename .pkg to .pkg.archive
@@ -92,6 +132,7 @@ jobs:
         run: mv Bitwarden-${{ env.PKG_VERSION }}-universal.pkg Bitwarden-${{ env.PKG_VERSION }}-universal.pkg.archive
 
       - name: Publish artifacts to S3
+        if: ${{ github.event.inputs.release_type != 'Dry Run' }}
         env:
           AWS_ACCESS_KEY_ID: ${{ steps.retrieve-secrets.outputs.aws-electron-access-id }}
           AWS_SECRET_ACCESS_KEY: ${{ steps.retrieve-secrets.outputs.aws-electron-access-key }}
@@ -106,7 +147,7 @@ jobs:
 
       - name: Create release
         uses: ncipollo/release-action@95215a3cb6e6a1908b3c44e00b4fdb15548b1e09  # v2.8.5
-        if: ${{ steps.release-channel.outputs.channel }} == "latest"
+        if: ${{ steps.release-channel.outputs.channel == 'latest' && github.event.inputs.release_type != 'Dry Run' }}
         env:
           PKG_VERSION: ${{ steps.version.outputs.version }}
           RELEASE_CHANNEL: ${{ steps.release-channel.outputs.channel }}
@@ -142,11 +183,27 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
 
+      - name: Update deployment status to Success
+        if: ${{ success() }}
+        uses: chrnorm/deployment-status@07b3930847f65e71c9c6802ff5a402f6dfb46b86
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          state: 'success'
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Update deployment status to Failure
+        if: ${{ failure() }}
+        uses: chrnorm/deployment-status@07b3930847f65e71c9c6802ff5a402f6dfb46b86
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          state: 'failure'
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
 
   snap:
     name: Deploy Snap
     runs-on: ubuntu-20.04
     needs: setup
+    if: inputs.snap_publish
     env:
       _PKG_VERSION: ${{ needs.setup.outputs.release-version }}
     steps:
@@ -160,10 +217,17 @@ jobs:
 
       - name: Retrieve secrets
         id: retrieve-secrets
-        uses: Azure/get-keyvault-secrets@80ccd3fafe5662407cc2e55f202ee34bfff8c403
-        with:
-          keyvault: "bitwarden-prod-kv"
-          secrets: "snapcraft-store-token"
+        env:
+          KEYVAULT: bitwarden-prod-kv
+          SECRETS: |
+            snapcraft-store-token
+        run: |
+          for i in ${SECRETS//,/ }
+          do
+            VALUE=$(az keyvault secret show --vault-name $KEYVAULT --name $i --query value --output tsv)
+            echo "::add-mask::$VALUE"
+            echo "::set-output name=$i::$VALUE"
+          done
 
       - name: Install Snap
         uses: samuelmeuli/action-snapcraft@10d7d0a84d9d86098b19f872257df314b0bd8e2d  # v1.2.0
@@ -175,11 +239,22 @@ jobs:
         working-directory: apps/desktop
 
       - name: Download Snap artifact
+        if: ${{ github.event.inputs.release_type != 'Dry Run' }}
         uses: bitwarden/gh-actions/download-artifacts@23433be15ed6fd046ce12b6889c5184a8d9c8783
         with:
           workflow: build-desktop.yml
           workflow_conclusion: success
           branch: ${{ github.ref_name }}
+          artifacts: bitwarden_${{ env._PKG_VERSION }}_amd64.snap
+          path: apps/desktop/dist
+
+      - name: Download Snap artifact
+        if: ${{ github.event.inputs.release_type == 'Dry Run' }}
+        uses: bitwarden/gh-actions/download-artifacts@23433be15ed6fd046ce12b6889c5184a8d9c8783
+        with:
+          workflow: build-desktop.yml
+          workflow_conclusion: success
+          branch: master
           artifacts: bitwarden_${{ env._PKG_VERSION }}_amd64.snap
           path: apps/desktop/dist
 
@@ -194,11 +269,17 @@ jobs:
     name: Deploy Choco
     runs-on: windows-2019
     needs: setup
+    if: inputs.choco_publish
     env:
       _PKG_VERSION: ${{ needs.setup.outputs.release-version }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f  # v2.3.4
+
+      - name: Print Environment
+        run: |
+          dotnet --version
+          dotnet nuget --version
 
       - name: Login to Azure
         uses: Azure/login@24848bc889cfc0a8313c2b3e378ac0d625b9bc16
@@ -207,12 +288,20 @@ jobs:
 
       - name: Retrieve secrets
         id: retrieve-secrets
-        uses: Azure/get-keyvault-secrets@b5c723b9ac7870c022b8c35befe620b7009b336f
-        with:
-          keyvault: "bitwarden-prod-kv"
-          secrets: "cli-choco-api-key"
+        env:
+          KEYVAULT: bitwarden-prod-kv
+          SECRETS: |
+            cli-choco-api-key
+        run: |
+          for i in ${SECRETS//,/ }
+          do
+            VALUE=$(az keyvault secret show --vault-name $KEYVAULT --name $i --query value --output tsv)
+            echo "::add-mask::$VALUE"
+            echo "::set-output name=$i::$VALUE"
+          done
 
       - name: Setup Chocolatey
+        shell: pwsh
         run: choco apikey --key $env:CHOCO_API_KEY --source https://push.chocolatey.org/
         env:
           CHOCO_API_KEY: ${{ steps.retrieve-secrets.outputs.cli-choco-api-key }}
@@ -223,11 +312,22 @@ jobs:
         working-directory: apps/desktop
 
       - name: Download choco artifact
+        if: ${{ github.event.inputs.release_type != 'Dry Run' }}
         uses: bitwarden/gh-actions/download-artifacts@23433be15ed6fd046ce12b6889c5184a8d9c8783
         with:
           workflow: build-desktop.yml
           workflow_conclusion: success
           branch: ${{ github.ref_name }}
+          artifacts: bitwarden.${{ env._PKG_VERSION }}.nupkg
+          path: apps/desktop/dist
+
+      - name: Download choco artifact
+        if: ${{ github.event.inputs.release_type == 'Dry Run' }}
+        uses: bitwarden/gh-actions/download-artifacts@23433be15ed6fd046ce12b6889c5184a8d9c8783
+        with:
+          workflow: build-desktop.yml
+          workflow_conclusion: success
+          branch: master
           artifacts: bitwarden.${{ env._PKG_VERSION }}.nupkg
           path: apps/desktop/dist
 

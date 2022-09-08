@@ -1,10 +1,11 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 import { Component, OnInit } from "@angular/core";
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControl } from "@angular/forms";
 
 import { KeyConnectorService } from "@bitwarden/common/abstractions/keyConnector.service";
-import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification.service";
+import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification/userVerification.service.abstraction";
 import { VerificationType } from "@bitwarden/common/enums/verificationType";
+import { Utils } from "@bitwarden/common/misc/utils";
 import { Verification } from "@bitwarden/common/types/verification";
 
 /**
@@ -29,6 +30,7 @@ import { Verification } from "@bitwarden/common/types/verification";
     ]),
   ],
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class UserVerificationComponent implements ControlValueAccessor, OnInit {
   usesKeyConnector = false;
   disableRequestOTP = false;
@@ -47,6 +49,7 @@ export class UserVerificationComponent implements ControlValueAccessor, OnInit {
     this.usesKeyConnector = await this.keyConnectorService.getUsesKeyConnector();
     this.processChanges(this.secret.value);
 
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil
     this.secret.valueChanges.subscribe((secret: string) => this.processChanges(secret));
   }
 
@@ -90,7 +93,7 @@ export class UserVerificationComponent implements ControlValueAccessor, OnInit {
 
     this.onChange({
       type: this.usesKeyConnector ? VerificationType.OTP : VerificationType.MasterPassword,
-      secret: secret,
+      secret: Utils.isNullOrWhitespace(secret) ? null : secret,
     });
   }
 }

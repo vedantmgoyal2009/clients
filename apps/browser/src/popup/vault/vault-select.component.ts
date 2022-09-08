@@ -11,12 +11,14 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
+  HostListener,
 } from "@angular/core";
 import { merge } from "rxjs";
 
-import { VaultFilter } from "@bitwarden/angular/modules/vault-filter/models/vault-filter.model";
+import { VaultFilter } from "@bitwarden/angular/vault/vault-filter/models/vault-filter.model";
 import { BroadcasterService } from "@bitwarden/common/abstractions/broadcaster.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
+import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { Organization } from "@bitwarden/common/models/domain/organization";
 
 import { VaultFilterService } from "../../services/vaultFilter.service";
@@ -45,6 +47,7 @@ import { VaultFilterService } from "../../services/vaultFilter.service";
     ]),
   ],
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class VaultSelectComponent implements OnInit {
   @Output() onVaultSelectionChanged = new EventEmitter();
 
@@ -82,8 +85,17 @@ export class VaultSelectComponent implements OnInit {
     private ngZone: NgZone,
     private broadcasterService: BroadcasterService,
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private platformUtilsService: PlatformUtilsService
   ) {}
+
+  @HostListener("document:keydown.escape", ["$event"])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.isOpen) {
+      event.preventDefault();
+      this.close();
+    }
+  }
 
   async ngOnInit() {
     await this.load();
@@ -157,6 +169,7 @@ export class VaultSelectComponent implements OnInit {
       this.overlayRef.outsidePointerEvents(),
       this.overlayRef.backdropClick(),
       this.overlayRef.detachments()
+      // eslint-disable-next-line rxjs-angular/prefer-takeuntil
     ).subscribe(() => {
       this.close();
     });
@@ -171,10 +184,18 @@ export class VaultSelectComponent implements OnInit {
   }
 
   selectOrganization(organization: Organization) {
-    this.vaultFilterDisplay = organization.name;
-    this.vaultFilterService.setVaultFilter(organization.id);
-    this.onVaultSelectionChanged.emit();
-    this.close();
+    if (!organization.enabled) {
+      this.platformUtilsService.showToast(
+        "error",
+        null,
+        this.i18nService.t("disabledOrganizationFilterError")
+      );
+    } else {
+      this.vaultFilterDisplay = organization.name;
+      this.vaultFilterService.setVaultFilter(organization.id);
+      this.onVaultSelectionChanged.emit();
+      this.close();
+    }
   }
   selectAllVaults() {
     this.vaultFilterDisplay = this.i18nService.t(this.vaultFilterService.allVaults);

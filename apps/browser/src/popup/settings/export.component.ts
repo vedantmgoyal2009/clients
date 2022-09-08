@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { UntypedFormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 
 import { ExportComponent as BaseExportComponent } from "@bitwarden/angular/components/export.component";
@@ -10,8 +10,8 @@ import { FileDownloadService } from "@bitwarden/common/abstractions/fileDownload
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
-import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification.service";
+import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
+import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification/userVerification.service.abstraction";
 
 @Component({
   selector: "app-export",
@@ -28,7 +28,7 @@ export class ExportComponent extends BaseExportComponent {
     private router: Router,
     logService: LogService,
     userVerificationService: UserVerificationService,
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     fileDownloadService: FileDownloadService
   ) {
     super(

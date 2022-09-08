@@ -532,10 +532,13 @@
   "invalidEmail": {
     "message": "Vigane e-posti aadress."
   },
-  "masterPassRequired": {
+  "masterPasswordRequired": {
     "message": "Vajalik on ülemparooli sisestamine."
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "Vajalik on ülemparooli uuesti sisestamine."
+  },
+  "masterPasswordMinlength": {
     "message": "Ülemparool peab olema vähemalt 8 tähemärgi pikkune."
   },
   "masterPassDoesntMatch": {
@@ -895,10 +898,10 @@
     "description": "Clipboard is the operating system thing where you copy/paste data to on your device."
   },
   "enableFavicon": {
-    "message": "Show website icons"
+    "message": "Kuva veebilehtede ikoone"
   },
   "faviconDesc": {
-    "message": "Show a recognizable image next to each login."
+    "message": "Kuvab iga kirje kõrval lehekülje ikooni."
   },
   "enableMinToTray": {
     "message": "Minimeeri tegumiribale"
@@ -1382,13 +1385,28 @@
     "message": "Kinnita Bitwardenisse sisselogimine."
   },
   "autoPromptWindowsHello": {
-    "message": "Ask for Windows Hello on launch"
+    "message": "Küsi avamisel Windows Hello tuvastust"
   },
   "autoPromptTouchId": {
-    "message": "Ask for Touch ID on launch"
+    "message": "Küsi avamisel Touch ID tuvastust"
   },
   "lockWithMasterPassOnRestart": {
     "message": "Lukusta ülemparooliga, kui rakendus taaskäivitatakse"
+  },
+  "deleteAccount": {
+    "message": "Kustuta konto"
+  },
+  "deleteAccountDesc": {
+    "message": "Jätkates kustutatakse sinu konto ja kõik hoidla andmed."
+  },
+  "deleteAccountWarning": {
+    "message": "Konto kustutamine on ühekordne tegevus. Seda ei saa tagasi võtta."
+  },
+  "accountDeleted": {
+    "message": "Konto on kustutatud"
+  },
+  "accountDeletedDesc": {
+    "message": "Konto on suletud ja kõik sellega seonduvad andmed on kustutatud."
   },
   "preferences": {
     "message": "Eelistused"
@@ -1543,7 +1561,7 @@
   "acceptPolicies": {
     "message": "Märkeruudu markeerimisel nõustud järgnevaga:"
   },
-  "acceptPoliciesError": {
+  "acceptPoliciesRequired": {
     "message": "Kasutustingimuste ja Privaatsuspoliitikaga pole nõustutud."
   },
   "enableBrowserIntegration": {
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "API võti"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "Vajalik on Premium versioon"
+  },
+  "organizationIsDisabled": {
+    "message": "Organisatsiooni ligipääs on keelatud."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "Organisatsiooni alla kuuluvatele kirjetele ei ole ligipääsu. Kontakteeru oma organisatsiooni omanikuga."
+  },
+  "neverLockWarning": {
+    "message": "Oled kindel, et soovid kasutada valikut \"Mitte kunagi\"? Sellega talletatakse sinu hoidla krüpteerimise võtit seadme mälus. Peaksid olema väga hoolas ja kindel, et seade on ohutu ja selles ei ole pahavara."
+  },
+  "cardBrandMir": {
+    "message": "Mir"
   }
 }

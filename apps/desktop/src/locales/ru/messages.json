@@ -107,7 +107,7 @@
     "message": "Код подтверждения (TOTP)"
   },
   "website": {
-    "message": "Веб-сайт"
+    "message": "Сайт"
   },
   "notes": {
     "message": "Заметки"
@@ -532,10 +532,13 @@
   "invalidEmail": {
     "message": "Неверный адрес email."
   },
-  "masterPassRequired": {
+  "masterPasswordRequired": {
     "message": "Требуется мастер-пароль."
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "Необходимо повторно ввести мастер-пароль."
+  },
+  "masterPasswordMinlength": {
     "message": "Мастер-пароль должен содержать не менее 8 символов."
   },
   "masterPassDoesntMatch": {
@@ -895,7 +898,7 @@
     "description": "Clipboard is the operating system thing where you copy/paste data to on your device."
   },
   "enableFavicon": {
-    "message": "Показать значки веб-сайтов"
+    "message": "Показать значки сайтов"
   },
   "faviconDesc": {
     "message": "Отображать узнаваемое изображение рядом с каждым логином."
@@ -1068,7 +1071,7 @@
     "message": "Гигиена паролей, здоровье аккаунта и отчеты об утечках данных для обеспечения безопасности вашего хранилища."
   },
   "premiumSignUpTotp": {
-    "message": "TOTP-генератор кодов (2ФА) для логинов в хранилище."
+    "message": "Генератор кодов подтверждения TOTP (2ФА) для логинов в хранилище."
   },
   "premiumSignUpSupport": {
     "message": "Приоритетная поддержка."
@@ -1390,6 +1393,21 @@
   "lockWithMasterPassOnRestart": {
     "message": "Блокировать мастер-паролем при перезапуске"
   },
+  "deleteAccount": {
+    "message": "Удалить аккаунт"
+  },
+  "deleteAccountDesc": {
+    "message": "Чтобы удалить свой аккаунт и все данные хранилища, выполните следующие действия."
+  },
+  "deleteAccountWarning": {
+    "message": "Удаление вашей учетной записи необратимо. Его нельзя отменить."
+  },
+  "accountDeleted": {
+    "message": "Аккаунт удален"
+  },
+  "accountDeletedDesc": {
+    "message": "Ваша учетная запись была закрыта и все связанные с ней данные были удалены."
+  },
   "preferences": {
     "message": "Настройки"
   },
@@ -1543,14 +1561,14 @@
   "acceptPolicies": {
     "message": "Отметив этот флажок, вы соглашаетесь со следующим:"
   },
-  "acceptPoliciesError": {
+  "acceptPoliciesRequired": {
     "message": "Условия предоставления услуг и Политика конфиденциальности не были подтверждены."
   },
   "enableBrowserIntegration": {
     "message": "Разрешить интеграцию с браузером"
   },
   "enableBrowserIntegrationDesc": {
-    "message": "Интеграция с браузером используется для биометрии в браузере."
+    "message": "Используется для биометрии в браузере."
   },
   "browserIntegrationUnsupportedTitle": {
     "message": "Интеграция с браузером не поддерживается"
@@ -1912,11 +1930,11 @@
     "message": "Тип имени пользователя"
   },
   "plusAddressedEmail": {
-    "message": "Плюс-адресованные email",
+    "message": "Субадресованные email",
     "description": "Username generator option that appends a random sub-address to the username. For example: address+subaddress@email.com"
   },
   "plusAddressedEmailDesc": {
-    "message": "Использовать возможности суб-адресации вашего провайдера электронной почты."
+    "message": "Используйте возможности субадресации вашей электронной почты."
   },
   "catchallEmail": {
     "message": "Catch-all-адрес электронной почты"
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "Ключ API"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "Требуется подписка Премиум"
+  },
+  "organizationIsDisabled": {
+    "message": "Организация отключена."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "Доступ к элементам в отключенных организациях невозможен. Обратитесь за помощью к владельцу организации."
+  },
+  "neverLockWarning": {
+    "message": "Вы действительно хотите отключить блокировку хранилища? В этом случае ключ шифрования вашего хранилища будет сохранен на вашем устройстве. Отключая блокировку, вы должны убедиться, что ваше устройство надежно защищено."
+  },
+  "cardBrandMir": {
+    "message": "Mir"
   }
 }

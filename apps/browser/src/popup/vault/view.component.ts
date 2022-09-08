@@ -88,6 +88,7 @@ export class ViewComponent extends BaseViewComponent {
 
   ngOnInit() {
     this.inPopout = this.popupUtilsService.inPopout(window);
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.queryParams.pipe(first()).subscribe(async (params) => {
       if (params.cipherId) {
         this.cipherId = params.cipherId;
@@ -276,6 +277,7 @@ export class ViewComponent extends BaseViewComponent {
 
     try {
       this.totpCode = await this.autofillService.doAutoFill({
+        tab: this.tab,
         cipher: this.cipher,
         pageDetails: this.pageDetails,
         doc: window.document,

@@ -1,10 +1,13 @@
-import { CryptoService } from "../../abstractions/crypto.service";
+import { Jsonify } from "type-fest";
+
+import { IEncrypted } from "@bitwarden/common/interfaces/IEncrypted";
+
 import { EncryptionType } from "../../enums/encryptionType";
 import { Utils } from "../../misc/utils";
 
 import { SymmetricCryptoKey } from "./symmetricCryptoKey";
 
-export class EncString {
+export class EncString implements IEncrypted {
   encryptedString?: string;
   encryptionType?: EncryptionType;
   decryptedValue?: string;
@@ -19,52 +22,60 @@ export class EncString {
     mac?: string
   ) {
     if (data != null) {
-      // data and header
-      const encType = encryptedStringOrType as EncryptionType;
+      this.initFromData(encryptedStringOrType as EncryptionType, data, iv, mac);
+    } else {
+      this.initFromEncryptedString(encryptedStringOrType as string);
+    }
+  }
 
-      if (iv != null) {
-        this.encryptedString = encType + "." + iv + "|" + data;
-      } else {
-        this.encryptedString = encType + "." + data;
-      }
+  get ivBytes(): ArrayBuffer {
+    return this.iv == null ? null : Utils.fromB64ToArray(this.iv).buffer;
+  }
 
-      // mac
-      if (mac != null) {
-        this.encryptedString += "|" + mac;
-      }
+  get macBytes(): ArrayBuffer {
+    return this.mac == null ? null : Utils.fromB64ToArray(this.mac).buffer;
+  }
 
-      this.encryptionType = encType;
-      this.data = data;
-      this.iv = iv;
-      this.mac = mac;
+  get dataBytes(): ArrayBuffer {
+    return this.data == null ? null : Utils.fromB64ToArray(this.data).buffer;
+  }
 
-      return;
+  toJSON() {
+    return this.encryptedString;
+  }
+
+  static fromJSON(obj: Jsonify<EncString>): EncString {
+    return new EncString(obj);
+  }
+
+  private initFromData(encType: EncryptionType, data: string, iv: string, mac: string) {
+    if (iv != null) {
+      this.encryptedString = encType + "." + iv + "|" + data;
+    } else {
+      this.encryptedString = encType + "." + data;
     }
 
-    this.encryptedString = encryptedStringOrType as string;
+    // mac
+    if (mac != null) {
+      this.encryptedString += "|" + mac;
+    }
+
+    this.encryptionType = encType;
+    this.data = data;
+    this.iv = iv;
+    this.mac = mac;
+  }
+
+  private initFromEncryptedString(encryptedString: string) {
+    this.encryptedString = encryptedString as string;
     if (!this.encryptedString) {
       return;
     }
 
-    const headerPieces = this.encryptedString.split(".");
-    let encPieces: string[] = null;
+    const { encType, encPieces } = this.parseEncryptedString(this.encryptedString);
+    this.encryptionType = encType;
 
-    if (headerPieces.length === 2) {
-      try {
-        this.encryptionType = parseInt(headerPieces[0], null);
-        encPieces = headerPieces[1].split("|");
-      } catch (e) {
-        return;
-      }
-    } else {
-      encPieces = this.encryptedString.split("|");
-      this.encryptionType =
-        encPieces.length === 3
-          ? EncryptionType.AesCbc128_HmacSha256_B64
-          : EncryptionType.AesCbc256_B64;
-    }
-
-    switch (this.encryptionType) {
+    switch (encType) {
       case EncryptionType.AesCbc128_HmacSha256_B64:
       case EncryptionType.AesCbc256_HmacSha256_B64:
         if (encPieces.length !== 3) {
@@ -96,27 +107,60 @@ export class EncString {
     }
   }
 
+  private parseEncryptedString(encryptedString: string): {
+    encType: EncryptionType;
+    encPieces: string[];
+  } {
+    const headerPieces = encryptedString.split(".");
+    let encType: EncryptionType;
+    let encPieces: string[] = null;
+
+    if (headerPieces.length === 2) {
+      try {
+        encType = parseInt(headerPieces[0], null);
+        encPieces = headerPieces[1].split("|");
+      } catch (e) {
+        return;
+      }
+    } else {
+      encPieces = encryptedString.split("|");
+      encType =
+        encPieces.length === 3
+          ? EncryptionType.AesCbc128_HmacSha256_B64
+          : EncryptionType.AesCbc256_B64;
+    }
+
+    return {
+      encType,
+      encPieces,
+    };
+  }
+
   async decrypt(orgId: string, key: SymmetricCryptoKey = null): Promise<string> {
     if (this.decryptedValue != null) {
       return this.decryptedValue;
     }
 
-    let cryptoService: CryptoService;
-    const containerService = (Utils.global as any).bitwardenContainerService;
-    if (containerService) {
-      cryptoService = containerService.getCryptoService();
-    } else {
-      throw new Error("global bitwardenContainerService not initialized.");
-    }
-
     try {
       if (key == null) {
-        key = await cryptoService.getOrgKey(orgId);
+        key = await this.getKeyForDecryption(orgId);
       }
-      this.decryptedValue = await cryptoService.decryptToUtf8(this, key);
+      if (key == null) {
+        throw new Error("No key to decrypt EncString with orgId " + orgId);
+      }
+
+      const encryptService = Utils.getContainerService().getEncryptService();
+      this.decryptedValue = await encryptService.decryptToUtf8(this, key);
     } catch (e) {
       this.decryptedValue = "[error: cannot decrypt]";
     }
     return this.decryptedValue;
+  }
+
+  private async getKeyForDecryption(orgId: string) {
+    const cryptoService = Utils.getContainerService().getCryptoService();
+    return orgId != null
+      ? await cryptoService.getOrgKey(orgId)
+      : await cryptoService.getKeyForUserEncryption();
   }
 }

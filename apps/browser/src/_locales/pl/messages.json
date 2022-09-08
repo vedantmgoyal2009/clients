@@ -367,7 +367,7 @@
     "message": "Blokowanie sejfu"
   },
   "lockNow": {
-    "message": "Zablokuj teraz"
+    "message": "Zablokuj"
   },
   "immediately": {
     "message": "Natychmiast"
@@ -423,10 +423,13 @@
   "invalidEmail": {
     "message": "Adres e-mail jest nieprawidłowy."
   },
-  "masterPassRequired": {
+  "masterPasswordRequired": {
     "message": "Hasło główne jest wymagane."
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "Wymagane jest ponowne wpisanie hasła głównego."
+  },
+  "masterPasswordMinlength": {
     "message": "Hasło główne musi zawierać co najmniej 8 znaków."
   },
   "masterPassDoesntMatch": {
@@ -1480,8 +1483,8 @@
   "acceptPolicies": {
     "message": "Zaznaczając tę opcję, akceptujesz:"
   },
-  "acceptPoliciesError": {
-    "message": "Nie zaakceptowałeś regulaminu i polityki prywatności."
+  "acceptPoliciesRequired": {
+    "message": "Warunki użytkowania i polityka prywatności nie zostały zaakceptowane."
   },
   "termsOfService": {
     "message": "Regulamin"
@@ -1846,7 +1849,7 @@
       }
     }
   },
-  "vaultTimeoutToLarge": {
+  "vaultTimeoutTooLarge": {
     "message": "Czas blokowania sejfu przekracza limit określony przez organizację."
   },
   "vaultExportDisabled": {
@@ -1964,5 +1967,35 @@
   },
   "ssoKeyConnectorError": {
     "message": "Błąd serwera Key Connector: upewnij się, że serwer Key Connector jest dostępny i działa poprawnie."
+  },
+  "premiumSubcriptionRequired": {
+    "message": "Wymagana jest subskrypcja Premium"
+  },
+  "organizationIsDisabled": {
+    "message": "Organizacja jest wyłączona."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "Nie można uzyskać dostępu do elementów w wyłączonych organizacjach. Skontaktuj się z właścicielem organizacji, aby uzyskać pomoc."
+  },
+  "cardBrandMir": {
+    "message": "Mir"
+  },
+  "loggingInTo": {
+    "message": "Logowanie do $DOMAIN$",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "settingsEdited": {
+    "message": "Ustawienia zostały edytowane"
+  },
+  "environmentEditedClick": {
+    "message": "Kliknij tutaj"
+  },
+  "environmentEditedReset": {
+    "message": "aby zresetować do wstępnie skonfigurowanych ustawień"
   }
 }

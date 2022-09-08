@@ -532,10 +532,13 @@
   "invalidEmail": {
     "message": "نشانی رایانامه نامعتبر است."
   },
-  "masterPassRequired": {
-    "message": "کلمه عبور اصلی ضروری است."
+  "masterPasswordRequired": {
+    "message": "گذرواژه اصلی ضروری است."
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "تایپ مجدد گذرواژه اصلی نیاز است."
+  },
+  "masterPasswordMinlength": {
     "message": "طول کلمه عبور اصلی باید حداقل ۸ کاراکتر باشد."
   },
   "masterPassDoesntMatch": {
@@ -1390,6 +1393,21 @@
   "lockWithMasterPassOnRestart": {
     "message": "در زمان شروع مجدد، با کلمه عبور اصلی قفل کن"
   },
+  "deleteAccount": {
+    "message": "حذف حساب"
+  },
+  "deleteAccountDesc": {
+    "message": "برای حذف حساب کاربری خود و تمام داده‌های گاوصندوق، به زیر ادامه دهید."
+  },
+  "deleteAccountWarning": {
+    "message": "حذف حساب شما دائمی است. نمی توان آن را برگرداند."
+  },
+  "accountDeleted": {
+    "message": "حساب حذف شد"
+  },
+  "accountDeletedDesc": {
+    "message": "حساب شما بسته شد و تمام داده های مرتبط حذف شده است."
+  },
   "preferences": {
     "message": "تنظیمات"
   },
@@ -1543,7 +1561,7 @@
   "acceptPolicies": {
     "message": "با علامت زدن این کادر با موارد زیر موافقت می کنید:"
   },
-  "acceptPoliciesError": {
+  "acceptPoliciesRequired": {
     "message": "شرایط خدمات و سیاست حفظ حریم خصوصی تأیید نشده است."
   },
   "enableBrowserIntegration": {
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "کلید API"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "اشتراک پرمیوم نیاز است"
+  },
+  "organizationIsDisabled": {
+    "message": "سازمان از کار افتاده است."
+  },
+  "disabledOrganizationFilterError": {
+    "message": "موارد موجود در سازمان‌های غیرفعال، قابل دسترسی نیستند. برای دریافت کمک با مالک سازمان خود تماس بگیرید."
+  },
+  "neverLockWarning": {
+    "message": "آیا جدا میخواهید از گزینه \"هرگز\" استفاده کنید؟ تنظیم کردن کردن گزینه قفل به \"هرگز\" کلیدهای رمزنگاری گاوصندوقتان را بر روی دستگاه شما ذخیره خواهد کرد. اگر از این گزینه استفاده میکنید باید اطمینان داشته باشید که دستگاه شما کاملا محافظت شده است."
+  },
+  "cardBrandMir": {
+    "message": "میر"
   }
 }

@@ -1,9 +1,22 @@
 /* eslint-disable no-useless-escape */
 import * as tldjs from "tldjs";
 
+import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
+
+import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
 import { I18nService } from "../abstractions/i18n.service";
 
 const nodeURL = typeof window === "undefined" ? require("url") : null;
+
+declare global {
+  /* eslint-disable-next-line no-var */
+  var bitwardenContainerService: BitwardenContainerService;
+}
+
+interface BitwardenContainerService {
+  getCryptoService: () => CryptoService;
+  getEncryptService: () => AbstractEncryptService;
+}
 
 export class Utils {
   static inited = false;
@@ -11,7 +24,7 @@ export class Utils {
   static isBrowser = true;
   static isMobileBrowser = false;
   static isAppleMobileBrowser = false;
-  static global: any = null;
+  static global: typeof global = null;
   static tldEndingRegex =
     /.*\.(com|net|org|edu|uk|gov|ca|de|jp|fr|au|ru|ch|io|es|us|co|xyz|info|ly|mil)$/;
   // Transpiled version of /\p{Emoji_Presentation}/gu using https://mothereff.in/regexpu. Used for compatability in older browsers.
@@ -29,16 +42,25 @@ export class Utils {
       (process as any).release != null &&
       (process as any).release.name === "node";
     Utils.isBrowser = typeof window !== "undefined";
+
     Utils.isMobileBrowser = Utils.isBrowser && this.isMobile(window);
     Utils.isAppleMobileBrowser = Utils.isBrowser && this.isAppleMobile(window);
-    Utils.global = Utils.isNode && !Utils.isBrowser ? global : window;
+
+    if (Utils.isNode) {
+      Utils.global = global;
+    } else if (Utils.isBrowser) {
+      Utils.global = window;
+    } else {
+      // If it's not browser or node then it must be a service worker
+      Utils.global = self;
+    }
   }
 
   static fromB64ToArray(str: string): Uint8Array {
     if (Utils.isNode) {
       return new Uint8Array(Buffer.from(str, "base64"));
     } else {
-      const binaryString = window.atob(str);
+      const binaryString = Utils.global.atob(str);
       const bytes = new Uint8Array(binaryString.length);
       for (let i = 0; i < binaryString.length; i++) {
         bytes[i] = binaryString.charCodeAt(i);
@@ -93,7 +115,7 @@ export class Utils {
       for (let i = 0; i < bytes.byteLength; i++) {
         binary += String.fromCharCode(bytes[i]);
       }
-      return window.btoa(binary);
+      return Utils.global.btoa(binary);
     }
   }
 
@@ -157,7 +179,7 @@ export class Utils {
     if (Utils.isNode) {
       return Buffer.from(utfStr, "utf8").toString("base64");
     } else {
-      return decodeURIComponent(escape(window.btoa(utfStr)));
+      return decodeURIComponent(escape(Utils.global.btoa(utfStr)));
     }
   }
 
@@ -169,7 +191,7 @@ export class Utils {
     if (Utils.isNode) {
       return Buffer.from(b64Str, "base64").toString("utf8");
     } else {
-      return decodeURIComponent(escape(window.atob(b64Str)));
+      return decodeURIComponent(escape(Utils.global.atob(b64Str)));
     }
   }
 
@@ -348,6 +370,49 @@ export class Utils {
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
+  /**
+   * There are a few ways to calculate text color for contrast, this one seems to fit accessibility guidelines best.
+   * https://stackoverflow.com/a/3943023/6869691
+   *
+   * @param {string} bgColor
+   * @param {number} [threshold] see stackoverflow link above
+   * @param {boolean} [svgTextFill]
+   * Indicates if this method is performed on an SVG <text> 'fill' attribute (e.g. <text fill="black"></text>).
+   * This check is necessary because the '!important' tag cannot be used in a 'fill' attribute.
+   */
+  static pickTextColorBasedOnBgColor(bgColor: string, threshold = 186, svgTextFill = false) {
+    const bgColorHexNums = bgColor.charAt(0) === "#" ? bgColor.substring(1, 7) : bgColor;
+    const r = parseInt(bgColorHexNums.substring(0, 2), 16); // hexToR
+    const g = parseInt(bgColorHexNums.substring(2, 4), 16); // hexToG
+    const b = parseInt(bgColorHexNums.substring(4, 6), 16); // hexToB
+    const blackColor = svgTextFill ? "black" : "black !important";
+    const whiteColor = svgTextFill ? "white" : "white !important";
+    return r * 0.299 + g * 0.587 + b * 0.114 > threshold ? blackColor : whiteColor;
+  }
+
+  static stringToColor(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += ("00" + value.toString(16)).substr(-2);
+    }
+    return color;
+  }
+
+  /**
+   * @throws Will throw an error if the ContainerService has not been attached to the window object
+   */
+  static getContainerService(): BitwardenContainerService {
+    if (this.global.bitwardenContainerService == null) {
+      throw new Error("global bitwardenContainerService not initialized.");
+    }
+    return this.global.bitwardenContainerService;
+  }
+
   private static validIpAddress(ipString: string): boolean {
     const ipRegex =
       /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -384,7 +449,7 @@ export class Utils {
         return new nodeURL.URL(uriString);
       } else if (typeof URL === "function") {
         return new URL(uriString);
-      } else if (window != null) {
+      } else if (typeof window !== "undefined") {
         const hasProtocol = uriString.indexOf("://") > -1;
         if (!hasProtocol && uriString.indexOf(".") > -1) {
           uriString = "http://" + uriString;

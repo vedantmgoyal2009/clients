@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { AngularWebpackPlugin } = require("@ngtools/webpack");
 const TerserPlugin = require("terser-webpack-plugin");
+const configurator = require("./config/config");
 
 if (process.env.NODE_ENV == null) {
   process.env.NODE_ENV = "development";
@@ -14,6 +15,8 @@ const ENV = (process.env.ENV = process.env.NODE_ENV);
 const manifestVersion = process.env.MANIFEST_VERSION == 3 ? 3 : 2;
 
 console.log(`Building Manifest Version ${manifestVersion} app`);
+const envConfig = configurator.load(ENV);
+configurator.log(envConfig);
 
 const moduleRules = [
   {
@@ -46,13 +49,20 @@ const moduleRules = [
       "sass-loader",
     ],
   },
-  // Hide System.import warnings. ref: https://github.com/angular/angular/issues/21560
   {
-    test: /[\/\\]@angular[\/\\].+\.js$/,
-    parser: { system: true },
+    test: /\.[cm]?js$/,
+    use: [
+      {
+        loader: "babel-loader",
+        options: {
+          configFile: false,
+          plugins: ["@angular/compiler-cli/linker/babel"],
+        },
+      },
+    ],
   },
   {
-    test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+    test: /\.[jt]sx?$/,
     loader: "@ngtools/webpack",
   },
 ];
@@ -78,6 +88,7 @@ const plugins = [
       manifestVersion == 3
         ? { from: "./src/manifest.v3.json", to: "manifest.json" }
         : "./src/manifest.json",
+      { from: "./src/managed_schema.json", to: "managed_schema.json" },
       { from: "./src/_locales", to: "_locales" },
       { from: "./src/images", to: "images" },
       { from: "./src/popup/images", to: "popup/images" },
@@ -102,11 +113,15 @@ const plugins = [
     cleanAfterEveryBuildPatterns: ["!popup/fonts/**/*"],
   }),
   new webpack.ProvidePlugin({
-    process: "process/browser",
+    process: "process/browser.js",
   }),
   new webpack.SourceMapDevToolPlugin({
     exclude: [/content\/.*/, /notification\/.*/],
     filename: "[file].map",
+  }),
+  new webpack.EnvironmentPlugin({
+    FLAGS: envConfig.flags,
+    DEV_FLAGS: ENV === "development" ? envConfig.devFlags : {},
   }),
 ];
 
@@ -168,13 +183,6 @@ const config = {
             return chunk.name === "popup/main";
           },
         },
-        commons2: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          chunks: (chunk) => {
-            return chunk.name === "background";
-          },
-        },
       },
     },
   },
@@ -200,5 +208,17 @@ const config = {
   module: { rules: moduleRules },
   plugins: plugins,
 };
+
+if (manifestVersion == 2) {
+  // We can't use this in manifest v3
+  // Ideally we understand why this breaks it and we don't have to do this
+  config.optimization.splitChunks.cacheGroups.commons2 = {
+    test: /[\\/]node_modules[\\/]/,
+    name: "vendor",
+    chunks: (chunk) => {
+      return chunk.name === "background";
+    },
+  };
+}
 
 module.exports = config;

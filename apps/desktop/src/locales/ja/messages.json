@@ -532,10 +532,13 @@
   "invalidEmail": {
     "message": "無効なメールアドレスです。"
   },
-  "masterPassRequired": {
-    "message": "マスターパスワードは必須です。"
+  "masterPasswordRequired": {
+    "message": "マスターパスワードが必要です。"
   },
-  "masterPassLength": {
+  "confirmMasterPasswordRequired": {
+    "message": "マスターパスワードの再入力が必要です。"
+  },
+  "masterPasswordMinlength": {
     "message": "マスターパスワードは、少なくとも8文字以上で設定してください。"
   },
   "masterPassDoesntMatch": {
@@ -1390,6 +1393,21 @@
   "lockWithMasterPassOnRestart": {
     "message": "再起動時にマスターパスワードでロック"
   },
+  "deleteAccount": {
+    "message": "アカウントを削除"
+  },
+  "deleteAccountDesc": {
+    "message": "アカウントとすべての保管庫データを削除するには、以下に進んでください。"
+  },
+  "deleteAccountWarning": {
+    "message": "アカウントを恒久的に削除します。元に戻すことはできません。"
+  },
+  "accountDeleted": {
+    "message": "アカウントが削除されました"
+  },
+  "accountDeletedDesc": {
+    "message": "アカウントが削除され、すべての関連するデータが削除されました。"
+  },
   "preferences": {
     "message": "設定"
   },
@@ -1543,7 +1561,7 @@
   "acceptPolicies": {
     "message": "以下に同意しチェックします:"
   },
-  "acceptPoliciesError": {
+  "acceptPoliciesRequired": {
     "message": "利用規約とプライバシーポリシーを確認してください。"
   },
   "enableBrowserIntegration": {
@@ -1960,5 +1978,20 @@
   },
   "apiKey": {
     "message": "API キー"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "プレミアム版が必要です"
+  },
+  "organizationIsDisabled": {
+    "message": "組織は無効です。"
+  },
+  "disabledOrganizationFilterError": {
+    "message": "無効な組織のアイテムにアクセスすることはできません。組織の所有者に連絡してください。"
+  },
+  "neverLockWarning": {
+    "message": "本当に「なし」オプションを使用しますか？ロックオプションを「なし」に設定すると、保管庫の暗号化キーがデバイスに保存されます。 このオプションを使用する場合は、デバイスを適切に保護する必要があります。"
+  },
+  "cardBrandMir": {
+    "message": "Mir"
   }
 }
