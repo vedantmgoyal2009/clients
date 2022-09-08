@@ -37,6 +37,7 @@ import { CipherBulkRestoreRequest } from "../models/request/cipherBulkRestoreReq
 import { CipherBulkShareRequest } from "../models/request/cipherBulkShareRequest";
 import { CipherCollectionsRequest } from "../models/request/cipherCollectionsRequest";
 import { CipherCreateRequest } from "../models/request/cipherCreateRequest";
+import { CipherPartialRequest } from "../models/request/cipherPartialRequest";
 import { CipherRequest } from "../models/request/cipherRequest";
 import { CipherShareRequest } from "../models/request/cipherShareRequest";
 import { CipherResponse } from "../models/response/cipherResponse";
@@ -157,6 +158,7 @@ export class CipherService implements CipherServiceAbstraction {
     cipher.collectionIds = model.collectionIds;
     cipher.revisionDate = model.revisionDate;
     cipher.reprompt = model.reprompt;
+    cipher.edit = model.edit;
 
     if (key == null && cipher.organizationId != null) {
       key = await this.cryptoService.getOrgKey(cipher.organizationId);
@@ -606,8 +608,15 @@ export class CipherService implements CipherServiceAbstraction {
       }
       cipher.id = response.id;
     } else {
-      const request = new CipherRequest(cipher);
-      response = await this.apiService.putCipher(cipher.id, request);
+      if (cipher.edit) {
+        const request = new CipherRequest(cipher);
+        response = await this.apiService.putCipher(cipher.id, request);
+      } else {
+        //even if user doesn't have permission to edit the cipher,
+        //they should still be able to update the folder and favorite values
+        const request = new CipherPartialRequest(cipher);
+        response = await this.apiService.putPartialCipher(cipher.id, request);
+      }
     }
 
     const data = new CipherData(response, cipher.collectionIds);

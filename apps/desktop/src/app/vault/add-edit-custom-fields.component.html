@@ -17,6 +17,7 @@
           appStopClick
           (click)="removeField(f)"
           appA11yTitle="{{ 'remove' | i18n }}"
+          [disabled]="!cipher.edit && editMode"
         >
           <i class="bwi bwi-minus-circle bwi-lg" aria-hidden="true"></i>
         </button>
@@ -106,12 +107,18 @@
     </div>
     <!-- Add new custom field -->
     <div class="box-content-row" appBoxRow>
-      <button type="button" appStopClick (click)="addField()">
+      <button type="button" appStopClick (click)="addField()" [disabled]="!cipher.edit && editMode">
         <i class="bwi bwi-plus-circle bwi-fw bwi-lg" aria-hidden="true"></i>
         {{ "newCustomField" | i18n }}
       </button>
       <label for="addFieldType" class="sr-only">{{ "type" | i18n }}</label>
-      <select id="addFieldType" name="AddFieldType" [(ngModel)]="addFieldType" class="field-type">
+      <select
+        id="addFieldType"
+        name="AddFieldType"
+        [(ngModel)]="addFieldType"
+        class="field-type"
+        [ngClass]="{ readonly: !cipher.edit && editMode }"
+      >
         <option *ngFor="let o of addFieldTypeOptions" [ngValue]="o.value">{{ o.name }}</option>
         <option
           *ngIf="cipher.linkedFieldOptions != null"
