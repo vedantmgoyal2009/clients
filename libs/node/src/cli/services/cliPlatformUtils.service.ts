@@ -100,7 +100,7 @@ export class CliPlatformUtilsService implements PlatformUtilsService {
     return false;
   }
 
-  supportsWorkers(): boolean {
+  supportsWorkers(win: Window): boolean {
     // Web Workers are not supported in node
     return false;
   }
