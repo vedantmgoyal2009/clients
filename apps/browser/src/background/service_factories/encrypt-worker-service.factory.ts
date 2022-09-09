@@ -12,6 +12,7 @@ import {
 type EncryptWorkerServiceFactoryOptions = FactoryOptions & {
   encryptWorkerServiceOptions: {
     win: Window;
+    encryptWorkerUrl: URL;
   };
 };
 
@@ -34,7 +35,7 @@ export function EncryptWorkerServiceFactory(
         await platformUtilsServiceFactory(cache, opts),
         opts.encryptWorkerServiceOptions.win,
         await cryptoServiceFactory(cache, opts),
-        new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url)
+        opts.encryptWorkerServiceOptions.encryptWorkerUrl
       )
   );
 }
