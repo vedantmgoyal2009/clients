@@ -1,11 +1,12 @@
-import { Component, Input, OnChanges } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 
 import { Utils } from "@bitwarden/common/misc/utils";
 
-type SizeTypes = "large" | "default" | "small";
+type SizeTypes = "xlarge" | "large" | "default" | "small";
 
 const SizeClasses: Record<SizeTypes, string[]> = {
+  xlarge: ["tw-h-24", "tw-w-24"],
   large: ["tw-h-16", "tw-w-16"],
   default: ["tw-h-12", "tw-w-12"],
   small: ["tw-h-7", "tw-w-7"],
@@ -13,19 +14,34 @@ const SizeClasses: Record<SizeTypes, string[]> = {
 
 @Component({
   selector: "bit-avatar",
-  template: `<img *ngIf="src" [src]="src" title="{{ text }}" [ngClass]="classList" />`,
+  template: `<img
+    *ngIf="src"
+    [src]="src"
+    title="{{ title || text }}"
+    appStopClick
+    (click)="onClick()"
+    [attr.tabindex]="clickable ? '0' : null"
+    [ngClass]="classList"
+  />`,
 })
 export class AvatarComponent implements OnChanges {
   @Input() border = false;
-  @Input() color: string;
+  // When a color is not provided, attempt to retrieve it from the user profile.
+  @Input() color: string | null;
   @Input() id: number;
   @Input() text: string;
+  @Input() title: string;
+  @Input() data: string;
   @Input() size: SizeTypes = "default";
+  @Input() selected = false;
+  @Input() clickable = false;
 
   private svgCharCount = 2;
   private svgFontSize = 20;
   private svgFontWeight = 300;
   private svgSize = 48;
+  @Output() select = new EventEmitter<string>();
+
   src: SafeResourceUrl;
 
   constructor(public sanitizer: DomSanitizer) {}
@@ -37,12 +53,21 @@ export class AvatarComponent implements OnChanges {
   get classList() {
     return ["tw-rounded-full"]
       .concat(SizeClasses[this.size] ?? [])
-      .concat(this.border ? ["tw-border", "tw-border-solid", "tw-border-secondary-500"] : []);
+      .concat(this.clickable ? ["tw-outline", "tw-outline-solid", "tw-outline-secondary-500"] : [])
+      .concat(
+        this.border && !this.clickable
+          ? ["tw-border", "tw-border-solid", "tw-border-secondary-500"]
+          : []
+      );
   }
 
-  private generate() {
+  onClick() {
+    this.select.emit(this.color);
+  }
+
+  private async generate() {
     let chars: string = null;
-    const upperCaseText = this.text.toUpperCase();
+    const upperCaseText = (this.text || this.data).toUpperCase();
 
     chars = this.getFirstLetters(upperCaseText, this.svgCharCount);
 
@@ -58,16 +83,16 @@ export class AvatarComponent implements OnChanges {
     let svg: HTMLElement;
     let hexColor = this.color;
 
-    if (this.color != null) {
+    if (this.color) {
       svg = this.createSvgElement(this.svgSize, hexColor);
-    } else if (this.id != null) {
-      hexColor = Utils.stringToColor(this.id.toString());
-      svg = this.createSvgElement(this.svgSize, hexColor);
+      // } else if (this.id != null) {
+      //   hexColor = Utils.stringToColor(this.id.toString());
+      //   svg = this.createSvgElement(this.svgSize, hexColor);
     } else {
-      hexColor = Utils.stringToColor(upperCaseText);
+      // TODO - get color from user profile
+      hexColor = "#000000";
       svg = this.createSvgElement(this.svgSize, hexColor);
     }
-
     const charObj = this.createTextElement(chars, hexColor);
     svg.appendChild(charObj);
     const html = window.document.createElement("div").appendChild(svg).outerHTML;

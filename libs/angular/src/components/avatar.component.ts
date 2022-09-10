@@ -1,105 +1,93 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
-import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { Component, Input, OnChanges, OnInit } from "@angular/core";
+import { DomSanitizer } from "@angular/platform-browser";
 
+import { CryptoFunctionService } from "@bitwarden/common/abstractions/cryptoFunction.service";
+import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 
-type SizeTypes = "xlarge" | "large" | "default" | "small";
-
-const SizeClasses: Record<SizeTypes, string[]> = {
-  xlarge: ["tw-h-24", "tw-w-24"],
-  large: ["tw-h-16", "tw-w-16"],
-  default: ["tw-h-12", "tw-w-12"],
-  small: ["tw-h-7", "tw-w-7"],
-};
-
 @Component({
-  selector: "bit-avatar",
-  template: `<img
-    *ngIf="src"
-    [src]="src"
-    title="{{ title || text }}"
-    appStopClick
-    (click)="onClick()"
-    [attr.tabindex]="clickable ? '0' : null"
-    [ngClass]="classList"
-  />`,
+  selector: "app-avatar",
+  template:
+    '<img *ngIf="src" [src]="sanitizer.bypassSecurityTrustResourceUrl(src)" title="{{data}}" ' +
+    "[ngClass]=\"{'rounded-circle': circle}\">",
 })
-export class AvatarComponent implements OnChanges {
-  @Input() border = false;
-  // When a color is not provided, attempt to retrieve it from the user profile.
-  @Input() color: string | null;
-  @Input() id: number;
-  @Input() text: string;
-  @Input() title: string;
+export class AvatarComponent implements OnChanges, OnInit {
   @Input() data: string;
-  @Input() size: SizeTypes = "default";
-  @Input() selected = false;
-  @Input() clickable = false;
+  @Input() email: string;
+  @Input() size = 45;
+  @Input() charCount = 2;
+  @Input() textColor = "#ffffff";
+  @Input() fontSize = 20;
+  @Input() fontWeight = 300;
+  @Input() dynamic = false;
+  @Input() circle = false;
 
-  private svgCharCount = 2;
-  private svgFontSize = 20;
-  private svgFontWeight = 300;
-  private svgSize = 48;
-  @Output() select = new EventEmitter<string>();
+  src: string;
 
-  src: SafeResourceUrl;
+  constructor(
+    public sanitizer: DomSanitizer,
+    private cryptoFunctionService: CryptoFunctionService,
+    private stateService: StateService
+  ) {}
 
-  constructor(public sanitizer: DomSanitizer) {}
+  ngOnInit() {
+    if (!this.dynamic) {
+      this.generate();
+    }
+  }
 
   ngOnChanges() {
-    this.generate();
-  }
-
-  get classList() {
-    return ["tw-rounded-full"]
-      .concat(SizeClasses[this.size] ?? [])
-      .concat(this.clickable ? ["tw-outline", "tw-outline-solid", "tw-outline-secondary-500"] : [])
-      .concat(
-        this.border && !this.clickable
-          ? ["tw-border", "tw-border-solid", "tw-border-secondary-500"]
-          : []
-      );
-  }
-
-  onClick() {
-    this.select.emit(this.color);
+    if (this.dynamic) {
+      this.generate();
+    }
   }
 
   private async generate() {
-    let chars: string = null;
-    const upperCaseText = (this.text || this.data).toUpperCase();
-
-    chars = this.getFirstLetters(upperCaseText, this.svgCharCount);
-
-    if (chars == null) {
-      chars = this.unicodeSafeSubstring(upperCaseText, this.svgCharCount);
-    }
-
-    // If the chars contain an emoji, only show it.
-    if (chars.match(Utils.regexpEmojiPresentation)) {
-      chars = chars.match(Utils.regexpEmojiPresentation)[0];
-    }
-
-    let svg: HTMLElement;
-    let hexColor = this.color;
-
-    if (this.color) {
-      svg = this.createSvgElement(this.svgSize, hexColor);
-      // } else if (this.id != null) {
-      //   hexColor = Utils.stringToColor(this.id.toString());
-      //   svg = this.createSvgElement(this.svgSize, hexColor);
+    const enableGravatars = await this.stateService.getEnableGravitars();
+    if (enableGravatars && this.email != null) {
+      const hashBytes = await this.cryptoFunctionService.hash(
+        this.email.toLowerCase().trim(),
+        "md5"
+      );
+      const hash = Utils.fromBufferToHex(hashBytes).toLowerCase();
+      this.src = "https://www.gravatar.com/avatar/" + hash + "?s=" + this.size + "&r=pg&d=retro";
     } else {
-      // TODO - get color from user profile
-      hexColor = "#000000";
-      svg = this.createSvgElement(this.svgSize, hexColor);
+      let chars: string = null;
+      const upperData = this.data.toUpperCase();
+
+      if (this.charCount > 1) {
+        chars = this.getFirstLetters(upperData, this.charCount);
+      }
+      if (chars == null) {
+        chars = this.unicodeSafeSubstring(upperData, this.charCount);
+      }
+
+      // If the chars contain an emoji, only show it.
+      if (chars.match(Utils.regexpEmojiPresentation)) {
+        chars = chars.match(Utils.regexpEmojiPresentation)[0];
+      }
+
+      const charObj = this.getCharText(chars);
+      const color = this.stringToColor(upperData);
+      const svg = this.getSvg(this.size, color);
+      svg.appendChild(charObj);
+      const html = window.document.createElement("div").appendChild(svg).outerHTML;
+      const svgHtml = window.btoa(unescape(encodeURIComponent(html)));
+      this.src = "data:image/svg+xml;base64," + svgHtml;
     }
-    const charObj = this.createTextElement(chars, hexColor);
-    svg.appendChild(charObj);
-    const html = window.document.createElement("div").appendChild(svg).outerHTML;
-    const svgHtml = window.btoa(unescape(encodeURIComponent(html)));
-    this.src = this.sanitizer.bypassSecurityTrustResourceUrl(
-      "data:image/svg+xml;base64," + svgHtml
-    );
+  }
+
+  private stringToColor(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += ("00" + value.toString(16)).substr(-2);
+    }
+    return color;
   }
 
   private getFirstLetters(data: string, count: number): string {
@@ -114,7 +102,7 @@ export class AvatarComponent implements OnChanges {
     return null;
   }
 
-  private createSvgElement(size: number, color: string): HTMLElement {
+  private getSvg(size: number, color: string): HTMLElement {
     const svgTag = window.document.createElement("svg");
     svgTag.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     svgTag.setAttribute("pointer-events", "none");
@@ -126,22 +114,22 @@ export class AvatarComponent implements OnChanges {
     return svgTag;
   }
 
-  private createTextElement(character: string, color: string): HTMLElement {
+  private getCharText(character: string): HTMLElement {
     const textTag = window.document.createElement("text");
     textTag.setAttribute("text-anchor", "middle");
     textTag.setAttribute("y", "50%");
     textTag.setAttribute("x", "50%");
     textTag.setAttribute("dy", "0.35em");
     textTag.setAttribute("pointer-events", "auto");
-    textTag.setAttribute("fill", Utils.pickTextColorBasedOnBgColor(color, 135, true));
+    textTag.setAttribute("fill", this.textColor);
     textTag.setAttribute(
       "font-family",
       '"Open Sans","Helvetica Neue",Helvetica,Arial,' +
         'sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
     );
     textTag.textContent = character;
-    textTag.style.fontWeight = this.svgFontWeight.toString();
-    textTag.style.fontSize = this.svgFontSize + "px";
+    textTag.style.fontWeight = this.fontWeight.toString();
+    textTag.style.fontSize = this.fontSize + "px";
     return textTag;
   }
 
