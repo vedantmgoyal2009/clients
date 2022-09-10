@@ -20,20 +20,17 @@
         <p class="tw-text-lg">Pick an avatar color</p>
         <ng-container *ngFor="let c of defaultColorPalette">
           <span class="tw-inline-block tw-p-5 tw-pr-0">
-            <app-avatar
+            <bit-avatar
               appStopClick
               (select)="selectionChanged(c.color)"
               [selected]="c.selected"
               [title]="c.name"
               [clickable]="true"
-              data="{{ profile | userName }}"
-              [email]="profile.email"
+              text="{{ profile | userName }}"
+              size="xlarge"
               [color]="c.color"
-              size="75"
-              fontSize="35"
-              [circle]="true"
             >
-            </app-avatar>
+            </bit-avatar>
           </span>
         </ng-container>
         <app-callout type="error" *ngIf="error">
