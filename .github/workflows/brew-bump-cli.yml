@@ -43,6 +43,4 @@ jobs:
           org: bitwarden
           tap: Homebrew/homebrew-core
           formula: bitwarden-cli
-          tag: ${{ github.ref }}
-          revision: ${{ github.sha }}
           force: false
