@@ -16,6 +16,9 @@ jobs:
     name: Update Bitwarden CLI Formula
     runs-on: macos-11
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846  # v3.0.0
+
       - name: Login to Azure
         uses: Azure/login@1f63701bf3e6892515f1b7ce2d2bf1708b46beaf
         with:
