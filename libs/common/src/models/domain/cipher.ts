@@ -1,3 +1,5 @@
+import { IDecryptable } from "@bitwarden/common/interfaces/IDecryptable";
+
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
 import { CipherData } from "../data/cipherData";
@@ -15,7 +17,7 @@ import { Password } from "./password";
 import { SecureNote } from "./secureNote";
 import { SymmetricCryptoKey } from "./symmetricCryptoKey";
 
-export class Cipher extends Domain {
+export class Cipher extends Domain implements IDecryptable<CipherView> {
   id: string;
   organizationId: string;
   folderId: string;

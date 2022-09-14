@@ -209,7 +209,8 @@ import { ValidationService } from "./validation.service";
         i18nService: I18nServiceAbstraction,
         injector: Injector,
         logService: LogService,
-        stateService: StateServiceAbstraction
+        stateService: StateServiceAbstraction,
+        encryptService: AbstractEncryptService
       ) =>
         new CipherService(
           cryptoService,
@@ -219,7 +220,8 @@ import { ValidationService } from "./validation.service";
           i18nService,
           () => injector.get(SearchServiceAbstraction),
           logService,
-          stateService
+          stateService,
+          encryptService
         ),
       deps: [
         CryptoServiceAbstraction,
@@ -230,6 +232,7 @@ import { ValidationService } from "./validation.service";
         Injector, // TODO: Get rid of this circular dependency!
         LogService,
         StateServiceAbstraction,
+        AbstractEncryptService,
       ],
     },
     {
