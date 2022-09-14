@@ -495,9 +495,9 @@ export class CipherService implements CipherServiceAbstraction {
     const ciphers = response.data.map(
       (cipherResponse) => new Cipher(new CipherData(cipherResponse))
     );
-    const keys = await this.cryptoService.getKeysForVaultDecryption();
+    const key = await this.cryptoService.getOrgKey(organizationId);
 
-    const decCiphers = await this.encryptService.decryptItems(ciphers, keys);
+    const decCiphers = await this.encryptService.decryptItems(ciphers, key);
 
     decCiphers.sort(this.getLocaleSortingFunction());
     return decCiphers;

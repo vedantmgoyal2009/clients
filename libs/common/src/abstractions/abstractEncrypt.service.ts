@@ -16,6 +16,6 @@ export abstract class AbstractEncryptService {
   abstract resolveLegacyKey: (key: SymmetricCryptoKey, encThing: IEncrypted) => SymmetricCryptoKey;
   abstract decryptItems: <T>(
     items: IDecryptable<T>[],
-    keys: Map<string, SymmetricCryptoKey>
+    keys: SymmetricCryptoKey | Map<string, SymmetricCryptoKey>
   ) => Promise<T[]>;
 }
