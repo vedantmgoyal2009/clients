@@ -4,7 +4,7 @@ import { CryptoFunctionService } from "../abstractions/cryptoFunction.service";
 import { LogService } from "../abstractions/log.service";
 import { IDecryptable } from "../interfaces/IDecryptable";
 
-import { EncryptService } from "./cryptography/encrypt.service";
+import { EncryptService } from "./encrypt.service";
 
 export class MultithreadEncryptService extends EncryptService {
   private worker: Worker;
