@@ -727,9 +727,10 @@ export class CryptoService implements CryptoServiceAbstraction {
   async getKeysForVaultDecryption(): Promise<Map<string, SymmetricCryptoKey>> {
     const orgKeys = await this.getOrgKeys();
     const userKey = await this.getKeyForUserEncryption();
-    orgKeys.set(null, userKey);
 
-    return orgKeys;
+    const allKeys = new Map([...orgKeys, [null, userKey]]);
+
+    return allKeys;
   }
 
   private async stretchKey(key: SymmetricCryptoKey): Promise<SymmetricCryptoKey> {
