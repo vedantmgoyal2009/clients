@@ -19,7 +19,9 @@ const SizeClasses: Record<SizeTypes, string[]> = {
     [src]="src"
     title="{{ title || text }}"
     appStopClick
-    (click)="onClick()"
+    (click)="onFire()"
+    (keyup.enter)="onFire()"
+    (keyup.space)="onFire()"
     [attr.tabindex]="clickable ? '0' : null"
     [ngClass]="classList"
   />`,
@@ -30,8 +32,8 @@ export class AvatarComponent implements OnChanges {
   @Input() color: string | null;
   @Input() id: number;
   @Input() text: string;
+  @Input() icon: string;
   @Input() title: string;
-  @Input() data: string;
   @Input() size: SizeTypes = "default";
   @Input() selected = false;
   @Input() clickable = false;
@@ -53,21 +55,33 @@ export class AvatarComponent implements OnChanges {
   get classList() {
     return ["tw-rounded-full"]
       .concat(SizeClasses[this.size] ?? [])
-      .concat(this.clickable ? ["tw-outline", "tw-outline-solid", "tw-outline-secondary-500"] : [])
       .concat(
-        this.border && !this.clickable
-          ? ["tw-border", "tw-border-solid", "tw-border-secondary-500"]
+        this.clickable
+          ? ["tw-cursor-pointer", "tw-outline", "tw-outline-solid", "tw-outline-offset-1"]
           : []
-      );
+      )
+      .concat(
+        this.clickable && !this.selected
+          ? [
+              "tw-outline-0",
+              "hover:tw-outline-1",
+              "hover:tw-outline-primary-300",
+              "focus:tw-outline-2",
+              "focus:tw-outline-primary-500",
+            ]
+          : []
+      )
+      .concat(this.clickable && this.selected ? ["tw-outline-[3px]", "tw-outline-primary-500"] : [])
+      .concat(this.border ? ["tw-border", "tw-border-solid", "tw-border-secondary-500"] : []);
   }
 
-  onClick() {
+  onFire() {
     this.select.emit(this.color);
   }
 
   private async generate() {
     let chars: string = null;
-    const upperCaseText = (this.text || this.data).toUpperCase();
+    const upperCaseText = this.text?.toUpperCase();
 
     chars = this.getFirstLetters(upperCaseText, this.svgCharCount);
 
@@ -89,7 +103,7 @@ export class AvatarComponent implements OnChanges {
       //   hexColor = Utils.stringToColor(this.id.toString());
       //   svg = this.createSvgElement(this.svgSize, hexColor);
     } else {
-      // TODO - get color from user profile
+      //TODO get user profile color
       hexColor = "#000000";
       svg = this.createSvgElement(this.svgSize, hexColor);
     }
@@ -103,8 +117,8 @@ export class AvatarComponent implements OnChanges {
   }
 
   private getFirstLetters(data: string, count: number): string {
-    const parts = data.split(" ");
-    if (parts.length > 1) {
+    const parts = data?.split(" ");
+    if (parts?.length > 1) {
       let text = "";
       for (let i = 0; i < count; i++) {
         text += this.unicodeSafeSubstring(parts[i], 1);
@@ -127,26 +141,42 @@ export class AvatarComponent implements OnChanges {
   }
 
   private createTextElement(character: string, color: string): HTMLElement {
-    const textTag = window.document.createElement("text");
-    textTag.setAttribute("text-anchor", "middle");
-    textTag.setAttribute("y", "50%");
-    textTag.setAttribute("x", "50%");
-    textTag.setAttribute("dy", "0.35em");
-    textTag.setAttribute("pointer-events", "auto");
-    textTag.setAttribute("fill", Utils.pickTextColorBasedOnBgColor(color, 135, true));
-    textTag.setAttribute(
-      "font-family",
-      '"Open Sans","Helvetica Neue",Helvetica,Arial,' +
-        'sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
-    );
-    textTag.textContent = character;
-    textTag.style.fontWeight = this.svgFontWeight.toString();
-    textTag.style.fontSize = this.svgFontSize + "px";
-    return textTag;
+    if (this.icon) {
+      const iconTag = window.document.createElement("text");
+      iconTag.setAttribute("text-anchor", "middle");
+      iconTag.setAttribute("y", "50%");
+      iconTag.setAttribute("x", "50%");
+      iconTag.setAttribute("dy", "0.35em");
+      iconTag.setAttribute("pointer-events", "auto");
+      iconTag.setAttribute("fill", "#000000");
+      iconTag.setAttribute("font-family", "btw-font");
+      iconTag.textContent = character;
+      iconTag.classList.add("bwi", this.icon);
+      iconTag.style.fontWeight = this.svgFontWeight.toString();
+      iconTag.style.fontSize = this.svgFontSize + "px";
+      return iconTag;
+    } else {
+      const textTag = window.document.createElement("text");
+      textTag.setAttribute("text-anchor", "middle");
+      textTag.setAttribute("y", "50%");
+      textTag.setAttribute("x", "50%");
+      textTag.setAttribute("dy", "0.35em");
+      textTag.setAttribute("pointer-events", "auto");
+      textTag.setAttribute("fill", Utils.pickTextColorBasedOnBgColor(color, 135, true));
+      textTag.setAttribute(
+        "font-family",
+        '"Open Sans","Helvetica Neue",Helvetica,Arial,' +
+          'sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
+      );
+      textTag.textContent = character;
+      textTag.style.fontWeight = this.svgFontWeight.toString();
+      textTag.style.fontSize = this.svgFontSize + "px";
+      return textTag;
+    }
   }
 
   private unicodeSafeSubstring(str: string, count: number) {
-    const characters = str.match(/./gu);
+    const characters = str?.match(/./gu);
     return characters != null ? characters.slice(0, count).join("") : "";
   }
 }

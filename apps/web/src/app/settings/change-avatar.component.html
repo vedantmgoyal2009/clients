@@ -17,26 +17,42 @@
           <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
           {{ "loading" | i18n }}
         </div>
-        <p class="tw-text-lg">Pick an avatar color</p>
-        <ng-container *ngFor="let c of defaultColorPalette">
-          <span class="tw-inline-block tw-p-5 tw-pr-0">
-            <bit-avatar
-              appStopClick
-              (select)="selectionChanged(c.color)"
-              [selected]="c.selected"
-              [title]="c.name"
-              [clickable]="true"
-              text="{{ profile | userName }}"
-              size="xlarge"
-              [color]="c.color"
-            >
-            </bit-avatar>
-          </span>
-        </ng-container>
         <app-callout type="error" *ngIf="error">
           {{ error }}
         </app-callout>
-        <pre style="max-height: 500px">{{ defaultColorPalette | json }}</pre>
+        <p class="tw-text-lg">Pick an avatar color</p>
+        <ng-container *ngFor="let c of defaultColorPalette">
+          <bit-avatar
+            appStopClick
+            (select)="selectionChanged(c.color)"
+            [selected]="c.selected"
+            [title]="c.name"
+            [clickable]="true"
+            text="{{ profile | userName }}"
+            size="xlarge"
+            [color]="c.color"
+            [border]="true"
+            class="tw-inline-block tw-p-5 tw-pr-0"
+          >
+          </bit-avatar>
+        </ng-container>
+        <span class="tw-h-24 tw-w-24 tw-rounded-full"></span>
+        <bit-avatar
+          appStopClick
+          [selected]="customColorSelected"
+          title="Custom color"
+          [clickable]="true"
+          icon="bwi-pencil"
+          size="xlarge"
+          [color]="customColor$ | async"
+          class="tw-inline-block tw-p-5 tw-pr-0"
+        >
+        </bit-avatar>
+        <input
+          type="color"
+          [ngModel]="customColor$ | async"
+          (ngModelChange)="customColor$.next($event)"
+        />
       </div>
       <div class="modal-footer">
         <button
