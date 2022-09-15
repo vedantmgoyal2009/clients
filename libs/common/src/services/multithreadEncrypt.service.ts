@@ -39,7 +39,7 @@ export class MultithreadEncryptService extends EncryptService {
       return [];
     }
 
-    this.logService.info("Starting decryption using web worker");
+    this.logService.info("Starting decryption using multithreading");
 
     if (this.worker == null) {
       this.worker = this.createWorker();
@@ -47,7 +47,6 @@ export class MultithreadEncryptService extends EncryptService {
 
     this.restartTimeout();
 
-    // Construct the request packet to be sent to the worker
     const request = {
       id: Utils.newGuid(),
       items: items,
@@ -79,7 +78,7 @@ export class MultithreadEncryptService extends EncryptService {
     });
   }
 
-  clear() {
+  private clear() {
     this.worker?.terminate();
     this.worker = null;
     this.clearTimeout();
