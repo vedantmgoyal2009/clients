@@ -4,12 +4,12 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { first } from "rxjs/operators";
 
-import { VaultFilter } from "@bitwarden/angular/modules/vault-filter/models/vault-filter.model";
+import { VaultFilter } from "@bitwarden/angular/vault/vault-filter/models/vault-filter.model";
 import { BroadcasterService } from "@bitwarden/common/abstractions/broadcaster.service";
 import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
-import { SyncService } from "@bitwarden/common/abstractions/sync.service";
+import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { TreeNode } from "@bitwarden/common/models/domain/treeNode";
 import { CipherView } from "@bitwarden/common/models/view/cipherView";
@@ -114,6 +114,7 @@ export class VaultFilterComponent implements OnInit, OnDestroy {
     });
 
     const restoredScopeState = await this.restoreState();
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.queryParams.pipe(first()).subscribe(async (params) => {
       this.state = await this.browserStateService.getBrowserGroupingComponentState();
       if (this.state?.searchText) {

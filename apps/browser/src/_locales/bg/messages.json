@@ -1968,6 +1968,9 @@
   "ssoKeyConnectorError": {
     "message": "Грешка с конектора за ключове: уверете се, че конекторът за ключове е наличен и работи правилно."
   },
+  "premiumSubcriptionRequired": {
+    "message": "Изисква се платен абонамент"
+  },
   "organizationIsDisabled": {
     "message": "Организацията е изключена."
   },
@@ -1976,5 +1979,50 @@
   },
   "cardBrandMir": {
     "message": "Мир"
+  },
+  "loggingInTo": {
+    "message": "Вписване в $DOMAIN$",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "settingsEdited": {
+    "message": "Настройките баха променени"
+  },
+  "environmentEditedClick": {
+    "message": "Щракнете тук"
+  },
+  "environmentEditedReset": {
+    "message": "за да върнете предварително зададените настройки"
+  },
+  "serverVersion": {
+    "message": "Версия на сървъра"
+  },
+  "selfHosted": {
+    "message": "Собствен хостинг"
+  },
+  "thirdParty": {
+    "message": "Third-Party"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Connected to third-party server implementation, $SERVERNAME$. Please verify bugs using the official server, or report them to the third-party server.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "последно видян на $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }

@@ -2,11 +2,8 @@ import { APP_INITIALIZER, LOCALE_ID, NgModule } from "@angular/core";
 
 import { LockGuard as BaseLockGuardService } from "@bitwarden/angular/guards/lock.guard";
 import { UnauthGuard as BaseUnauthGuardService } from "@bitwarden/angular/guards/unauth.guard";
-import {
-  JslibServicesModule,
-  MEMORY_STORAGE,
-  SECURE_STORAGE,
-} from "@bitwarden/angular/services/jslib-services.module";
+import { MEMORY_STORAGE, SECURE_STORAGE } from "@bitwarden/angular/services/injection-tokens";
+import { JslibServicesModule } from "@bitwarden/angular/services/jslib-services.module";
 import { ThemingService } from "@bitwarden/angular/services/theming/theming.service";
 import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -33,20 +30,22 @@ import { OrganizationService } from "@bitwarden/common/abstractions/organization
 import { PasswordGenerationService } from "@bitwarden/common/abstractions/passwordGeneration.service";
 import { PasswordRepromptService as PasswordRepromptServiceAbstraction } from "@bitwarden/common/abstractions/passwordReprompt.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
+import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy-api.service.abstraction";
+import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { ProviderService } from "@bitwarden/common/abstractions/provider.service";
 import { SearchService as SearchServiceAbstraction } from "@bitwarden/common/abstractions/search.service";
 import { SendService } from "@bitwarden/common/abstractions/send.service";
 import { SettingsService } from "@bitwarden/common/abstractions/settings.service";
 import { StateService as BaseStateServiceAbstraction } from "@bitwarden/common/abstractions/state.service";
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
-import { SyncService } from "@bitwarden/common/abstractions/sync.service";
+import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { TokenService } from "@bitwarden/common/abstractions/token.service";
 import { TotpService } from "@bitwarden/common/abstractions/totp.service";
 import { TwoFactorService } from "@bitwarden/common/abstractions/twoFactor.service";
-import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification.service";
+import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification/userVerification.service.abstraction";
 import { UsernameGenerationService } from "@bitwarden/common/abstractions/usernameGeneration.service";
-import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout.service";
+import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
+import { VaultTimeoutSettingsService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeoutSettings.service";
 import { AuthService } from "@bitwarden/common/services/auth.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
@@ -55,6 +54,7 @@ import MainBackground from "../../background/main.background";
 import { BrowserApi } from "../../browser/browserApi";
 import { AutofillService } from "../../services/abstractions/autofill.service";
 import { StateService as StateServiceAbstraction } from "../../services/abstractions/state.service";
+import { BrowserEnvironmentService } from "../../services/browser-environment.service";
 import { BrowserFileDownloadService } from "../../services/browserFileDownloadService";
 import BrowserMessagingService from "../../services/browserMessaging.service";
 import BrowserMessagingPrivateModePopupService from "../../services/browserMessagingPrivateModePopup.service";
@@ -172,6 +172,10 @@ function getBgService<T>(service: keyof MainBackground) {
       deps: [],
     },
     {
+      provide: BrowserEnvironmentService,
+      useExisting: EnvironmentService,
+    },
+    {
       provide: EnvironmentService,
       useFactory: getBgService<EnvironmentService>("environmentService"),
       deps: [],
@@ -181,7 +185,16 @@ function getBgService<T>(service: keyof MainBackground) {
     { provide: I18nService, useFactory: getBgService<I18nService>("i18nService"), deps: [] },
     { provide: CryptoService, useFactory: getBgService<CryptoService>("cryptoService"), deps: [] },
     { provide: EventService, useFactory: getBgService<EventService>("eventService"), deps: [] },
-    { provide: PolicyService, useFactory: getBgService<PolicyService>("policyService"), deps: [] },
+    {
+      provide: PolicyService,
+      useFactory: getBgService<PolicyService>("policyService"),
+      deps: [],
+    },
+    {
+      provide: PolicyApiServiceAbstraction,
+      useFactory: getBgService<PolicyApiServiceAbstraction>("policyApiService"),
+      deps: [],
+    },
     {
       provide: PlatformUtilsService,
       useFactory: getBgService<PlatformUtilsService>("platformUtilsService"),
@@ -220,6 +233,11 @@ function getBgService<T>(service: keyof MainBackground) {
     {
       provide: UserVerificationService,
       useFactory: getBgService<UserVerificationService>("userVerificationService"),
+      deps: [],
+    },
+    {
+      provide: VaultTimeoutSettingsService,
+      useFactory: getBgService<VaultTimeoutSettingsService>("vaultTimeoutSettingsService"),
       deps: [],
     },
     {

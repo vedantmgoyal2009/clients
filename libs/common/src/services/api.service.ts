@@ -4,12 +4,9 @@ import { EnvironmentService } from "../abstractions/environment.service";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
 import { TokenService } from "../abstractions/token.service";
 import { DeviceType } from "../enums/deviceType";
-import { OrganizationApiKeyType } from "../enums/organizationApiKeyType";
 import { OrganizationConnectionType } from "../enums/organizationConnectionType";
-import { PolicyType } from "../enums/policyType";
 import { Utils } from "../misc/utils";
 import { SetKeyConnectorKeyRequest } from "../models/request/account/setKeyConnectorKeyRequest";
-import { VerifyOTPRequest } from "../models/request/account/verifyOTPRequest";
 import { AttachmentRequest } from "../models/request/attachmentRequest";
 import { BitPayInvoiceRequest } from "../models/request/bitPayInvoiceRequest";
 import { CipherBulkDeleteRequest } from "../models/request/cipherBulkDeleteRequest";
@@ -38,23 +35,14 @@ import { PasswordTokenRequest } from "../models/request/identityToken/passwordTo
 import { SsoTokenRequest } from "../models/request/identityToken/ssoTokenRequest";
 import { TokenRequestTwoFactor } from "../models/request/identityToken/tokenRequestTwoFactor";
 import { ImportCiphersRequest } from "../models/request/importCiphersRequest";
-import { ImportDirectoryRequest } from "../models/request/importDirectoryRequest";
 import { ImportOrganizationCiphersRequest } from "../models/request/importOrganizationCiphersRequest";
 import { KdfRequest } from "../models/request/kdfRequest";
 import { KeyConnectorUserKeyRequest } from "../models/request/keyConnectorUserKeyRequest";
 import { KeysRequest } from "../models/request/keysRequest";
 import { OrganizationSponsorshipCreateRequest } from "../models/request/organization/organizationSponsorshipCreateRequest";
 import { OrganizationSponsorshipRedeemRequest } from "../models/request/organization/organizationSponsorshipRedeemRequest";
-import { OrganizationSsoRequest } from "../models/request/organization/organizationSsoRequest";
-import { OrganizationApiKeyRequest } from "../models/request/organizationApiKeyRequest";
 import { OrganizationConnectionRequest } from "../models/request/organizationConnectionRequest";
-import { OrganizationCreateRequest } from "../models/request/organizationCreateRequest";
 import { OrganizationImportRequest } from "../models/request/organizationImportRequest";
-import { OrganizationKeysRequest } from "../models/request/organizationKeysRequest";
-import { OrganizationSubscriptionUpdateRequest } from "../models/request/organizationSubscriptionUpdateRequest";
-import { OrganizationTaxInfoUpdateRequest } from "../models/request/organizationTaxInfoUpdateRequest";
-import { OrganizationUpdateRequest } from "../models/request/organizationUpdateRequest";
-import { OrganizationUpgradeRequest } from "../models/request/organizationUpgradeRequest";
 import { OrganizationUserAcceptRequest } from "../models/request/organizationUserAcceptRequest";
 import { OrganizationUserBulkConfirmRequest } from "../models/request/organizationUserBulkConfirmRequest";
 import { OrganizationUserBulkRequest } from "../models/request/organizationUserBulkRequest";
@@ -67,7 +55,6 @@ import { OrganizationUserUpdateRequest } from "../models/request/organizationUse
 import { PasswordHintRequest } from "../models/request/passwordHintRequest";
 import { PasswordRequest } from "../models/request/passwordRequest";
 import { PaymentRequest } from "../models/request/paymentRequest";
-import { PolicyRequest } from "../models/request/policyRequest";
 import { PreloginRequest } from "../models/request/preloginRequest";
 import { ProviderAddOrganizationRequest } from "../models/request/provider/providerAddOrganizationRequest";
 import { ProviderOrganizationCreateRequest } from "../models/request/provider/providerOrganizationCreateRequest";
@@ -80,7 +67,6 @@ import { ProviderUserConfirmRequest } from "../models/request/provider/providerU
 import { ProviderUserInviteRequest } from "../models/request/provider/providerUserInviteRequest";
 import { ProviderUserUpdateRequest } from "../models/request/provider/providerUserUpdateRequest";
 import { RegisterRequest } from "../models/request/registerRequest";
-import { SeatRequest } from "../models/request/seatRequest";
 import { SecretVerificationRequest } from "../models/request/secretVerificationRequest";
 import { SelectionReadOnlyRequest } from "../models/request/selectionReadOnlyRequest";
 import { SendAccessRequest } from "../models/request/sendAccessRequest";
@@ -101,7 +87,6 @@ import { UpdateTwoFactorEmailRequest } from "../models/request/updateTwoFactorEm
 import { UpdateTwoFactorWebAuthnDeleteRequest } from "../models/request/updateTwoFactorWebAuthnDeleteRequest";
 import { UpdateTwoFactorWebAuthnRequest } from "../models/request/updateTwoFactorWebAuthnRequest";
 import { UpdateTwoFactorYubioOtpRequest } from "../models/request/updateTwoFactorYubioOtpRequest";
-import { VerifyBankRequest } from "../models/request/verifyBankRequest";
 import { VerifyDeleteRecoverRequest } from "../models/request/verifyDeleteRecoverRequest";
 import { VerifyEmailRequest } from "../models/request/verifyEmailRequest";
 import { ApiKeyResponse } from "../models/response/apiKeyResponse";
@@ -109,7 +94,6 @@ import { AttachmentResponse } from "../models/response/attachmentResponse";
 import { AttachmentUploadDataResponse } from "../models/response/attachmentUploadDataResponse";
 import { BillingHistoryResponse } from "../models/response/billingHistoryResponse";
 import { BillingPaymentResponse } from "../models/response/billingPaymentResponse";
-import { BillingResponse } from "../models/response/billingResponse";
 import { BreachAccountResponse } from "../models/response/breachAccountResponse";
 import { CipherResponse } from "../models/response/cipherResponse";
 import {
@@ -132,18 +116,12 @@ import { IdentityTokenResponse } from "../models/response/identityTokenResponse"
 import { IdentityTwoFactorResponse } from "../models/response/identityTwoFactorResponse";
 import { KeyConnectorUserKeyResponse } from "../models/response/keyConnectorUserKeyResponse";
 import { ListResponse } from "../models/response/listResponse";
-import { OrganizationSsoResponse } from "../models/response/organization/organizationSsoResponse";
-import { OrganizationApiKeyInformationResponse } from "../models/response/organizationApiKeyInformationResponse";
-import { OrganizationAutoEnrollStatusResponse } from "../models/response/organizationAutoEnrollStatusResponse";
 import {
   OrganizationConnectionConfigApis,
   OrganizationConnectionResponse,
 } from "../models/response/organizationConnectionResponse";
 import { OrganizationExportResponse } from "../models/response/organizationExportResponse";
-import { OrganizationKeysResponse } from "../models/response/organizationKeysResponse";
-import { OrganizationResponse } from "../models/response/organizationResponse";
 import { OrganizationSponsorshipSyncStatusResponse } from "../models/response/organizationSponsorshipSyncStatusResponse";
-import { OrganizationSubscriptionResponse } from "../models/response/organizationSubscriptionResponse";
 import { OrganizationUserBulkPublicKeyResponse } from "../models/response/organizationUserBulkPublicKeyResponse";
 import { OrganizationUserBulkResponse } from "../models/response/organizationUserBulkResponse";
 import {
@@ -394,7 +372,7 @@ export class ApiService implements ApiServiceAbstraction {
     return new PaymentResponse(r);
   }
 
-  postAccountPayment(request: PaymentRequest): Promise<any> {
+  postAccountPayment(request: PaymentRequest): Promise<void> {
     return this.send("POST", "/accounts/payment", request, true, false);
   }
 
@@ -434,7 +412,7 @@ export class ApiService implements ApiServiceAbstraction {
     return this.send("POST", "/accounts/kdf", request, true, false);
   }
 
-  async deleteSsoUser(organizationId: string): Promise<any> {
+  async deleteSsoUser(organizationId: string): Promise<void> {
     return this.send("DELETE", "/accounts/sso/" + organizationId, null, true, false);
   }
 
@@ -457,14 +435,6 @@ export class ApiService implements ApiServiceAbstraction {
 
   putUpdateTempPassword(request: UpdateTempPasswordRequest): Promise<any> {
     return this.send("PUT", "/accounts/update-temp-password", request, true, false);
-  }
-
-  postAccountRequestOTP(): Promise<void> {
-    return this.send("POST", "/accounts/request-otp", null, true, false);
-  }
-
-  postAccountVerifyOTP(request: VerifyOTPRequest): Promise<void> {
-    return this.send("POST", "/accounts/verify-otp", request, true, false);
   }
 
   postConvertToKeyConnector(): Promise<void> {
@@ -1024,83 +994,6 @@ export class ApiService implements ApiServiceAbstraction {
     );
   }
 
-  // Policy APIs
-
-  async getPolicy(organizationId: string, type: PolicyType): Promise<PolicyResponse> {
-    const r = await this.send(
-      "GET",
-      "/organizations/" + organizationId + "/policies/" + type,
-      null,
-      true,
-      true
-    );
-    return new PolicyResponse(r);
-  }
-
-  async getPolicies(organizationId: string): Promise<ListResponse<PolicyResponse>> {
-    const r = await this.send(
-      "GET",
-      "/organizations/" + organizationId + "/policies",
-      null,
-      true,
-      true
-    );
-    return new ListResponse(r, PolicyResponse);
-  }
-
-  async getPoliciesByToken(
-    organizationId: string,
-    token: string,
-    email: string,
-    organizationUserId: string
-  ): Promise<ListResponse<PolicyResponse>> {
-    const r = await this.send(
-      "GET",
-      "/organizations/" +
-        organizationId +
-        "/policies/token?" +
-        "token=" +
-        encodeURIComponent(token) +
-        "&email=" +
-        encodeURIComponent(email) +
-        "&organizationUserId=" +
-        organizationUserId,
-      null,
-      false,
-      true
-    );
-    return new ListResponse(r, PolicyResponse);
-  }
-
-  async getPoliciesByInvitedUser(
-    organizationId: string,
-    userId: string
-  ): Promise<ListResponse<PolicyResponse>> {
-    const r = await this.send(
-      "GET",
-      "/organizations/" + organizationId + "/policies/invited-user?" + "userId=" + userId,
-      null,
-      false,
-      true
-    );
-    return new ListResponse(r, PolicyResponse);
-  }
-
-  async putPolicy(
-    organizationId: string,
-    type: PolicyType,
-    request: PolicyRequest
-  ): Promise<PolicyResponse> {
-    const r = await this.send(
-      "PUT",
-      "/organizations/" + organizationId + "/policies/" + type,
-      request,
-      true,
-      true
-    );
-    return new PolicyResponse(r);
-  }
-
   // Organization User APIs
 
   async getOrganizationUser(
@@ -1153,19 +1046,6 @@ export class ApiService implements ApiServiceAbstraction {
       true
     );
     return new OrganizationUserResetPasswordDetailsReponse(r);
-  }
-
-  async getOrganizationAutoEnrollStatus(
-    identifier: string
-  ): Promise<OrganizationAutoEnrollStatusResponse> {
-    const r = await this.send(
-      "GET",
-      "/organizations/" + identifier + "/auto-enroll-status",
-      null,
-      true,
-      true
-    );
-    return new OrganizationAutoEnrollStatusResponse(r);
   }
 
   postOrganizationUserInvite(
@@ -1293,7 +1173,7 @@ export class ApiService implements ApiServiceAbstraction {
     organizationId: string,
     userId: string,
     request: OrganizationUserResetPasswordEnrollmentRequest
-  ): Promise<any> {
+  ): Promise<void> {
     return this.send(
       "PUT",
       "/organizations/" + organizationId + "/users/" + userId + "/reset-password-enrollment",
@@ -1394,10 +1274,6 @@ export class ApiService implements ApiServiceAbstraction {
   async getPlans(): Promise<ListResponse<PlanResponse>> {
     const r = await this.send("GET", "/plans/", null, false, true);
     return new ListResponse(r, PlanResponse);
-  }
-
-  async postImportDirectory(organizationId: string, request: ImportDirectoryRequest): Promise<any> {
-    return this.send("POST", "/organizations/" + organizationId + "/import", request, true, false);
   }
 
   async postPublicImportDirectory(request: OrganizationImportRequest): Promise<any> {
@@ -1702,21 +1578,6 @@ export class ApiService implements ApiServiceAbstraction {
 
   // Organization APIs
 
-  async getOrganization(id: string): Promise<OrganizationResponse> {
-    const r = await this.send("GET", "/organizations/" + id, null, true, true);
-    return new OrganizationResponse(r);
-  }
-
-  async getOrganizationBilling(id: string): Promise<BillingResponse> {
-    const r = await this.send("GET", "/organizations/" + id + "/billing", null, true, true);
-    return new BillingResponse(r);
-  }
-
-  async getOrganizationSubscription(id: string): Promise<OrganizationSubscriptionResponse> {
-    const r = await this.send("GET", "/organizations/" + id + "/subscription", null, true, true);
-    return new OrganizationSubscriptionResponse(r);
-  }
-
   async getCloudCommunicationsEnabled(): Promise<boolean> {
     const r = await this.send("GET", "/organizations/connections/enabled", null, true, true);
     return r as boolean;
@@ -1756,159 +1617,6 @@ export class ApiService implements ApiServiceAbstraction {
 
   async deleteOrganizationConnection(id: string): Promise<void> {
     return this.send("DELETE", "/organizations/connections/" + id, null, true, false);
-  }
-
-  async getOrganizationLicense(id: string, installationId: string): Promise<any> {
-    return this.send(
-      "GET",
-      "/organizations/" + id + "/license?installationId=" + installationId,
-      null,
-      true,
-      true
-    );
-  }
-
-  async getOrganizationTaxInfo(id: string): Promise<TaxInfoResponse> {
-    const r = await this.send("GET", "/organizations/" + id + "/tax", null, true, true);
-    return new TaxInfoResponse(r);
-  }
-
-  async getOrganizationSso(id: string): Promise<OrganizationSsoResponse> {
-    const r = await this.send("GET", "/organizations/" + id + "/sso", null, true, true);
-    return new OrganizationSsoResponse(r);
-  }
-
-  async postOrganization(request: OrganizationCreateRequest): Promise<OrganizationResponse> {
-    const r = await this.send("POST", "/organizations", request, true, true);
-    return new OrganizationResponse(r);
-  }
-
-  async putOrganization(
-    id: string,
-    request: OrganizationUpdateRequest
-  ): Promise<OrganizationResponse> {
-    const r = await this.send("PUT", "/organizations/" + id, request, true, true);
-    return new OrganizationResponse(r);
-  }
-
-  async putOrganizationTaxInfo(
-    id: string,
-    request: OrganizationTaxInfoUpdateRequest
-  ): Promise<any> {
-    return this.send("PUT", "/organizations/" + id + "/tax", request, true, false);
-  }
-
-  postLeaveOrganization(id: string): Promise<any> {
-    return this.send("POST", "/organizations/" + id + "/leave", null, true, false);
-  }
-
-  async postOrganizationLicense(data: FormData): Promise<OrganizationResponse> {
-    const r = await this.send("POST", "/organizations/license", data, true, true);
-    return new OrganizationResponse(r);
-  }
-
-  async postOrganizationLicenseUpdate(id: string, data: FormData): Promise<any> {
-    return this.send("POST", "/organizations/" + id + "/license", data, true, false);
-  }
-
-  async postOrganizationApiKey(
-    id: string,
-    request: OrganizationApiKeyRequest
-  ): Promise<ApiKeyResponse> {
-    const r = await this.send("POST", "/organizations/" + id + "/api-key", request, true, true);
-    return new ApiKeyResponse(r);
-  }
-
-  async getOrganizationApiKeyInformation(
-    id: string,
-    type: OrganizationApiKeyType = null
-  ): Promise<ListResponse<OrganizationApiKeyInformationResponse>> {
-    const uri =
-      type === null
-        ? "/organizations/" + id + "/api-key-information"
-        : "/organizations/" + id + "/api-key-information/" + type;
-    const r = await this.send("GET", uri, null, true, true);
-    return new ListResponse(r, OrganizationApiKeyInformationResponse);
-  }
-
-  async postOrganizationRotateApiKey(
-    id: string,
-    request: OrganizationApiKeyRequest
-  ): Promise<ApiKeyResponse> {
-    const r = await this.send(
-      "POST",
-      "/organizations/" + id + "/rotate-api-key",
-      request,
-      true,
-      true
-    );
-    return new ApiKeyResponse(r);
-  }
-
-  async postOrganizationSso(
-    id: string,
-    request: OrganizationSsoRequest
-  ): Promise<OrganizationSsoResponse> {
-    const r = await this.send("POST", "/organizations/" + id + "/sso", request, true, true);
-    return new OrganizationSsoResponse(r);
-  }
-
-  async postOrganizationUpgrade(
-    id: string,
-    request: OrganizationUpgradeRequest
-  ): Promise<PaymentResponse> {
-    const r = await this.send("POST", "/organizations/" + id + "/upgrade", request, true, true);
-    return new PaymentResponse(r);
-  }
-
-  async postOrganizationUpdateSubscription(
-    id: string,
-    request: OrganizationSubscriptionUpdateRequest
-  ): Promise<void> {
-    return this.send("POST", "/organizations/" + id + "/subscription", request, true, false);
-  }
-
-  async postOrganizationSeat(id: string, request: SeatRequest): Promise<PaymentResponse> {
-    const r = await this.send("POST", "/organizations/" + id + "/seat", request, true, true);
-    return new PaymentResponse(r);
-  }
-
-  async postOrganizationStorage(id: string, request: StorageRequest): Promise<PaymentResponse> {
-    const r = await this.send("POST", "/organizations/" + id + "/storage", request, true, true);
-    return new PaymentResponse(r);
-  }
-
-  postOrganizationPayment(id: string, request: PaymentRequest): Promise<any> {
-    return this.send("POST", "/organizations/" + id + "/payment", request, true, false);
-  }
-
-  postOrganizationVerifyBank(id: string, request: VerifyBankRequest): Promise<any> {
-    return this.send("POST", "/organizations/" + id + "/verify-bank", request, true, false);
-  }
-
-  postOrganizationCancel(id: string): Promise<any> {
-    return this.send("POST", "/organizations/" + id + "/cancel", null, true, false);
-  }
-
-  postOrganizationReinstate(id: string): Promise<any> {
-    return this.send("POST", "/organizations/" + id + "/reinstate", null, true, false);
-  }
-
-  deleteOrganization(id: string, request: SecretVerificationRequest): Promise<any> {
-    return this.send("DELETE", "/organizations/" + id, request, true, false);
-  }
-
-  async getOrganizationKeys(id: string): Promise<OrganizationKeysResponse> {
-    const r = await this.send("GET", "/organizations/" + id + "/keys", null, true, true);
-    return new OrganizationKeysResponse(r);
-  }
-
-  async postOrganizationKeys(
-    id: string,
-    request: OrganizationKeysRequest
-  ): Promise<OrganizationKeysResponse> {
-    const r = await this.send("POST", "/organizations/" + id + "/keys", request, true, true);
-    return new OrganizationKeysResponse(r);
   }
 
   // Provider APIs

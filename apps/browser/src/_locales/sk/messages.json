@@ -1968,6 +1968,9 @@
   "ssoKeyConnectorError": {
     "message": "Chyba Key Connector: uistite sa, že je Key Connector k dispozícii a funguje správne."
   },
+  "premiumSubcriptionRequired": {
+    "message": "Vyžaduje sa Premiové predplatné"
+  },
   "organizationIsDisabled": {
     "message": "Organizácia je vypnutá."
   },
@@ -1976,5 +1979,50 @@
   },
   "cardBrandMir": {
     "message": "Mir"
+  },
+  "loggingInTo": {
+    "message": "Prihlásenie do $DOMAIN$",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "settingsEdited": {
+    "message": "Nastavenia boli upravené"
+  },
+  "environmentEditedClick": {
+    "message": "Kliknite sem"
+  },
+  "environmentEditedReset": {
+    "message": "na obnovenie predvolených nastavení"
+  },
+  "serverVersion": {
+    "message": "Verzia servera"
+  },
+  "selfHosted": {
+    "message": "Vlastný hosting"
+  },
+  "thirdParty": {
+    "message": "Tretia strana"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Pripojené na server $SERVERNAME$ implementovaný treťou stranou. Prosím overte chyby použitím oficiálneho servera, alebo nahláste problém tretej strane.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "naposledy videné $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }

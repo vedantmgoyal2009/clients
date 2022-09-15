@@ -1968,6 +1968,9 @@
   "ssoKeyConnectorError": {
     "message": "Key Connector kļūda: jāpārliecinās, ka Key Connector ir pieejams un darbojas pareizi."
   },
+  "premiumSubcriptionRequired": {
+    "message": "Nepieciešams Premium abonements"
+  },
   "organizationIsDisabled": {
     "message": "Apvienība ir atspējota."
   },
@@ -1976,5 +1979,50 @@
   },
   "cardBrandMir": {
     "message": "Mir"
+  },
+  "loggingInTo": {
+    "message": "Pierakstās $DOMAIN$",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "settingsEdited": {
+    "message": "Iestatījumi ir izmainīti"
+  },
+  "environmentEditedClick": {
+    "message": "Klikšķināt šeit"
+  },
+  "environmentEditedReset": {
+    "message": "lai atiestatītu pirmsuzstādītos iestatījumus"
+  },
+  "serverVersion": {
+    "message": "Servera versija"
+  },
+  "selfHosted": {
+    "message": "Pašizvietots"
+  },
+  "thirdParty": {
+    "message": "Trešās puses"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Savienots ar trešās puses izvietotu serveri $SERVERNAME$. Lūgums pārbaudīt nepilnību esamību oficiālajā serverī vai ziņot par tām trešās puses servera uzturētājiem.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "pēdējoreiz manīts $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }

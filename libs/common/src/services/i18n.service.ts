@@ -11,6 +11,7 @@ export class I18nService implements I18nServiceAbstraction {
   collator: Intl.Collator;
   localeNames = new Map<string, string>([
     ["af", "Afrikaans"],
+    ["ar", "العربية الفصحى"],
     ["az", "Azərbaycanca"],
     ["be", "Беларуская"],
     ["bg", "български"],
@@ -27,6 +28,7 @@ export class I18nService implements I18nServiceAbstraction {
     ["eo", "Esperanto"],
     ["es", "español"],
     ["et", "eesti"],
+    ["eu", "euskara"],
     ["fa", "فارسی"],
     ["fi", "suomi"],
     ["fil", "Wikang Filipino"],

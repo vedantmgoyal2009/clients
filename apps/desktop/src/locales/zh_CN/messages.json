@@ -376,7 +376,7 @@
     "message": "您确定要覆盖当前用户名吗？"
   },
   "noneFolder": {
-    "message": "默认文件夹",
+    "message": "无文件夹",
     "description": "This is the folder for uncategorized items"
   },
   "addFolder": {
@@ -1978,6 +1978,9 @@
   },
   "apiKey": {
     "message": "API 密钥"
+  },
+  "premiumSubcriptionRequired": {
+    "message": "需要高级版订阅"
   },
   "organizationIsDisabled": {
     "message": "组织已被禁用。"

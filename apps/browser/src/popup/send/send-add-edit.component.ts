@@ -9,7 +9,7 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
+import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { SendService } from "@bitwarden/common/abstractions/send.service";
 
 import { StateService } from "../../services/abstractions/state.service";
@@ -19,6 +19,7 @@ import { PopupUtilsService } from "../services/popup-utils.service";
   selector: "app-send-add-edit",
   templateUrl: "send-add-edit.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class SendAddEditComponent extends BaseAddEditComponent {
   // Options header
   showOptions = false;
@@ -98,6 +99,7 @@ export class SendAddEditComponent extends BaseAddEditComponent {
     this.isUnsupportedMac =
       this.platformUtilsService.isChrome() && window?.navigator?.appVersion.includes("Mac OS X 11");
 
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.queryParams.pipe(first()).subscribe(async (params) => {
       if (params.sendId) {
         this.sendId = params.sendId;

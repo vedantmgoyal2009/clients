@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, concatMap } from "rxjs";
 
 import { LogService } from "../abstractions/log.service";
 import { StateService as StateServiceAbstraction } from "../abstractions/state.service";
@@ -16,11 +16,18 @@ import { CollectionData } from "../models/data/collectionData";
 import { EncryptedOrganizationKeyData } from "../models/data/encryptedOrganizationKeyData";
 import { EventData } from "../models/data/eventData";
 import { FolderData } from "../models/data/folderData";
+import { LocalData } from "../models/data/localData";
 import { OrganizationData } from "../models/data/organizationData";
 import { PolicyData } from "../models/data/policyData";
 import { ProviderData } from "../models/data/providerData";
 import { SendData } from "../models/data/sendData";
-import { Account, AccountData, AccountSettings } from "../models/domain/account";
+import { ServerConfigData } from "../models/data/server-config.data";
+import {
+  Account,
+  AccountData,
+  AccountSettings,
+  AccountSettingsSettings,
+} from "../models/domain/account";
 import { EncString } from "../models/domain/encString";
 import { EnvironmentUrls } from "../models/domain/environmentUrls";
 import { GeneratedPasswordHistory } from "../models/domain/generatedPasswordHistory";
@@ -55,8 +62,11 @@ export class StateService<
 > implements StateServiceAbstraction<TAccount>
 {
   accounts = new BehaviorSubject<{ [userId: string]: TAccount }>({});
-  activeAccount = new BehaviorSubject<string>(null);
-  activeAccountUnlocked = new BehaviorSubject<boolean>(false);
+  private activeAccountSubject = new BehaviorSubject<string>(null);
+  activeAccount$ = this.activeAccountSubject.asObservable();
+
+  private activeAccountUnlockedSubject = new BehaviorSubject<boolean>(false);
+  activeAccountUnlocked$ = this.activeAccountUnlockedSubject.asObservable();
 
   private hasBeenInited = false;
   private isRecoveredSession = false;
@@ -73,18 +83,22 @@ export class StateService<
     protected useAccountCache: boolean = true
   ) {
     // If the account gets changed, verify the new account is unlocked
-    this.activeAccount.subscribe(async (userId) => {
-      if (userId == null && this.activeAccountUnlocked.getValue() == false) {
-        return;
-      } else if (userId == null) {
-        this.activeAccountUnlocked.next(false);
-      }
+    this.activeAccountSubject
+      .pipe(
+        concatMap(async (userId) => {
+          if (userId == null && this.activeAccountUnlockedSubject.getValue() == false) {
+            return;
+          } else if (userId == null) {
+            this.activeAccountUnlockedSubject.next(false);
+          }
 
-      // FIXME: This should be refactored into AuthService or a similar service,
-      //  as checking for the existance of the crypto key is a low level
-      //  implementation detail.
-      this.activeAccountUnlocked.next((await this.getCryptoMasterKey()) != null);
-    });
+          // FIXME: This should be refactored into AuthService or a similar service,
+          //  as checking for the existance of the crypto key is a low level
+          //  implementation detail.
+          this.activeAccountUnlockedSubject.next((await this.getCryptoMasterKey()) != null);
+        })
+      )
+      .subscribe();
   }
 
   async init(): Promise<void> {
@@ -125,7 +139,7 @@ export class StateService<
         state.activeUserId = storedActiveUser;
       }
       await this.pushAccounts();
-      this.activeAccount.next(state.activeUserId);
+      this.activeAccountSubject.next(state.activeUserId);
 
       return state;
     });
@@ -154,7 +168,7 @@ export class StateService<
     await this.scaffoldNewAccountStorage(account);
     await this.setLastActive(new Date().getTime(), { userId: account.profile.userId });
     await this.setActiveUser(account.profile.userId);
-    this.activeAccount.next(account.profile.userId);
+    this.activeAccountSubject.next(account.profile.userId);
   }
 
   async setActiveUser(userId: string): Promise<void> {
@@ -162,7 +176,7 @@ export class StateService<
     await this.updateState(async (state) => {
       state.activeUserId = userId;
       await this.storageService.save(keys.activeUserId, userId);
-      this.activeAccount.next(state.activeUserId);
+      this.activeAccountSubject.next(state.activeUserId);
       return state;
     });
 
@@ -321,24 +335,6 @@ export class StateService<
     await this.saveGlobals(
       globals,
       this.reconcileOptions(options, await this.defaultOnDiskOptions())
-    );
-  }
-
-  async getBiometricLocked(options?: StorageOptions): Promise<boolean> {
-    return (
-      (await this.getAccount(this.reconcileOptions(options, await this.defaultInMemoryOptions())))
-        ?.settings?.biometricLocked ?? false
-    );
-  }
-
-  async setBiometricLocked(value: boolean, options?: StorageOptions): Promise<void> {
-    const account = await this.getAccount(
-      this.reconcileOptions(options, await this.defaultInMemoryOptions())
-    );
-    account.settings.biometricLocked = value;
-    await this.saveAccount(
-      account,
-      this.reconcileOptions(options, await this.defaultInMemoryOptions())
     );
   }
 
@@ -515,12 +511,12 @@ export class StateService<
       this.reconcileOptions(options, await this.defaultInMemoryOptions())
     );
 
-    if (options.userId == this.activeAccount.getValue()) {
+    if (options.userId == this.activeAccountSubject.getValue()) {
       const nextValue = value != null;
 
       // Avoid emitting if we are already unlocked
-      if (this.activeAccountUnlocked.getValue() != nextValue) {
-        this.activeAccountUnlocked.next(nextValue);
+      if (this.activeAccountUnlockedSubject.getValue() != nextValue) {
+        this.activeAccountUnlockedSubject.next(nextValue);
       }
     }
   }
@@ -625,7 +621,7 @@ export class StateService<
     );
   }
 
-  @withPrototypeForArrayMembers(CipherView)
+  @withPrototypeForArrayMembers(CipherView, CipherView.fromJSON)
   async getDecryptedCiphers(options?: StorageOptions): Promise<CipherView[]> {
     return (
       await this.getAccount(this.reconcileOptions(options, await this.defaultInMemoryOptions()))
@@ -1753,12 +1749,16 @@ export class StateService<
     );
   }
 
-  async getLocalData(options?: StorageOptions): Promise<any> {
+  async getLocalData(options?: StorageOptions): Promise<{ [cipherId: string]: LocalData }> {
     return (
       await this.getAccount(this.reconcileOptions(options, await this.defaultOnDiskLocalOptions()))
     )?.data?.localData;
   }
-  async setLocalData(value: string, options?: StorageOptions): Promise<void> {
+
+  async setLocalData(
+    value: { [cipherId: string]: LocalData },
+    options?: StorageOptions
+  ): Promise<void> {
     const account = await this.getAccount(
       this.reconcileOptions(options, await this.defaultOnDiskLocalOptions())
     );
@@ -2086,13 +2086,13 @@ export class StateService<
     );
   }
 
-  async getSettings(options?: StorageOptions): Promise<any> {
+  async getSettings(options?: StorageOptions): Promise<AccountSettingsSettings> {
     return (
       await this.getAccount(this.reconcileOptions(options, await this.defaultOnDiskMemoryOptions()))
     )?.settings?.settings;
   }
 
-  async setSettings(value: string, options?: StorageOptions): Promise<void> {
+  async setSettings(value: AccountSettingsSettings, options?: StorageOptions): Promise<void> {
     const account = await this.getAccount(
       this.reconcileOptions(options, await this.defaultOnDiskMemoryOptions())
     );
@@ -2276,6 +2276,23 @@ export class StateService<
       globals,
       this.reconcileOptions(options, await this.defaultOnDiskOptions())
     );
+  }
+
+  async setServerConfig(value: ServerConfigData, options?: StorageOptions): Promise<void> {
+    const account = await this.getAccount(
+      this.reconcileOptions(options, await this.defaultOnDiskLocalOptions())
+    );
+    account.settings.serverConfig = value;
+    return await this.saveAccount(
+      account,
+      this.reconcileOptions(options, await this.defaultOnDiskLocalOptions())
+    );
+  }
+
+  async getServerConfig(options: StorageOptions): Promise<ServerConfigData> {
+    return (
+      await this.getAccount(this.reconcileOptions(options, await this.defaultOnDiskLocalOptions()))
+    )?.settings?.serverConfig;
   }
 
   protected async getGlobals(options: StorageOptions): Promise<TGlobalState> {

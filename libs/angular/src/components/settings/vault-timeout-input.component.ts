@@ -8,7 +8,7 @@ import {
 } from "@angular/forms";
 
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
-import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
+import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
 import { Policy } from "@bitwarden/common/models/domain/policy";
 
@@ -66,6 +66,7 @@ export class VaultTimeoutInputComponent implements ControlValueAccessor, Validat
       this.validatorChange();
     }
 
+    // eslint-disable-next-line rxjs/no-async-subscribe
     this.form.valueChanges.subscribe(async (value) => {
       this.onChange(this.getVaultTimeout(value));
     });

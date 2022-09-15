@@ -1968,6 +1968,9 @@
   "ssoKeyConnectorError": {
     "message": "Eroare de Conector Cheie: asigurați-vă că aveți conectorul Cheie disponibil și că funcționează corect."
   },
+  "premiumSubcriptionRequired": {
+    "message": "Este necesar un abonament Premium"
+  },
   "organizationIsDisabled": {
     "message": "Organizația este dezactivată."
   },
@@ -1976,5 +1979,50 @@
   },
   "cardBrandMir": {
     "message": "Mir"
+  },
+  "loggingInTo": {
+    "message": "Conectarea la $DOMAIN$",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "settingsEdited": {
+    "message": "Setările au fost editate"
+  },
+  "environmentEditedClick": {
+    "message": "Faceți clic aici"
+  },
+  "environmentEditedReset": {
+    "message": "pentru a restabili setările preconfigurate"
+  },
+  "serverVersion": {
+    "message": "Versiune server"
+  },
+  "selfHosted": {
+    "message": "Auto-găzduit"
+  },
+  "thirdParty": {
+    "message": "Parte terță"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Conectat la implementarea serverului terță parte, $SERVERNAME$. Verificați erorile folosind serverul oficial sau raportați-le serverului terț.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "văzut ultima dată la $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }

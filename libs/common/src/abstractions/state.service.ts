@@ -8,11 +8,13 @@ import { CollectionData } from "../models/data/collectionData";
 import { EncryptedOrganizationKeyData } from "../models/data/encryptedOrganizationKeyData";
 import { EventData } from "../models/data/eventData";
 import { FolderData } from "../models/data/folderData";
+import { LocalData } from "../models/data/localData";
 import { OrganizationData } from "../models/data/organizationData";
 import { PolicyData } from "../models/data/policyData";
 import { ProviderData } from "../models/data/providerData";
 import { SendData } from "../models/data/sendData";
-import { Account } from "../models/domain/account";
+import { ServerConfigData } from "../models/data/server-config.data";
+import { Account, AccountSettingsSettings } from "../models/domain/account";
 import { EncString } from "../models/domain/encString";
 import { EnvironmentUrls } from "../models/domain/environmentUrls";
 import { GeneratedPasswordHistory } from "../models/domain/generatedPasswordHistory";
@@ -26,9 +28,8 @@ import { SendView } from "../models/view/sendView";
 
 export abstract class StateService<T extends Account = Account> {
   accounts: BehaviorSubject<{ [userId: string]: T }>;
-  activeAccount: BehaviorSubject<string>;
-
-  activeAccountUnlocked: Observable<boolean>;
+  activeAccount$: Observable<string>;
+  activeAccountUnlocked$: Observable<boolean>;
 
   addAccount: (account: T) => Promise<void>;
   setActiveUser: (userId: string) => Promise<void>;
@@ -53,8 +54,6 @@ export abstract class StateService<T extends Account = Account> {
   setBiometricAwaitingAcceptance: (value: boolean, options?: StorageOptions) => Promise<void>;
   getBiometricFingerprintValidated: (options?: StorageOptions) => Promise<boolean>;
   setBiometricFingerprintValidated: (value: boolean, options?: StorageOptions) => Promise<void>;
-  getBiometricLocked: (options?: StorageOptions) => Promise<boolean>;
-  setBiometricLocked: (value: boolean, options?: StorageOptions) => Promise<void>;
   getBiometricText: (options?: StorageOptions) => Promise<string>;
   setBiometricText: (value: string, options?: StorageOptions) => Promise<void>;
   getBiometricUnlock: (options?: StorageOptions) => Promise<boolean>;
@@ -248,8 +247,11 @@ export abstract class StateService<T extends Account = Account> {
   setLastActive: (value: number, options?: StorageOptions) => Promise<void>;
   getLastSync: (options?: StorageOptions) => Promise<string>;
   setLastSync: (value: string, options?: StorageOptions) => Promise<void>;
-  getLocalData: (options?: StorageOptions) => Promise<any>;
-  setLocalData: (value: string, options?: StorageOptions) => Promise<void>;
+  getLocalData: (options?: StorageOptions) => Promise<{ [cipherId: string]: LocalData }>;
+  setLocalData: (
+    value: { [cipherId: string]: LocalData },
+    options?: StorageOptions
+  ) => Promise<void>;
   getLocale: (options?: StorageOptions) => Promise<string>;
   setLocale: (value: string, options?: StorageOptions) => Promise<void>;
   getMainWindowSize: (options?: StorageOptions) => Promise<number>;
@@ -289,8 +291,14 @@ export abstract class StateService<T extends Account = Account> {
   setRememberedEmail: (value: string, options?: StorageOptions) => Promise<void>;
   getSecurityStamp: (options?: StorageOptions) => Promise<string>;
   setSecurityStamp: (value: string, options?: StorageOptions) => Promise<void>;
-  getSettings: (options?: StorageOptions) => Promise<any>;
-  setSettings: (value: string, options?: StorageOptions) => Promise<void>;
+  /**
+   * @deprecated Do not call this directly, use SettingsService
+   */
+  getSettings: (options?: StorageOptions) => Promise<AccountSettingsSettings>;
+  /**
+   * @deprecated Do not call this directly, use SettingsService
+   */
+  setSettings: (value: AccountSettingsSettings, options?: StorageOptions) => Promise<void>;
   getSsoCodeVerifier: (options?: StorageOptions) => Promise<string>;
   setSsoCodeVerifier: (value: string, options?: StorageOptions) => Promise<void>;
   getSsoOrgIdentifier: (options?: StorageOptions) => Promise<string>;
@@ -312,4 +320,12 @@ export abstract class StateService<T extends Account = Account> {
   setStateVersion: (value: number) => Promise<void>;
   getWindow: () => Promise<WindowState>;
   setWindow: (value: WindowState) => Promise<void>;
+  /**
+   * @deprecated Do not call this directly, use ConfigService
+   */
+  getServerConfig: (options?: StorageOptions) => Promise<ServerConfigData>;
+  /**
+   * @deprecated Do not call this directly, use ConfigService
+   */
+  setServerConfig: (value: ServerConfigData, options?: StorageOptions) => Promise<void>;
 }

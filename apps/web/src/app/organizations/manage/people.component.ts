@@ -11,11 +11,13 @@ import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
+import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { PolicyService } from "@bitwarden/common/abstractions/policy.service";
+import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy-api.service.abstraction";
+import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { SyncService } from "@bitwarden/common/abstractions/sync.service";
+import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { OrganizationUserStatusType } from "@bitwarden/common/enums/organizationUserStatusType";
 import { OrganizationUserType } from "@bitwarden/common/enums/organizationUserType";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
@@ -41,6 +43,7 @@ import { UserGroupsComponent } from "./user-groups.component";
   selector: "app-org-people",
   templateUrl: "people.component.html",
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class PeopleComponent
   extends BasePeopleComponent<OrganizationUserUserDetailsResponse>
   implements OnInit
@@ -84,13 +87,15 @@ export class PeopleComponent
     private router: Router,
     searchService: SearchService,
     validationService: ValidationService,
+    private policyApiService: PolicyApiServiceAbstraction,
     private policyService: PolicyService,
     logService: LogService,
     searchPipe: SearchPipe,
     userNamePipe: UserNamePipe,
     private syncService: SyncService,
     stateService: StateService,
-    private organizationService: OrganizationService
+    private organizationService: OrganizationService,
+    private organizationApiService: OrganizationApiServiceAbstraction
   ) {
     super(
       apiService,
@@ -108,13 +113,10 @@ export class PeopleComponent
   }
 
   async ngOnInit() {
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
     this.route.parent.parent.params.subscribe(async (params) => {
       this.organizationId = params.organizationId;
       const organization = await this.organizationService.get(this.organizationId);
-      if (!organization.canManageUsers) {
-        this.router.navigate(["../collections"], { relativeTo: this.route });
-        return;
-      }
       this.accessEvents = organization.useEvents;
       this.accessGroups = organization.useGroups;
       this.canResetPassword = organization.canManageUsersPassword;
@@ -127,7 +129,7 @@ export class PeopleComponent
         const orgShareKey = await this.cryptoService.getOrgKey(this.organizationId);
         const orgKeys = await this.cryptoService.makeKeyPair(orgShareKey);
         const request = new OrganizationKeysRequest(orgKeys[0], orgKeys[1].encryptedString);
-        const response = await this.apiService.postOrganizationKeys(this.organizationId, request);
+        const response = await this.organizationApiService.updateKeys(this.organizationId, request);
         if (response != null) {
           this.orgHasKeys = response.publicKey != null && response.privateKey != null;
           await this.syncService.fullSync(true); // Replace oganizations with new data
@@ -138,6 +140,7 @@ export class PeopleComponent
 
       await this.load();
 
+      // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe, rxjs/no-nested-subscribe
       this.route.queryParams.pipe(first()).subscribe(async (qParams) => {
         this.searchText = qParams.search;
         if (qParams.viewEvents != null) {
@@ -151,7 +154,7 @@ export class PeopleComponent
   }
 
   async load() {
-    const resetPasswordPolicy = await this.policyService.getPolicyForOrganization(
+    const resetPasswordPolicy = await this.policyApiService.getPolicyForOrganization(
       PolicyType.ResetPassword,
       this.organizationId
     );
@@ -163,26 +166,26 @@ export class PeopleComponent
     return this.apiService.getOrganizationUsers(this.organizationId);
   }
 
-  deleteUser(id: string): Promise<any> {
+  deleteUser(id: string): Promise<void> {
     return this.apiService.deleteOrganizationUser(this.organizationId, id);
   }
 
-  revokeUser(id: string): Promise<any> {
+  revokeUser(id: string): Promise<void> {
     return this.apiService.revokeOrganizationUser(this.organizationId, id);
   }
 
-  restoreUser(id: string): Promise<any> {
+  restoreUser(id: string): Promise<void> {
     return this.apiService.restoreOrganizationUser(this.organizationId, id);
   }
 
-  reinviteUser(id: string): Promise<any> {
+  reinviteUser(id: string): Promise<void> {
     return this.apiService.postOrganizationUserReinvite(this.organizationId, id);
   }
 
   async confirmUser(
     user: OrganizationUserUserDetailsResponse,
     publicKey: Uint8Array
-  ): Promise<any> {
+  ): Promise<void> {
     const orgKey = await this.cryptoService.getOrgKey(this.organizationId);
     const key = await this.cryptoService.rsaEncrypt(orgKey.key, publicKey.buffer);
     const request = new OrganizationUserConfirmRequest();
@@ -237,18 +240,22 @@ export class PeopleComponent
         comp.organizationId = this.organizationId;
         comp.organizationUserId = user != null ? user.id : null;
         comp.usesKeyConnector = user?.usesKeyConnector;
+        // eslint-disable-next-line rxjs-angular/prefer-takeuntil
         comp.onSavedUser.subscribe(() => {
           modal.close();
           this.load();
         });
+        // eslint-disable-next-line rxjs-angular/prefer-takeuntil
         comp.onDeletedUser.subscribe(() => {
           modal.close();
           this.removeUser(user);
         });
+        // eslint-disable-next-line rxjs-angular/prefer-takeuntil
         comp.onRevokedUser.subscribe(() => {
           modal.close();
           this.load();
         });
+        // eslint-disable-next-line rxjs-angular/prefer-takeuntil
         comp.onRestoredUser.subscribe(() => {
           modal.close();
           this.load();
@@ -265,6 +272,7 @@ export class PeopleComponent
         comp.name = this.userNamePipe.transform(user);
         comp.organizationId = this.organizationId;
         comp.organizationUserId = user != null ? user.id : null;
+        // eslint-disable-next-line rxjs-angular/prefer-takeuntil
         comp.onSavedUser.subscribe(() => {
           modal.close();
         });
@@ -389,6 +397,7 @@ export class PeopleComponent
         comp.organizationId = this.organizationId;
         comp.id = user != null ? user.id : null;
 
+        // eslint-disable-next-line rxjs-angular/prefer-takeuntil
         comp.onPasswordReset.subscribe(() => {
           modal.close();
           this.load();
@@ -427,6 +436,7 @@ export class PeopleComponent
 
     // Workaround to handle closing the modal shortly after it has been opened
     let close = false;
+    // eslint-disable-next-line rxjs-angular/prefer-takeuntil
     modal.onShown.subscribe(() => {
       if (close) {
         modal.close();

@@ -10,6 +10,7 @@ import { OrganizationData } from "../data/organizationData";
 import { PolicyData } from "../data/policyData";
 import { ProviderData } from "../data/providerData";
 import { SendData } from "../data/sendData";
+import { ServerConfigData } from "../data/server-config.data";
 import { CipherView } from "../view/cipherView";
 import { CollectionView } from "../view/collectionView";
 import { SendView } from "../view/sendView";
@@ -110,7 +111,6 @@ export class AccountProfile {
 export class AccountSettings {
   autoConfirmFingerPrints?: boolean;
   autoFillOnPageLoadDefault?: boolean;
-  biometricLocked?: boolean;
   biometricUnlock?: boolean;
   clearClipboard?: number;
   collapsedGroupings?: string[];
@@ -138,10 +138,15 @@ export class AccountSettings {
   generatorOptions?: any;
   pinProtected?: EncryptionPair<string, EncString> = new EncryptionPair<string, EncString>();
   protectedPin?: string;
-  settings?: any; // TODO: Merge whatever is going on here into the AccountSettings model properly
+  settings?: AccountSettingsSettings; // TODO: Merge whatever is going on here into the AccountSettings model properly
   vaultTimeout?: number;
   vaultTimeoutAction?: string = "lock";
+  serverConfig?: ServerConfigData;
 }
+
+export type AccountSettingsSettings = {
+  equivalentDomains?: { [id: string]: any };
+};
 
 export class AccountTokens {
   accessToken?: string;

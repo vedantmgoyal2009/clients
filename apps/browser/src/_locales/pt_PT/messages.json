@@ -1968,6 +1968,9 @@
   "ssoKeyConnectorError": {
     "message": "Key Connector error: make sure Key Connector is available and working correctly."
   },
+  "premiumSubcriptionRequired": {
+    "message": "Subscrição premium necessária"
+  },
   "organizationIsDisabled": {
     "message": "Organization is disabled."
   },
@@ -1976,5 +1979,50 @@
   },
   "cardBrandMir": {
     "message": "Mir"
+  },
+  "loggingInTo": {
+    "message": "A iniciar sessão em $DOMAIN$",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "settingsEdited": {
+    "message": "As definições foram editadas"
+  },
+  "environmentEditedClick": {
+    "message": "Clique aqui"
+  },
+  "environmentEditedReset": {
+    "message": "para voltar às definições predefinidas"
+  },
+  "serverVersion": {
+    "message": "Server Version"
+  },
+  "selfHosted": {
+    "message": "Self-Hosted"
+  },
+  "thirdParty": {
+    "message": "Third-Party"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Connected to third-party server implementation, $SERVERNAME$. Please verify bugs using the official server, or report them to the third-party server.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "last seen on $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }

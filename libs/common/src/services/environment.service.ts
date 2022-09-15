@@ -1,4 +1,4 @@
-import { Observable, Subject } from "rxjs";
+import { concatMap, Observable, Subject } from "rxjs";
 
 import {
   EnvironmentService as EnvironmentServiceAbstraction,
@@ -11,20 +11,24 @@ export class EnvironmentService implements EnvironmentServiceAbstraction {
   private readonly urlsSubject = new Subject<Urls>();
   urls: Observable<Urls> = this.urlsSubject;
 
-  private baseUrl: string;
-  private webVaultUrl: string;
-  private apiUrl: string;
-  private identityUrl: string;
-  private iconsUrl: string;
-  private notificationsUrl: string;
-  private eventsUrl: string;
+  protected baseUrl: string;
+  protected webVaultUrl: string;
+  protected apiUrl: string;
+  protected identityUrl: string;
+  protected iconsUrl: string;
+  protected notificationsUrl: string;
+  protected eventsUrl: string;
   private keyConnectorUrl: string;
   private scimUrl: string = null;
 
   constructor(private stateService: StateService) {
-    this.stateService.activeAccount.subscribe(async () => {
-      await this.setUrlsFromStorage();
-    });
+    this.stateService.activeAccount$
+      .pipe(
+        concatMap(async () => {
+          await this.setUrlsFromStorage();
+        })
+      )
+      .subscribe();
   }
 
   hasBaseUrl() {
@@ -202,5 +206,11 @@ export class EnvironmentService implements EnvironmentServiceAbstraction {
     }
 
     return url.trim();
+  }
+
+  isCloud(): boolean {
+    return ["https://api.bitwarden.com", "https://vault.bitwarden.com/api"].includes(
+      this.getApiUrl()
+    );
   }
 }
