@@ -7,6 +7,7 @@ import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCry
 
 import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
 import { EncryptionType } from "../enums/encryptionType";
+import { IDecryptable } from "../interfaces/IDecryptable";
 import { IEncrypted } from "../interfaces/IEncrypted";
 import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
 
@@ -147,6 +148,27 @@ export class EncryptService implements AbstractEncryptService {
     );
 
     return result ?? null;
+  }
+
+  async decryptItems<T>(
+    items: IDecryptable<T>[],
+    keys: SymmetricCryptoKey | Map<string, SymmetricCryptoKey>
+  ): Promise<T[]> {
+    if (items == null || items.length < 1) {
+      return [];
+    }
+
+    const result: T[] = [];
+    const promises: Promise<number>[] = [];
+
+    items.forEach(async (item) => {
+      const key = keys instanceof Map ? keys.get(item.organizationId) : keys;
+      promises.push(item.decrypt(key).then((c) => result.push(c)));
+    });
+
+    await Promise.all(promises);
+
+    return result;
   }
 
   private async aesEncrypt(data: ArrayBuffer, key: SymmetricCryptoKey): Promise<EncryptedObject> {

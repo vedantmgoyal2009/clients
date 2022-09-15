@@ -679,7 +679,7 @@
     "message": "Virheellinen pääsalasana"
   },
   "invalidFilePassword": {
-    "message": "Tiedoston salasana on virheellinen. Käytä vientitiedoston luonnin yhteydessä käytettyä salasanaa."
+    "message": "Tiedoston salasana on virheellinen. Käytä vientitiedoston luonnin yhteydessä syötettyä salasanaa."
   },
   "lockNow": {
     "message": "Lukitse nyt"
@@ -912,10 +912,10 @@
     "message": "Vahvista tiedoston salasana"
   },
   "accountBackupOptionDescription": {
-    "message": "Hyödyntää viennin suojauksessa Bitwarden-tilisi salausta sen pääsalasanan sijaan. Tällainen vienti voidaan tuoda vain nykyiselle käyttäjätilille. Tämän avulla voidaan luoda varmuuskopio, jota ei ole mahdollista käyttää muilla tileillä."
+    "message": "Salaa vienti tilisi salausavaimella, joka rajoittaa sen tuonnin vain tälle Bitwarden-tilille."
   },
   "passwordProtectedOptionDescription": {
-    "message": "Suojaa vienti omavalintaisella salasanalla. Tämän avulla voidaan luoda vienti, jota on mahdollista käyttää myös muilla käyttäjätileillä."
+    "message": "Salaa vienti salasanalla, joka mahdollistaa sen tuonnin mille tahansa Bitwarden-tilille."
   },
   "fileTypeHeading": {
     "message": "Tiedostotyyppi"
@@ -5273,7 +5273,7 @@
     "description": "The text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimDescription": {
-    "message": "Provisioi käyttäjät ja ryhmät suosimasi tunnistustietojen tarjoajan kanssa SCIM-provisioinnilla",
+    "message": "Provisioi käyttäjät ja ryhmät haluamasi tunnistustietojen tarjoajan kanssa SCIM-provisioinnilla",
     "description": "the text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimEnabledCheckboxDesc": {
@@ -5281,7 +5281,7 @@
     "description": "the text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimEnabledCheckboxDescHelpText": {
-    "message": "Määritä haluamasi SAML-tunnistustietojen tarjoaja määrittämällä URL-osoite ja SCIM API-avain",
+    "message": "Määritä haluamasi tunnistustietojen tarjoaja määrittämällä URL-osoite ja SCIM API -avain",
     "description": "the text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimApiKeyHelperText": {
