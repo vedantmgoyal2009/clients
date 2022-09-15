@@ -1,3 +1,13 @@
+import {
+  defaultIfEmpty,
+  filter,
+  firstValueFrom,
+  fromEvent,
+  map,
+  Observable,
+  Subject,
+  takeUntil,
+} from "rxjs";
 import { Jsonify } from "type-fest";
 
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
@@ -17,6 +27,9 @@ const workerTTL = 3 * 60000; // 3 minutes
 export class MultithreadEncryptService extends EncryptService {
   private worker: Worker;
   private timeout: any;
+
+  private workerMessages$: Observable<any>;
+  private clear$ = new Subject<void>();
 
   constructor(
     cryptoFunctionService: CryptoFunctionService,
@@ -43,6 +56,7 @@ export class MultithreadEncryptService extends EncryptService {
 
     if (this.worker == null) {
       this.worker = this.createWorker();
+      this.workerMessages$ = fromEvent(this.worker, "message").pipe(takeUntil(this.clear$));
     }
 
     this.restartTimeout();
@@ -53,32 +67,25 @@ export class MultithreadEncryptService extends EncryptService {
       keys: keys instanceof SymmetricCryptoKey ? keys : Array.from(keys.entries()),
     };
 
-    return new Promise((resolve) => {
-      // Listen for response containing decrypted items
-      this.worker.addEventListener("message", async (event: { data: string }) => {
-        const response: {
-          id: string;
-          items: Jsonify<T> & IDecrypted[]; // TODO: this should probably be in the <T> definition
-        } = JSON.parse(event.data);
+    this.worker.postMessage(JSON.stringify(request));
 
-        if (response.id != request.id) {
-          return;
-        }
-
-        const result = response.items.map((jsonItem) => {
-          const itemClass = getClass(jsonItem.typeName);
-          return itemClass.fromJSON(jsonItem) as T;
-        });
-
-        resolve(result);
-      });
-
-      // Send the request to the worker
-      this.worker.postMessage(JSON.stringify(request));
-    });
+    return await firstValueFrom(
+      this.workerMessages$.pipe(
+        filter((response) => response.data?.id === request.id),
+        map((response) => JSON.parse(response.data.items)),
+        map((items) =>
+          items.map((jsonItem: Jsonify<T> & IDecrypted) => {
+            const itemClass = getClass(jsonItem.typeName);
+            return itemClass.fromJSON(jsonItem) as T;
+          })
+        ),
+        defaultIfEmpty([])
+      )
+    );
   }
 
   private clear() {
+    this.clear$.next();
     this.worker?.terminate();
     this.worker = null;
     this.clearTimeout();

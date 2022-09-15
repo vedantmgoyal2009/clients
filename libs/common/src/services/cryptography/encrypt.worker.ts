@@ -58,10 +58,8 @@ workerApi.addEventListener("message", async (event: { data: string }) => {
 
   const result = await encryptService.decryptItems(items, keys);
 
-  workerApi.postMessage(
-    JSON.stringify({
-      id: request.id,
-      items: result,
-    })
-  );
+  workerApi.postMessage({
+    id: request.id,
+    items: JSON.stringify(result),
+  });
 });
