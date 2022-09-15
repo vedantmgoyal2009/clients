@@ -5,7 +5,5 @@
       "base": "https://localhost:8080"
     }
   },
-  "flags": {
-    "webWorkerDecryption": true
-  }
+  "flags": {}
 }

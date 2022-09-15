@@ -1,8 +1,6 @@
 // required to avoid linting errors when there are no flags
 /* eslint-disable @typescript-eslint/ban-types */
-export type SharedFlags = {
-  webWorkerDecryption: boolean;
-};
+export type SharedFlags = {};
 
 // required to avoid linting errors when there are no flags
 /* eslint-disable @typescript-eslint/ban-types */

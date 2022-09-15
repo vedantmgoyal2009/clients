@@ -1,6 +1,4 @@
 {
   "devFlags": {},
-  "flags": {
-    "webWorkerDecryption": false
-  }
+  "flags": {}
 }

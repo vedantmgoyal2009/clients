@@ -10,7 +10,6 @@
     "proxyNotifications": "http://localhost:61840"
   },
   "flags": {
-    "showTrial": true,
-    "webWorkerDecryption": true
+    "showTrial": true
   }
 }

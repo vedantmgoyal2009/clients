@@ -1,5 +1,3 @@
 {
-  "flags": {
-    "webWorkerDecryption": true
-  }
+  "flags": {}
 }
