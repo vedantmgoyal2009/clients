@@ -13,9 +13,9 @@ import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
 
 export class EncryptService implements AbstractEncryptService {
   constructor(
-    private cryptoFunctionService: CryptoFunctionService,
-    private logService: LogService,
-    private logMacFailures: boolean
+    protected cryptoFunctionService: CryptoFunctionService,
+    protected logService: LogService,
+    protected logMacFailures: boolean
   ) {}
 
   async encrypt(plainValue: string | ArrayBuffer, key: SymmetricCryptoKey): Promise<EncString> {

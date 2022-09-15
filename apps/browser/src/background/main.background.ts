@@ -6,7 +6,6 @@ import { CipherService as CipherServiceAbstraction } from "@bitwarden/common/abs
 import { CollectionService as CollectionServiceAbstraction } from "@bitwarden/common/abstractions/collection.service";
 import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "@bitwarden/common/abstractions/cryptoFunction.service";
-import { AbstractEncryptWorkerService } from "@bitwarden/common/abstractions/encryptWorker.service";
 import { EventService as EventServiceAbstraction } from "@bitwarden/common/abstractions/event.service";
 import { ExportService as ExportServiceAbstraction } from "@bitwarden/common/abstractions/export.service";
 import { FileUploadService as FileUploadServiceAbstraction } from "@bitwarden/common/abstractions/fileUpload.service";
@@ -52,7 +51,6 @@ import { CollectionService } from "@bitwarden/common/services/collection.service
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { ContainerService } from "@bitwarden/common/services/container.service";
 import { EncryptService } from "@bitwarden/common/services/encrypt.service";
-import { EncryptWorkerService } from "@bitwarden/common/services/encryptWorker.service";
 import { EventService } from "@bitwarden/common/services/event.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
 import { FileUploadService } from "@bitwarden/common/services/fileUpload.service";
@@ -157,7 +155,6 @@ export default class MainBackground {
   vaultFilterService: VaultFilterService;
   usernameGenerationService: UsernameGenerationServiceAbstraction;
   encryptService: EncryptService;
-  encryptWorkerService: AbstractEncryptWorkerService;
   folderApiService: FolderApiServiceAbstraction;
   policyApiService: PolicyApiServiceAbstraction;
   userVerificationApiService: UserVerificationApiServiceAbstraction;
@@ -270,13 +267,6 @@ export default class MainBackground {
     );
     this.settingsService = new SettingsService(this.stateService);
     this.fileUploadService = new FileUploadService(this.logService, this.apiService);
-    this.encryptWorkerService = new EncryptWorkerService(
-      this.logService,
-      this.platformUtilsService,
-      window,
-      this.cryptoService,
-      new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url)
-    );
     this.cipherService = new CipherService(
       this.cryptoService,
       this.settingsService,
@@ -286,7 +276,7 @@ export default class MainBackground {
       () => this.searchService,
       this.logService,
       this.stateService,
-      this.encryptWorkerService
+      this.encryptService
     );
     this.folderService = new FolderService(
       this.cryptoService,
@@ -649,7 +639,6 @@ export default class MainBackground {
       this.vaultTimeoutSettingsService.clear(userId),
       this.keyConnectorService.clear(),
       this.vaultFilterService.clear(),
-      this.encryptWorkerService.clear(),
     ]);
 
     await this.stateService.clean({ userId: userId });

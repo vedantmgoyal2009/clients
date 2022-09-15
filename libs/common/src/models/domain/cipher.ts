@@ -1,4 +1,5 @@
 import { IDecryptable } from "@bitwarden/common/interfaces/IDecryptable";
+import { Jsonify } from "type-fest";
 
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
@@ -18,6 +19,8 @@ import { SecureNote } from "./secureNote";
 import { SymmetricCryptoKey } from "./symmetricCryptoKey";
 
 export class Cipher extends Domain implements IDecryptable<CipherView> {
+  readonly typeName = "Cipher";
+
   id: string;
   organizationId: string;
   folderId: string;
@@ -124,22 +127,22 @@ export class Cipher extends Domain implements IDecryptable<CipherView> {
       encKey
     );
 
-    switch (this.type) {
-      case CipherType.Login:
-        model.login = await this.login.decrypt(this.organizationId, encKey);
-        break;
-      case CipherType.SecureNote:
-        model.secureNote = await this.secureNote.decrypt(this.organizationId, encKey);
-        break;
-      case CipherType.Card:
-        model.card = await this.card.decrypt(this.organizationId, encKey);
-        break;
-      case CipherType.Identity:
-        model.identity = await this.identity.decrypt(this.organizationId, encKey);
-        break;
-      default:
-        break;
-    }
+    // switch (this.type) {
+    //   case CipherType.Login:
+    //     model.login = await this.login.decrypt(this.organizationId, encKey);
+    //     break;
+    //   case CipherType.SecureNote:
+    //     model.secureNote = await this.secureNote.decrypt(this.organizationId, encKey);
+    //     break;
+    //   case CipherType.Card:
+    //     model.card = await this.card.decrypt(this.organizationId, encKey);
+    //     break;
+    //   case CipherType.Identity:
+    //     model.identity = await this.identity.decrypt(this.organizationId, encKey);
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     const orgId = this.organizationId;
 
@@ -235,5 +238,13 @@ export class Cipher extends Domain implements IDecryptable<CipherView> {
       c.passwordHistory = this.passwordHistory.map((ph) => ph.toPasswordHistoryData());
     }
     return c;
+  }
+
+  static fromJSON(obj: Jsonify<Cipher>) {
+    // TODO this properly
+    return Object.assign(new Cipher(), obj, {
+      name: EncString.fromJSON(obj.name),
+      notes: EncString.fromJSON(obj.notes),
+    });
   }
 }

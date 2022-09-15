@@ -20,6 +20,6 @@
     "src/connectors/*.ts",
     "src/**/*.stories.ts",
     "src/**/*.spec.ts",
-    "../../libs/common/src/workers/*.worker.ts"
+    "../../libs/common/src/services/**/*.worker.ts"
   ]
 }

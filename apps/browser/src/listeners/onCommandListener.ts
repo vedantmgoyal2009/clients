@@ -5,7 +5,6 @@ import { AuthService } from "@bitwarden/common/services/auth.service";
 import { CipherService } from "@bitwarden/common/services/cipher.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { EncryptService } from "@bitwarden/common/services/encrypt.service";
-import { EncryptWorkerService } from "@bitwarden/common/services/encryptWorker.service";
 import { NoopEventService } from "@bitwarden/common/services/noopEvent.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
 import { SettingsService } from "@bitwarden/common/services/settings.service";
@@ -83,18 +82,13 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
 
   const i18nService = new I18nService(chrome.i18n.getUILanguage());
 
-  const encryptWorkerService = new EncryptWorkerService(
-    logService,
-    platformUtils,
-    window,
-    cryptoService,
-    new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url)
-  );
-
   await i18nService.init();
 
   // Don't love this pt.1
   let searchService: SearchService = null;
+
+  // TODO: multithread
+  const encryptService = new EncryptService(cryptoFunctionService, logService, true);
 
   const cipherService = new CipherService(
     cryptoService,
@@ -105,7 +99,7 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
     () => searchService, // Don't love this pt.2
     logService,
     stateService,
-    encryptWorkerService
+    encryptService
   );
 
   // Don't love this pt.3

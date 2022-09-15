@@ -16,7 +16,6 @@ import { ConfigApiServiceAbstraction } from "@bitwarden/common/abstractions/conf
 import { ConfigServiceAbstraction } from "@bitwarden/common/abstractions/config/config.service.abstraction";
 import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "@bitwarden/common/abstractions/cryptoFunction.service";
-import { AbstractEncryptWorkerService } from "@bitwarden/common/abstractions/encryptWorker.service";
 import { EnvironmentService as EnvironmentServiceAbstraction } from "@bitwarden/common/abstractions/environment.service";
 import { EventService as EventServiceAbstraction } from "@bitwarden/common/abstractions/event.service";
 import { ExportService as ExportServiceAbstraction } from "@bitwarden/common/abstractions/export.service";
@@ -36,10 +35,7 @@ import { OrganizationService as OrganizationServiceAbstraction } from "@bitwarde
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { PasswordGenerationService as PasswordGenerationServiceAbstraction } from "@bitwarden/common/abstractions/passwordGeneration.service";
 import { PasswordRepromptService as PasswordRepromptServiceAbstraction } from "@bitwarden/common/abstractions/passwordReprompt.service";
-import {
-  PlatformUtilsService,
-  PlatformUtilsService as PlatformUtilsServiceAbstraction,
-} from "@bitwarden/common/abstractions/platformUtils.service";
+import { PlatformUtilsService as PlatformUtilsServiceAbstraction } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy-api.service.abstraction";
 import {
   PolicyService as PolicyServiceAbstraction,
@@ -64,6 +60,7 @@ import { VaultTimeoutSettingsService as VaultTimeoutSettingsServiceAbstraction }
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { Account } from "@bitwarden/common/models/domain/account";
 import { GlobalState } from "@bitwarden/common/models/domain/globalState";
+import { MultithreadEncryptService } from "@bitwarden/common/services/MultithreadEncrypt.service";
 import { AccountApiService } from "@bitwarden/common/services/account/account-api.service";
 import { AccountService } from "@bitwarden/common/services/account/account.service";
 import { ApiService } from "@bitwarden/common/services/api.service";
@@ -76,8 +73,6 @@ import { ConfigApiService } from "@bitwarden/common/services/config/config-api.s
 import { ConfigService } from "@bitwarden/common/services/config/config.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
-import { EncryptService } from "@bitwarden/common/services/encrypt.service";
-import { EncryptWorkerService } from "@bitwarden/common/services/encryptWorker.service";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { EventService } from "@bitwarden/common/services/event.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
@@ -125,7 +120,7 @@ import {
   LOCALES_DIRECTORY,
   SYSTEM_LANGUAGE,
   LOG_MAC_FAILURES,
-  ENCRYPT_WORKER_URL,
+  ENCRYPT_WORKER_URL as CREATE_ENCRYPT_WORKER,
 } from "./injection-tokens";
 import { ModalService } from "./modal.service";
 import { PasswordRepromptService } from "./passwordReprompt.service";
@@ -179,8 +174,11 @@ import { ValidationService } from "./validation.service";
     },
     {
       // import.meta is an ES2020 feature which isn't supported by node, this is here to keep it out of common code
-      provide: ENCRYPT_WORKER_URL,
-      useValue: new URL("@bitwarden/common/workers/encrypt.worker.ts", import.meta.url),
+      provide: CREATE_ENCRYPT_WORKER,
+      useValue: () =>
+        new Worker(
+          new URL("@bitwarden/common/services/cryptography/encrypt.worker.ts", import.meta.url)
+        ),
     },
     {
       provide: AppIdServiceAbstraction,
@@ -446,8 +444,8 @@ import { ValidationService } from "./validation.service";
     },
     {
       provide: AbstractEncryptService,
-      useClass: EncryptService,
-      deps: [CryptoFunctionServiceAbstraction, LogService, LOG_MAC_FAILURES],
+      useClass: MultithreadEncryptService,
+      deps: [CryptoFunctionServiceAbstraction, LogService, LOG_MAC_FAILURES, CREATE_ENCRYPT_WORKER],
     },
     {
       provide: EventServiceAbstraction,
@@ -537,17 +535,6 @@ import { ValidationService } from "./validation.service";
     {
       provide: FormValidationErrorsServiceAbstraction,
       useClass: FormValidationErrorsService,
-    },
-    {
-      provide: AbstractEncryptWorkerService,
-      useClass: EncryptWorkerService,
-      deps: [
-        LogService,
-        PlatformUtilsService,
-        WINDOW,
-        CryptoServiceAbstraction,
-        ENCRYPT_WORKER_URL,
-      ],
     },
     {
       provide: UserVerificationApiServiceAbstraction,

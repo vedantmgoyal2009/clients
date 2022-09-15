@@ -4,7 +4,6 @@ import * as path from "path";
 import * as program from "commander";
 import * as jsdom from "jsdom";
 
-import { AbstractEncryptWorkerService } from "@bitwarden/common/abstractions/encryptWorker.service";
 import { InternalFolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { ClientType } from "@bitwarden/common/enums/clientType";
@@ -22,7 +21,6 @@ import { CollectionService } from "@bitwarden/common/services/collection.service
 import { ContainerService } from "@bitwarden/common/services/container.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
 import { EncryptService } from "@bitwarden/common/services/encrypt.service";
-import { EncryptWorkerService } from "@bitwarden/common/services/encryptWorker.service";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
 import { FileUploadService } from "@bitwarden/common/services/fileUpload.service";
@@ -114,7 +112,6 @@ export class Main {
   broadcasterService: BroadcasterService;
   folderApiService: FolderApiService;
   userVerificationApiService: UserVerificationApiService;
-  encryptWorkerService: AbstractEncryptWorkerService;
   organizationApiService: OrganizationApiServiceAbstraction;
 
   constructor() {
@@ -202,14 +199,6 @@ export class Main {
 
     this.fileUploadService = new FileUploadService(this.logService, this.apiService);
 
-    this.encryptWorkerService = new EncryptWorkerService(
-      this.logService,
-      this.platformUtilsService,
-      null,
-      this.cryptoService,
-      null
-    );
-
     this.cipherService = new CipherService(
       this.cryptoService,
       this.settingsService,
@@ -219,7 +208,7 @@ export class Main {
       null,
       this.logService,
       this.stateService,
-      this.encryptWorkerService
+      this.encryptService
     );
 
     this.broadcasterService = new BroadcasterService();
@@ -395,7 +384,6 @@ export class Main {
       this.collectionService.clear(userId),
       this.policyService.clear(userId),
       this.passwordGenerationService.clear(),
-      this.encryptWorkerService.clear(),
     ]);
     await this.stateService.clean();
     process.env.BW_SESSION = null;
