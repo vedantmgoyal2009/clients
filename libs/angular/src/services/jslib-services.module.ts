@@ -120,7 +120,7 @@ import {
   LOCALES_DIRECTORY,
   SYSTEM_LANGUAGE,
   LOG_MAC_FAILURES,
-  ENCRYPT_WORKER_URL as CREATE_ENCRYPT_WORKER,
+  CREATE_ENCRYPT_WORKER,
 } from "./injection-tokens";
 import { ModalService } from "./modal.service";
 import { PasswordRepromptService } from "./passwordReprompt.service";
@@ -173,7 +173,6 @@ import { ValidationService } from "./validation.service";
       useValue: true,
     },
     {
-      // import.meta is an ES2020 feature which isn't supported by node, this is here to keep it out of common code
       provide: CREATE_ENCRYPT_WORKER,
       useValue: () =>
         new Worker(

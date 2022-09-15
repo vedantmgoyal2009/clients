@@ -35,12 +35,3 @@ export function makeStaticByteArray(length: number, start = 0) {
   }
   return arr;
 }
-
-/**
- * Use this to mock an implementation of a fromJSON method
- * @example
- * jest.mock("../models/domain/symmetricCryptoKey");
- * jest.spyOn(SymmetricCryptoKey, "fromJSON").mockImplementation(mockFromJson);
- * expect(SymmetricCryptoKey.fromJSON("myKey")).toEqual("myKey_fromJSON");
- */
-export const mockFromJson = (stub: any) => (stub + "_fromJSON") as any;

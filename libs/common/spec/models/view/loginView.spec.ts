@@ -1,8 +1,6 @@
 import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
 import { LoginView } from "@bitwarden/common/models/view/loginView";
 
-import { mockFromJson } from "../../utils";
-
 jest.mock("@bitwarden/common/models/view/loginUriView");
 
 describe("LoginView", () => {
@@ -11,7 +9,8 @@ describe("LoginView", () => {
   });
 
   it("fromJSON initializes nested objects", () => {
-    jest.spyOn(LoginUriView, "fromJSON").mockImplementation(mockFromJson);
+    const mockFromJson = (stub: string) => stub + "_fromJSON";
+    jest.spyOn(LoginUriView, "fromJSON").mockImplementation(mockFromJson as any);
 
     const passwordRevisionDate = new Date();
 

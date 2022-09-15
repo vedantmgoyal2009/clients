@@ -70,12 +70,4 @@ describe("Utils Service", () => {
       expect(Utils.newGuid()).toMatch(validGuid);
     });
   });
-
-  describe("getContainerService", () => {
-    it("throws exception when Bitwarden ContainerService not initialized", async () => {
-      expect(() => Utils.getContainerService()).toThrow(
-        "global bitwardenContainerService not initialized."
-      );
-    });
-  });
 });

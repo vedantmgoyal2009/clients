@@ -26,7 +26,6 @@ describe("Cipher Service", () => {
   let i18nService: SubstituteOf<I18nService>;
   let searchService: SubstituteOf<SearchService>;
   let logService: SubstituteOf<LogService>;
-  let encryptWorkerService: SubstituteOf<AbstractEncryptWorkerService>;
 
   let cipherService: CipherService;
 
@@ -39,7 +38,6 @@ describe("Cipher Service", () => {
     i18nService = Substitute.for<I18nService>();
     searchService = Substitute.for<SearchService>();
     logService = Substitute.for<LogService>();
-    encryptWorkerService = Substitute.for<AbstractEncryptWorkerService>();
 
     cryptoService.encryptToBytes(Arg.any(), Arg.any()).resolves(ENCRYPTED_BYTES);
     cryptoService.encrypt(Arg.any(), Arg.any()).resolves(new EncString(ENCRYPTED_TEXT));
@@ -52,8 +50,7 @@ describe("Cipher Service", () => {
       i18nService,
       () => searchService,
       logService,
-      stateService,
-      encryptWorkerService
+      stateService
     );
   });
 
