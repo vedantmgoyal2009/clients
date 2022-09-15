@@ -1,5 +1,6 @@
-import { IDecryptable } from "@bitwarden/common/interfaces/IDecryptable";
 import { Jsonify } from "type-fest";
+
+import { IDecryptable } from "@bitwarden/common/interfaces/IDecryptable";
 
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
@@ -127,6 +128,7 @@ export class Cipher extends Domain implements IDecryptable<CipherView> {
       encKey
     );
 
+    // TODO: uncomment this after serialization is done properly
     // switch (this.type) {
     //   case CipherType.Login:
     //     model.login = await this.login.decrypt(this.organizationId, encKey);
