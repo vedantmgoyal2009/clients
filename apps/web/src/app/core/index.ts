@@ -1,6 +1,6 @@
-// Do not export this here or it will import JslibServicesModule into test code.
-// JslibServicesModule contains ES2020 features (import.meta) which only have experimental support in Node and Jest.
-// We could enable ESM support in Node and Jest, but they're unsupported. This is the easier workaround for now.
+// Do not export this here or it will import MultithreadEncryptService (via JslibServicesModule) into test code.
+// MultithreadEncryptService contains ES2020 features (import.meta) which are not supported in Node and Jest.
+// Revisit this when Node & Jest get stable support for ESM.
 // export * from "./core.module";
 export * from "./event.service";
 export * from "./policy-list.service";
