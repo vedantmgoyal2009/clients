@@ -60,7 +60,6 @@ import { VaultTimeoutSettingsService as VaultTimeoutSettingsServiceAbstraction }
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { Account } from "@bitwarden/common/models/domain/account";
 import { GlobalState } from "@bitwarden/common/models/domain/globalState";
-import { MultithreadEncryptService } from "@bitwarden/common/services/MultithreadEncrypt.service";
 import { AccountApiService } from "@bitwarden/common/services/account/account-api.service";
 import { AccountService } from "@bitwarden/common/services/account/account.service";
 import { ApiService } from "@bitwarden/common/services/api.service";
@@ -81,6 +80,7 @@ import { FolderApiService } from "@bitwarden/common/services/folder/folder-api.s
 import { FolderService } from "@bitwarden/common/services/folder/folder.service";
 import { FormValidationErrorsService } from "@bitwarden/common/services/formValidationErrors.service";
 import { KeyConnectorService } from "@bitwarden/common/services/keyConnector.service";
+import { MultithreadEncryptService } from "@bitwarden/common/services/multithreadEncrypt.service";
 import { NotificationsService } from "@bitwarden/common/services/notifications.service";
 import { OrganizationService } from "@bitwarden/common/services/organization.service";
 import { OrganizationApiService } from "@bitwarden/common/services/organization/organization-api.service";
