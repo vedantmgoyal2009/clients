@@ -39,31 +39,18 @@ workerApi.addEventListener("message", async (event: { data: string }) => {
   const request: {
     id: string;
     items: Jsonify<IDecryptable<any>>[];
-    keys: [string, Jsonify<SymmetricCryptoKey>][] | Jsonify<SymmetricCryptoKey>;
+    key: Jsonify<SymmetricCryptoKey>;
   } = JSON.parse(event.data);
 
-  const keys = buildKeys(request.keys);
+  const key = SymmetricCryptoKey.fromJSON(request.key);
   const items = request.items.map(buildItem);
-
-  const result = await encryptService.decryptItems(items, keys);
+  const result = await encryptService.decryptItems(items, key);
 
   workerApi.postMessage({
     id: request.id,
     items: JSON.stringify(result),
   });
 });
-
-function buildKeys(keys: [string, Jsonify<SymmetricCryptoKey>][] | Jsonify<SymmetricCryptoKey>) {
-  if (keys == null) {
-    return null;
-  }
-
-  if (keys instanceof Array) {
-    return new Map(keys.map(([orgId, jsonKey]) => [orgId, SymmetricCryptoKey.fromJSON(jsonKey)]));
-  }
-
-  return SymmetricCryptoKey.fromJSON(keys);
-}
 
 function buildItem(jsonItem: Jsonify<IDecryptable<any>>): IDecryptable<any> {
   const itemClass = getClass(jsonItem.typeName);

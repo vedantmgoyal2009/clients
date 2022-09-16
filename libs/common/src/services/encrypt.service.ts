@@ -150,10 +150,7 @@ export class EncryptService implements AbstractEncryptService {
     return result ?? null;
   }
 
-  async decryptItems<T>(
-    items: IDecryptable<T>[],
-    keys: SymmetricCryptoKey | Map<string, SymmetricCryptoKey>
-  ): Promise<T[]> {
+  async decryptItems<T>(items: IDecryptable<T>[], key: SymmetricCryptoKey): Promise<T[]> {
     if (items == null || items.length < 1) {
       return [];
     }
@@ -162,7 +159,6 @@ export class EncryptService implements AbstractEncryptService {
     const promises: Promise<number>[] = [];
 
     items.forEach(async (item) => {
-      const key = keys instanceof Map ? keys.get(item.organizationId) : keys;
       promises.push(item.decrypt(key).then((c) => result.push(c)));
     });
 

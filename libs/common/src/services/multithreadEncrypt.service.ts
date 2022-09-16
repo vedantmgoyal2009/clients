@@ -44,10 +44,7 @@ export class MultithreadEncryptService extends EncryptService {
    * Sends items to a web worker to decrypt them.
    * This utilises multithreading to decrypt items faster without interrupting other operations.
    */
-  async decryptItems<T>(
-    items: IDecryptable<T>[],
-    keys: SymmetricCryptoKey | Map<string, SymmetricCryptoKey>
-  ): Promise<T[]> {
+  async decryptItems<T>(items: IDecryptable<T>[], key: SymmetricCryptoKey): Promise<T[]> {
     if (items == null || items.length < 1) {
       return [];
     }
@@ -64,7 +61,7 @@ export class MultithreadEncryptService extends EncryptService {
     const request = {
       id: Utils.newGuid(),
       items: items,
-      keys: keys instanceof SymmetricCryptoKey ? keys : Array.from(keys.entries()),
+      key: key,
     };
 
     this.worker.postMessage(JSON.stringify(request));
