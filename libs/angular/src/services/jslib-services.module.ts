@@ -120,7 +120,6 @@ import {
   LOCALES_DIRECTORY,
   SYSTEM_LANGUAGE,
   LOG_MAC_FAILURES,
-  CREATE_ENCRYPT_WORKER,
 } from "./injection-tokens";
 import { ModalService } from "./modal.service";
 import { PasswordRepromptService } from "./passwordReprompt.service";
@@ -171,13 +170,6 @@ import { ValidationService } from "./validation.service";
     {
       provide: LOG_MAC_FAILURES,
       useValue: true,
-    },
-    {
-      provide: CREATE_ENCRYPT_WORKER,
-      useValue: () =>
-        new Worker(
-          new URL("@bitwarden/common/services/cryptography/encrypt.worker.ts", import.meta.url)
-        ),
     },
     {
       provide: AppIdServiceAbstraction,
@@ -444,7 +436,7 @@ import { ValidationService } from "./validation.service";
     {
       provide: AbstractEncryptService,
       useClass: MultithreadEncryptService,
-      deps: [CryptoFunctionServiceAbstraction, LogService, LOG_MAC_FAILURES, CREATE_ENCRYPT_WORKER],
+      deps: [CryptoFunctionServiceAbstraction, LogService, LOG_MAC_FAILURES],
     },
     {
       provide: EventServiceAbstraction,

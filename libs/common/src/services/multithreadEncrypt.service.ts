@@ -12,8 +12,6 @@ import { Jsonify } from "type-fest";
 
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 
-import { CryptoFunctionService } from "../abstractions/cryptoFunction.service";
-import { LogService } from "../abstractions/log.service";
 import { IDecryptable } from "../interfaces/IDecryptable";
 import { IDecrypted } from "../interfaces/IDecrypted";
 import { Utils } from "../misc/utils";
@@ -31,18 +29,9 @@ export class MultithreadEncryptService extends EncryptService {
   private workerMessages$: Observable<any>;
   private clear$ = new Subject<void>();
 
-  constructor(
-    cryptoFunctionService: CryptoFunctionService,
-    logService: LogService,
-    logMacFailures: boolean,
-    private createWorker: () => Worker
-  ) {
-    super(cryptoFunctionService, logService, logMacFailures);
-  }
-
   /**
    * Sends items to a web worker to decrypt them.
-   * This utilises multithreading to decrypt items faster without interrupting other operations.
+   * This utilises multithreading to decrypt items faster without interrupting other operations (e.g. updating UI)
    */
   async decryptItems<T>(items: IDecryptable<T>[], key: SymmetricCryptoKey): Promise<T[]> {
     if (items == null || items.length < 1) {
@@ -52,8 +41,10 @@ export class MultithreadEncryptService extends EncryptService {
     this.logService.info("Starting decryption using multithreading");
 
     if (this.worker == null) {
-      this.worker = this.createWorker();
-      this.workerMessages$ = fromEvent(this.worker, "message").pipe(takeUntil(this.clear$));
+      (this.worker = new Worker(
+        new URL("@bitwarden/common/services/cryptography/encrypt.worker.ts", import.meta.url)
+      )),
+        (this.workerMessages$ = fromEvent(this.worker, "message").pipe(takeUntil(this.clear$)));
     }
 
     this.restartTimeout();
