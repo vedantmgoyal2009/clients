@@ -1,13 +1,4 @@
-import {
-  defaultIfEmpty,
-  filter,
-  firstValueFrom,
-  fromEvent,
-  map,
-  Observable,
-  Subject,
-  takeUntil,
-} from "rxjs";
+import { defaultIfEmpty, filter, firstValueFrom, fromEvent, map, Subject, takeUntil } from "rxjs";
 import { Jsonify } from "type-fest";
 
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
@@ -26,7 +17,6 @@ export class MultithreadEncryptService extends EncryptService {
   private worker: Worker;
   private timeout: any;
 
-  private workerMessages$: Observable<any>;
   private clear$ = new Subject<void>();
 
   /**
@@ -40,12 +30,9 @@ export class MultithreadEncryptService extends EncryptService {
 
     this.logService.info("Starting decryption using multithreading");
 
-    if (this.worker == null) {
-      (this.worker = new Worker(
-        new URL("@bitwarden/common/services/cryptography/encrypt.worker.ts", import.meta.url)
-      )),
-        (this.workerMessages$ = fromEvent(this.worker, "message").pipe(takeUntil(this.clear$)));
-    }
+    this.worker ??= new Worker(
+      new URL("@bitwarden/common/services/cryptography/encrypt.worker.ts", import.meta.url)
+    );
 
     this.restartTimeout();
 
@@ -58,8 +45,8 @@ export class MultithreadEncryptService extends EncryptService {
     this.worker.postMessage(JSON.stringify(request));
 
     return await firstValueFrom(
-      this.workerMessages$.pipe(
-        filter((response) => response.data?.id === request.id),
+      fromEvent(this.worker, "message").pipe(
+        filter((response: MessageEvent) => response.data?.id === request.id),
         map((response) => JSON.parse(response.data.items)),
         map((items) =>
           items.map((jsonItem: Jsonify<T> & IDecrypted) => {
@@ -67,6 +54,7 @@ export class MultithreadEncryptService extends EncryptService {
             return initializer(jsonItem);
           })
         ),
+        takeUntil(this.clear$),
         defaultIfEmpty([])
       )
     );
