@@ -7,7 +7,7 @@ import { ContainerService } from "../../services/container.service";
 import { EncryptService } from "../../services/encrypt.service";
 import { WebCryptoFunctionService } from "../../services/webCryptoFunction.service";
 
-import { getClass } from "./typeMap";
+import { getInitializer } from "./classInitializers";
 
 const workerApi: Worker = self as any;
 
@@ -43,7 +43,10 @@ workerApi.addEventListener("message", async (event: { data: string }) => {
   } = JSON.parse(event.data);
 
   const key = SymmetricCryptoKey.fromJSON(request.key);
-  const items = request.items.map(buildItem);
+  const items = request.items.map((jsonItem) => {
+    const initializer = getInitializer<IDecryptable<any>>(jsonItem.initializerKey);
+    return initializer(jsonItem);
+  });
   const result = await encryptService.decryptItems(items, key);
 
   workerApi.postMessage({
@@ -51,8 +54,3 @@ workerApi.addEventListener("message", async (event: { data: string }) => {
     items: JSON.stringify(result),
   });
 });
-
-function buildItem(jsonItem: Jsonify<IDecryptable<any>>): IDecryptable<any> {
-  const itemClass = getClass(jsonItem.typeName);
-  return itemClass.fromJSON(jsonItem);
-}

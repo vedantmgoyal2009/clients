@@ -20,7 +20,7 @@ import { SecureNote } from "./secureNote";
 import { SymmetricCryptoKey } from "./symmetricCryptoKey";
 
 export class Cipher extends Domain implements IDecryptable<CipherView> {
-  readonly typeName = "Cipher";
+  readonly initializerKey = "Cipher";
 
   id: string;
   organizationId: string;

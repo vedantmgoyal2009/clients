@@ -1,3 +1,5 @@
+import { InitializerKey } from "../services/cryptography/classInitializers";
+
 export interface IDecrypted {
-  typeName: string;
+  initializerKey: InitializerKey;
 }

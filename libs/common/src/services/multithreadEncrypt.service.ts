@@ -16,7 +16,7 @@ import { IDecryptable } from "../interfaces/IDecryptable";
 import { IDecrypted } from "../interfaces/IDecrypted";
 import { Utils } from "../misc/utils";
 
-import { getClass } from "./cryptography/typeMap";
+import { getInitializer } from "./cryptography/classInitializers";
 import { EncryptService } from "./encrypt.service";
 
 // TTL (time to live) is not strictly required but avoids tying up memory resources if inactive
@@ -63,8 +63,8 @@ export class MultithreadEncryptService extends EncryptService {
         map((response) => JSON.parse(response.data.items)),
         map((items) =>
           items.map((jsonItem: Jsonify<T> & IDecrypted) => {
-            const itemClass = getClass(jsonItem.typeName);
-            return itemClass.fromJSON(jsonItem) as T;
+            const initializer = getInitializer<T>(jsonItem.initializerKey);
+            return initializer(jsonItem);
           })
         ),
         defaultIfEmpty([])

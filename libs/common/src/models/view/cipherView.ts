@@ -18,7 +18,7 @@ import { SecureNoteView } from "./secureNoteView";
 import { View } from "./view";
 
 export class CipherView implements View, IDecrypted {
-  typeName = "CipherView";
+  readonly initializerKey = "CipherView";
 
   id: string = null;
   organizationId: string = null;
