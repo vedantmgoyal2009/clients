@@ -58,6 +58,7 @@ import { UsernameGenerationService as UsernameGenerationServiceAbstraction } fro
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
 import { VaultTimeoutSettingsService as VaultTimeoutSettingsServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeoutSettings.service";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
+import { flagEnabled } from "@bitwarden/common/misc/flags";
 import { Account } from "@bitwarden/common/models/domain/account";
 import { GlobalState } from "@bitwarden/common/models/domain/globalState";
 import { AccountApiService } from "@bitwarden/common/services/account/account-api.service";
@@ -72,6 +73,7 @@ import { ConfigApiService } from "@bitwarden/common/services/config/config-api.s
 import { ConfigService } from "@bitwarden/common/services/config/config.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
+import { EncryptService } from "@bitwarden/common/services/encrypt.service";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { EventService } from "@bitwarden/common/services/event.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
@@ -124,6 +126,7 @@ import {
 import { ModalService } from "./modal.service";
 import { PasswordRepromptService } from "./passwordReprompt.service";
 import { ValidationService } from "./validation.service";
+
 
 @NgModule({
   declarations: [],
@@ -435,7 +438,7 @@ import { ValidationService } from "./validation.service";
     },
     {
       provide: AbstractEncryptService,
-      useClass: MultithreadEncryptService,
+      useClass: flagEnabled("multithreadDecryption") ? MultithreadEncryptService : EncryptService,
       deps: [CryptoFunctionServiceAbstraction, LogService, LOG_MAC_FAILURES],
     },
     {
