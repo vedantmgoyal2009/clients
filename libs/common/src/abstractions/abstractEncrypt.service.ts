@@ -2,6 +2,7 @@ import { EncString } from "@bitwarden/common/models/domain/encString";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 
 import { IDecryptable } from "../interfaces/IDecryptable";
+import { IInitializerMetadata } from "../interfaces/IDecrypted";
 import { IEncrypted } from "../interfaces/IEncrypted";
 import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
 
@@ -14,5 +15,8 @@ export abstract class AbstractEncryptService {
   abstract decryptToUtf8: (encString: EncString, key: SymmetricCryptoKey) => Promise<string>;
   abstract decryptToBytes: (encThing: IEncrypted, key: SymmetricCryptoKey) => Promise<ArrayBuffer>;
   abstract resolveLegacyKey: (key: SymmetricCryptoKey, encThing: IEncrypted) => SymmetricCryptoKey;
-  abstract decryptItems: <T>(items: IDecryptable<T>[], keys: SymmetricCryptoKey) => Promise<T[]>;
+  abstract decryptItems: <T extends IInitializerMetadata>(
+    items: IDecryptable<T>[],
+    keys: SymmetricCryptoKey
+  ) => Promise<T[]>;
 }
