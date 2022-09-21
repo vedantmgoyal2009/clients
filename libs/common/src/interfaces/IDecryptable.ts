@@ -1,7 +1,7 @@
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
-import { InitializerKey } from "../services/cryptography/classInitializers";
 
-export interface IDecryptable<T> {
-  initializerKey: InitializerKey;
+import { IInitializerMetadata } from "./IDecrypted";
+
+export interface IDecryptable<T> extends IInitializerMetadata {
   decrypt: (key?: SymmetricCryptoKey) => Promise<T>;
 }

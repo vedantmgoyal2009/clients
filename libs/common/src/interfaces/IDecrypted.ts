@@ -1,5 +1,5 @@
 import { InitializerKey } from "../services/cryptography/classInitializers";
 
-export interface IDecrypted {
+export interface IInitializerMetadata {
   initializerKey: InitializerKey;
 }

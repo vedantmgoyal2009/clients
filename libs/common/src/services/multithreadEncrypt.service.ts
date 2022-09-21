@@ -4,7 +4,7 @@ import { Jsonify } from "type-fest";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 
 import { IDecryptable } from "../interfaces/IDecryptable";
-import { IDecrypted } from "../interfaces/IDecrypted";
+import { IInitializerMetadata } from "../interfaces/IDecrypted";
 import { Utils } from "../misc/utils";
 
 import { getInitializer } from "./cryptography/classInitializers";
@@ -49,7 +49,7 @@ export class MultithreadEncryptService extends EncryptService {
         filter((response: MessageEvent) => response.data?.id === request.id),
         map((response) => JSON.parse(response.data.items)),
         map((items) =>
-          items.map((jsonItem: Jsonify<T> & IDecrypted) => {
+          items.map((jsonItem: Jsonify<T> & IInitializerMetadata) => {
             const initializer = getInitializer<T>(jsonItem.initializerKey);
             return initializer(jsonItem);
           })

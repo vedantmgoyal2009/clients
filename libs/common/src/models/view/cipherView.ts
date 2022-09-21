@@ -1,6 +1,6 @@
 import { Jsonify } from "type-fest";
 
-import { IDecrypted } from "@bitwarden/common/interfaces/IDecrypted";
+import { IInitializerMetadata } from "@bitwarden/common/interfaces/IDecrypted";
 
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
@@ -17,7 +17,7 @@ import { PasswordHistoryView } from "./passwordHistoryView";
 import { SecureNoteView } from "./secureNoteView";
 import { View } from "./view";
 
-export class CipherView implements View, IDecrypted {
+export class CipherView implements View, IInitializerMetadata {
   readonly initializerKey = "CipherView";
 
   id: string = null;
