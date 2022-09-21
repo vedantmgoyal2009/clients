@@ -8,7 +8,10 @@
       ngNativeValidate
     >
       <div class="modal-header">
-        <h2 class="modal-title" id="groupAddEditTitle">{{ title }}</h2>
+        <h2 class="modal-title" id="groupAddEditTitle">
+          {{ title }}
+          <span *ngIf="editMode" class="tw-text-sm tw-normal-case tw-text-muted">{{ name }}</span>
+        </h2>
         <button
           type="button"
           class="close"
@@ -18,6 +21,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
       <div class="modal-body" *ngIf="loading">
         <i
           class="bwi bwi-spinner bwi-spin text-muted"
@@ -26,134 +30,44 @@
         ></i>
         <span class="sr-only">{{ "loading" | i18n }}</span>
       </div>
-      <div class="modal-body" *ngIf="!loading">
-        <div class="form-group">
-          <label for="name">{{ "name" | i18n }}</label>
-          <input
-            id="name"
-            class="form-control"
-            type="text"
-            name="Name"
-            [(ngModel)]="name"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="externalId">{{ "externalId" | i18n }}</label>
-          <input
-            id="externalId"
-            class="form-control"
-            type="text"
-            name="ExternalId"
-            [(ngModel)]="externalId"
-          />
-          <small class="form-text text-muted">{{ "externalIdDesc" | i18n }}</small>
-        </div>
-        <h3 class="mt-4 d-flex">
-          <div class="mb-2">
-            {{ "accessControl" | i18n }}
-            <a
-              target="_blank"
-              rel="noopener"
-              appA11yTitle="{{ 'learnMore' | i18n }}"
-              href="https://bitwarden.com/help/user-types-access-control/#access-control"
-            >
-              <i class="bwi bwi-question-circle" aria-hidden="true"></i>
-            </a>
+
+      <bit-tab-group *ngIf="!loading" [preserveContent]="true">
+        <bit-tab label="{{ 'groupInfo' | i18n }}">
+          <div class="tw-container">
+            <bit-form-field>
+              <bit-label>{{ "name" | i18n }}</bit-label>
+              <input bitInput type="text" [(ngModel)]="name" name="Name" id="name" required />
+            </bit-form-field>
+            <bit-form-field>
+              <bit-label>{{ "externalId" | i18n }}</bit-label>
+              <input
+                bitInput
+                type="text"
+                [(ngModel)]="externalId"
+                name="ExternalId"
+                id="externalId"
+              />
+              <bit-hint>{{ "externalIdDesc" | i18n }}</bit-hint>
+            </bit-form-field>
           </div>
-          <div class="ml-auto" *ngIf="access === 'selected' && collections && collections.length">
-            <button type="button" (click)="selectAll(true)" class="btn btn-link btn-sm py-0">
-              {{ "selectAll" | i18n }}
-            </button>
-            <button type="button" (click)="selectAll(false)" class="btn btn-link btn-sm py-0">
-              {{ "unselectAll" | i18n }}
-            </button>
-          </div>
-        </h3>
-        <div class="form-group" [ngClass]="{ 'mb-0': access !== 'selected' }">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="access"
-              id="accessAll"
-              value="all"
-              [(ngModel)]="access"
-            />
-            <label class="form-check-label" for="accessAll">
-              {{ "groupAccessAllItems" | i18n }}
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="access"
-              id="accessSelected"
-              value="selected"
-              [(ngModel)]="access"
-            />
-            <label class="form-check-label" for="accessSelected">
-              {{ "groupAccessSelectedCollections" | i18n }}
-            </label>
-          </div>
-        </div>
-        <ng-container *ngIf="access === 'selected'">
-          <div *ngIf="!collections || !collections.length">
-            {{ "noCollectionsInList" | i18n }}
-          </div>
-          <table
-            class="table table-hover table-list mb-0"
-            *ngIf="collections && collections.length"
-          >
-            <thead>
-              <tr>
-                <th>&nbsp;</th>
-                <th>{{ "name" | i18n }}</th>
-                <th width="100" class="text-center">{{ "hidePasswords" | i18n }}</th>
-                <th width="100" class="text-center">{{ "readOnly" | i18n }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let c of collections; let i = index">
-                <td class="table-list-checkbox" (click)="check(c)">
-                  <input
-                    type="checkbox"
-                    [(ngModel)]="c.checked"
-                    name="Collection[{{ i }}].Checked"
-                    appStopProp
-                  />
-                </td>
-                <td (click)="check(c)">
-                  {{ c.name }}
-                </td>
-                <td class="text-center">
-                  <input
-                    type="checkbox"
-                    [(ngModel)]="c.hidePasswords"
-                    name="Collection[{{ i }}].HidePasswords"
-                    [disabled]="!c.checked"
-                  />
-                </td>
-                <td class="text-center">
-                  <input
-                    type="checkbox"
-                    [(ngModel)]="c.readOnly"
-                    name="Collection[{{ i }}].ReadOnly"
-                    [disabled]="!c.checked"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </ng-container>
-      </div>
+        </bit-tab>
+
+        <bit-tab label="{{ 'members' | i18n }}"> </bit-tab>
+
+        <bit-tab label="{{ 'collections' | i18n }}"> </bit-tab>
+      </bit-tab-group>
+
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary btn-submit" [disabled]="form.loading">
-          <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
+        <button type="submit" bitButton buttonType="primary" [disabled]="form.loading">
+          <i
+            class="bwi bwi-spinner bwi-spin"
+            title="{{ 'loading' | i18n }}"
+            aria-hidden="true"
+            [hidden]="!form.loading"
+          ></i>
           <span>{{ "save" | i18n }}</span>
         </button>
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+        <button type="button" bitButton buttonType="secondary" data-dismiss="modal">
           {{ "cancel" | i18n }}
         </button>
         <div class="ml-auto">
@@ -161,14 +75,16 @@
             #deleteBtn
             type="button"
             (click)="delete()"
-            class="btn btn-outline-danger"
+            bitButton
+            class="tw-px-0"
+            buttonType="danger"
             appA11yTitle="{{ 'delete' | i18n }}"
             *ngIf="editMode"
             [disabled]="deleteBtn.loading"
             [appApiAction]="deletePromise"
           >
             <i
-              class="bwi bwi-trash bwi-lg bwi-fw"
+              class="bwi bwi-trash bwi-lg bwi-fw tw-mx-1"
               [hidden]="deleteBtn.loading"
               aria-hidden="true"
             ></i>
