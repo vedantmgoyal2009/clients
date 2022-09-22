@@ -4,7 +4,7 @@
     <span *ngIf="editMode" class="tw-text-sm tw-normal-case tw-text-muted">{{ name }}</span>
   </span>
   <div bitDialogContent>
-    <bit-tab-group *ngIf="!loading" [preserveContent]="true" [selectedIndex]="1">
+    <bit-tab-group *ngIf="!loading" [preserveContent]="true" [selectedIndex]="2">
       <bit-tab label="{{ 'groupInfo' | i18n }}">
         <bit-form-field>
           <bit-label>{{ "name" | i18n }}</bit-label>
@@ -23,10 +23,7 @@
           <bit-label>{{ "selectMembers" | i18n }}</bit-label>
           <select bitInput (change)="addMember($event)">
             <option disabled selected value="">-- Type to filter --</option>
-            <option
-              *ngFor="let m of memberListSelection.availableOptions; let i = index"
-              [value]="i"
-            >
+            <option *ngFor="let m of memberListSelection.availableOptions" [value]="m.id">
               <span *ngIf="m.name">{{ m.name }} ({{ m.email }})</span>
               <span *ngIf="!m.name">{{ m.email }}</span>
             </option>
@@ -62,7 +59,7 @@
                   bitIconButton="bwi-close"
                   buttonType="muted"
                   appA11yTitle="{{ 'removeMember' | i18n }}"
-                  (click)="memberListSelection.deselectOption(i)"
+                  (click)="memberListSelection.deselectOption(m.id)"
                 ></button>
               </td>
             </tr>
@@ -70,7 +67,67 @@
         </bit-table>
       </bit-tab>
 
-      <bit-tab label="{{ 'collections' | i18n }}"> </bit-tab>
+      <bit-tab label="{{ 'collections' | i18n }}">
+        <p>Edit Collections TODO</p>
+        <div class="tw-flex">
+          <bit-form-field>
+            <bit-label>{{ "permission" | i18n }}</bit-label>
+            <select bitInput>
+              <option>Can view, except passwords</option>
+              <option selected>Can view</option>
+              <option>Can edit, except passwords</option>
+              <option>Can edit</option>
+            </select>
+          </bit-form-field>
+
+          <bit-form-field class="tw-ml-3 tw-flex-grow">
+            <bit-label>Select collections</bit-label>
+            <select bitInput (change)="addCollection($event)">
+              <option disabled selected value="">-- Type to filter --</option>
+              <option *ngFor="let m of collectionListSelection.availableOptions" [value]="m.id">
+                {{ m.name }}
+              </option>
+            </select>
+          </bit-form-field>
+        </div>
+
+        <bit-table>
+          <ng-container header>
+            <tr>
+              <th bitCell>{{ "collection" | i18n }}</th>
+              <th bitCell>{{ "permission" | i18n }}</th>
+              <th bitCell style="width: 50px"></th>
+            </tr>
+          </ng-container>
+          <ng-container body>
+            <tr bitRow *ngFor="let m of collectionListSelection.selectedOptions; let i = index">
+              <td bitCell>
+                <div class="tw-flex tw-items-center tw-text-lg">
+                  <i class="bwi bwi-collection tw-mr-2" aria-hidden="true"></i>
+                  <span>{{ m.name }}</span>
+                </div>
+              </td>
+              <td bitCell>
+                <select class="tw-border-0 tw-bg-transparent tw-p-2 tw-font-bold">
+                  <option>Can view, except passwords</option>
+                  <option>Can view</option>
+                  <option>Can edit, except passwords</option>
+                  <option>Can edit</option>
+                </select>
+              </td>
+              <td bitCell>
+                <button
+                  type="button"
+                  bitIconButton="bwi-close"
+                  buttonType="muted"
+                  appA11yTitle="{{ 'removeMember' | i18n }}"
+                  (click)="collectionListSelection.deselectOption(m.id)"
+                ></button>
+              </td>
+            </tr>
+          </ng-container>
+        </bit-table>
+      </bit-tab>
     </bit-tab-group>
   </div>
   <div bitDialogFooter class="tw-flex tw-flex-row tw-gap-2">

@@ -1,8 +1,16 @@
 import { DialogRef } from "@angular/cdk/dialog";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from "@angular/forms";
-import { remove, sortBy, sortedIndexBy, ValueIteratee } from "lodash";
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
+import { sortBy, sortedIndexBy, ValueIteratee } from "lodash";
 
+import { SelectionReadOnly } from "@bitwarden/cli/src/models/selectionReadOnly";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
@@ -16,7 +24,7 @@ import { CollectionDetailsResponse } from "@bitwarden/common/models/response/col
 import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
 import { CollectionView } from "@bitwarden/common/models/view/collectionView";
 
-class FormListSelection<TModel, TControl extends AbstractControl> {
+class FormListSelection<TModel extends { id: string }, TControl extends AbstractControl> {
   allOptions: TModel[] = [];
   selectedOptions: TModel[] = [];
   availableOptions: TModel[] = [];
@@ -27,28 +35,26 @@ class FormListSelection<TModel, TControl extends AbstractControl> {
     private iteratee?: ValueIteratee<TModel>
   ) {}
 
-  selectOptions(indices: number[]) {
-    const sortedIndices = indices.sort();
-    // Go through indices in reverse order to avoid messing up index order
-    for (let i = sortedIndices.length - 1; i >= 0; i--) {
-      this.selectOption(sortedIndices[i]);
+  selectOptions(ids: string[]) {
+    for (const id of ids) {
+      this.selectOption(id);
     }
   }
 
-  deselectOptions(indices: number[]) {
-    const sortedIndices = indices.sort();
-    // Go through indices in reverse order to avoid messing up index order
-    for (let i = sortedIndices.length - 1; i >= 0; i--) {
-      this.deselectOption(sortedIndices[i]);
+  deselectOptions(ids: string[]) {
+    for (const id of ids) {
+      this.deselectOption(id);
     }
   }
 
-  selectOption(index: number) {
-    const selectedOption = this.availableOptions[index];
+  selectOption(id: string) {
+    const index = this.availableOptions.findIndex((o) => o.id === id);
 
-    if (selectedOption == undefined) {
+    if (index === -1) {
       return;
     }
+
+    const selectedOption = this.availableOptions[index];
 
     // Remove from the list of available options
     this.availableOptions.splice(index, 1);
@@ -59,12 +65,14 @@ class FormListSelection<TModel, TControl extends AbstractControl> {
     this.formArray.insert(sortedInsertIndex, this.mapper(selectedOption));
   }
 
-  deselectOption(index: number) {
-    const deselectedOption = this.selectedOptions[index];
+  deselectOption(id: string) {
+    const index = this.selectedOptions.findIndex((o) => o.id === id);
 
-    if (deselectedOption == undefined) {
+    if (index === -1) {
       return;
     }
+
+    const deselectedOption = this.selectedOptions[index];
 
     // Remove from the list of selected options
     this.selectedOptions.splice(index, 1);
@@ -75,11 +83,23 @@ class FormListSelection<TModel, TControl extends AbstractControl> {
     this.availableOptions.splice(sortedInsertIndex, 0, deselectedOption);
   }
 
-  populateOptions(options: TModel[]) {
+  populateOptions(options: TModel[], selectedIds: string[] = []) {
     this.allOptions = sortBy(options, this.iteratee);
-    this.availableOptions = [...this.allOptions];
+    for (const o of this.allOptions) {
+      if (selectedIds.includes(o.id)) {
+        this.selectedOptions.push(o);
+      } else {
+        this.availableOptions.push(o);
+      }
+    }
   }
 }
+
+type CollectionSelection = SelectionReadOnly & { name: string };
+
+export type ControlsOf<T extends Record<string, any>> = {
+  [K in keyof T]: T[K] extends Record<any, any> ? FormGroup<ControlsOf<T[K]>> : FormControl<T[K]>;
+};
 
 @Component({
   selector: "app-group-add-edit",
@@ -99,8 +119,6 @@ export class GroupAddEditComponent implements OnInit {
   access: "all" | "selected" = "selected";
   collections: CollectionView[] = [];
   members: OrganizationUserUserDetailsResponse[] = [];
-  selectedMembers: OrganizationUserUserDetailsResponse[] = [];
-  availableToAddMembers: OrganizationUserUserDetailsResponse[] = [];
   formPromise: Promise<any>;
   deletePromise: Promise<any>;
 
@@ -108,7 +126,7 @@ export class GroupAddEditComponent implements OnInit {
     name: new FormControl("", Validators.required),
     externalId: new FormControl(""),
     members: this.formBuilder.array<string>([]),
-    collections: this.formBuilder.array([]),
+    collections: this.formBuilder.array<FormGroup<ControlsOf<SelectionReadOnly>>>([]),
   });
 
   memberListSelection = new FormListSelection<
@@ -118,6 +136,20 @@ export class GroupAddEditComponent implements OnInit {
     this.groupForm.controls.members,
     (m) => new FormControl<string>(m.id),
     (m) => m.name || m.email || m.id
+  );
+
+  collectionListSelection = new FormListSelection<
+    CollectionSelection,
+    FormGroup<ControlsOf<SelectionReadOnly>>
+  >(
+    this.groupForm.controls.collections,
+    (m) =>
+      new FormGroup<ControlsOf<SelectionReadOnly>>({
+        id: new FormControl(m.id),
+        hidePasswords: new FormControl(m.hidePasswords),
+        readOnly: new FormControl(m.readOnly),
+      }),
+    (m) => m.name || m.id
   );
 
   constructor(
@@ -137,7 +169,6 @@ export class GroupAddEditComponent implements OnInit {
 
     await Promise.all([collectionsPromise, membersPromise]);
 
-    this.availableToAddMembers = this.members;
     this.memberListSelection.populateOptions(this.members);
 
     if (this.editMode) {
@@ -158,11 +189,16 @@ export class GroupAddEditComponent implements OnInit {
             }
           });
         }
+        this.collectionListSelection.populateOptions(
+          this.collections,
+          group.collections.map((c) => c.id)
+        );
       } catch (e) {
         this.logService.error(e);
       }
     } else {
       this.title = this.i18nService.t("addGroup");
+      this.collectionListSelection.populateOptions(this.collections);
     }
 
     this.loading = false;
@@ -183,22 +219,16 @@ export class GroupAddEditComponent implements OnInit {
 
   addMember(event: Event) {
     const target = event.target as HTMLSelectElement;
-    const addedIndex = parseInt(target.value);
-    this.memberListSelection.selectOption(addedIndex);
-    // const addedMember = this.members.find((m) => m.id == addedId);
-    // this.groupForm.controls.members.push(new FormControl(addedId));
-    // this.selectedMembers.push(addedMember);
-    // remove(this.availableToAddMembers, addedMember);
+    const addedId = target.value;
+    this.memberListSelection.selectOption(addedId);
     target.value = "";
   }
 
-  removeMember(member: OrganizationUserUserDetailsResponse) {
-    this.groupForm.controls.members.removeAt(
-      this.groupForm.value.members.findIndex((m) => m === member.id)
-    );
-
-    remove(this.selectedMembers, member);
-    this.availableToAddMembers.push(member);
+  addCollection(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const addedId = target.value;
+    this.collectionListSelection.selectOption(addedId);
+    target.value = "";
   }
 
   check(c: CollectionView, select?: boolean) {
