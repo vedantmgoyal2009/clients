@@ -3,3 +3,41 @@
 @tailwind utilities;
 
 @import "../../../../libs/components/src/tw-theme.css";
+
+bit-icon {
+  .g1-stroke {
+    stroke: #6d757e;
+  }
+
+  .g1-fill {
+    fill: #6d757e;
+  }
+
+  .g2-stroke {
+    stroke: #ced4dc;
+  }
+
+  .g2-fill {
+    fill: #ced4dc;
+  }
+}
+
+.theme_dark {
+  bit-icon {
+    .g1-stroke {
+      stroke: #bac0ce;
+    }
+
+    .g1-fill {
+      fill: #bac0ce;
+    }
+
+    .g2-stroke {
+      stroke: #6e7689;
+    }
+
+    .g2-fill {
+      fill: #6e7689;
+    }
+  }
+}
