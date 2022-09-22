@@ -68,6 +68,7 @@ describe("Card", () => {
       code: "code",
       expMonth: "expMonth",
       expYear: "expYear",
+      expMonthDisplay: null,
     });
   });
 });
