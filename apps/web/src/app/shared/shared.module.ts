@@ -1,9 +1,9 @@
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { ScrollingModule } from "@angular/cdk/scrolling";
 import { DatePipe, CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ToastrModule } from "ngx-toastr";
 
 import { JslibModule } from "@bitwarden/angular/jslib.module";
@@ -32,7 +32,6 @@ import "./locales";
     CommonModule,
     DragDropModule,
     FormsModule,
-    InfiniteScrollModule,
     JslibModule,
     ReactiveFormsModule,
     RouterModule,
@@ -46,12 +45,12 @@ import "./locales";
     FormFieldModule,
     SubmitButtonModule,
     IconModule,
+    ScrollingModule,
   ],
   exports: [
     CommonModule,
     DragDropModule,
     FormsModule,
-    InfiniteScrollModule,
     JslibModule,
     ReactiveFormsModule,
     RouterModule,
@@ -65,6 +64,7 @@ import "./locales";
     FormFieldModule,
     SubmitButtonModule,
     IconModule,
+    ScrollingModule,
   ],
   providers: [DatePipe],
   bootstrap: [],

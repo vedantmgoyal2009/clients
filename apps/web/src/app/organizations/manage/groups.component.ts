@@ -27,13 +27,7 @@ export class GroupsComponent implements OnInit {
   loading = true;
   organizationId: string;
   groups: GroupResponse[];
-  pagedGroups: GroupResponse[];
   searchText: string;
-
-  protected didScroll = false;
-  protected pageSize = 100;
-
-  private pagedGroupsCount = 0;
 
   constructor(
     private apiService: ApiService,
@@ -62,26 +56,7 @@ export class GroupsComponent implements OnInit {
     const groups = response.data != null && response.data.length > 0 ? response.data : [];
     groups.sort(Utils.getSortFunction(this.i18nService, "name"));
     this.groups = groups;
-    this.resetPaging();
     this.loading = false;
-  }
-
-  loadMore() {
-    if (!this.groups || this.groups.length <= this.pageSize) {
-      return;
-    }
-    const pagedLength = this.pagedGroups.length;
-    let pagedSize = this.pageSize;
-    if (pagedLength === 0 && this.pagedGroupsCount > this.pageSize) {
-      pagedSize = this.pagedGroupsCount;
-    }
-    if (this.groups.length > pagedLength) {
-      this.pagedGroups = this.pagedGroups.concat(
-        this.groups.slice(pagedLength, pagedLength + pagedSize)
-      );
-    }
-    this.pagedGroupsCount = this.pagedGroups.length;
-    this.didScroll = this.pagedGroups.length > this.pageSize;
   }
 
   async edit(group: GroupResponse) {
@@ -152,28 +127,14 @@ export class GroupsComponent implements OnInit {
     );
   }
 
-  async resetPaging() {
-    this.pagedGroups = [];
-    this.loadMore();
-  }
-
   isSearching() {
     return this.searchService.isSearchable(this.searchText);
-  }
-
-  isPaging() {
-    const searching = this.isSearching();
-    if (searching && this.didScroll) {
-      this.resetPaging();
-    }
-    return !searching && this.groups && this.groups.length > this.pageSize;
   }
 
   private removeGroup(group: GroupResponse) {
     const index = this.groups.indexOf(group);
     if (index > -1) {
       this.groups.splice(index, 1);
-      this.resetPaging();
     }
   }
 }

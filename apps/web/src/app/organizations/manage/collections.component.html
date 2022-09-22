@@ -31,66 +31,56 @@
   <span class="sr-only">{{ "loading" | i18n }}</span>
 </ng-container>
 <ng-container
-  *ngIf="
-    !loading &&
-    (isPaging()
-      ? pagedCollections
-      : (collections | search: searchText:'name':'id')) as searchedCollections
-  "
+  *ngIf="!loading && (collections | search: searchText:'name':'id') as searchedCollections"
 >
   <p *ngIf="!searchedCollections.length">{{ "noCollectionsInList" | i18n }}</p>
-  <table
-    class="table table-hover table-list"
-    *ngIf="searchedCollections.length"
-    infiniteScroll
-    [infiniteScrollDistance]="1"
-    [infiniteScrollDisabled]="!isPaging()"
-    (scrolled)="loadMore()"
-  >
-    <tbody>
-      <tr *ngFor="let c of searchedCollections">
-        <td>
-          <a href="#" appStopClick (click)="edit(c)">{{ c.name }}</a>
-        </td>
-        <td class="table-list-options">
-          <div class="dropdown" appListDropdown *ngIf="this.canEdit(c) || this.canDelete(c)">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              appA11yTitle="{{ 'options' | i18n }}"
-            >
-              <i class="bwi bwi-cog bwi-lg" aria-hidden="true"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-              <a
-                class="dropdown-item"
-                href="#"
-                appStopClick
-                *ngIf="this.canEdit(c)"
-                (click)="users(c)"
+  <cdk-virtual-scroll-viewport scrollWindow itemSize="50">
+    <table class="table table-hover table-list" *ngIf="searchedCollections.length">
+      <tbody>
+        <tr *cdkVirtualFor="let c of searchedCollections">
+          <td>
+            <a href="#" appStopClick (click)="edit(c)">{{ c.name }}</a>
+          </td>
+          <td class="table-list-options">
+            <div class="dropdown" appListDropdown *ngIf="this.canEdit(c) || this.canDelete(c)">
+              <button
+                class="btn btn-outline-secondary dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                appA11yTitle="{{ 'options' | i18n }}"
               >
-                <i class="bwi bwi-fw bwi-users" aria-hidden="true"></i>
-                {{ "users" | i18n }}
-              </a>
-              <a
-                class="dropdown-item text-danger"
-                href="#"
-                appStopClick
-                *ngIf="this.canDelete(c)"
-                (click)="delete(c)"
-              >
-                <i class="bwi bwi-fw bwi-trash" aria-hidden="true"></i>
-                {{ "delete" | i18n }}
-              </a>
+                <i class="bwi bwi-cog bwi-lg" aria-hidden="true"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  appStopClick
+                  *ngIf="this.canEdit(c)"
+                  (click)="users(c)"
+                >
+                  <i class="bwi bwi-fw bwi-users" aria-hidden="true"></i>
+                  {{ "users" | i18n }}
+                </a>
+                <a
+                  class="dropdown-item text-danger"
+                  href="#"
+                  appStopClick
+                  *ngIf="this.canDelete(c)"
+                  (click)="delete(c)"
+                >
+                  <i class="bwi bwi-fw bwi-trash" aria-hidden="true"></i>
+                  {{ "delete" | i18n }}
+                </a>
+              </div>
             </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </cdk-virtual-scroll-viewport>
 </ng-container>
 <ng-template #addEdit></ng-template>
 <ng-template #usersTemplate></ng-template>

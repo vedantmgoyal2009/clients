@@ -39,13 +39,7 @@ export class CollectionsComponent implements OnInit {
   organizationId: string;
   collections: CollectionView[];
   assignedCollections: CollectionView[];
-  pagedCollections: CollectionView[];
   searchText: string;
-
-  protected didScroll = false;
-  protected pageSize = 100;
-
-  private pagedCollectionsCount = 0;
 
   constructor(
     private apiService: ApiService,
@@ -94,26 +88,7 @@ export class CollectionsComponent implements OnInit {
       this.collections = this.assignedCollections;
     }
 
-    this.resetPaging();
     this.loading = false;
-  }
-
-  loadMore() {
-    if (!this.collections || this.collections.length <= this.pageSize) {
-      return;
-    }
-    const pagedLength = this.pagedCollections.length;
-    let pagedSize = this.pageSize;
-    if (pagedLength === 0 && this.pagedCollectionsCount > this.pageSize) {
-      pagedSize = this.pagedCollectionsCount;
-    }
-    if (this.collections.length > pagedLength) {
-      this.pagedCollections = this.pagedCollections.concat(
-        this.collections.slice(pagedLength, pagedLength + pagedSize)
-      );
-    }
-    this.pagedCollectionsCount = this.pagedCollections.length;
-    this.didScroll = this.pagedCollections.length > this.pageSize;
   }
 
   async edit(collection: CollectionView) {
@@ -197,21 +172,8 @@ export class CollectionsComponent implements OnInit {
     );
   }
 
-  async resetPaging() {
-    this.pagedCollections = [];
-    this.loadMore();
-  }
-
   isSearching() {
     return this.searchService.isSearchable(this.searchText);
-  }
-
-  isPaging() {
-    const searching = this.isSearching();
-    if (searching && this.didScroll) {
-      this.resetPaging();
-    }
-    return !searching && this.collections && this.collections.length > this.pageSize;
   }
 
   canEdit(collection: CollectionView) {
@@ -246,7 +208,6 @@ export class CollectionsComponent implements OnInit {
     const index = this.collections.indexOf(collection);
     if (index > -1) {
       this.collections.splice(index, 1);
-      this.resetPaging();
     }
   }
 }

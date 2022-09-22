@@ -29,49 +29,49 @@
         ></i>
         <span class="sr-only">{{ "loading" | i18n }}</span>
       </div>
-      <cdk-virtual-scroll-viewport
-        itemSize="46"
-        minBufferPx="600"
-        maxBufferPx="1200"
-        [style]="scrollViewportStyle"
-      >
-        <div class="modal-body" *ngIf="!loading && users && searchedUsers">
-          <div class="d-flex">
-            <div class="mr-3">
-              <label class="sr-only" for="search">{{ "search" | i18n }}</label>
-              <input
-                type="search"
-                class="form-control form-control-sm"
-                id="search"
-                placeholder="{{ 'search' | i18n }}"
-                name="SearchText"
-                [(ngModel)]="searchText"
-              />
-            </div>
-            <div class="btn-group btn-group-sm" role="group">
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                [ngClass]="{ active: !showSelected }"
-                (click)="filterSelected(false)"
-              >
-                {{ "all" | i18n }}
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                [ngClass]="{ active: showSelected }"
-                (click)="filterSelected(true)"
-              >
-                {{ "selected" | i18n }}
-                <span bitBadge badgeType="info" *ngIf="selectedCount">{{ selectedCount }}</span>
-              </button>
-            </div>
+      <div class="modal-body" *ngIf="!loading && users && searchedUsers">
+        <div class="d-flex">
+          <div class="mr-3">
+            <label class="sr-only" for="search">{{ "search" | i18n }}</label>
+            <input
+              type="search"
+              class="form-control form-control-sm"
+              id="search"
+              placeholder="{{ 'search' | i18n }}"
+              name="SearchText"
+              [(ngModel)]="searchText"
+            />
           </div>
-          <ng-container *ngIf="!searchedUsers.length">
-            <hr />
-            {{ "noUsersInList" | i18n }}
-          </ng-container>
+          <div class="btn-group btn-group-sm" role="group">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              [ngClass]="{ active: !showSelected }"
+              (click)="filterSelected(false)"
+            >
+              {{ "all" | i18n }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              [ngClass]="{ active: showSelected }"
+              (click)="filterSelected(true)"
+            >
+              {{ "selected" | i18n }}
+              <span bitBadge badgeType="info" *ngIf="selectedCount">{{ selectedCount }}</span>
+            </button>
+          </div>
+        </div>
+        <ng-container *ngIf="!searchedUsers.length">
+          <hr />
+          {{ "noUsersInList" | i18n }}
+        </ng-container>
+        <cdk-virtual-scroll-viewport
+          itemSize="62.4"
+          minBufferPx="600"
+          maxBufferPx="1200"
+          [style]="scrollViewportStyle"
+        >
           <table class="table table-hover table-list mb-0" [hidden]="!searchedUsers.length">
             <thead>
               <tr>
@@ -89,7 +89,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *cdkVirtualFor="let u of searchedUsers" class="">
+              <tr *cdkVirtualFor="let u of searchedUsers" height="62.4px">
                 <td class="table-list-checkbox" (click)="check(u)">
                   <input
                     type="checkbox"
@@ -164,8 +164,8 @@
               </tr>
             </tbody>
           </table>
-        </div>
-      </cdk-virtual-scroll-viewport>
+        </cdk-virtual-scroll-viewport>
+      </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary btn-submit" [disabled]="form.loading">
           <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>

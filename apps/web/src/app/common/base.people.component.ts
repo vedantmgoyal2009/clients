@@ -83,17 +83,11 @@ export abstract class BasePeopleComponent<
   statusMap = new Map<StatusType, UserType[]>();
   status: StatusType;
   users: UserType[] = [];
-  pagedUsers: UserType[] = [];
   searchText: string;
   actionPromise: Promise<void>;
 
   protected allUsers: UserType[] = [];
   protected activeUsers: UserType[] = [];
-
-  protected didScroll = false;
-  protected pageSize = 100;
-
-  private pagedUsersCount = 0;
 
   constructor(
     protected apiService: ApiService,
@@ -150,25 +144,6 @@ export abstract class BasePeopleComponent<
     }
     // Reset checkbox selecton
     this.selectAll(false);
-    this.resetPaging();
-  }
-
-  loadMore() {
-    if (!this.users || this.users.length <= this.pageSize) {
-      return;
-    }
-    const pagedLength = this.pagedUsers.length;
-    let pagedSize = this.pageSize;
-    if (pagedLength === 0 && this.pagedUsersCount > this.pageSize) {
-      pagedSize = this.pagedUsersCount;
-    }
-    if (this.users.length > pagedLength) {
-      this.pagedUsers = this.pagedUsers.concat(
-        this.users.slice(pagedLength, pagedLength + pagedSize)
-      );
-    }
-    this.pagedUsersCount = this.pagedUsers.length;
-    this.didScroll = this.pagedUsers.length > this.pageSize;
   }
 
   checkUser(user: OrganizationUserUserDetailsResponse, select?: boolean) {
@@ -193,11 +168,6 @@ export abstract class BasePeopleComponent<
     for (let i = 0; i < selectCount; i++) {
       this.checkUser(filteredUsers[i], select);
     }
-  }
-
-  async resetPaging() {
-    this.pagedUsers = [];
-    this.loadMore();
   }
 
   invite() {
@@ -374,14 +344,6 @@ export abstract class BasePeopleComponent<
     return this.searchService.isSearchable(this.searchText);
   }
 
-  isPaging() {
-    const searching = this.isSearching();
-    if (searching && this.didScroll) {
-      this.resetPaging();
-    }
-    return !searching && this.users && this.users.length > this.pageSize;
-  }
-
   protected revokeWarningMessage(): string {
     return this.i18nService.t("revokeUserConfirmation");
   }
@@ -394,7 +356,6 @@ export abstract class BasePeopleComponent<
     let index = this.users.indexOf(user);
     if (index > -1) {
       this.users.splice(index, 1);
-      this.resetPaging();
     }
     if (this.statusMap.has(user.status)) {
       index = this.statusMap.get(user.status).indexOf(user);
