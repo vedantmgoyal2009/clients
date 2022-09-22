@@ -1,4 +1,3 @@
-import { DialogRef } from "@angular/cdk/dialog";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
   AbstractControl,
@@ -18,8 +17,6 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { CollectionData } from "@bitwarden/common/models/data/collectionData";
 import { Collection } from "@bitwarden/common/models/domain/collection";
-import { GroupRequest } from "@bitwarden/common/models/request/groupRequest";
-import { SelectionReadOnlyRequest } from "@bitwarden/common/models/request/selectionReadOnlyRequest";
 import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collectionResponse";
 import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
 import { CollectionView } from "@bitwarden/common/models/view/collectionView";
@@ -85,17 +82,32 @@ class FormListSelection<TModel extends { id: string }, TControl extends Abstract
 
   populateOptions(options: TModel[], selectedIds: string[] = []) {
     this.allOptions = sortBy(options, this.iteratee);
-    for (const o of this.allOptions) {
-      if (selectedIds.includes(o.id)) {
-        this.selectedOptions.push(o);
-      } else {
-        this.availableOptions.push(o);
-      }
-    }
+    this.availableOptions = [...this.allOptions];
+    this.selectOptions(selectedIds);
   }
 }
 
-type CollectionSelection = SelectionReadOnly & { name: string };
+const fromSelectionReadonly = (value: SelectionReadOnly) => {
+  if (value.readOnly) {
+    return value.hidePasswords
+      ? CollectionPermission.VIEW_EXCEPT_PASSWORDS
+      : CollectionPermission.VIEW;
+  } else {
+    return value.hidePasswords
+      ? CollectionPermission.EDIT_EXCEPT_PASSWORDS
+      : CollectionPermission.EDIT;
+  }
+};
+
+enum CollectionPermission {
+  VIEW,
+  VIEW_EXCEPT_PASSWORDS,
+  EDIT,
+  EDIT_EXCEPT_PASSWORDS,
+}
+
+type GroupCollectionView = SelectionReadOnly & { name: string };
+type GroupCollectionSelection = { id: string; permission: CollectionPermission };
 
 export type ControlsOf<T extends Record<string, any>> = {
   [K in keyof T]: T[K] extends Record<any, any> ? FormGroup<ControlsOf<T[K]>> : FormControl<T[K]>;
@@ -114,19 +126,19 @@ export class GroupAddEditComponent implements OnInit {
   loading = true;
   editMode = false;
   title: string;
-  name: string;
-  externalId: string;
   access: "all" | "selected" = "selected";
   collections: CollectionView[] = [];
   members: OrganizationUserUserDetailsResponse[] = [];
   formPromise: Promise<any>;
   deletePromise: Promise<any>;
+  permissions = CollectionPermission;
+  initialPermission = CollectionPermission.VIEW;
 
   groupForm = this.formBuilder.group({
     name: new FormControl("", Validators.required),
     externalId: new FormControl(""),
     members: this.formBuilder.array<string>([]),
-    collections: this.formBuilder.array<FormGroup<ControlsOf<SelectionReadOnly>>>([]),
+    collections: this.formBuilder.array<FormGroup<ControlsOf<GroupCollectionSelection>>>([]),
   });
 
   memberListSelection = new FormListSelection<
@@ -139,15 +151,14 @@ export class GroupAddEditComponent implements OnInit {
   );
 
   collectionListSelection = new FormListSelection<
-    CollectionSelection,
-    FormGroup<ControlsOf<SelectionReadOnly>>
+    GroupCollectionView,
+    FormGroup<ControlsOf<GroupCollectionSelection>>
   >(
     this.groupForm.controls.collections,
     (m) =>
-      new FormGroup<ControlsOf<SelectionReadOnly>>({
+      new FormGroup<ControlsOf<GroupCollectionSelection>>({
         id: new FormControl(m.id),
-        hidePasswords: new FormControl(m.hidePasswords),
-        readOnly: new FormControl(m.readOnly),
+        permission: new FormControl(fromSelectionReadonly(m)),
       }),
     (m) => m.name || m.id
   );
@@ -158,8 +169,7 @@ export class GroupAddEditComponent implements OnInit {
     private collectionService: CollectionService,
     private platformUtilsService: PlatformUtilsService,
     private logService: LogService,
-    private formBuilder: FormBuilder,
-    public dialogRef: DialogRef
+    private formBuilder: FormBuilder
   ) {}
 
   async ngOnInit() {
@@ -169,39 +179,36 @@ export class GroupAddEditComponent implements OnInit {
 
     await Promise.all([collectionsPromise, membersPromise]);
 
-    this.memberListSelection.populateOptions(this.members);
-
     if (this.editMode) {
       this.editMode = true;
       this.title = this.i18nService.t("editGroup");
       try {
         const group = await this.apiService.getGroupDetails(this.organizationId, this.groupId);
+        const users = await this.apiService.getGroupUsers(this.organizationId, this.groupId);
         this.access = group.accessAll ? "all" : "selected";
-        this.name = group.name;
-        this.externalId = group.externalId;
-        if (group.collections != null && this.collections != null) {
-          group.collections.forEach((s) => {
-            const collection = this.collections.filter((c) => c.id === s.id);
-            if (collection != null && collection.length > 0) {
-              (collection[0] as any).checked = true;
-              collection[0].readOnly = s.readOnly;
-              collection[0].hidePasswords = s.hidePasswords;
-            }
-          });
-        }
+        this.groupForm.patchValue({
+          name: group.name,
+          externalId: group.externalId,
+        });
         this.collectionListSelection.populateOptions(
           this.collections,
           group.collections.map((c) => c.id)
         );
+        this.memberListSelection.populateOptions(this.members, users);
       } catch (e) {
         this.logService.error(e);
       }
     } else {
       this.title = this.i18nService.t("addGroup");
       this.collectionListSelection.populateOptions(this.collections);
+      this.memberListSelection.populateOptions(this.members);
     }
 
     this.loading = false;
+  }
+
+  logForm() {
+    console.log(this.groupForm.value);
   }
 
   async loadCollections() {
@@ -243,61 +250,61 @@ export class GroupAddEditComponent implements OnInit {
   }
 
   async submit() {
-    const request = new GroupRequest();
-    request.name = this.name;
-    request.externalId = this.externalId;
-    request.accessAll = this.access === "all";
-    if (!request.accessAll) {
-      request.collections = this.collections
-        .filter((c) => (c as any).checked)
-        .map((c) => new SelectionReadOnlyRequest(c.id, !!c.readOnly, !!c.hidePasswords));
-    }
-
-    try {
-      if (this.editMode) {
-        this.formPromise = this.apiService.putGroup(this.organizationId, this.groupId, request);
-      } else {
-        this.formPromise = this.apiService.postGroup(this.organizationId, request);
-      }
-      await this.formPromise;
-      this.platformUtilsService.showToast(
-        "success",
-        null,
-        this.i18nService.t(this.editMode ? "editedGroupId" : "createdGroupId", this.name)
-      );
-      this.onSavedGroup.emit();
-    } catch (e) {
-      this.logService.error(e);
-    }
+    // const request = new GroupRequest();
+    // request.name = this.name;
+    // request.externalId = this.externalId;
+    // request.accessAll = this.access === "all";
+    // if (!request.accessAll) {
+    //   request.collections = this.collections
+    //     .filter((c) => (c as any).checked)
+    //     .map((c) => new SelectionReadOnlyRequest(c.id, !!c.readOnly, !!c.hidePasswords));
+    // }
+    //
+    // try {
+    //   if (this.editMode) {
+    //     this.formPromise = this.apiService.putGroup(this.organizationId, this.groupId, request);
+    //   } else {
+    //     this.formPromise = this.apiService.postGroup(this.organizationId, request);
+    //   }
+    //   await this.formPromise;
+    //   this.platformUtilsService.showToast(
+    //     "success",
+    //     null,
+    //     this.i18nService.t(this.editMode ? "editedGroupId" : "createdGroupId", this.name)
+    //   );
+    //   this.onSavedGroup.emit();
+    // } catch (e) {
+    //   this.logService.error(e);
+    // }
   }
 
   async delete() {
-    if (!this.editMode) {
-      return;
-    }
-
-    const confirmed = await this.platformUtilsService.showDialog(
-      this.i18nService.t("deleteGroupConfirmation"),
-      this.name,
-      this.i18nService.t("yes"),
-      this.i18nService.t("no"),
-      "warning"
-    );
-    if (!confirmed) {
-      return false;
-    }
-
-    try {
-      this.deletePromise = this.apiService.deleteGroup(this.organizationId, this.groupId);
-      await this.deletePromise;
-      this.platformUtilsService.showToast(
-        "success",
-        null,
-        this.i18nService.t("deletedGroupId", this.name)
-      );
-      this.onDeletedGroup.emit();
-    } catch (e) {
-      this.logService.error(e);
-    }
+    // if (!this.editMode) {
+    //   return;
+    // }
+    //
+    // const confirmed = await this.platformUtilsService.showDialog(
+    //   this.i18nService.t("deleteGroupConfirmation"),
+    //   this.name,
+    //   this.i18nService.t("yes"),
+    //   this.i18nService.t("no"),
+    //   "warning"
+    // );
+    // if (!confirmed) {
+    //   return false;
+    // }
+    //
+    // try {
+    //   this.deletePromise = this.apiService.deleteGroup(this.organizationId, this.groupId);
+    //   await this.deletePromise;
+    //   this.platformUtilsService.showToast(
+    //     "success",
+    //     null,
+    //     this.i18nService.t("deletedGroupId", this.name)
+    //   );
+    //   this.onDeletedGroup.emit();
+    // } catch (e) {
+    //   this.logService.error(e);
+    // }
   }
 }

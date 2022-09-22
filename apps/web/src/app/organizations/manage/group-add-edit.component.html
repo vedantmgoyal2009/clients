@@ -1,18 +1,19 @@
 <bit-dialog dialogSize="large" [contentPadding]="false">
   <span bitDialogTitle>
     {{ title }}
-    <span *ngIf="editMode" class="tw-text-sm tw-normal-case tw-text-muted">{{ name }}</span>
+    <span *ngIf="editMode" class="tw-text-sm tw-normal-case tw-text-muted">{{ groupForm.value.name }}</span>
   </span>
   <div bitDialogContent>
+    <form [formGroup]="groupForm">
     <bit-tab-group *ngIf="!loading" [preserveContent]="true" [selectedIndex]="2">
       <bit-tab label="{{ 'groupInfo' | i18n }}">
         <bit-form-field>
           <bit-label>{{ "name" | i18n }}</bit-label>
-          <input bitInput type="text" [(ngModel)]="name" name="Name" id="name" required />
+          <input bitInput type="text" formControlName="name" required />
         </bit-form-field>
         <bit-form-field>
           <bit-label>{{ "externalId" | i18n }}</bit-label>
-          <input bitInput type="text" [(ngModel)]="externalId" name="ExternalId" id="externalId" />
+          <input bitInput type="text" formControlName="externalId" />
           <bit-hint>{{ "externalIdDesc" | i18n }}</bit-hint>
         </bit-form-field>
       </bit-tab>
@@ -72,11 +73,11 @@
         <div class="tw-flex">
           <bit-form-field>
             <bit-label>{{ "permission" | i18n }}</bit-label>
-            <select bitInput>
-              <option>Can view, except passwords</option>
-              <option selected>Can view</option>
-              <option>Can edit, except passwords</option>
-              <option>Can edit</option>
+            <select bitInput [(ngModel)]="initialPermission" [ngModelOptions]="{standalone: true}">
+              <option [value]="permissions.VIEW_EXCEPT_PASSWORDS">Can view, except passwords</option>
+              <option [value]="permissions.VIEW">Can view</option>
+              <option [value]="permissions.EDIT_EXCEPT_PASSWORDS">Can edit, except passwords</option>
+              <option [value]="permissions.EDIT">Can edit</option>
             </select>
           </bit-form-field>
 
@@ -91,7 +92,7 @@
           </bit-form-field>
         </div>
 
-        <bit-table>
+        <bit-table formArrayName="collections">
           <ng-container header>
             <tr>
               <th bitCell>{{ "collection" | i18n }}</th>
@@ -100,7 +101,8 @@
             </tr>
           </ng-container>
           <ng-container body>
-            <tr bitRow *ngFor="let m of collectionListSelection.selectedOptions; let i = index">
+            <tr bitRow *ngFor="let m of collectionListSelection.selectedOptions; let i = index" [formGroupName]="i">
+
               <td bitCell>
                 <div class="tw-flex tw-items-center tw-text-lg">
                   <i class="bwi bwi-collection tw-mr-2" aria-hidden="true"></i>
@@ -108,11 +110,11 @@
                 </div>
               </td>
               <td bitCell>
-                <select class="tw-border-0 tw-bg-transparent tw-p-2 tw-font-bold">
-                  <option>Can view, except passwords</option>
-                  <option>Can view</option>
-                  <option>Can edit, except passwords</option>
-                  <option>Can edit</option>
+                <select bitInput class="tw-border-0 !tw-bg-transparent tw-font-bold tw-w-72" formControlName="permission">
+                  <option [value]="permissions.VIEW_EXCEPT_PASSWORDS">Can view, except passwords</option>
+                  <option [value]="permissions.VIEW">Can view</option>
+                  <option [value]="permissions.EDIT_EXCEPT_PASSWORDS">Can edit, except passwords</option>
+                  <option [value]="permissions.EDIT">Can edit</option>
                 </select>
               </td>
               <td bitCell>
@@ -129,9 +131,10 @@
         </bit-table>
       </bit-tab>
     </bit-tab-group>
+    </form>
   </div>
   <div bitDialogFooter class="tw-flex tw-flex-row tw-gap-2">
-    <button bitButton buttonType="primary">Save</button>
+    <button bitButton buttonType="primary" (click)="logForm()">Save</button>
     <button bitButton buttonType="secondary" bitDialogClose>Cancel</button>
   </div>
 </bit-dialog>
