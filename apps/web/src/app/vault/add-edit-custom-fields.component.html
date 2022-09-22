@@ -133,8 +133,7 @@
             class="btn btn-link text-danger ml-2"
             (click)="removeField(f)"
             appA11yTitle="{{ 'remove' | i18n }}"
-            *ngIf="!cipher.isDeleted && !viewOnly"
-            [disabled]="!cipher.edit && editMode"
+            *ngIf="!cipher.isDeleted && !viewOnly && !(!cipher.edit && editMode)"
           >
             <i class="bwi bwi-minus-circle bwi-lg" aria-hidden="true"></i>
           </button>
@@ -142,7 +141,7 @@
             type="button"
             class="btn btn-link text-muted cursor-move"
             appA11yTitle="{{ 'dragToSort' | i18n }}"
-            *ngIf="!cipher.isDeleted && !viewOnly"
+            *ngIf="!cipher.isDeleted && !viewOnly && !(!cipher.edit && editMode)"
           >
             <i class="bwi bwi-hamburger bwi-lg" aria-hidden="true"></i>
           </button>
@@ -160,16 +159,10 @@
   >
     <i class="bwi bwi-plus-circle bwi-fw" aria-hidden="true"></i> {{ "newCustomField" | i18n }}
   </a>
-  <div class="row" *ngIf="!cipher.isDeleted && !viewOnly">
+  <div class="row" *ngIf="!cipher.isDeleted && !viewOnly && !(!cipher.edit && editMode)">
     <div class="col-5">
       <label for="addFieldType" class="sr-only">{{ "type" | i18n }}</label>
-      <select
-        id="addFieldType"
-        class="form-control"
-        name="AddFieldType"
-        [(ngModel)]="addFieldType"
-        [disabled]="!cipher.edit && editMode"
-      >
+      <select id="addFieldType" class="form-control" name="AddFieldType" [(ngModel)]="addFieldType">
         <option *ngFor="let o of addFieldTypeOptions" [ngValue]="o.value">{{ o.name }}</option>
         <option
           *ngIf="cipher.linkedFieldOptions != null"

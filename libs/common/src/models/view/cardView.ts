@@ -10,6 +10,7 @@ export class CardView extends ItemView {
   cardholderName: string = null;
   @linkedFieldOption(LinkedId.ExpMonth, "expirationMonth")
   expMonth: string = null;
+  expMonthDisplay: string = null;
   @linkedFieldOption(LinkedId.ExpYear, "expirationYear")
   expYear: string = null;
   @linkedFieldOption(LinkedId.Code, "securityCode")

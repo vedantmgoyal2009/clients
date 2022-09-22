@@ -85,16 +85,11 @@ label.form-check-label,
   }
 
   &:disabled,
-  &[readonly],
-  &.readonly {
+  &[readonly] {
     @include themify($themes) {
       background-color: themed("inputDisabledBackground");
       color: themed("inputDisabledColor");
     }
-  }
-
-  &.readonly {
-    pointer-events: none;
   }
 }
 

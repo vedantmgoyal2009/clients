@@ -186,27 +186,39 @@
           </div>
           <div class="box-content-row" appBoxRow>
             <label for="cardBrand">{{ "brand" | i18n }}</label>
-            <select
-              id="cardBrand"
-              name="Card.Brand"
-              [(ngModel)]="cipher.card.brand"
-              [ngClass]="{ readonly: !cipher.edit && editMode }"
-            >
-              <option *ngFor="let o of cardBrandOptions" [ngValue]="o.value">{{ o.name }}</option>
-            </select>
+            <span *ngIf="!(!cipher.edit && editMode); else readonlyCardBrand">
+              <select id="cardBrand" name="Card.Brand" [(ngModel)]="cipher.card.brand">
+                <option *ngFor="let o of cardBrandOptions" [ngValue]="o.value">{{ o.name }}</option>
+              </select>
+            </span>
+            <ng-template #readonlyCardBrand>
+              <input
+                id="cardBrand"
+                name="Card.Brand"
+                type="text"
+                [readonly]="true"
+                [value]="cipher.card.brand"
+              />
+            </ng-template>
           </div>
           <div class="box-content-row" appBoxRow>
             <label for="cardExpMonth">{{ "expirationMonth" | i18n }}</label>
-            <select
-              id="cardExpMonth"
-              name="Card.ExpMonth"
-              [(ngModel)]="cipher.card.expMonth"
-              [ngClass]="{ readonly: !cipher.edit && editMode }"
-            >
-              <option *ngFor="let o of cardExpMonthOptions" [ngValue]="o.value">
-                {{ o.name }}
-              </option>
-            </select>
+            <span *ngIf="!(!cipher.edit && editMode); else readonlyCardExpMonth">
+              <select id="cardExpMonth" name="Card.ExpMonth" [(ngModel)]="cipher.card.expMonth">
+                <option *ngFor="let o of cardExpMonthOptions" [ngValue]="o.value">
+                  {{ o.name }}
+                </option>
+              </select>
+            </span>
+            <ng-template #readonlyCardExpMonth>
+              <input
+                id="cardExpMonth"
+                name="Card.ExpMonth"
+                type="text"
+                [readonly]="true"
+                [value]="cipher.card.expMonthDisplay"
+              />
+            </ng-template>
           </div>
           <div class="box-content-row" appBoxRow>
             <label for="cardExpYear">{{ "expirationYear" | i18n }}</label>
@@ -254,16 +266,22 @@
         <div *ngIf="cipher.type === cipherType.Identity">
           <div class="box-content-row" appBoxRow>
             <label for="idTitle">{{ "title" | i18n }}</label>
-            <select
-              id="idTitle"
-              name="Identity.Title"
-              [(ngModel)]="cipher.identity.title"
-              [ngClass]="{ readonly: !cipher.edit && editMode }"
-            >
-              <option *ngFor="let o of identityTitleOptions" [ngValue]="o.value">
-                {{ o.name }}
-              </option>
-            </select>
+            <span *ngIf="!(!cipher.edit && editMode); else readonlyIdTitle">
+              <select id="idTitle" name="Identity.Title" [(ngModel)]="cipher.identity.title">
+                <option *ngFor="let o of identityTitleOptions" [ngValue]="o.value">
+                  {{ o.name }}
+                </option>
+              </select>
+            </span>
+            <ng-template #readonlyIdTitle>
+              <input
+                id="idTitle"
+                name="Identity.Title"
+                type="text"
+                [readonly]="true"
+                [value]="cipher.identity.title"
+              />
+            </ng-template>
           </div>
           <div class="box-content-row" appBoxRow>
             <label for="idFirstName">{{ "firstName" | i18n }}</label>
@@ -529,7 +547,7 @@
           appStopClick
           (click)="addUri()"
           class="box-content-row box-content-row-newmulti"
-          [readonly]="!cipher.edit && editMode"
+          *ngIf="!(!cipher.edit && editMode)"
         >
           <i class="bwi bwi-plus-circle bwi-fw bwi-lg" aria-hidden="true"></i> {{ "newUri" | i18n }}
         </button>
@@ -632,6 +650,7 @@
       </div>
     </div>
     <app-vault-add-edit-custom-fields
+      *ngIf="!(!cipher.hasFields && !cipher.edit && editMode)"
       [cipher]="cipher"
       [thisCipherType]="cipher.type"
       [editMode]="editMode"
@@ -681,7 +700,7 @@
         </div>
       </div>
     </div>
-    <div class="box list" *ngIf="editMode && !cloneMode">
+    <div class="box list" *ngIf="editMode && !cloneMode && !(!cipher.edit && editMode)">
       <div class="box-content single-line">
         <button
           type="button"
@@ -690,7 +709,6 @@
           (click)="delete()"
           [appApiAction]="deletePromise"
           #deleteBtn
-          [disabled]="!cipher.edit && editMode"
         >
           <div class="row-main text-danger">
             <div class="icon text-danger" aria-hidden="true">

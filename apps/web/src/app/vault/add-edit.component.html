@@ -384,16 +384,29 @@
             </div>
             <div class="col-6 form-group">
               <label for="cardBrand">{{ "brand" | i18n }}</label>
-              <select
-                id="cardBrand"
-                class="form-control"
-                name="Card.Brand"
-                [(ngModel)]="cipher.card.brand"
-                [disabled]="cipher.isDeleted || viewOnly"
-                [ngClass]="{ readonly: !cipher.edit && editMode }"
-              >
-                <option *ngFor="let o of cardBrandOptions" [ngValue]="o.value">{{ o.name }}</option>
-              </select>
+              <span *ngIf="!(!cipher.edit && editMode); else readonlyCardBrand">
+                <select
+                  id="cardBrand"
+                  class="form-control"
+                  name="Card.Brand"
+                  [(ngModel)]="cipher.card.brand"
+                  [disabled]="cipher.isDeleted || viewOnly"
+                >
+                  <option *ngFor="let o of cardBrandOptions" [ngValue]="o.value">
+                    {{ o.name }}
+                  </option>
+                </select>
+              </span>
+              <ng-template #readonlyCardBrand>
+                <input
+                  id="cardBrand"
+                  class="form-control"
+                  name="Card.Brand"
+                  type="text"
+                  [readonly]="true"
+                  [value]="cipher.card.brand"
+                />
+              </ng-template>
             </div>
           </div>
           <div class="row">
@@ -440,18 +453,29 @@
             </div>
             <div class="col form-group">
               <label for="cardExpMonth">{{ "expirationMonth" | i18n }}</label>
-              <select
-                id="cardExpMonth"
-                class="form-control"
-                name="Card.ExpMonth"
-                [(ngModel)]="cipher.card.expMonth"
-                [disabled]="cipher.isDeleted || viewOnly"
-                [ngClass]="{ readonly: !cipher.edit && editMode }"
-              >
-                <option *ngFor="let o of cardExpMonthOptions" [ngValue]="o.value">
-                  {{ o.name }}
-                </option>
-              </select>
+              <span *ngIf="!(!cipher.edit && editMode); else readonlyCardExpMonth">
+                <select
+                  id="cardExpMonth"
+                  class="form-control"
+                  name="Card.ExpMonth"
+                  [(ngModel)]="cipher.card.expMonth"
+                  [disabled]="cipher.isDeleted || viewOnly"
+                >
+                  <option *ngFor="let o of cardExpMonthOptions" [ngValue]="o.value">
+                    {{ o.name }}
+                  </option>
+                </select>
+              </span>
+              <ng-template #readonlyCardExpMonth>
+                <input
+                  id="cardExpMonth"
+                  class="form-control"
+                  type="text"
+                  name="Card.ExpMonth"
+                  [readonly]="true"
+                  [value]="cipher.card.expMonthDisplay"
+                />
+              </ng-template>
             </div>
             <div class="col form-group">
               <label for="cardExpYear">{{ "expirationYear" | i18n }}</label>
@@ -513,18 +537,29 @@
           <div class="row">
             <div class="col-4 form-group">
               <label for="idTitle">{{ "title" | i18n }}</label>
-              <select
-                id="idTitle"
-                class="form-control"
-                name="Identity.Title"
-                [(ngModel)]="cipher.identity.title"
-                [disabled]="cipher.isDeleted || viewOnly"
-                [ngClass]="{ readonly: !cipher.edit && editMode }"
-              >
-                <option *ngFor="let o of identityTitleOptions" [ngValue]="o.value">
-                  {{ o.name }}
-                </option>
-              </select>
+              <span *ngIf="!(!cipher.edit && editMode); else readonlyIdTitle">
+                <select
+                  id="idTitle"
+                  class="form-control"
+                  name="Identity.Title"
+                  [(ngModel)]="cipher.identity.title"
+                  [disabled]="cipher.isDeleted || viewOnly"
+                >
+                  <option *ngFor="let o of identityTitleOptions" [ngValue]="o.value">
+                    {{ o.name }}
+                  </option>
+                </select>
+              </span>
+              <ng-template #readonlyIdTitle>
+                <input
+                  id="idTitle"
+                  class="form-control"
+                  name="Identity.Title"
+                  type="text"
+                  [readonly]="true"
+                  [value]="cipher.identity.title"
+                />
+              </ng-template>
             </div>
           </div>
           <div class="row">
@@ -768,6 +803,7 @@
           ></textarea>
         </div>
         <app-vault-add-edit-custom-fields
+          *ngIf="!(!cipher.hasFields && !cipher.edit && editMode)"
           [cipher]="cipher"
           [thisCipherType]="cipher.type"
           [viewOnly]="viewOnly"
@@ -786,7 +822,6 @@
                 [(ngModel)]="cipher.organizationId"
                 (change)="organizationChanged()"
                 [disabled]="cipher.isDeleted || viewOnly"
-                [ngClass]="{ readonly: !cipher.edit && editMode }"
               >
                 <option *ngFor="let o of ownershipOptions" [ngValue]="o.value">{{ o.name }}</option>
               </select>
@@ -895,8 +930,8 @@
             (click)="delete()"
             class="btn btn-outline-danger"
             appA11yTitle="{{ (cipher.isDeleted ? 'permanentlyDelete' : 'delete') | i18n }}"
-            *ngIf="editMode && !cloneMode"
-            [disabled]="deleteBtn.loading || (!cipher.edit && editMode)"
+            *ngIf="editMode && !cloneMode && !(!cipher.edit && editMode)"
+            [disabled]="deleteBtn.loading"
             [appApiAction]="deletePromise"
           >
             <i

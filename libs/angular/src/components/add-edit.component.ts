@@ -215,6 +215,12 @@ export class AddEditComponent implements OnInit {
             this.cipher.organizationId = this.organizationId;
           }
         }
+
+        if (!this.cipher.edit && this.cipher.card.expMonth != null) {
+          this.cipher.card.expMonthDisplay = this.cardExpMonthOptions.find(
+            (x) => x.value == this.cipher.card.expMonth
+          )?.name;
+        }
       } else {
         this.cipher = new CipherView();
         this.cipher.organizationId = this.organizationId == null ? null : this.organizationId;
