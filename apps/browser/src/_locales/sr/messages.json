@@ -1997,5 +1997,32 @@
   },
   "environmentEditedReset": {
     "message": "за рисетовање на подразумевана подешавања"
+  },
+  "serverVersion": {
+    "message": "Верзија сервера"
+  },
+  "selfHosted": {
+    "message": "Личан хостинг"
+  },
+  "thirdParty": {
+    "message": "Трећа страна"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Connected to third-party server implementation, $SERVERNAME$. Please verify bugs using the official server, or report them to the third-party server.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "последње виђено у $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }
