@@ -1,13 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
-import { sortBy, sortedIndexBy, ValueIteratee } from "lodash";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 
 import { SelectionReadOnly } from "@bitwarden/cli/src/models/selectionReadOnly";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -21,15 +13,30 @@ import { CollectionDetailsResponse } from "@bitwarden/common/models/response/col
 import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
 import { CollectionView } from "@bitwarden/common/models/view/collectionView";
 
-class FormSelectionList<TModel extends { id: string }, TControlValue> {
-  selectedOptions: TModel[] = [];
-  deselectedOptions: TModel[] = [];
+function findSortedIndex<T>(sortedArray: T[], val: T, compareFn: (a: T, b: T) => number) {
+  let low = 0;
+  let high = sortedArray.length || 0;
+  let mid = -1,
+    c = 0;
+  while (low < high) {
+    mid = Math.floor((low + high) / 2);
+    c = compareFn(sortedArray[mid], val);
+    if (c < 0) {
+      low = mid + 1;
+    } else if (c > 0) {
+      high = mid;
+    } else {
+      return mid;
+    }
+  }
+  return low;
+}
 
-  constructor(
-    private formArray: FormArray,
-    private controlFactory: (model: TModel) => AbstractControl<Partial<TControlValue>>,
-    private iteratee?: ValueIteratee<TModel>
-  ) {}
+class SelectionList<TItem extends { id: string }> {
+  selectedOptions: TItem[] = [];
+  deselectedOptions: TItem[] = [];
+
+  constructor(private compareFn?: (a: TItem, b: TItem) => number) {}
 
   selectItems(ids: string[]) {
     for (const id of ids) {
@@ -43,7 +50,7 @@ class FormSelectionList<TModel extends { id: string }, TControlValue> {
     }
   }
 
-  selectItem(id: string, initialValue?: TControlValue) {
+  selectItem(id: string): TItem {
     const index = this.deselectedOptions.findIndex((o) => o.id === id);
 
     if (index === -1) {
@@ -52,22 +59,17 @@ class FormSelectionList<TModel extends { id: string }, TControlValue> {
 
     const selectedOption = this.deselectedOptions[index];
 
-    // Remove from the list of available options
+    // Remove from the list of deselected options
     this.deselectedOptions.splice(index, 1);
 
-    // Insert into the form array (sorted)
-    const sortedInsertIndex = sortedIndexBy(this.selectedOptions, selectedOption, this.iteratee);
+    // Insert into the sorted selected options list
+    const sortedInsertIndex = findSortedIndex(this.selectedOptions, selectedOption, this.compareFn);
     this.selectedOptions.splice(sortedInsertIndex, 0, selectedOption);
 
-    const formControl = this.controlFactory(selectedOption);
-    if (initialValue) {
-      formControl.setValue(initialValue);
-    }
-
-    this.formArray.insert(sortedInsertIndex, formControl);
+    return selectedOption;
   }
 
-  deselectItem(id: string) {
+  deselectItem(id: string): TItem {
     const index = this.selectedOptions.findIndex((o) => o.id === id);
 
     if (index === -1) {
@@ -78,22 +80,21 @@ class FormSelectionList<TModel extends { id: string }, TControlValue> {
 
     // Remove from the list of selected options
     this.selectedOptions.splice(index, 1);
-    this.formArray.removeAt(index);
 
     // Insert into the form array (sorted)
-    const sortedInsertIndex = sortedIndexBy(
+    const sortedInsertIndex = findSortedIndex(
       this.deselectedOptions,
       deselectedOption,
-      this.iteratee
+      this.compareFn
     );
     this.deselectedOptions.splice(sortedInsertIndex, 0, deselectedOption);
+
+    return deselectedOption;
   }
 
-  populateItems(items: TModel[], selectedValues: [string, TControlValue?][] = []) {
-    this.deselectedOptions = sortBy(items, this.iteratee);
-    for (const selectedValue of selectedValues) {
-      this.selectItem(selectedValue[0], selectedValue[1]);
-    }
+  populateItems(items: TItem[], selectedIds: string[] = []) {
+    this.deselectedOptions = items.sort(this.compareFn);
+    this.selectItems(selectedIds);
   }
 }
 
@@ -116,7 +117,12 @@ enum CollectionPermission {
   EDIT_EXCEPT_PASSWORDS,
 }
 
-type GroupCollectionView = SelectionReadOnly & { name: string };
+type EditGroupCollectionView = {
+  id: string;
+  collection: CollectionView;
+  permission: CollectionPermission;
+};
+type EditGroupMemberView = { member: OrganizationUserUserDetailsResponse; id: string };
 type GroupCollectionSelection = { id: string; permission: CollectionPermission };
 
 export type ControlsOf<T extends Record<string, any>> = {
@@ -138,12 +144,24 @@ export class GroupAddEditComponent implements OnInit {
   editMode = false;
   title: string;
   access: "all" | "selected" = "selected";
-  collections: CollectionView[] = [];
-  members: OrganizationUserUserDetailsResponse[] = [];
   formPromise: Promise<any>;
   deletePromise: Promise<any>;
   permissions = CollectionPermission;
   initialPermission = CollectionPermission.VIEW;
+  collections: EditGroupCollectionView[] = [];
+  members: EditGroupMemberView[] = [];
+
+  collectionList: SelectionList<EditGroupCollectionView> =
+    new SelectionList<EditGroupCollectionView>((a, b) =>
+      this.i18nService.collator.compare(a.collection.name, b.collection.name)
+    );
+
+  memberList: SelectionList<EditGroupMemberView> = new SelectionList<EditGroupMemberView>((a, b) =>
+    this.i18nService.collator.compare(
+      a.member.name + a.member.email + a.member.id,
+      b.member.name + b.member.email + b.member.id
+    )
+  );
 
   groupForm = this.formBuilder.group({
     name: new FormControl("", Validators.required),
@@ -151,22 +169,6 @@ export class GroupAddEditComponent implements OnInit {
     members: this.formBuilder.array<FormControl<string>>([]),
     collections: this.formBuilder.array<FormGroup<ControlsOf<GroupCollectionSelection>>>([]),
   });
-
-  memberListSelection = new FormSelectionList<OrganizationUserUserDetailsResponse, string>(
-    this.groupForm.controls.members as FormArray,
-    (m) => new FormControl<string>(m.id),
-    (m) => m.name + m.email + m.id
-  );
-
-  collectionListSelection = new FormSelectionList<GroupCollectionView, GroupCollectionSelection>(
-    this.groupForm.controls.collections,
-    (m) =>
-      this.formBuilder.nonNullable.group({
-        id: m.id,
-        permission: this.initialPermission,
-      }),
-    (m) => m.name + m.id
-  );
 
   constructor(
     private apiService: ApiService,
@@ -195,21 +197,20 @@ export class GroupAddEditComponent implements OnInit {
           name: group.name,
           externalId: group.externalId,
         });
-        this.collectionListSelection.populateItems(
-          this.collections,
-          group.collections.map((c) => [c.id, { id: c.id, permission: fromSelectionReadonly(c) }])
-        );
-        this.memberListSelection.populateItems(
-          this.members,
-          users.map((u) => [u, u])
-        );
+
+        for (const gc of group.collections) {
+          const col = this.collectionList.selectItem(gc.id);
+          col.permission = fromSelectionReadonly(gc);
+        }
+
+        for (const u of users) {
+          this.memberList.selectItem(u);
+        }
       } catch (e) {
         this.logService.error(e);
       }
     } else {
       this.title = this.i18nService.t("addGroup");
-      this.collectionListSelection.populateItems(this.collections);
-      this.memberListSelection.populateItems(this.members);
     }
 
     this.loading = false;
@@ -224,25 +225,38 @@ export class GroupAddEditComponent implements OnInit {
     const collections = response.data.map(
       (r) => new Collection(new CollectionData(r as CollectionDetailsResponse))
     );
-    this.collections = await this.collectionService.decryptMany(collections);
+    const decryptedCollections = await this.collectionService.decryptMany(collections);
+    this.collections = decryptedCollections
+      .sort((a, b) => this.i18nService.collator.compare(a.name, b.name))
+      .map((c) => ({
+        id: c.id,
+        collection: c,
+        permission: fromSelectionReadonly(c),
+      }));
+    this.collectionList.populateItems(this.collections);
   }
 
   async loadMembers() {
     const response = await this.apiService.getOrganizationUsers(this.organizationId);
-    this.members = response.data;
+    this.members = response.data.map((m) => ({
+      id: m.id,
+      member: m,
+    }));
+    this.memberList.populateItems(this.members);
   }
 
   addMember(event: Event) {
     const target = event.target as HTMLSelectElement;
     const addedId = target.value;
-    this.memberListSelection.selectItem(addedId);
+    this.memberList.selectItem(addedId);
     target.value = "";
   }
 
   addCollection(event: Event) {
     const target = event.target as HTMLSelectElement;
     const addedId = target.value;
-    this.collectionListSelection.selectItem(addedId);
+    const col = this.collectionList.selectItem(addedId);
+    col.permission = this.initialPermission;
     target.value = "";
   }
 
@@ -254,7 +268,15 @@ export class GroupAddEditComponent implements OnInit {
   }
 
   selectAll(select: boolean) {
-    this.collections.forEach((c) => this.check(c, select));
+    // this.collections.forEach((c) => this.check(c, select));
+  }
+
+  findMember(id: string) {
+    return this.members.find((m) => m.member.id === id);
+  }
+
+  findCollection(id: string) {
+    return this.collections.find((c) => c.collection.id === id);
   }
 
   async submit() {

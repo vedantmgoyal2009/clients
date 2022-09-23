@@ -24,9 +24,9 @@
           <bit-label>{{ "selectMembers" | i18n }}</bit-label>
           <select bitInput (change)="addMember($event)">
             <option disabled selected value="">-- Type to filter --</option>
-            <option *ngFor="let m of memberListSelection.deselectedOptions" [value]="m.id">
-              <span *ngIf="m.name">{{ m.name }} ({{ m.email }})</span>
-              <span *ngIf="!m.name">{{ m.email }}</span>
+            <option *ngFor="let m of memberList.deselectedOptions" [value]="m.id">
+              <span *ngIf="m.member.name">{{ m.member.name }} ({{ m.member.email }})</span>
+              <span *ngIf="!m.member.name">{{ m.member.email }}</span>
             </option>
           </select>
         </bit-form-field>
@@ -40,27 +40,27 @@
             </tr>
           </ng-container>
           <ng-container body>
-            <tr bitRow *ngFor="let m of memberListSelection.selectedOptions; let i = index">
+            <tr bitRow *ngFor="let m of memberList.selectedOptions; let i = index">
               <td bitCell>
                 <div class="tw-flex tw-items-center">
-                  <bit-avatar class="tw-mr-3" text="{{ m.name || m.email }}"></bit-avatar>
+                  <bit-avatar class="tw-mr-3" text="{{ m.member.name || m.member.email }}"></bit-avatar>
                   <div class="tw-flex tw-flex-col">
                     <div>
-                      {{ m.name || m.email }}
-                      <span *ngIf="m.status == 0" bitBadge badgeType="secondary">Invited</span>
+                      {{ m.member.name || m.member.email }}
+                      <span *ngIf="m.member.status == 0" bitBadge badgeType="secondary">Invited</span>
                     </div>
-                    <div class="tw-text-muted" *ngIf="m.name">{{ m.email }}</div>
+                    <div class="tw-text-muted" *ngIf="m.member.name">{{ m.member.email }}</div>
                   </div>
                 </div>
               </td>
-              <td bitCell>{{ m.type }}</td>
+              <td bitCell>{{ m.member.type }}</td>
               <td bitCell>
                 <button
                   type="button"
                   bitIconButton="bwi-close"
                   buttonType="muted"
                   appA11yTitle="{{ 'removeMember' | i18n }}"
-                  (click)="memberListSelection.deselectItem(m.id)"
+                  (click)="memberList.deselectItem(m.id)"
                 ></button>
               </td>
             </tr>
@@ -85,14 +85,14 @@
             <bit-label>Select collections</bit-label>
             <select bitInput (change)="addCollection($event)">
               <option disabled selected value="">-- Type to filter --</option>
-              <option *ngFor="let m of collectionListSelection.deselectedOptions" [value]="m.id">
-                {{ m.name }}
+              <option *ngFor="let m of collectionList.deselectedOptions" [value]="m.id">
+                {{ m.collection.name }}
               </option>
             </select>
           </bit-form-field>
         </div>
 
-        <bit-table formArrayName="collections">
+        <bit-table>
           <ng-container header>
             <tr>
               <th bitCell>{{ "collection" | i18n }}</th>
@@ -101,16 +101,16 @@
             </tr>
           </ng-container>
           <ng-container body>
-            <tr bitRow *ngFor="let m of collectionListSelection.selectedOptions; let i = index" [formGroupName]="i">
+            <tr bitRow *ngFor="let m of collectionList.selectedOptions; let i = index">
 
               <td bitCell>
                 <div class="tw-flex tw-items-center tw-text-lg">
                   <i class="bwi bwi-collection tw-mr-2" aria-hidden="true"></i>
-                  <span>{{ m.name }}</span>
+                  <span>{{ m.collection.name }}</span>
                 </div>
               </td>
               <td bitCell>
-                <select bitInput class="tw-border-0 !tw-bg-transparent tw-font-bold tw-w-72" formControlName="permission">
+                <select bitInput class="tw-border-0 !tw-bg-transparent tw-font-bold tw-w-72" [(ngModel)]="m.permission" [ngModelOptions]="{standalone: true}">
                   <option [value]="permissions.VIEW_EXCEPT_PASSWORDS">Can view, except passwords</option>
                   <option [value]="permissions.VIEW">Can view</option>
                   <option [value]="permissions.EDIT_EXCEPT_PASSWORDS">Can edit, except passwords</option>
@@ -123,7 +123,7 @@
                   bitIconButton="bwi-close"
                   buttonType="muted"
                   appA11yTitle="{{ 'removeMember' | i18n }}"
-                  (click)="collectionListSelection.deselectItem(m.id)"
+                  (click)="collectionList.deselectItem(m.id)"
                 ></button>
               </td>
             </tr>
