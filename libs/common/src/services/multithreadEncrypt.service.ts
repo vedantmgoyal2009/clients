@@ -4,7 +4,7 @@ import { Jsonify } from "type-fest";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
 
 import { IDecryptable } from "../interfaces/IDecryptable";
-import { IInitializerMetadata } from "../interfaces/IDecrypted";
+import { IInitializerMetadata } from "../interfaces/IInitializerMetadata";
 import { Utils } from "../misc/utils";
 
 import { getInitializer } from "./cryptography/classInitializers";
