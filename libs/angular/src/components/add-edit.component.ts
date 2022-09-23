@@ -31,6 +31,7 @@ import { IdentityView } from "@bitwarden/common/models/view/identityView";
 import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
 import { LoginView } from "@bitwarden/common/models/view/loginView";
 import { SecureNoteView } from "@bitwarden/common/models/view/secureNoteView";
+import { Organization } from "@bitwarden/common/models/domain/organization";
 
 @Directive()
 export class AddEditComponent implements OnInit {
@@ -74,6 +75,7 @@ export class AddEditComponent implements OnInit {
   allowPersonal = true;
   reprompt = false;
   canUseReprompt = true;
+  organization: Organization;
 
   protected writeableCollections: CollectionView[];
   private previousCipherId: string;

@@ -1,6 +1,7 @@
 import { Directive, EventEmitter, Input, Output } from "@angular/core";
 
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
+import { Organization } from "@bitwarden/common/models/domain/organization";
 import { CipherView } from "@bitwarden/common/models/view/cipherView";
 
 @Directive()
@@ -17,6 +18,8 @@ export class CiphersComponent {
   searchPlaceholder: string = null;
   filter: (cipher: CipherView) => boolean = null;
   deleted = false;
+  organization: Organization;
+  accessEvents = false;
 
   protected searchPending = false;
 
@@ -78,6 +81,10 @@ export class CiphersComponent {
 
   isSearching() {
     return !this.searchPending && this.searchService.isSearchable(this.searchText);
+  }
+
+  events(c: CipherView) {
+    // TODO: This should be removed but is needed since we reuse the same template
   }
 
   protected deletedFilter: (cipher: CipherView) => boolean = (c) => c.isDeleted === this.deleted;

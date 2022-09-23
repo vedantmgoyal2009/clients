@@ -55,7 +55,7 @@
     <input bitInput type="text" formControlName="clientSecret" />
     <ng-container #rotateButton [appApiAction]="rotatePromise">
       <button
-        [disabled]="rotateButton.loading"
+        [disabled]="$any(rotateButton).loading"
         type="button"
         bitSuffix
         bitButton
@@ -65,7 +65,7 @@
         <i
           aria-hidden="true"
           class="bwi bwi-lg bwi-generate"
-          [ngClass]="{ 'bwi-spin': rotateButton.loading }"
+          [ngClass]="{ 'bwi-spin': $any(rotateButton).loading }"
         ></i>
       </button>
     </ng-container>

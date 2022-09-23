@@ -75,7 +75,7 @@
             *ngIf="t.paymentMethodType"
             aria-hidden="true"
             [ngClass]="{
-              'bwi-credit-card': t.paymentMethodType === paymentMethodType.Card,
+              'bwi-credit-card': $any(t.paymentMethodType === paymentMethodType.Card),
               'bwi-bank':
                 t.paymentMethodType === paymentMethodType.BankAccount ||
                 t.paymentMethodType === paymentMethodType.WireTransfer,

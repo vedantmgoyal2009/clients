@@ -23,7 +23,12 @@
           <table class="table table-hover table-list">
             <tr *ngFor="let o of organizations">
               <td width="30">
-                <app-avatar [data]="o.name" size="25" [circle]="true" [fontSize]="14"></app-avatar>
+                <app-avatar
+                  [data]="o.name"
+                  [size]="25"
+                  [circle]="true"
+                  [fontSize]="14"
+                ></app-avatar>
               </td>
               <td>
                 {{ o.name }}

@@ -12,7 +12,6 @@ import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { TokenService } from "@bitwarden/common/abstractions/token.service";
 import { TotpService } from "@bitwarden/common/abstractions/totp.service";
-import { Organization } from "@bitwarden/common/models/domain/organization";
 import { CipherView } from "@bitwarden/common/models/view/cipherView";
 
 import { CiphersComponent as BaseCiphersComponent } from "../../vault/ciphers.component";
@@ -23,9 +22,6 @@ import { CiphersComponent as BaseCiphersComponent } from "../../vault/ciphers.co
 })
 export class CiphersComponent extends BaseCiphersComponent {
   @Output() onEventsClicked = new EventEmitter<CipherView>();
-
-  organization: Organization;
-  accessEvents = false;
 
   protected allCiphers: CipherView[] = [];
 
