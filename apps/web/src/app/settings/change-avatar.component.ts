@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
-import { Subject, takeUntil } from "rxjs";
+import { BehaviorSubject, debounceTime, Subject, takeUntil } from "rxjs";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
@@ -20,7 +20,7 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
     { name: "brightBlue", color: "#16cbfc" },
     { name: "green", color: "#94cc4b" },
     { name: "orange", color: "#ffb520" },
-    { name: "lavendar", color: "#e5beed" },
+    { name: "lavender", color: "#e5beed" },
     { name: "yellow", color: "#fcff41" },
     { name: "indigo", color: "#acbdf7" },
     { name: "teal", color: "#8ecdc5" },
@@ -36,49 +36,36 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
   ) {}
 
   @Output() onSaved = new EventEmitter();
-  customColor$ = new Subject<string>();
+  customColor$ = new BehaviorSubject<string>("#fefefe");
+  customTextColor$ = new BehaviorSubject<string>("#000000");
   customColorSelected = false;
   formPromise: Promise<any>;
   private destroy$ = new Subject<void>();
   currentSelection: string;
 
-  async selectionChanged(color?: string) {
-    this.setSelection(color);
-  }
-
   async ngOnInit() {
-    this.setSelection(this.profile.avatarColor, true);
-    this.setupCustomColorControl();
-  }
+    this.defaultColorPalette.forEach((c) => (c.name = this.i18nService.t(c.name)));
 
-  setupCustomColorControl() {
-    this.customColor$.pipe(takeUntil(this.destroy$)).subscribe((color) => {
-      if (Utils.validateHexColor(color)) {
-        this.setSelection(color);
-      } else {
-        this.setSelection("#ffffff");
-      }
+    const initalValue = Utils.validateHexColor(this.profile.avatarColor)
+      ? this.profile.avatarColor
+      : "#ffffff";
+    this.setSelection(initalValue);
+
+    this.customColor$.pipe(debounceTime(200), takeUntil(this.destroy$)).subscribe((color) => {
+      this.customTextColor$.next(Utils.pickTextColorBasedOnBgColor(color));
       this.customColorSelected = true;
+      this.currentSelection = color;
     });
   }
 
-  private async setSelection(color: string, inital = false) {
-    color = color.toLowerCase();
-    this.defaultColorPalette.filter((x) => x.selected).forEach((c) => (c.selected = false));
-    const selectedColorIndex = this.defaultColorPalette.findIndex((c) => c.color === color);
-    if (selectedColorIndex !== -1) {
-      this.defaultColorPalette[selectedColorIndex].selected = true;
-      this.customColorSelected = false;
-    } else if (inital) {
-      this.customColor$.next(color);
-      this.customColorSelected = true;
-    }
-    this.currentSelection = color;
+  async showCustomPicker() {
+    this.setSelection(this.customColor$.value);
   }
 
   async submit() {
     try {
       const request = new UpdateProfileRequest(this.profile.name, this.profile.masterPasswordHint);
+      request.avatarColor = this.currentSelection;
       this.formPromise = this.apiService.putProfile(request);
       await this.formPromise;
       this.platformUtilsService.showToast("success", null, this.i18nService.t("accountUpdated"));
@@ -87,9 +74,26 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
     }
   }
 
+  async setCustomColor(color: string) {
+    this.customColor$.next(color);
+  }
+
   async ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private async setSelection(color: string) {
+    color = color.toLowerCase();
+    this.defaultColorPalette.filter((x) => x.selected).forEach((c) => (c.selected = false));
+    const selectedColorIndex = this.defaultColorPalette.findIndex((c) => c.color === color);
+    if (selectedColorIndex !== -1) {
+      this.defaultColorPalette[selectedColorIndex].selected = true;
+      this.customColorSelected = false;
+      this.currentSelection = color;
+    } else {
+      this.setCustomColor(color);
+    }
   }
 }
 

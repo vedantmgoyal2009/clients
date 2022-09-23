@@ -21,34 +21,48 @@
           {{ error }}
         </app-callout>
         <p class="tw-text-lg">Pick an avatar color</p>
-        <ng-container *ngFor="let c of defaultColorPalette">
-          <bit-avatar
-            appStopClick
-            (select)="selectionChanged(c.color)"
-            [selected]="c.selected"
-            [title]="c.name"
-            [clickable]="true"
-            text="{{ profile | userName }}"
-            size="xlarge"
-            [color]="c.color"
-            [border]="true"
-            class="tw-inline-block tw-p-5 tw-pr-0"
-          >
-          </bit-avatar>
-        </ng-container>
-        <span class="tw-h-24 tw-w-24 tw-rounded-full"></span>
-        <bit-avatar
-          appStopClick
-          [selected]="customColorSelected"
-          title="Custom color"
-          [clickable]="true"
-          icon="bwi-pencil"
-          size="xlarge"
-          [color]="customColor$ | async"
-          class="tw-inline-block tw-p-5 tw-pr-0"
-        >
-        </bit-avatar>
+        <div class="tw-flex tw-flex-wrap tw-gap-4">
+          <ng-container *ngFor="let c of defaultColorPalette">
+            <bit-avatar
+              appStopClick
+              (select)="setSelection(c.color)"
+              [selected]="c.selected"
+              [title]="c.name"
+              [clickable]="true"
+              text="{{ profile | userName }}"
+              size="xlarge"
+              [color]="c.color"
+              [border]="true"
+              class=""
+            >
+            </bit-avatar>
+          </ng-container>
+          <!-- <bit-avatar appStopClick [selected]="customColorSelected" title="Custom color" [clickable]="true"
+          [style.background-color]="customColor$ "
+          icon="bwi-pencil" size="xlarge" [color]="customColor$ | async" class="tw-inline-block tw-p-5 tw-pr-0">
+        </bit-avatar> -->
+
+          <span>
+            <span
+              [ngClass]="{
+                'tw-outline-[3px] tw-outline-primary-500 hover:tw-outline-[3px] hover:tw-outline-primary-500':
+                  customColorSelected
+              }"
+              (click)="showCustomPicker()"
+              class="tw-outline-solid tw-inline-block tw-flex tw-h-24 tw-w-24 tw-cursor-pointer tw-place-content-center tw-content-center tw-justify-center tw-rounded-full tw-border tw-border-solid tw-border-secondary-500 tw-outline tw-outline-0 tw-outline-offset-1 hover:tw-outline-1 hover:tw-outline-primary-300 focus:tw-outline-2 focus:tw-outline-primary-500"
+              [style.background-color]="customColor$ | async"
+            >
+              <i
+                style="font-size: 2rem"
+                [style.color]="customTextColor$ | async"
+                class="bwi bwi-pencil tw-m-auto"
+              ></i>
+            </span>
+          </span>
+        </div>
+
         <input
+          [hidden]="!customColorSelected"
           type="color"
           [ngModel]="customColor$ | async"
           (ngModelChange)="customColor$.next($event)"

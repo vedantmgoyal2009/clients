@@ -413,22 +413,6 @@ export class Utils {
     return this.global.bitwardenContainerService;
   }
 
-  static determineComplimentaryTextColor(hex: string): string {
-    const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i
-      .exec(hex)
-      .slice(1)
-      .map((n) => parseInt(n, 16));
-    const lumSet: number[] = [];
-    rgb.forEach((color: number) => {
-      let r = rgb[color] / 255.0;
-      r = r <= 0.04045 ? r / 12.92 : (r = ((r + 0.055) / 1.055) ^ 2.4);
-      lumSet.push(r);
-    });
-    let i = 0;
-    const lum = 0.2126 * lumSet[i++] + 0.7152 * lumSet[i++] + 0.0722 * lumSet[i++];
-    return lum > 0.179 ? "#000000" : "#ffffff";
-  }
-
   static validateHexColor(color: string) {
     return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color);
   }

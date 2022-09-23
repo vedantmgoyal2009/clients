@@ -46,9 +46,11 @@ export class ProfileComponent implements OnInit {
     if (fingerprint != null) {
       this.fingerprint = fingerprint.join("-");
     }
+    this.openChangeAvatar();
   }
 
   async openChangeAvatar() {
+    this.profile.avatarColor = "#fefefe";
     await this.modalService.openViewRef(ChangeAvatarComponent, this.avatarModalRef, (modal) => {
       modal.profile = this.profile;
     });
