@@ -1,7 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { SetPasswordComponent as BaseSetPasswordComponent } from "@bitwarden/angular/components/set-password.component";
+import { PasswordStrengthComponent } from "@bitwarden/angular/shared/components/password-strength/password-strength.component";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
@@ -19,6 +20,8 @@ import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.ab
   templateUrl: "set-password.component.html",
 })
 export class SetPasswordComponent extends BaseSetPasswordComponent {
+  @ViewChild(PasswordStrengthComponent) passwordStrengthComponent: PasswordStrengthComponent;
+
   constructor(
     apiService: ApiService,
     i18nService: I18nService,
