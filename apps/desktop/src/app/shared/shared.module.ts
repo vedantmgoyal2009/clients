@@ -8,9 +8,9 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-import { AvatarComponent } from "@bitwarden/angular/components/avatar.component";
 import { JslibModule } from "@bitwarden/angular/jslib.module";
 
+import { AvatarComponent } from "../components/avatar.component";
 import { ServicesModule } from "../services/services.module";
 
 @NgModule({
