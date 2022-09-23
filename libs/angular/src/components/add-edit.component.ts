@@ -215,12 +215,6 @@ export class AddEditComponent implements OnInit {
             this.cipher.organizationId = this.organizationId;
           }
         }
-
-        if (!this.cipher.edit && this.cipher.card.expMonth != null) {
-          this.cipher.card.expMonthDisplay = this.cardExpMonthOptions.find(
-            (x) => x.value == this.cipher.card.expMonth
-          )?.name;
-        }
       } else {
         this.cipher = new CipherView();
         this.cipher.organizationId = this.organizationId == null ? null : this.organizationId;
@@ -351,6 +345,10 @@ export class AddEditComponent implements OnInit {
     if (i > -1) {
       this.cipher.login.uris.splice(i, 1);
     }
+  }
+
+  getCardExpMonthDisplay() {
+    return this.cardExpMonthOptions.find((x) => x.value == this.cipher.card.expMonth)?.name;
   }
 
   trackByFunction(index: number, item: any) {
