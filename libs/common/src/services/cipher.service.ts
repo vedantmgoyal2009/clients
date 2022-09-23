@@ -596,27 +596,29 @@ export class CipherService implements CipherServiceAbstraction {
     await this.stateService.setNeverDomains(domains);
   }
 
-  async saveWithServer(cipher: Cipher): Promise<any> {
+  async createWithServer(cipher: Cipher): Promise<any> {
     let response: CipherResponse;
-    if (cipher.id == null) {
-      if (cipher.collectionIds != null) {
-        const request = new CipherCreateRequest(cipher);
-        response = await this.apiService.postCipherCreate(request);
-      } else {
-        const request = new CipherRequest(cipher);
-        response = await this.apiService.postCipher(request);
-      }
-      cipher.id = response.id;
+    if (cipher.collectionIds != null) {
+      const request = new CipherCreateRequest(cipher);
+      response = await this.apiService.postCipherCreate(request);
     } else {
-      if (cipher.edit) {
-        const request = new CipherRequest(cipher);
-        response = await this.apiService.putCipher(cipher.id, request);
-      } else {
-        //even if user doesn't have permission to edit the cipher,
-        //they should still be able to update the folder and favorite values
-        const request = new CipherPartialRequest(cipher);
-        response = await this.apiService.putPartialCipher(cipher.id, request);
-      }
+      const request = new CipherRequest(cipher);
+      response = await this.apiService.postCipher(request);
+    }
+    cipher.id = response.id;
+
+    const data = new CipherData(response, cipher.collectionIds);
+    await this.upsert(data);
+  }
+
+  async updateWithServer(cipher: Cipher): Promise<any> {
+    let response: CipherResponse;
+    if (cipher.edit) {
+      const request = new CipherRequest(cipher);
+      response = await this.apiService.putCipher(cipher.id, request);
+    } else {
+      const request = new CipherPartialRequest(cipher);
+      response = await this.apiService.putPartialCipher(cipher.id, request);
     }
 
     const data = new CipherData(response, cipher.collectionIds);

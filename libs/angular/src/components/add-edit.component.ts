@@ -570,7 +570,9 @@ export class AddEditComponent implements OnInit {
   }
 
   protected saveCipher(cipher: Cipher) {
-    return this.cipherService.saveWithServer(cipher);
+    return this.cipher.id == null
+      ? this.cipherService.createWithServer(cipher)
+      : this.cipherService.updateWithServer(cipher);
   }
 
   protected deleteCipher() {

@@ -215,7 +215,7 @@ export class ViewComponent extends BaseViewComponent {
 
       try {
         const cipher: Cipher = await this.cipherService.encrypt(this.cipher);
-        await this.cipherService.saveWithServer(cipher);
+        await this.cipherService.updateWithServer(cipher);
         this.platformUtilsService.showToast(
           "success",
           null,
