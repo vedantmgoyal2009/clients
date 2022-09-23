@@ -17,9 +17,9 @@ const SizeClasses: Record<SizeTypes, string[]> = {
 })
 export class AvatarComponent implements OnChanges {
   @Input() border = false;
-  @Input() color: string;
-  @Input() id: number;
-  @Input() text: string;
+  @Input() color?: string;
+  @Input() id?: number;
+  @Input() text?: string;
   @Input() size: SizeTypes = "default";
 
   private svgCharCount = 2;
@@ -42,7 +42,7 @@ export class AvatarComponent implements OnChanges {
 
   private generate() {
     let chars: string = null;
-    const upperCaseText = this.text.toUpperCase();
+    const upperCaseText = this.text?.toUpperCase() ?? "";
 
     chars = this.getFirstLetters(upperCaseText, this.svgCharCount);
 
