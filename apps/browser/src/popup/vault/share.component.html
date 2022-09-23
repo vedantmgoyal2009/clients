@@ -60,7 +60,7 @@
           <input
             id="collection_{{ i }}"
             type="checkbox"
-            [(ngModel)]="c.checked"
+            [(ngModel)]="$any(c).checked"
             name="Collection[{{ i }}].Checked"
           />
         </div>

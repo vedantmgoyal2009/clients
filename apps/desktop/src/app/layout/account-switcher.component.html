@@ -11,7 +11,7 @@
   <ng-container *ngIf="activeAccountEmail != null; else noActiveAccount">
     <app-avatar
       [data]="activeAccountEmail"
-      size="25"
+      [size]="25"
       [circle]="true"
       [fontSize]="14"
       [dynamic]="true"
@@ -59,7 +59,7 @@
       >
         <app-avatar
           [data]="a.value.profile.email"
-          size="25"
+          [size]="25"
           [circle]="true"
           [fontSize]="14"
           [dynamic]="true"

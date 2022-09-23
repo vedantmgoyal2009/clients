@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
-import { OrganizationBadgeModule } from "src/app/vault/organization-badge/organization-badge.module";
 
+import { OrganizationBadgeModule } from "../../vault/organization-badge/organization-badge.module";
 import { VaultSharedModule } from "../../vault/shared/vault-shared.module";
 
 import { CiphersComponent } from "./ciphers.component";
