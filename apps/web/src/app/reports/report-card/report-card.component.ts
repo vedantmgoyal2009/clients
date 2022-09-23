@@ -1,4 +1,5 @@
 import { Component, Input } from "@angular/core";
+
 import { Icon } from "@bitwarden/components";
 
 import { ReportVariant } from "../models/report-variant";

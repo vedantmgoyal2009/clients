@@ -1,5 +1,6 @@
 import { CdkStepper } from "@angular/cdk/stepper";
 import { Component, Input, QueryList } from "@angular/core";
+
 import { VerticalStep } from "./vertical-step.component";
 
 @Component({
