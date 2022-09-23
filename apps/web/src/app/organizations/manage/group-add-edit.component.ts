@@ -21,48 +21,53 @@ import { CollectionDetailsResponse } from "@bitwarden/common/models/response/col
 import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
 import { CollectionView } from "@bitwarden/common/models/view/collectionView";
 
-class FormListSelection<TModel extends { id: string }, TControl extends AbstractControl> {
-  allOptions: TModel[] = [];
+class FormSelectionList<TModel extends { id: string }, TControlValue> {
   selectedOptions: TModel[] = [];
-  availableOptions: TModel[] = [];
+  deselectedOptions: TModel[] = [];
 
   constructor(
-    private formArray: FormArray<TControl>,
-    private mapper: (model: TModel) => TControl,
+    private formArray: FormArray,
+    private controlFactory: (model: TModel) => AbstractControl<Partial<TControlValue>>,
     private iteratee?: ValueIteratee<TModel>
   ) {}
 
-  selectOptions(ids: string[]) {
+  selectItems(ids: string[]) {
     for (const id of ids) {
-      this.selectOption(id);
+      this.selectItem(id);
     }
   }
 
-  deselectOptions(ids: string[]) {
+  deselectItems(ids: string[]) {
     for (const id of ids) {
-      this.deselectOption(id);
+      this.deselectItem(id);
     }
   }
 
-  selectOption(id: string) {
-    const index = this.availableOptions.findIndex((o) => o.id === id);
+  selectItem(id: string, initialValue?: TControlValue) {
+    const index = this.deselectedOptions.findIndex((o) => o.id === id);
 
     if (index === -1) {
       return;
     }
 
-    const selectedOption = this.availableOptions[index];
+    const selectedOption = this.deselectedOptions[index];
 
     // Remove from the list of available options
-    this.availableOptions.splice(index, 1);
+    this.deselectedOptions.splice(index, 1);
 
     // Insert into the form array (sorted)
     const sortedInsertIndex = sortedIndexBy(this.selectedOptions, selectedOption, this.iteratee);
     this.selectedOptions.splice(sortedInsertIndex, 0, selectedOption);
-    this.formArray.insert(sortedInsertIndex, this.mapper(selectedOption));
+
+    const formControl = this.controlFactory(selectedOption);
+    if (initialValue) {
+      formControl.setValue(initialValue);
+    }
+
+    this.formArray.insert(sortedInsertIndex, formControl);
   }
 
-  deselectOption(id: string) {
+  deselectItem(id: string) {
     const index = this.selectedOptions.findIndex((o) => o.id === id);
 
     if (index === -1) {
@@ -76,14 +81,19 @@ class FormListSelection<TModel extends { id: string }, TControl extends Abstract
     this.formArray.removeAt(index);
 
     // Insert into the form array (sorted)
-    const sortedInsertIndex = sortedIndexBy(this.availableOptions, deselectedOption, this.iteratee);
-    this.availableOptions.splice(sortedInsertIndex, 0, deselectedOption);
+    const sortedInsertIndex = sortedIndexBy(
+      this.deselectedOptions,
+      deselectedOption,
+      this.iteratee
+    );
+    this.deselectedOptions.splice(sortedInsertIndex, 0, deselectedOption);
   }
 
-  populateOptions(options: TModel[], selectedIds: string[] = []) {
-    this.allOptions = sortBy(options, this.iteratee);
-    this.availableOptions = [...this.allOptions];
-    this.selectOptions(selectedIds);
+  populateItems(items: TModel[], selectedValues: [string, TControlValue?][] = []) {
+    this.deselectedOptions = sortBy(items, this.iteratee);
+    for (const selectedValue of selectedValues) {
+      this.selectItem(selectedValue[0], selectedValue[1]);
+    }
   }
 }
 
@@ -123,6 +133,7 @@ export class GroupAddEditComponent implements OnInit {
   @Output() onSavedGroup = new EventEmitter();
   @Output() onDeletedGroup = new EventEmitter();
 
+  tabIndex = 0;
   loading = true;
   editMode = false;
   title: string;
@@ -137,30 +148,24 @@ export class GroupAddEditComponent implements OnInit {
   groupForm = this.formBuilder.group({
     name: new FormControl("", Validators.required),
     externalId: new FormControl(""),
-    members: this.formBuilder.array<string>([]),
+    members: this.formBuilder.array<FormControl<string>>([]),
     collections: this.formBuilder.array<FormGroup<ControlsOf<GroupCollectionSelection>>>([]),
   });
 
-  memberListSelection = new FormListSelection<
-    OrganizationUserUserDetailsResponse,
-    FormControl<string>
-  >(
-    this.groupForm.controls.members,
+  memberListSelection = new FormSelectionList<OrganizationUserUserDetailsResponse, string>(
+    this.groupForm.controls.members as FormArray,
     (m) => new FormControl<string>(m.id),
-    (m) => m.name || m.email || m.id
+    (m) => m.name + m.email + m.id
   );
 
-  collectionListSelection = new FormListSelection<
-    GroupCollectionView,
-    FormGroup<ControlsOf<GroupCollectionSelection>>
-  >(
+  collectionListSelection = new FormSelectionList<GroupCollectionView, GroupCollectionSelection>(
     this.groupForm.controls.collections,
     (m) =>
-      new FormGroup<ControlsOf<GroupCollectionSelection>>({
-        id: new FormControl(m.id),
-        permission: new FormControl(fromSelectionReadonly(m)),
+      this.formBuilder.nonNullable.group({
+        id: m.id,
+        permission: this.initialPermission,
       }),
-    (m) => m.name || m.id
+    (m) => m.name + m.id
   );
 
   constructor(
@@ -190,18 +195,21 @@ export class GroupAddEditComponent implements OnInit {
           name: group.name,
           externalId: group.externalId,
         });
-        this.collectionListSelection.populateOptions(
+        this.collectionListSelection.populateItems(
           this.collections,
-          group.collections.map((c) => c.id)
+          group.collections.map((c) => [c.id, { id: c.id, permission: fromSelectionReadonly(c) }])
         );
-        this.memberListSelection.populateOptions(this.members, users);
+        this.memberListSelection.populateItems(
+          this.members,
+          users.map((u) => [u, u])
+        );
       } catch (e) {
         this.logService.error(e);
       }
     } else {
       this.title = this.i18nService.t("addGroup");
-      this.collectionListSelection.populateOptions(this.collections);
-      this.memberListSelection.populateOptions(this.members);
+      this.collectionListSelection.populateItems(this.collections);
+      this.memberListSelection.populateItems(this.members);
     }
 
     this.loading = false;
@@ -227,14 +235,14 @@ export class GroupAddEditComponent implements OnInit {
   addMember(event: Event) {
     const target = event.target as HTMLSelectElement;
     const addedId = target.value;
-    this.memberListSelection.selectOption(addedId);
+    this.memberListSelection.selectItem(addedId);
     target.value = "";
   }
 
   addCollection(event: Event) {
     const target = event.target as HTMLSelectElement;
     const addedId = target.value;
-    this.collectionListSelection.selectOption(addedId);
+    this.collectionListSelection.selectItem(addedId);
     target.value = "";
   }
 

@@ -5,7 +5,7 @@
   </span>
   <div bitDialogContent>
     <form [formGroup]="groupForm">
-    <bit-tab-group *ngIf="!loading" [preserveContent]="true" [selectedIndex]="2">
+    <bit-tab-group *ngIf="!loading" [preserveContent]="true" [selectedIndex]="tabIndex">
       <bit-tab label="{{ 'groupInfo' | i18n }}">
         <bit-form-field>
           <bit-label>{{ "name" | i18n }}</bit-label>
@@ -24,7 +24,7 @@
           <bit-label>{{ "selectMembers" | i18n }}</bit-label>
           <select bitInput (change)="addMember($event)">
             <option disabled selected value="">-- Type to filter --</option>
-            <option *ngFor="let m of memberListSelection.availableOptions" [value]="m.id">
+            <option *ngFor="let m of memberListSelection.deselectedOptions" [value]="m.id">
               <span *ngIf="m.name">{{ m.name }} ({{ m.email }})</span>
               <span *ngIf="!m.name">{{ m.email }}</span>
             </option>
@@ -60,7 +60,7 @@
                   bitIconButton="bwi-close"
                   buttonType="muted"
                   appA11yTitle="{{ 'removeMember' | i18n }}"
-                  (click)="memberListSelection.deselectOption(m.id)"
+                  (click)="memberListSelection.deselectItem(m.id)"
                 ></button>
               </td>
             </tr>
@@ -85,7 +85,7 @@
             <bit-label>Select collections</bit-label>
             <select bitInput (change)="addCollection($event)">
               <option disabled selected value="">-- Type to filter --</option>
-              <option *ngFor="let m of collectionListSelection.availableOptions" [value]="m.id">
+              <option *ngFor="let m of collectionListSelection.deselectedOptions" [value]="m.id">
                 {{ m.name }}
               </option>
             </select>
@@ -123,7 +123,7 @@
                   bitIconButton="bwi-close"
                   buttonType="muted"
                   appA11yTitle="{{ 'removeMember' | i18n }}"
-                  (click)="collectionListSelection.deselectOption(m.id)"
+                  (click)="collectionListSelection.deselectItem(m.id)"
                 ></button>
               </td>
             </tr>
