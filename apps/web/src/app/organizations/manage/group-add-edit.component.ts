@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from "@angular/forms";
 
 import { SelectionReadOnly } from "@bitwarden/cli/src/models/selectionReadOnly";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -32,11 +32,17 @@ function findSortedIndex<T>(sortedArray: T[], val: T, compareFn: (a: T, b: T) =>
   return low;
 }
 
-class SelectionList<TItem extends { id: string }> {
+class SelectionList<TItem extends { id: string }, TControlValue extends { id: string }> {
   selectedOptions: TItem[] = [];
   deselectedOptions: TItem[] = [];
+  formArray: FormArray<AbstractControl<Partial<TControlValue>, TControlValue>>;
 
-  constructor(private compareFn?: (a: TItem, b: TItem) => number) {}
+  constructor(
+    private controlFactory: (item: TItem) => AbstractControl<Partial<TControlValue>, TControlValue>,
+    private compareFn: (a: TItem, b: TItem) => number
+  ) {
+    this.formArray = new FormArray([]);
+  }
 
   selectItems(ids: string[]) {
     for (const id of ids) {
@@ -50,7 +56,7 @@ class SelectionList<TItem extends { id: string }> {
     }
   }
 
-  selectItem(id: string): TItem {
+  selectItem(id: string, initialValue?: Partial<TControlValue>): TItem | undefined {
     const index = this.deselectedOptions.findIndex((o) => o.id === id);
 
     if (index === -1) {
@@ -66,10 +72,19 @@ class SelectionList<TItem extends { id: string }> {
     const sortedInsertIndex = findSortedIndex(this.selectedOptions, selectedOption, this.compareFn);
     this.selectedOptions.splice(sortedInsertIndex, 0, selectedOption);
 
+    const newControl = this.controlFactory(selectedOption);
+
+    newControl.patchValue({
+      id,
+      ...initialValue,
+    });
+
+    this.formArray.insert(sortedInsertIndex, newControl);
+
     return selectedOption;
   }
 
-  deselectItem(id: string): TItem {
+  deselectItem(id: string): TItem | undefined {
     const index = this.selectedOptions.findIndex((o) => o.id === id);
 
     if (index === -1) {
@@ -80,6 +95,7 @@ class SelectionList<TItem extends { id: string }> {
 
     // Remove from the list of selected options
     this.selectedOptions.splice(index, 1);
+    this.formArray.removeAt(index);
 
     // Insert into the form array (sorted)
     const sortedInsertIndex = findSortedIndex(
@@ -92,9 +108,14 @@ class SelectionList<TItem extends { id: string }> {
     return deselectedOption;
   }
 
-  populateItems(items: TItem[], selectedIds: string[] = []) {
+  populateItems(
+    items: TItem[],
+    selectedItems: { id: string; initialValue?: TControlValue }[] = []
+  ) {
     this.deselectedOptions = items.sort(this.compareFn);
-    this.selectItems(selectedIds);
+    for (const selectedItem of selectedItems) {
+      this.selectItem(selectedItem.id, selectedItem.initialValue);
+    }
   }
 }
 
@@ -125,10 +146,6 @@ type EditGroupCollectionView = {
 type EditGroupMemberView = { member: OrganizationUserUserDetailsResponse; id: string };
 type GroupCollectionSelection = { id: string; permission: CollectionPermission };
 
-export type ControlsOf<T extends Record<string, any>> = {
-  [K in keyof T]: T[K] extends Record<any, any> ? FormGroup<ControlsOf<T[K]>> : FormControl<T[K]>;
-};
-
 @Component({
   selector: "app-group-add-edit",
   templateUrl: "group-add-edit.component.html",
@@ -151,23 +168,29 @@ export class GroupAddEditComponent implements OnInit {
   collections: EditGroupCollectionView[] = [];
   members: EditGroupMemberView[] = [];
 
-  collectionList: SelectionList<EditGroupCollectionView> =
-    new SelectionList<EditGroupCollectionView>((a, b) =>
-      this.i18nService.collator.compare(a.collection.name, b.collection.name)
-    );
+  collectionList = new SelectionList<EditGroupCollectionView, GroupCollectionSelection>(
+    (item) =>
+      this.formBuilder.group({
+        id: item.id,
+        permission: item.permission,
+      }),
+    (a, b) => this.i18nService.collator.compare(a.collection.name, b.collection.name)
+  );
 
-  memberList: SelectionList<EditGroupMemberView> = new SelectionList<EditGroupMemberView>((a, b) =>
-    this.i18nService.collator.compare(
-      a.member.name + a.member.email + a.member.id,
-      b.member.name + b.member.email + b.member.id
-    )
+  memberList = new SelectionList<EditGroupMemberView, { id: string }>(
+    (item) => this.formBuilder.group({ id: item.id }),
+    (a, b) =>
+      this.i18nService.collator.compare(
+        a.member.name + a.member.email + a.member.id,
+        b.member.name + b.member.email + b.member.id
+      )
   );
 
   groupForm = this.formBuilder.group({
     name: new FormControl("", Validators.required),
     externalId: new FormControl(""),
-    members: this.formBuilder.array<FormControl<string>>([]),
-    collections: this.formBuilder.array<FormGroup<ControlsOf<GroupCollectionSelection>>>([]),
+    members: this.memberList.formArray,
+    collections: this.collectionList.formArray,
   });
 
   constructor(
@@ -198,19 +221,25 @@ export class GroupAddEditComponent implements OnInit {
           externalId: group.externalId,
         });
 
-        for (const gc of group.collections) {
-          const col = this.collectionList.selectItem(gc.id);
-          col.permission = fromSelectionReadonly(gc);
-        }
+        this.collectionList.populateItems(
+          this.collections,
+          group.collections.map((gc) => ({
+            id: gc.id,
+            initialValue: { id: gc.id, permission: fromSelectionReadonly(gc) },
+          }))
+        );
 
-        for (const u of users) {
-          this.memberList.selectItem(u);
-        }
+        this.memberList.populateItems(
+          this.members,
+          users.map((u) => ({ id: u, initialValue: { id: u } }))
+        );
       } catch (e) {
         this.logService.error(e);
       }
     } else {
       this.title = this.i18nService.t("addGroup");
+      this.memberList.populateItems(this.members);
+      this.collectionList.populateItems(this.collections);
     }
 
     this.loading = false;
@@ -233,7 +262,6 @@ export class GroupAddEditComponent implements OnInit {
         collection: c,
         permission: fromSelectionReadonly(c),
       }));
-    this.collectionList.populateItems(this.collections);
   }
 
   async loadMembers() {
@@ -242,7 +270,6 @@ export class GroupAddEditComponent implements OnInit {
       id: m.id,
       member: m,
     }));
-    this.memberList.populateItems(this.members);
   }
 
   addMember(event: Event) {
@@ -255,8 +282,9 @@ export class GroupAddEditComponent implements OnInit {
   addCollection(event: Event) {
     const target = event.target as HTMLSelectElement;
     const addedId = target.value;
-    const col = this.collectionList.selectItem(addedId);
-    col.permission = this.initialPermission;
+    this.collectionList.selectItem(addedId, {
+      permission: this.initialPermission,
+    });
     target.value = "";
   }
 

@@ -92,7 +92,7 @@
           </bit-form-field>
         </div>
 
-        <bit-table>
+        <bit-table formArrayName="collections">
           <ng-container header>
             <tr>
               <th bitCell>{{ "collection" | i18n }}</th>
@@ -101,7 +101,7 @@
             </tr>
           </ng-container>
           <ng-container body>
-            <tr bitRow *ngFor="let m of collectionList.selectedOptions; let i = index">
+            <tr bitRow *ngFor="let m of collectionList.selectedOptions; let i = index" [formGroupName]="i">
 
               <td bitCell>
                 <div class="tw-flex tw-items-center tw-text-lg">
@@ -110,7 +110,7 @@
                 </div>
               </td>
               <td bitCell>
-                <select bitInput class="tw-border-0 !tw-bg-transparent tw-font-bold tw-w-72" [(ngModel)]="m.permission" [ngModelOptions]="{standalone: true}">
+                <select bitInput class="tw-border-0 !tw-bg-transparent tw-font-bold tw-w-72" formControlName="permission">
                   <option [value]="permissions.VIEW_EXCEPT_PASSWORDS">Can view, except passwords</option>
                   <option [value]="permissions.VIEW">Can view</option>
                   <option [value]="permissions.EDIT_EXCEPT_PASSWORDS">Can edit, except passwords</option>
