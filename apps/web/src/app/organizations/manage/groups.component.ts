@@ -1,3 +1,4 @@
+import { Overlay } from "@angular/cdk/overlay";
 import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { concatMap, Subject, takeUntil } from "rxjs";
@@ -18,6 +19,7 @@ import { OrganizationGroupBulkRequest } from "@bitwarden/common/models/request/O
 import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collectionResponse";
 import { IGroupDetailsResponse } from "@bitwarden/common/models/response/groupResponse";
 import { CollectionView } from "@bitwarden/common/models/view/collectionView";
+import { DialogService } from "@bitwarden/components";
 
 import { EntityUsersComponent } from "./entity-users.component";
 import { GroupAddEditComponent } from "./group-add-edit.component";
@@ -92,11 +94,13 @@ export class GroupsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private i18nService: I18nService,
     private modalService: ModalService,
+    private dialogService: DialogService,
     private platformUtilsService: PlatformUtilsService,
     private searchService: SearchService,
     private logService: LogService,
     private collectionService: CollectionService,
-    private searchPipe: SearchPipe
+    private searchPipe: SearchPipe,
+    private overlay: Overlay
   ) {}
 
   async ngOnInit() {
@@ -180,23 +184,23 @@ export class GroupsComponent implements OnInit, OnDestroy {
     this.didScroll = this.pagedGroups.length > this.pageSize;
   }
 
-  async edit(group: IGroupDetailsRow) {
-    const [modal] = await this.modalService.openViewRef(
-      GroupAddEditComponent,
-      this.addEditModalRef,
-      (comp) => {
-        comp.organizationId = this.organizationId;
-        comp.groupId = group != null ? group.id : null;
-        comp.onSavedGroup.pipe(takeUntil(this.destroy$)).subscribe(() => {
-          modal.close();
-          this.load();
-        });
-        comp.onDeletedGroup.pipe(takeUntil(this.destroy$)).subscribe(() => {
-          modal.close();
-          this.removeGroup(group.id);
-        });
-      }
-    );
+  async edit(group: IGroupDetailsRow, startingTabIndex = 0) {
+    const dialogRef = this.dialogService.open(GroupAddEditComponent, {
+      positionStrategy: this.overlay.position().global().centerHorizontally(),
+    });
+
+    const comp = dialogRef.componentInstance;
+    comp.tabIndex = startingTabIndex;
+    comp.organizationId = this.organizationId;
+    comp.groupId = group != null ? group.id : null;
+    comp.onSavedGroup.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      dialogRef.close();
+      this.load();
+    });
+    comp.onDeletedGroup.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      dialogRef.close();
+      this.removeGroup(group.id);
+    });
   }
 
   add() {

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, Validators } from "@angular/forms";
 
+import { FormSelectionList } from "@bitwarden/angular/utils/FormSelectionList";
 import { SelectionReadOnly } from "@bitwarden/cli/src/models/selectionReadOnly";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
@@ -9,115 +10,12 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { CollectionData } from "@bitwarden/common/models/data/collectionData";
 import { Collection } from "@bitwarden/common/models/domain/collection";
+import { GroupRequest } from "@bitwarden/common/models/request/groupRequest";
+import { SelectionReadOnlyRequest } from "@bitwarden/common/models/request/selectionReadOnlyRequest";
 import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collectionResponse";
+import { GroupDetailsResponse } from "@bitwarden/common/models/response/groupResponse";
 import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
 import { CollectionView } from "@bitwarden/common/models/view/collectionView";
-
-function findSortedIndex<T>(sortedArray: T[], val: T, compareFn: (a: T, b: T) => number) {
-  let low = 0;
-  let high = sortedArray.length || 0;
-  let mid = -1,
-    c = 0;
-  while (low < high) {
-    mid = Math.floor((low + high) / 2);
-    c = compareFn(sortedArray[mid], val);
-    if (c < 0) {
-      low = mid + 1;
-    } else if (c > 0) {
-      high = mid;
-    } else {
-      return mid;
-    }
-  }
-  return low;
-}
-
-class SelectionList<TItem extends { id: string }, TControlValue extends { id: string }> {
-  selectedOptions: TItem[] = [];
-  deselectedOptions: TItem[] = [];
-  formArray: FormArray<AbstractControl<Partial<TControlValue>, TControlValue>>;
-
-  constructor(
-    private controlFactory: (item: TItem) => AbstractControl<Partial<TControlValue>, TControlValue>,
-    private compareFn: (a: TItem, b: TItem) => number
-  ) {
-    this.formArray = new FormArray([]);
-  }
-
-  selectItems(ids: string[]) {
-    for (const id of ids) {
-      this.selectItem(id);
-    }
-  }
-
-  deselectItems(ids: string[]) {
-    for (const id of ids) {
-      this.deselectItem(id);
-    }
-  }
-
-  selectItem(id: string, initialValue?: Partial<TControlValue>): TItem | undefined {
-    const index = this.deselectedOptions.findIndex((o) => o.id === id);
-
-    if (index === -1) {
-      return;
-    }
-
-    const selectedOption = this.deselectedOptions[index];
-
-    // Remove from the list of deselected options
-    this.deselectedOptions.splice(index, 1);
-
-    // Insert into the sorted selected options list
-    const sortedInsertIndex = findSortedIndex(this.selectedOptions, selectedOption, this.compareFn);
-    this.selectedOptions.splice(sortedInsertIndex, 0, selectedOption);
-
-    const newControl = this.controlFactory(selectedOption);
-
-    newControl.patchValue({
-      id,
-      ...initialValue,
-    });
-
-    this.formArray.insert(sortedInsertIndex, newControl);
-
-    return selectedOption;
-  }
-
-  deselectItem(id: string): TItem | undefined {
-    const index = this.selectedOptions.findIndex((o) => o.id === id);
-
-    if (index === -1) {
-      return;
-    }
-
-    const deselectedOption = this.selectedOptions[index];
-
-    // Remove from the list of selected options
-    this.selectedOptions.splice(index, 1);
-    this.formArray.removeAt(index);
-
-    // Insert into the form array (sorted)
-    const sortedInsertIndex = findSortedIndex(
-      this.deselectedOptions,
-      deselectedOption,
-      this.compareFn
-    );
-    this.deselectedOptions.splice(sortedInsertIndex, 0, deselectedOption);
-
-    return deselectedOption;
-  }
-
-  populateItems(
-    items: TItem[],
-    selectedItems: { id: string; initialValue?: TControlValue }[] = []
-  ) {
-    this.deselectedOptions = items.sort(this.compareFn);
-    for (const selectedItem of selectedItems) {
-      this.selectItem(selectedItem.id, selectedItem.initialValue);
-    }
-  }
-}
 
 const fromSelectionReadonly = (value: SelectionReadOnly) => {
   if (value.readOnly) {
@@ -131,19 +29,21 @@ const fromSelectionReadonly = (value: SelectionReadOnly) => {
   }
 };
 
+const isReadonly = (perm: CollectionPermission) =>
+  [CollectionPermission.VIEW, CollectionPermission.VIEW_EXCEPT_PASSWORDS].includes(perm);
+
+const hidePassword = (perm: CollectionPermission) =>
+  [CollectionPermission.VIEW_EXCEPT_PASSWORDS, CollectionPermission.EDIT_EXCEPT_PASSWORDS].includes(
+    perm
+  );
+
 enum CollectionPermission {
-  VIEW,
-  VIEW_EXCEPT_PASSWORDS,
-  EDIT,
-  EDIT_EXCEPT_PASSWORDS,
+  VIEW = "view",
+  VIEW_EXCEPT_PASSWORDS = "viewExceptPass",
+  EDIT = "edit",
+  EDIT_EXCEPT_PASSWORDS = "editExceptPass",
 }
 
-type EditGroupCollectionView = {
-  id: string;
-  collection: CollectionView;
-  permission: CollectionPermission;
-};
-type EditGroupMemberView = { member: OrganizationUserUserDetailsResponse; id: string };
 type GroupCollectionSelection = { id: string; permission: CollectionPermission };
 
 @Component({
@@ -160,33 +60,35 @@ export class GroupAddEditComponent implements OnInit {
   loading = true;
   editMode = false;
   title: string;
-  access: "all" | "selected" = "selected";
   formPromise: Promise<any>;
   deletePromise: Promise<any>;
-  permissions = CollectionPermission;
+  permissions = [
+    { perm: CollectionPermission.VIEW, labelId: "canView" },
+    { perm: CollectionPermission.VIEW_EXCEPT_PASSWORDS, labelId: "canViewExceptPass" },
+    { perm: CollectionPermission.EDIT, labelId: "canEdit" },
+    { perm: CollectionPermission.EDIT_EXCEPT_PASSWORDS, labelId: "canEditExceptPass" },
+  ];
   initialPermission = CollectionPermission.VIEW;
-  collections: EditGroupCollectionView[] = [];
-  members: EditGroupMemberView[] = [];
+  collections: CollectionView[] = [];
+  members: OrganizationUserUserDetailsResponse[] = [];
+  group: GroupDetailsResponse;
 
-  collectionList = new SelectionList<EditGroupCollectionView, GroupCollectionSelection>(
+  collectionList = new FormSelectionList<CollectionView, GroupCollectionSelection>(
     (item) =>
       this.formBuilder.group({
         id: item.id,
-        permission: item.permission,
+        permission: this.initialPermission,
       }),
-    (a, b) => this.i18nService.collator.compare(a.collection.name, b.collection.name)
+    (a, b) => this.i18nService.collator.compare(a.name, b.name)
   );
 
-  memberList = new SelectionList<EditGroupMemberView, { id: string }>(
-    (item) => this.formBuilder.group({ id: item.id }),
-    (a, b) =>
-      this.i18nService.collator.compare(
-        a.member.name + a.member.email + a.member.id,
-        b.member.name + b.member.email + b.member.id
-      )
+  memberList = new FormSelectionList<OrganizationUserUserDetailsResponse, string>(
+    (item) => this.formBuilder.control(item.id),
+    (a, b) => this.i18nService.collator.compare(a.name + a.email + a.id, b.name + b.email + b.id)
   );
 
   groupForm = this.formBuilder.group({
+    accessAll: new FormControl(false),
     name: new FormControl("", Validators.required),
     externalId: new FormControl(""),
     members: this.memberList.formArray,
@@ -213,26 +115,23 @@ export class GroupAddEditComponent implements OnInit {
       this.editMode = true;
       this.title = this.i18nService.t("editGroup");
       try {
-        const group = await this.apiService.getGroupDetails(this.organizationId, this.groupId);
+        this.group = await this.apiService.getGroupDetails(this.organizationId, this.groupId);
         const users = await this.apiService.getGroupUsers(this.organizationId, this.groupId);
-        this.access = group.accessAll ? "all" : "selected";
         this.groupForm.patchValue({
-          name: group.name,
-          externalId: group.externalId,
+          name: this.group.name,
+          externalId: this.group.externalId,
+          accessAll: this.group.accessAll,
         });
 
         this.collectionList.populateItems(
           this.collections,
-          group.collections.map((gc) => ({
+          this.group.collections.map((gc) => ({
             id: gc.id,
-            initialValue: { id: gc.id, permission: fromSelectionReadonly(gc) },
+            permission: fromSelectionReadonly(gc),
           }))
         );
 
-        this.memberList.populateItems(
-          this.members,
-          users.map((u) => ({ id: u, initialValue: { id: u } }))
-        );
+        this.memberList.populateItems(this.members, users);
       } catch (e) {
         this.logService.error(e);
       }
@@ -245,31 +144,17 @@ export class GroupAddEditComponent implements OnInit {
     this.loading = false;
   }
 
-  logForm() {
-    console.log(this.groupForm.value);
-  }
-
   async loadCollections() {
     const response = await this.apiService.getCollections(this.organizationId);
     const collections = response.data.map(
       (r) => new Collection(new CollectionData(r as CollectionDetailsResponse))
     );
-    const decryptedCollections = await this.collectionService.decryptMany(collections);
-    this.collections = decryptedCollections
-      .sort((a, b) => this.i18nService.collator.compare(a.name, b.name))
-      .map((c) => ({
-        id: c.id,
-        collection: c,
-        permission: fromSelectionReadonly(c),
-      }));
+    this.collections = await this.collectionService.decryptMany(collections);
   }
 
   async loadMembers() {
     const response = await this.apiService.getOrganizationUsers(this.organizationId);
-    this.members = response.data.map((m) => ({
-      id: m.id,
-      member: m,
-    }));
+    this.members = response.data;
   }
 
   addMember(event: Event) {
@@ -288,81 +173,65 @@ export class GroupAddEditComponent implements OnInit {
     target.value = "";
   }
 
-  check(c: CollectionView, select?: boolean) {
-    (c as any).checked = select == null ? !(c as any).checked : select;
-    if (!(c as any).checked) {
-      c.readOnly = false;
+  async submit() {
+    const request = new GroupRequest();
+    const formValue = this.groupForm.value;
+    request.name = formValue.name;
+    request.externalId = formValue.externalId;
+    request.accessAll = formValue.accessAll;
+
+    if (!request.accessAll) {
+      request.collections = formValue.collections.map(
+        (c) =>
+          new SelectionReadOnlyRequest(c.id, isReadonly(c.permission), hidePassword(c.permission))
+      );
+    }
+
+    try {
+      if (this.editMode) {
+        this.formPromise = this.apiService.putGroup(this.organizationId, this.groupId, request);
+      } else {
+        this.formPromise = this.apiService.postGroup(this.organizationId, request);
+      }
+      await this.formPromise;
+      this.platformUtilsService.showToast(
+        "success",
+        null,
+        this.i18nService.t(this.editMode ? "editedGroupId" : "createdGroupId", formValue.name)
+      );
+      this.onSavedGroup.emit();
+    } catch (e) {
+      this.logService.error(e);
     }
   }
 
-  selectAll(select: boolean) {
-    // this.collections.forEach((c) => this.check(c, select));
-  }
-
-  findMember(id: string) {
-    return this.members.find((m) => m.member.id === id);
-  }
-
-  findCollection(id: string) {
-    return this.collections.find((c) => c.collection.id === id);
-  }
-
-  async submit() {
-    // const request = new GroupRequest();
-    // request.name = this.name;
-    // request.externalId = this.externalId;
-    // request.accessAll = this.access === "all";
-    // if (!request.accessAll) {
-    //   request.collections = this.collections
-    //     .filter((c) => (c as any).checked)
-    //     .map((c) => new SelectionReadOnlyRequest(c.id, !!c.readOnly, !!c.hidePasswords));
-    // }
-    //
-    // try {
-    //   if (this.editMode) {
-    //     this.formPromise = this.apiService.putGroup(this.organizationId, this.groupId, request);
-    //   } else {
-    //     this.formPromise = this.apiService.postGroup(this.organizationId, request);
-    //   }
-    //   await this.formPromise;
-    //   this.platformUtilsService.showToast(
-    //     "success",
-    //     null,
-    //     this.i18nService.t(this.editMode ? "editedGroupId" : "createdGroupId", this.name)
-    //   );
-    //   this.onSavedGroup.emit();
-    // } catch (e) {
-    //   this.logService.error(e);
-    // }
-  }
-
   async delete() {
-    // if (!this.editMode) {
-    //   return;
-    // }
-    //
-    // const confirmed = await this.platformUtilsService.showDialog(
-    //   this.i18nService.t("deleteGroupConfirmation"),
-    //   this.name,
-    //   this.i18nService.t("yes"),
-    //   this.i18nService.t("no"),
-    //   "warning"
-    // );
-    // if (!confirmed) {
-    //   return false;
-    // }
-    //
-    // try {
-    //   this.deletePromise = this.apiService.deleteGroup(this.organizationId, this.groupId);
-    //   await this.deletePromise;
-    //   this.platformUtilsService.showToast(
-    //     "success",
-    //     null,
-    //     this.i18nService.t("deletedGroupId", this.name)
-    //   );
-    //   this.onDeletedGroup.emit();
-    // } catch (e) {
-    //   this.logService.error(e);
-    // }
+    if (!this.editMode) {
+      return;
+    }
+
+    const confirmed = await this.platformUtilsService.showDialog(
+      this.i18nService.t("deleteGroupConfirmation"),
+      this.group.name,
+      this.i18nService.t("yes"),
+      this.i18nService.t("no"),
+      "warning"
+    );
+    if (!confirmed) {
+      return false;
+    }
+
+    try {
+      this.deletePromise = this.apiService.deleteGroup(this.organizationId, this.groupId);
+      await this.deletePromise;
+      this.platformUtilsService.showToast(
+        "success",
+        null,
+        this.i18nService.t("deletedGroupId", this.group.name)
+      );
+      this.onDeletedGroup.emit();
+    } catch (e) {
+      this.logService.error(e);
+    }
   }
 }
