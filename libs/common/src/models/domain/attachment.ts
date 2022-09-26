@@ -94,8 +94,8 @@ export class Attachment extends Domain {
   }
 
   static fromJSON(obj: Partial<Jsonify<Attachment>>): Attachment {
-    const key = obj.key == null ? null : EncString.fromJSON(obj.key);
-    const fileName = obj.fileName == null ? null : EncString.fromJSON(obj.fileName);
+    const key = EncString.fromJSON(obj.key);
+    const fileName = EncString.fromJSON(obj.fileName);
 
     return Object.assign(new Attachment(), obj, {
       key,

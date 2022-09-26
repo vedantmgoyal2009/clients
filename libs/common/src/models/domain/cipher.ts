@@ -239,8 +239,8 @@ export class Cipher extends Domain {
 
   static fromJSON(obj: Jsonify<Cipher>) {
     const domain = new Cipher();
-    const name = obj.name == null ? null : EncString.fromJSON(obj.name);
-    const notes = obj.notes == null ? null : EncString.fromJSON(obj.notes);
+    const name = EncString.fromJSON(obj.name);
+    const notes = EncString.fromJSON(obj.notes);
     const revisionDate = obj.revisionDate == null ? null : new Date(obj.revisionDate);
     const deletedDate = obj.deletedDate == null ? null : new Date(obj.deletedDate);
     const attachments = obj.attachments?.map((a: any) => Attachment.fromJSON(a));

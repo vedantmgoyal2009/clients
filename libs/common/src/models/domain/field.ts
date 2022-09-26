@@ -63,8 +63,8 @@ export class Field extends Domain {
   }
 
   static fromJSON(obj: Partial<Jsonify<Field>>): Field {
-    const name = obj.name == null ? null : EncString.fromJSON(obj.name);
-    const value = obj.value == null ? null : EncString.fromJSON(obj.value);
+    const name = EncString.fromJSON(obj.name);
+    const value = EncString.fromJSON(obj.value);
 
     return Object.assign(new Field(), obj, {
       name,
