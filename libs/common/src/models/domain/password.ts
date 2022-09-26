@@ -1,3 +1,5 @@
+import { Jsonify } from "type-fest";
+
 import { PasswordHistoryData } from "../data/passwordHistoryData";
 import { PasswordHistoryView } from "../view/passwordHistoryView";
 
@@ -39,5 +41,15 @@ export class Password extends Domain {
       password: null,
     });
     return ph;
+  }
+
+  static fromJSON(obj: Partial<Jsonify<Password>>): Password {
+    const password = obj.password == null ? null : EncString.fromJSON(obj.password);
+    const lastUsedDate = obj.lastUsedDate == null ? null : new Date(obj.lastUsedDate);
+
+    return Object.assign(new Password(), obj, {
+      password,
+      lastUsedDate,
+    });
   }
 }
