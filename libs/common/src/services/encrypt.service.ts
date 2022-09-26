@@ -8,8 +8,8 @@ import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCry
 import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
 import { EncryptionType } from "../enums/encryptionType";
 import { IDecryptable } from "../interfaces/IDecryptable";
-import { IInitializerMetadata } from "../interfaces/IDecrypted";
 import { IEncrypted } from "../interfaces/IEncrypted";
+import { IInitializerMetadata } from "../interfaces/IInitializerMetadata";
 import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
 
 export class EncryptService implements AbstractEncryptService {

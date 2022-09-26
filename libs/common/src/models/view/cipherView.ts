@@ -1,6 +1,6 @@
 import { Jsonify } from "type-fest";
 
-import { IInitializerMetadata } from "@bitwarden/common/interfaces/IDecrypted";
+import { IInitializerMetadata } from "@bitwarden/common/interfaces/IInitializerMetadata";
 
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
