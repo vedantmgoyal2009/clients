@@ -53,6 +53,7 @@ export class AccountSwitcherComponent implements OnInit {
   isOpen = false;
   accounts: { [userId: string]: SwitcherAccount } = {};
   activeAccountEmail: string;
+  activeAccountId: string;
   serverUrl: string;
   authStatus = AuthenticationStatus;
   overlayPostition: ConnectedPosition[] = [
@@ -95,6 +96,7 @@ export class AccountSwitcherComponent implements OnInit {
 
       this.accounts = await this.createSwitcherAccounts(accounts);
       this.activeAccountEmail = await this.stateService.getEmail();
+      this.activeAccountId = await this.stateService.getUserId();
     });
   }
 

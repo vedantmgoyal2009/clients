@@ -10,7 +10,8 @@
 >
   <ng-container *ngIf="activeAccountEmail != null; else noActiveAccount">
     <app-avatar
-      [data]="activeAccountEmail"
+      [text]="activeAccountEmail"
+      [id]="activeAccountId"
       size="25"
       [circle]="true"
       [fontSize]="14"
@@ -58,7 +59,8 @@
         attr.aria-label="{{ 'switchAccount' | i18n }}"
       >
         <app-avatar
-          [data]="a.value.profile.email"
+          [text]="a.value.profile.email"
+          [id]="a.value.profile.userId"
           size="25"
           [circle]="true"
           [fontSize]="14"
