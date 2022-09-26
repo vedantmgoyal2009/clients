@@ -1,3 +1,5 @@
+import { Jsonify } from "type-fest";
+
 import { SecureNoteType } from "../../enums/secureNoteType";
 import { SecureNoteData } from "../data/secureNoteData";
 import { SecureNoteView } from "../view/secureNoteView";
@@ -25,5 +27,9 @@ export class SecureNote extends Domain {
     const n = new SecureNoteData();
     n.type = this.type;
     return n;
+  }
+
+  static fromJSON(obj: Jsonify<SecureNote>): SecureNote {
+    return Object.assign(new SecureNote(), obj);
   }
 }
