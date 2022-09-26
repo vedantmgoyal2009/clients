@@ -1,4 +1,4 @@
-import { Account } from "../models/domain/account";
+import { Account } from "../models/domain";
 
 export class AccountFactory<T extends Account = Account> {
   private accountConstructor: new (init: Partial<T>) => T;

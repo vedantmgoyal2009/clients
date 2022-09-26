@@ -8,9 +8,11 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { KdfType } from "@bitwarden/common/enums/kdfType";
-import { EncString } from "@bitwarden/common/models/domain/encString";
-import { MasterPasswordPolicyOptions } from "@bitwarden/common/models/domain/masterPasswordPolicyOptions";
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
+import {
+  EncString,
+  MasterPasswordPolicyOptions,
+  SymmetricCryptoKey,
+} from "@bitwarden/common/models/domain";
 
 import { PasswordColorText } from "../shared/components/password-strength/password-strength.component";
 

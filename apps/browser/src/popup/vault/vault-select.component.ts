@@ -19,7 +19,7 @@ import { VaultFilter } from "@bitwarden/angular/vault/vault-filter/models/vault-
 import { BroadcasterService } from "@bitwarden/common/abstractions/broadcaster.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { Organization } from "@bitwarden/common/models/domain";
 
 import { VaultFilterService } from "../../services/vaultFilter.service";
 

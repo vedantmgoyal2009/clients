@@ -11,10 +11,10 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
 import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { CollectionData } from "@bitwarden/common/models/data/collectionData";
-import { Collection } from "@bitwarden/common/models/domain/collection";
+import { CollectionData } from "@bitwarden/common/models/data";
+import { Collection } from "@bitwarden/common/models/domain";
 import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collectionResponse";
-import { CollectionView } from "@bitwarden/common/models/view/collectionView";
+import { CollectionView } from "@bitwarden/common/models/view";
 
 @Injectable()
 export class VaultFilterService extends BaseVaultFilterService {

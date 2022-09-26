@@ -12,7 +12,7 @@ import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.ab
 import { PlanSponsorshipType } from "@bitwarden/common/enums/planSponsorshipType";
 import { PlanType } from "@bitwarden/common/enums/planType";
 import { ProductType } from "@bitwarden/common/enums/productType";
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { Organization } from "@bitwarden/common/models/domain";
 import { OrganizationSponsorshipRedeemRequest } from "@bitwarden/common/models/request/organization/organizationSponsorshipRedeemRequest";
 
 import { OrganizationPlansComponent } from "../../settings/organization-plans.component";

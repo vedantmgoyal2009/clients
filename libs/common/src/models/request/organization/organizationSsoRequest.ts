@@ -1,4 +1,4 @@
-import { SsoConfigApi } from "../../api/ssoConfigApi";
+import { SsoConfigApi } from "../../api";
 
 export class OrganizationSsoRequest {
   enabled = false;

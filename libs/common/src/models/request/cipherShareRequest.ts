@@ -1,4 +1,4 @@
-import { Cipher } from "../domain/cipher";
+import { Cipher } from "../domain";
 
 import { CipherRequest } from "./cipherRequest";
 

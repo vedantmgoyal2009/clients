@@ -20,8 +20,8 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { TokenService } from "@bitwarden/common/abstractions/token.service";
 import { TotpService } from "@bitwarden/common/abstractions/totp.service";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
-import { Cipher } from "@bitwarden/common/models/domain/cipher";
-import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
+import { Cipher } from "@bitwarden/common/models/domain";
+import { LoginUriView } from "@bitwarden/common/models/view";
 
 import { BrowserApi } from "../../browser/browserApi";
 import { AutofillService } from "../../services/abstractions/autofill.service";

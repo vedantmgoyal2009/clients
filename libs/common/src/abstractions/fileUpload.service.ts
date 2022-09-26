@@ -1,5 +1,4 @@
-import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
-import { EncString } from "../models/domain/encString";
+import { EncArrayBuffer, EncString } from "../models/domain";
 import { AttachmentUploadDataResponse } from "../models/response/attachmentUploadDataResponse";
 import { SendFileUploadDataResponse } from "../models/response/sendFileUploadDataResponse";
 

@@ -8,17 +8,19 @@ import { StateService } from "../abstractions/state.service";
 import { SEND_KDF_ITERATIONS } from "../enums/kdfType";
 import { SendType } from "../enums/sendType";
 import { Utils } from "../misc/utils";
-import { SendData } from "../models/data/sendData";
-import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
-import { EncString } from "../models/domain/encString";
-import { Send } from "../models/domain/send";
-import { SendFile } from "../models/domain/sendFile";
-import { SendText } from "../models/domain/sendText";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
+import { SendData } from "../models/data";
+import {
+  EncArrayBuffer,
+  EncString,
+  Send,
+  SendFile,
+  SendText,
+  SymmetricCryptoKey,
+} from "../models/domain";
 import { SendRequest } from "../models/request/sendRequest";
 import { ErrorResponse } from "../models/response/errorResponse";
 import { SendResponse } from "../models/response/sendResponse";
-import { SendView } from "../models/view/sendView";
+import { SendView } from "../models/view";
 
 export class SendService implements SendServiceAbstraction {
   constructor(

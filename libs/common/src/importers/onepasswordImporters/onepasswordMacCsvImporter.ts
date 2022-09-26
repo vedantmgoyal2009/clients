@@ -1,7 +1,5 @@
 import { CipherType } from "../../enums/cipherType";
-import { CardView } from "../../models/view/cardView";
-import { CipherView } from "../../models/view/cipherView";
-import { IdentityView } from "../../models/view/identityView";
+import { CardView, CipherView, IdentityView } from "../../models/view";
 import { Importer } from "../importer";
 
 import { IgnoredProperties, OnePasswordCsvImporter } from "./onepasswordCsvImporter";

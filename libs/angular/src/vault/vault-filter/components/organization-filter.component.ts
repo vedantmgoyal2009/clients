@@ -1,7 +1,6 @@
 import { Directive, EventEmitter, Input, Output } from "@angular/core";
 
-import { Organization } from "@bitwarden/common/models/domain/organization";
-import { ITreeNodeObject } from "@bitwarden/common/models/domain/treeNode";
+import { Organization, ITreeNodeObject } from "@bitwarden/common/models/domain";
 
 import { DisplayMode } from "../models/display-mode";
 import { TopLevelTreeNode } from "../models/top-level-tree-node.model";

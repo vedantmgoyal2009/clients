@@ -9,8 +9,7 @@ import { ProviderService } from "@bitwarden/common/abstractions/provider.service
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { TokenService } from "@bitwarden/common/abstractions/token.service";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { Organization } from "@bitwarden/common/models/domain/organization";
-import { Provider } from "@bitwarden/common/models/domain/provider";
+import { Organization, Provider } from "@bitwarden/common/models/domain";
 
 import { canAccessOrgAdmin } from "../organizations/navigation-permissions";
 

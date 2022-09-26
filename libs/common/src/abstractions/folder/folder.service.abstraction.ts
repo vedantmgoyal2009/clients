@@ -1,9 +1,8 @@
 import { Observable } from "rxjs";
 
-import { FolderData } from "../../models/data/folderData";
-import { Folder } from "../../models/domain/folder";
-import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
-import { FolderView } from "../../models/view/folderView";
+import { FolderData } from "../../models/data";
+import { Folder, SymmetricCryptoKey } from "../../models/domain";
+import { FolderView } from "../../models/view";
 
 export abstract class FolderService {
   folders$: Observable<Folder[]>;

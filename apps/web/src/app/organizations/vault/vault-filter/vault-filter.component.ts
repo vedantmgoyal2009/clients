@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { Organization } from "@bitwarden/common/models/domain";
 
 import { VaultFilterComponent as BaseVaultFilterComponent } from "../../../vault/vault-filter/vault-filter.component";
 

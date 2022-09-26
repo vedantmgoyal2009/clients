@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { Organization } from "@bitwarden/common/models/domain";
 
 @Component({
   selector: "app-org-tools",

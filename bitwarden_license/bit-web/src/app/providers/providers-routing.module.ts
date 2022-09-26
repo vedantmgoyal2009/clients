@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 import { AuthGuard } from "@bitwarden/angular/guards/auth.guard";
-import { Provider } from "@bitwarden/common/models/domain/provider";
+import { Provider } from "@bitwarden/common/models/domain";
 
 import { FrontendLayoutComponent } from "src/app/layouts/frontend-layout.component";
 import { ProvidersComponent } from "src/app/providers/providers.component";

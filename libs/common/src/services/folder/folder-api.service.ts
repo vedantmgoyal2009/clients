@@ -1,8 +1,8 @@
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { FolderApiServiceAbstraction } from "@bitwarden/common/abstractions/folder/folder-api.service.abstraction";
 import { InternalFolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
-import { FolderData } from "@bitwarden/common/models/data/folderData";
-import { Folder } from "@bitwarden/common/models/domain/folder";
+import { FolderData } from "@bitwarden/common/models/data";
+import { Folder } from "@bitwarden/common/models/domain";
 import { FolderRequest } from "@bitwarden/common/models/request/folderRequest";
 import { FolderResponse } from "@bitwarden/common/models/response/folderResponse";
 

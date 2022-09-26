@@ -7,9 +7,8 @@ import * as JSZip from "jszip";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { NodeUtils } from "@bitwarden/common/misc/nodeUtils";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { Organization } from "@bitwarden/common/models/domain/organization";
-import { CollectionView } from "@bitwarden/common/models/view/collectionView";
-import { FolderView } from "@bitwarden/common/models/view/folderView";
+import { Organization } from "@bitwarden/common/models/domain";
+import { CollectionView, FolderView } from "@bitwarden/common/models/view";
 import { Response } from "@bitwarden/node/cli/models/response";
 import { MessageResponse } from "@bitwarden/node/cli/models/response/messageResponse";
 

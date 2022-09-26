@@ -4,10 +4,9 @@ import { I18nService } from "../abstractions/i18n.service";
 import { StateService } from "../abstractions/state.service";
 import { ServiceUtils } from "../misc/serviceUtils";
 import { Utils } from "../misc/utils";
-import { CollectionData } from "../models/data/collectionData";
-import { Collection } from "../models/domain/collection";
-import { TreeNode } from "../models/domain/treeNode";
-import { CollectionView } from "../models/view/collectionView";
+import { CollectionData } from "../models/data";
+import { Collection, TreeNode } from "../models/domain";
+import { CollectionView } from "../models/view";
 
 const NestingDelimiter = "/";
 

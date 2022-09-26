@@ -1,14 +1,12 @@
 import { CryptoFunctionService } from "@bitwarden/common/abstractions/cryptoFunction.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { EncString } from "@bitwarden/common/models/domain/encString";
-import { EncryptedObject } from "@bitwarden/common/models/domain/encryptedObject";
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
+import { EncString, EncryptedObject, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
 
 import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
 import { EncryptionType } from "../enums/encryptionType";
 import { IEncrypted } from "../interfaces/IEncrypted";
-import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
+import { EncArrayBuffer } from "../models/domain";
 
 export class EncryptService implements AbstractEncryptService {
   constructor(

@@ -1,5 +1,4 @@
-import { CipherView } from "../models/view/cipherView";
-import { SendView } from "../models/view/sendView";
+import { CipherView, SendView } from "../models/view";
 
 export abstract class SearchService {
   indexedEntityId?: string = null;

@@ -3,8 +3,7 @@ import { Arg, Substitute, SubstituteOf } from "@fluffy-spoon/substitute";
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
 import { StateVersion } from "@bitwarden/common/enums/stateVersion";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
-import { Account } from "@bitwarden/common/models/domain/account";
-import { GlobalState } from "@bitwarden/common/models/domain/globalState";
+import { Account, GlobalState } from "@bitwarden/common/models/domain";
 import { StateMigrationService } from "@bitwarden/common/services/stateMigration.service";
 
 const userId = "USER_ID";

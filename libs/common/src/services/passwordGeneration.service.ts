@@ -6,10 +6,12 @@ import { PolicyService } from "../abstractions/policy/policy.service.abstraction
 import { StateService } from "../abstractions/state.service";
 import { PolicyType } from "../enums/policyType";
 import { EEFLongWordList } from "../misc/wordlist";
-import { EncString } from "../models/domain/encString";
-import { GeneratedPasswordHistory } from "../models/domain/generatedPasswordHistory";
-import { PasswordGeneratorPolicyOptions } from "../models/domain/passwordGeneratorPolicyOptions";
-import { Policy } from "../models/domain/policy";
+import {
+  EncString,
+  GeneratedPasswordHistory,
+  PasswordGeneratorPolicyOptions,
+  Policy,
+} from "../models/domain";
 
 const DefaultOptions = {
   length: 14,

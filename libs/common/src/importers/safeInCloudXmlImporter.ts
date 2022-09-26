@@ -1,11 +1,8 @@
 import { CipherType } from "../enums/cipherType";
 import { FieldType } from "../enums/fieldType";
 import { SecureNoteType } from "../enums/secureNoteType";
-import { ImportResult } from "../models/domain/importResult";
-import { CipherView } from "../models/view/cipherView";
-import { FieldView } from "../models/view/fieldView";
-import { FolderView } from "../models/view/folderView";
-import { SecureNoteView } from "../models/view/secureNoteView";
+import { ImportResult } from "../models/domain";
+import { CipherView, FieldView, FolderView, SecureNoteView } from "../models/view";
 
 import { BaseImporter } from "./baseImporter";
 import { Importer } from "./importer";

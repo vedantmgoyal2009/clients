@@ -1,4 +1,4 @@
-import { PasswordHistoryView } from "@bitwarden/common/models/view/passwordHistoryView";
+import { PasswordHistoryView } from "@bitwarden/common/models/view";
 
 describe("PasswordHistoryView", () => {
   it("fromJSON initializes nested objects", () => {

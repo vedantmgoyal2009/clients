@@ -5,8 +5,8 @@ import { MessagingService } from "@bitwarden/common/abstractions/messaging.servi
 import { PasswordRepromptService } from "@bitwarden/common/abstractions/passwordReprompt.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { CipherRepromptType } from "@bitwarden/common/enums/cipherRepromptType";
-import { Organization } from "@bitwarden/common/models/domain/organization";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
+import { Organization } from "@bitwarden/common/models/domain";
+import { CipherView } from "@bitwarden/common/models/view";
 
 import { AddEditComponent as OrgAddEditComponent } from "../../organizations/vault/add-edit.component";
 import { AddEditComponent } from "../../vault/add-edit.component";

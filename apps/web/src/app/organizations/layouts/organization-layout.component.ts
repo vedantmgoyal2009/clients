@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 
 import { BroadcasterService } from "@bitwarden/common/abstractions/broadcaster.service";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { Organization } from "@bitwarden/common/models/domain";
 
 import {
   canAccessManageTab,

@@ -1,10 +1,8 @@
 import { Directive, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { firstValueFrom, Observable } from "rxjs";
 
-import { Organization } from "@bitwarden/common/models/domain/organization";
-import { ITreeNodeObject } from "@bitwarden/common/models/domain/treeNode";
-import { CollectionView } from "@bitwarden/common/models/view/collectionView";
-import { FolderView } from "@bitwarden/common/models/view/folderView";
+import { Organization, ITreeNodeObject } from "@bitwarden/common/models/domain";
+import { CollectionView, FolderView } from "@bitwarden/common/models/view";
 
 import { DynamicTreeNode } from "../models/dynamic-tree-node.model";
 import { VaultFilter } from "../models/vault-filter.model";

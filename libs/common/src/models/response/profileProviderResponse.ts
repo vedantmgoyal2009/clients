@@ -1,6 +1,6 @@
 import { ProviderUserStatusType } from "../../enums/providerUserStatusType";
 import { ProviderUserType } from "../../enums/providerUserType";
-import { PermissionsApi } from "../api/permissionsApi";
+import { PermissionsApi } from "../api";
 
 import { BaseResponse } from "./baseResponse";
 

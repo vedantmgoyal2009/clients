@@ -1,4 +1,4 @@
-import { Folder } from "@bitwarden/common/models/domain/folder";
+import { Folder } from "@bitwarden/common/models/domain";
 import { FolderResponse } from "@bitwarden/common/models/response/folderResponse";
 
 export class FolderApiServiceAbstraction {

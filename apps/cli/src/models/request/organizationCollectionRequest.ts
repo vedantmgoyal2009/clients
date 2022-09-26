@@ -1,4 +1,4 @@
-import { CollectionExport } from "@bitwarden/common/models/export/collectionExport";
+import { CollectionExport } from "@bitwarden/common/models/export";
 
 import { SelectionReadOnly } from "../selectionReadOnly";
 

@@ -1,8 +1,7 @@
 import { Arg, Substitute, SubstituteOf } from "@fluffy-spoon/substitute";
 
 import { Utils } from "@bitwarden/common/misc/utils";
-import { EncString } from "@bitwarden/common/models/domain/encString";
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
+import { EncString, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
 import { EncryptService } from "@bitwarden/common/src/services/encrypt.service";
 
 import BrowserLocalStorageService from "./browserLocalStorage.service";

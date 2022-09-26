@@ -1,4 +1,4 @@
-import { FolderView } from "@bitwarden/common/models/view/folderView";
+import { FolderView } from "@bitwarden/common/models/view";
 
 describe("FolderView", () => {
   describe("fromJSON", () => {

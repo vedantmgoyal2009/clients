@@ -11,7 +11,7 @@ import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/poli
 import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { Policy } from "@bitwarden/common/models/domain/policy";
+import { Policy } from "@bitwarden/common/models/domain";
 import { OrganizationUserAcceptRequest } from "@bitwarden/common/models/request/organizationUserAcceptRequest";
 
 import { BaseAcceptComponent } from "../common/base.accept.component";

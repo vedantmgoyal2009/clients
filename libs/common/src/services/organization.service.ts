@@ -1,7 +1,7 @@
 import { OrganizationService as OrganizationServiceAbstraction } from "../abstractions/organization.service";
 import { StateService } from "../abstractions/state.service";
-import { OrganizationData } from "../models/data/organizationData";
-import { Organization } from "../models/domain/organization";
+import { OrganizationData } from "../models/data";
+import { Organization } from "../models/domain";
 
 export class OrganizationService implements OrganizationServiceAbstraction {
   constructor(private stateService: StateService) {}

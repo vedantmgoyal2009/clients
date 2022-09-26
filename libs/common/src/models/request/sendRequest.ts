@@ -1,7 +1,6 @@
 import { SendType } from "../../enums/sendType";
-import { SendFileApi } from "../api/sendFileApi";
-import { SendTextApi } from "../api/sendTextApi";
-import { Send } from "../domain/send";
+import { SendFileApi, SendTextApi } from "../api";
+import { Send } from "../domain";
 
 export class SendRequest {
   type: SendType;

@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { Organization } from "@bitwarden/common/models/domain";
 
 import { canAccessOrgAdmin } from "../organizations/navigation-permissions";
 

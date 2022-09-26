@@ -1,5 +1,5 @@
 import { SendType } from "@bitwarden/common/enums/sendType";
-import { SendView } from "@bitwarden/common/models/view/sendView";
+import { SendView } from "@bitwarden/common/models/view";
 
 import { BrowserComponentState } from "./browserComponentState";
 

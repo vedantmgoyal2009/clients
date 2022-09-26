@@ -1,6 +1,6 @@
 import { UriMatchType } from "@bitwarden/common/enums/uriMatchType";
-import { LoginUriData } from "@bitwarden/common/models/data/loginUriData";
-import { LoginUri } from "@bitwarden/common/models/domain/loginUri";
+import { LoginUriData } from "@bitwarden/common/models/data";
+import { LoginUri } from "@bitwarden/common/models/domain";
 
 import { mockEnc } from "../../utils";
 

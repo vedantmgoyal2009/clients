@@ -10,13 +10,11 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { SEND_KDF_ITERATIONS } from "@bitwarden/common/enums/kdfType";
 import { SendType } from "@bitwarden/common/enums/sendType";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { EncArrayBuffer } from "@bitwarden/common/models/domain/encArrayBuffer";
-import { SendAccess } from "@bitwarden/common/models/domain/sendAccess";
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
+import { EncArrayBuffer, SendAccess, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
 import { SendAccessRequest } from "@bitwarden/common/models/request/sendAccessRequest";
 import { ErrorResponse } from "@bitwarden/common/models/response/errorResponse";
 import { SendAccessResponse } from "@bitwarden/common/models/response/sendAccessResponse";
-import { SendAccessView } from "@bitwarden/common/models/view/sendAccessView";
+import { SendAccessView } from "@bitwarden/common/models/view";
 
 @Component({
   selector: "app-send-access",

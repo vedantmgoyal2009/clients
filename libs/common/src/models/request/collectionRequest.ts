@@ -1,4 +1,4 @@
-import { Collection } from "../domain/collection";
+import { Collection } from "../domain";
 
 import { SelectionReadOnlyRequest } from "./selectionReadOnlyRequest";
 

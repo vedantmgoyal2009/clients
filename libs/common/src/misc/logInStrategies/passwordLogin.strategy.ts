@@ -9,9 +9,7 @@ import { StateService } from "../../abstractions/state.service";
 import { TokenService } from "../../abstractions/token.service";
 import { TwoFactorService } from "../../abstractions/twoFactor.service";
 import { HashPurpose } from "../../enums/hashPurpose";
-import { AuthResult } from "../../models/domain/authResult";
-import { PasswordLogInCredentials } from "../../models/domain/logInCredentials";
-import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
+import { AuthResult, PasswordLogInCredentials, SymmetricCryptoKey } from "../../models/domain";
 import { PasswordTokenRequest } from "../../models/request/identityToken/passwordTokenRequest";
 import { TokenRequestTwoFactor } from "../../models/request/identityToken/tokenRequestTwoFactor";
 

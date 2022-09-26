@@ -1,4 +1,4 @@
-import { Folder } from "../domain/folder";
+import { Folder } from "../domain";
 
 import { FolderRequest } from "./folderRequest";
 

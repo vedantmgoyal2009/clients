@@ -1,4 +1,4 @@
-import { CollectionView } from "@bitwarden/common/models/view/collectionView";
+import { CollectionView } from "@bitwarden/common/models/view";
 
 import { SelectionReadOnly } from "../selectionReadOnly";
 

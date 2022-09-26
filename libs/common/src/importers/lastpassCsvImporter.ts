@@ -1,12 +1,14 @@
 import { CipherType } from "../enums/cipherType";
 import { SecureNoteType } from "../enums/secureNoteType";
-import { ImportResult } from "../models/domain/importResult";
-import { CardView } from "../models/view/cardView";
-import { CipherView } from "../models/view/cipherView";
-import { FolderView } from "../models/view/folderView";
-import { IdentityView } from "../models/view/identityView";
-import { LoginView } from "../models/view/loginView";
-import { SecureNoteView } from "../models/view/secureNoteView";
+import { ImportResult } from "../models/domain";
+import {
+  CardView,
+  CipherView,
+  FolderView,
+  IdentityView,
+  LoginView,
+  SecureNoteView,
+} from "../models/view";
 
 import { BaseImporter } from "./baseImporter";
 import { Importer } from "./importer";

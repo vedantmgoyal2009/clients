@@ -7,7 +7,7 @@ import { MessagingService } from "@bitwarden/common/abstractions/messaging.servi
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { AuthenticationStatus } from "@bitwarden/common/enums/authenticationStatus";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { Account } from "@bitwarden/common/models/domain/account";
+import { Account } from "@bitwarden/common/models/domain";
 
 export class SwitcherAccount extends Account {
   get serverUrl() {

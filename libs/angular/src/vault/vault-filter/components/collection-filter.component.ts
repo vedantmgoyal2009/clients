@@ -1,7 +1,7 @@
 import { Directive, EventEmitter, Input, Output } from "@angular/core";
 
-import { ITreeNodeObject } from "@bitwarden/common/models/domain/treeNode";
-import { CollectionView } from "@bitwarden/common/models/view/collectionView";
+import { ITreeNodeObject } from "@bitwarden/common/models/domain";
+import { CollectionView } from "@bitwarden/common/models/view";
 
 import { DynamicTreeNode } from "../models/dynamic-tree-node.model";
 import { TopLevelTreeNode } from "../models/top-level-tree-node.model";

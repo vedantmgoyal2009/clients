@@ -4,8 +4,7 @@ import { ValidationService } from "@bitwarden/angular/services/validation.servic
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { ProviderService } from "@bitwarden/common/abstractions/provider.service";
-import { Organization } from "@bitwarden/common/models/domain/organization";
-import { Provider } from "@bitwarden/common/models/domain/provider";
+import { Organization, Provider } from "@bitwarden/common/models/domain";
 
 import { WebProviderService } from "../services/webProvider.service";
 

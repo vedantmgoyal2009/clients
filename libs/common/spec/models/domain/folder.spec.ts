@@ -1,6 +1,5 @@
-import { FolderData } from "@bitwarden/common/models/data/folderData";
-import { EncString } from "@bitwarden/common/models/domain/encString";
-import { Folder } from "@bitwarden/common/models/domain/folder";
+import { FolderData } from "@bitwarden/common/models/data";
+import { EncString, Folder } from "@bitwarden/common/models/domain";
 
 import { mockEnc } from "../../utils";
 
@@ -41,7 +40,7 @@ describe("Folder", () => {
   });
 
   describe("fromJSON", () => {
-    jest.mock("@bitwarden/common/models/domain/encString");
+    jest.mock("@bitwarden/common/models/domain");
     const mockFromJson = (stub: any) => (stub + "_fromJSON") as any;
     jest.spyOn(EncString, "fromJSON").mockImplementation(mockFromJson);
 

@@ -6,9 +6,7 @@ import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.serv
 import { AuthenticationStatus } from "@bitwarden/common/enums/authenticationStatus";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
-import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
-import { LoginView } from "@bitwarden/common/models/view/loginView";
+import { CipherView, LoginUriView, LoginView } from "@bitwarden/common/models/view";
 
 import { DecryptedCommandData } from "src/models/nativeMessaging/decryptedCommandData";
 import { CredentialCreatePayload } from "src/models/nativeMessaging/encryptedMessagePayloads/credentialCreatePayload";

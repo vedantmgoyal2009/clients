@@ -1,5 +1,5 @@
-import { LoginExport } from "@bitwarden/common/models/export/loginExport";
-import { LoginView } from "@bitwarden/common/models/view/loginView";
+import { LoginExport } from "@bitwarden/common/models/export";
+import { LoginView } from "@bitwarden/common/models/view";
 
 export class LoginResponse extends LoginExport {
   passwordRevisionDate: Date;

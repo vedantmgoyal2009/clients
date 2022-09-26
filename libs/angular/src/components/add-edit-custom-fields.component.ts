@@ -7,8 +7,7 @@ import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { EventType } from "@bitwarden/common/enums/eventType";
 import { FieldType } from "@bitwarden/common/enums/fieldType";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
-import { FieldView } from "@bitwarden/common/models/view/fieldView";
+import { CipherView, FieldView } from "@bitwarden/common/models/view";
 
 @Directive()
 export class AddEditCustomFieldsComponent implements OnChanges {

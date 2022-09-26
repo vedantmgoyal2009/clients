@@ -1,5 +1,5 @@
-import { IdentityData } from "@bitwarden/common/models/data/identityData";
-import { Identity } from "@bitwarden/common/models/domain/identity";
+import { IdentityData } from "@bitwarden/common/models/data";
+import { Identity } from "@bitwarden/common/models/domain";
 
 import { mockEnc } from "../../utils";
 

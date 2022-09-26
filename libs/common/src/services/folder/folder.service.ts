@@ -6,11 +6,9 @@ import { InternalFolderService as InternalFolderServiceAbstraction } from "../..
 import { I18nService } from "../../abstractions/i18n.service";
 import { StateService } from "../../abstractions/state.service";
 import { Utils } from "../../misc/utils";
-import { CipherData } from "../../models/data/cipherData";
-import { FolderData } from "../../models/data/folderData";
-import { Folder } from "../../models/domain/folder";
-import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
-import { FolderView } from "../../models/view/folderView";
+import { CipherData, FolderData } from "../../models/data";
+import { Folder, SymmetricCryptoKey } from "../../models/domain";
+import { FolderView } from "../../models/view";
 
 export class FolderService implements InternalFolderServiceAbstraction {
   protected _folders: BehaviorSubject<Folder[]> = new BehaviorSubject([]);

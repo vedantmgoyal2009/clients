@@ -1,11 +1,11 @@
 import { AuthenticationStatus } from "../enums/authenticationStatus";
-import { AuthResult } from "../models/domain/authResult";
 import {
+  AuthResult,
   ApiLogInCredentials,
   PasswordLogInCredentials,
   SsoLogInCredentials,
-} from "../models/domain/logInCredentials";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
+  SymmetricCryptoKey,
+} from "../models/domain";
 import { TokenRequestTwoFactor } from "../models/request/identityToken/tokenRequestTwoFactor";
 
 export abstract class AuthService {

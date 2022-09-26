@@ -1,4 +1,4 @@
-import { Send } from "../domain/send";
+import { Send } from "../domain";
 
 import { SendRequest } from "./sendRequest";
 

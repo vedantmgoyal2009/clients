@@ -1,8 +1,7 @@
 import * as fet from "node-fetch";
 
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
-import { EncArrayBuffer } from "@bitwarden/common/models/domain/encArrayBuffer";
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
+import { EncArrayBuffer, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
 import { Response } from "@bitwarden/node/cli/models/response";
 import { FileResponse } from "@bitwarden/node/cli/models/response/fileResponse";
 

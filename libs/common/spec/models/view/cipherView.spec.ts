@@ -1,17 +1,19 @@
 import { CipherType } from "@bitwarden/common/enums/cipherType";
-import { AttachmentView } from "@bitwarden/common/models/view/attachmentView";
-import { CardView } from "@bitwarden/common/models/view/cardView";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
-import { FieldView } from "@bitwarden/common/models/view/fieldView";
-import { IdentityView } from "@bitwarden/common/models/view/identityView";
-import { LoginView } from "@bitwarden/common/models/view/loginView";
-import { PasswordHistoryView } from "@bitwarden/common/models/view/passwordHistoryView";
-import { SecureNoteView } from "@bitwarden/common/models/view/secureNoteView";
+import {
+  AttachmentView,
+  CardView,
+  CipherView,
+  FieldView,
+  IdentityView,
+  LoginView,
+  PasswordHistoryView,
+  SecureNoteView,
+} from "@bitwarden/common/models/view";
 
-jest.mock("@bitwarden/common/models/view/loginView");
-jest.mock("@bitwarden/common/models/view/attachmentView");
-jest.mock("@bitwarden/common/models/view/fieldView");
-jest.mock("@bitwarden/common/models/view/passwordHistoryView");
+jest.mock("@bitwarden/common/models/view");
+jest.mock("@bitwarden/common/models/view");
+jest.mock("@bitwarden/common/models/view");
+jest.mock("@bitwarden/common/models/view");
 
 describe("CipherView", () => {
   beforeEach(() => {

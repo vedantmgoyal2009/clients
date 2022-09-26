@@ -5,15 +5,9 @@ import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { FieldType } from "@bitwarden/common/enums/fieldType";
 import { SecureNoteType } from "@bitwarden/common/enums/secureNoteType";
 import { UriMatchType } from "@bitwarden/common/enums/uriMatchType";
-import { CipherData } from "@bitwarden/common/models/data/cipherData";
-import { Card } from "@bitwarden/common/models/domain/card";
-import { Cipher } from "@bitwarden/common/models/domain/cipher";
-import { Identity } from "@bitwarden/common/models/domain/identity";
-import { Login } from "@bitwarden/common/models/domain/login";
-import { SecureNote } from "@bitwarden/common/models/domain/secureNote";
-import { CardView } from "@bitwarden/common/models/view/cardView";
-import { IdentityView } from "@bitwarden/common/models/view/identityView";
-import { LoginView } from "@bitwarden/common/models/view/loginView";
+import { CipherData } from "@bitwarden/common/models/data";
+import { Card, Cipher, Identity, Login, SecureNote } from "@bitwarden/common/models/domain";
+import { CardView, IdentityView, LoginView } from "@bitwarden/common/models/view";
 
 import { mockEnc } from "../../utils";
 

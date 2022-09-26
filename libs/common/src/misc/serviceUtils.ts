@@ -1,4 +1,4 @@
-import { ITreeNodeObject, TreeNode } from "../models/domain/treeNode";
+import { ITreeNodeObject, TreeNode } from "../models/domain";
 
 export class ServiceUtils {
   static nestedTraverse(

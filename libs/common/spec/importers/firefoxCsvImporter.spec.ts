@@ -1,7 +1,5 @@
 import { FirefoxCsvImporter as Importer } from "@bitwarden/common/importers/firefoxCsvImporter";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
-import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
-import { LoginView } from "@bitwarden/common/models/view/loginView";
+import { CipherView, LoginUriView, LoginView } from "@bitwarden/common/models/view";
 
 import { data as firefoxAccountsData } from "./testData/firefoxCsv/firefoxAccountsData.csv";
 import { data as simplePasswordData } from "./testData/firefoxCsv/simplePasswordData.csv";

@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
 
-import { AccountSettingsSettings } from "../models/domain/account";
+import { AccountSettingsSettings } from "../models/domain";
 
 export abstract class SettingsService {
   settings$: Observable<AccountSettingsSettings>;

@@ -1,4 +1,4 @@
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { Organization } from "@bitwarden/common/models/domain";
 
 export function canAccessToolsTab(org: Organization): boolean {
   return org.canAccessImportExport || org.canAccessReports;

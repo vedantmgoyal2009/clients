@@ -8,7 +8,7 @@ import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstraction
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { Organization } from "@bitwarden/common/models/domain";
 
 @Directive()
 export class RemovePasswordComponent implements OnInit {

@@ -1,10 +1,9 @@
 import Substitute, { Arg } from "@fluffy-spoon/substitute";
 
 import { UriMatchType } from "@bitwarden/common/enums/uriMatchType";
-import { LoginData } from "@bitwarden/common/models/data/loginData";
-import { Login } from "@bitwarden/common/models/domain/login";
-import { LoginUri } from "@bitwarden/common/models/domain/loginUri";
-import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
+import { LoginData } from "@bitwarden/common/models/data";
+import { Login, LoginUri } from "@bitwarden/common/models/domain";
+import { LoginUriView } from "@bitwarden/common/models/view";
 
 import { mockEnc } from "../../utils";
 

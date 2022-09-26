@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router } from "@angular/router";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { ProviderService } from "@bitwarden/common/abstractions/provider.service";
-import { Provider } from "@bitwarden/common/models/domain/provider";
+import { Provider } from "@bitwarden/common/models/domain";
 
 @Injectable()
 export class ProviderPermissionsGuard implements CanActivate {

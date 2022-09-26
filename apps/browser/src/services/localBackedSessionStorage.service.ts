@@ -5,9 +5,11 @@ import {
   AbstractCachedStorageService,
   MemoryStorageServiceInterface,
 } from "@bitwarden/common/abstractions/storage.service";
-import { EncString } from "@bitwarden/common/models/domain/encString";
-import { MemoryStorageOptions } from "@bitwarden/common/models/domain/storageOptions";
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
+import {
+  EncString,
+  MemoryStorageOptions,
+  SymmetricCryptoKey,
+} from "@bitwarden/common/models/domain";
 
 import { devFlag } from "../decorators/dev-flag.decorator";
 import { devFlagEnabled } from "../flags";

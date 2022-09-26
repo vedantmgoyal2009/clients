@@ -18,13 +18,13 @@ import { KeySuffixOptions } from "../enums/keySuffixOptions";
 import { ApiLogInStrategy } from "../misc/logInStrategies/apiLogin.strategy";
 import { PasswordLogInStrategy } from "../misc/logInStrategies/passwordLogin.strategy";
 import { SsoLogInStrategy } from "../misc/logInStrategies/ssoLogin.strategy";
-import { AuthResult } from "../models/domain/authResult";
 import {
+  AuthResult,
   ApiLogInCredentials,
   PasswordLogInCredentials,
   SsoLogInCredentials,
-} from "../models/domain/logInCredentials";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
+  SymmetricCryptoKey,
+} from "../models/domain";
 import { TokenRequestTwoFactor } from "../models/request/identityToken/tokenRequestTwoFactor";
 import { PreloginRequest } from "../models/request/preloginRequest";
 import { ErrorResponse } from "../models/response/errorResponse";

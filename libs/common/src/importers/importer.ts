@@ -1,4 +1,4 @@
-import { ImportResult } from "../models/domain/importResult";
+import { ImportResult } from "../models/domain";
 
 export interface Importer {
   organizationId: string;

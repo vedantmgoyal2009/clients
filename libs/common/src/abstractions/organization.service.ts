@@ -1,5 +1,5 @@
-import { OrganizationData } from "../models/data/organizationData";
-import { Organization } from "../models/domain/organization";
+import { OrganizationData } from "../models/data";
+import { Organization } from "../models/domain";
 
 export abstract class OrganizationService {
   get: (id: string) => Promise<Organization>;

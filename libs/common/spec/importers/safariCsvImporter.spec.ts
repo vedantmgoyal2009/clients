@@ -1,7 +1,5 @@
 import { SafariCsvImporter as Importer } from "@bitwarden/common/importers/safariCsvImporter";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
-import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
-import { LoginView } from "@bitwarden/common/models/view/loginView";
+import { CipherView, LoginUriView, LoginView } from "@bitwarden/common/models/view";
 
 import { data as oldSimplePasswordData } from "./testData/safariCsv/oldSimplePasswordData.csv";
 import { data as simplePasswordData } from "./testData/safariCsv/simplePasswordData.csv";

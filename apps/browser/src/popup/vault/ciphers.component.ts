@@ -14,10 +14,8 @@ import { OrganizationService } from "@bitwarden/common/abstractions/organization
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
-import { TreeNode } from "@bitwarden/common/models/domain/treeNode";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
-import { CollectionView } from "@bitwarden/common/models/view/collectionView";
-import { FolderView } from "@bitwarden/common/models/view/folderView";
+import { TreeNode } from "@bitwarden/common/models/domain";
+import { CipherView, CollectionView, FolderView } from "@bitwarden/common/models/view";
 
 import { BrowserComponentState } from "src/models/browserComponentState";
 

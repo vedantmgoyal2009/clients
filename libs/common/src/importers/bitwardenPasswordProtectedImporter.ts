@@ -1,9 +1,7 @@
 import { CryptoService } from "../abstractions/crypto.service";
 import { I18nService } from "../abstractions/i18n.service";
 import { KdfType } from "../enums/kdfType";
-import { EncString } from "../models/domain/encString";
-import { ImportResult } from "../models/domain/importResult";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
+import { EncString, ImportResult, SymmetricCryptoKey } from "../models/domain";
 
 import { BitwardenJsonImporter } from "./bitwardenJsonImporter";
 import { Importer } from "./importer";

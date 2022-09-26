@@ -22,15 +22,17 @@ import { PolicyType } from "@bitwarden/common/enums/policyType";
 import { SecureNoteType } from "@bitwarden/common/enums/secureNoteType";
 import { UriMatchType } from "@bitwarden/common/enums/uriMatchType";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { Cipher } from "@bitwarden/common/models/domain/cipher";
-import { CardView } from "@bitwarden/common/models/view/cardView";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
-import { CollectionView } from "@bitwarden/common/models/view/collectionView";
-import { FolderView } from "@bitwarden/common/models/view/folderView";
-import { IdentityView } from "@bitwarden/common/models/view/identityView";
-import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
-import { LoginView } from "@bitwarden/common/models/view/loginView";
-import { SecureNoteView } from "@bitwarden/common/models/view/secureNoteView";
+import { Cipher } from "@bitwarden/common/models/domain";
+import {
+  CardView,
+  CipherView,
+  CollectionView,
+  FolderView,
+  IdentityView,
+  LoginUriView,
+  LoginView,
+  SecureNoteView,
+} from "@bitwarden/common/models/view";
 
 @Directive()
 export class AddEditComponent implements OnInit {

@@ -3,7 +3,7 @@ import { BehaviorSubject, concatMap } from "rxjs";
 import { SettingsService as SettingsServiceAbstraction } from "../abstractions/settings.service";
 import { StateService } from "../abstractions/state.service";
 import { Utils } from "../misc/utils";
-import { AccountSettingsSettings } from "../models/domain/account";
+import { AccountSettingsSettings } from "../models/domain";
 
 export class SettingsService implements SettingsServiceAbstraction {
   private _settings: BehaviorSubject<AccountSettingsSettings> = new BehaviorSubject({});

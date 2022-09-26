@@ -1,6 +1,5 @@
 import { OrganizationConnectionType } from "../../enums/organizationConnectionType";
-import { BillingSyncConfigApi } from "../api/billingSyncConfigApi";
-import { ScimConfigApi } from "../api/scimConfigApi";
+import { BillingSyncConfigApi, ScimConfigApi } from "../api";
 
 import { BaseResponse } from "./baseResponse";
 

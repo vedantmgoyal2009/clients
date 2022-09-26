@@ -5,9 +5,9 @@ import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractE
 import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
-import { FolderData } from "@bitwarden/common/models/data/folderData";
-import { EncString } from "@bitwarden/common/models/domain/encString";
-import { FolderView } from "@bitwarden/common/models/view/folderView";
+import { FolderData } from "@bitwarden/common/models/data";
+import { EncString } from "@bitwarden/common/models/domain";
+import { FolderView } from "@bitwarden/common/models/view";
 import { ContainerService } from "@bitwarden/common/services/container.service";
 import { FolderService } from "@bitwarden/common/services/folder/folder.service";
 import { StateService } from "@bitwarden/common/services/state.service";

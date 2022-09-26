@@ -14,22 +14,24 @@ import { FieldType } from "../enums/fieldType";
 import { UriMatchType } from "../enums/uriMatchType";
 import { sequentialize } from "../misc/sequentialize";
 import { Utils } from "../misc/utils";
-import { CipherData } from "../models/data/cipherData";
-import { AccountSettingsSettings } from "../models/domain/account";
-import { Attachment } from "../models/domain/attachment";
-import { Card } from "../models/domain/card";
-import { Cipher } from "../models/domain/cipher";
-import Domain from "../models/domain/domainBase";
-import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
-import { EncString } from "../models/domain/encString";
-import { Field } from "../models/domain/field";
-import { Identity } from "../models/domain/identity";
-import { Login } from "../models/domain/login";
-import { LoginUri } from "../models/domain/loginUri";
-import { Password } from "../models/domain/password";
-import { SecureNote } from "../models/domain/secureNote";
-import { SortedCiphersCache } from "../models/domain/sortedCiphersCache";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
+import { CipherData } from "../models/data";
+import {
+  AccountSettingsSettings,
+  Attachment,
+  Card,
+  Cipher,
+  Domain,
+  EncArrayBuffer,
+  EncString,
+  Field,
+  Identity,
+  Login,
+  LoginUri,
+  Password,
+  SecureNote,
+  SortedCiphersCache,
+  SymmetricCryptoKey,
+} from "../models/domain";
 import { AttachmentRequest } from "../models/request/attachmentRequest";
 import { CipherBulkDeleteRequest } from "../models/request/cipherBulkDeleteRequest";
 import { CipherBulkMoveRequest } from "../models/request/cipherBulkMoveRequest";
@@ -41,11 +43,7 @@ import { CipherRequest } from "../models/request/cipherRequest";
 import { CipherShareRequest } from "../models/request/cipherShareRequest";
 import { CipherResponse } from "../models/response/cipherResponse";
 import { ErrorResponse } from "../models/response/errorResponse";
-import { AttachmentView } from "../models/view/attachmentView";
-import { CipherView } from "../models/view/cipherView";
-import { FieldView } from "../models/view/fieldView";
-import { PasswordHistoryView } from "../models/view/passwordHistoryView";
-import { View } from "../models/view/view";
+import { AttachmentView, CipherView, FieldView, PasswordHistoryView, View } from "../models/view";
 
 const DomainMatchBlacklist = new Map<string, Set<string>>([
   ["google.com", new Set(["script.google.com"])],

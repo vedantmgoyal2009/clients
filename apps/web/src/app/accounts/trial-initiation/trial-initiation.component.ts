@@ -12,9 +12,8 @@ import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.serv
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { PlanType } from "@bitwarden/common/enums/planType";
 import { ProductType } from "@bitwarden/common/enums/productType";
-import { PolicyData } from "@bitwarden/common/models/data/policyData";
-import { MasterPasswordPolicyOptions } from "@bitwarden/common/models/domain/masterPasswordPolicyOptions";
-import { Policy } from "@bitwarden/common/models/domain/policy";
+import { PolicyData } from "@bitwarden/common/models/data";
+import { MasterPasswordPolicyOptions, Policy } from "@bitwarden/common/models/domain";
 import { ReferenceEventRequest } from "@bitwarden/common/models/request/referenceEventRequest";
 
 import { RouterService } from "./../../core/router.service";

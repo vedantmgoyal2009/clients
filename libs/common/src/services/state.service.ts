@@ -13,35 +13,35 @@ import { StorageLocation } from "../enums/storageLocation";
 import { ThemeType } from "../enums/themeType";
 import { UriMatchType } from "../enums/uriMatchType";
 import { StateFactory } from "../factories/stateFactory";
-import { CipherData } from "../models/data/cipherData";
-import { CollectionData } from "../models/data/collectionData";
-import { EncryptedOrganizationKeyData } from "../models/data/encryptedOrganizationKeyData";
-import { EventData } from "../models/data/eventData";
-import { FolderData } from "../models/data/folderData";
-import { LocalData } from "../models/data/localData";
-import { OrganizationData } from "../models/data/organizationData";
-import { PolicyData } from "../models/data/policyData";
-import { ProviderData } from "../models/data/providerData";
-import { SendData } from "../models/data/sendData";
-import { ServerConfigData } from "../models/data/server-config.data";
+import {
+  CipherData,
+  CollectionData,
+  EncryptedOrganizationKeyData,
+  EventData,
+  FolderData,
+  LocalData,
+  OrganizationData,
+  PolicyData,
+  ProviderData,
+  SendData,
+  ServerConfigData,
+} from "../models/data";
 import {
   Account,
   AccountData,
   AccountSettings,
   AccountSettingsSettings,
-} from "../models/domain/account";
-import { EncString } from "../models/domain/encString";
-import { EnvironmentUrls } from "../models/domain/environmentUrls";
-import { GeneratedPasswordHistory } from "../models/domain/generatedPasswordHistory";
-import { GlobalState } from "../models/domain/globalState";
-import { Policy } from "../models/domain/policy";
-import { State } from "../models/domain/state";
-import { StorageOptions } from "../models/domain/storageOptions";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
-import { WindowState } from "../models/domain/windowState";
-import { CipherView } from "../models/view/cipherView";
-import { CollectionView } from "../models/view/collectionView";
-import { SendView } from "../models/view/sendView";
+  EncString,
+  EnvironmentUrls,
+  GeneratedPasswordHistory,
+  GlobalState,
+  Policy,
+  State,
+  StorageOptions,
+  SymmetricCryptoKey,
+  WindowState,
+} from "../models/domain";
+import { CipherView, CollectionView, SendView } from "../models/view";
 
 const keys = {
   state: "state",

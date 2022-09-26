@@ -6,9 +6,8 @@ import { CollectionService } from "@bitwarden/common/abstractions/collection.ser
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { CipherData } from "@bitwarden/common/models/data/cipherData";
-import { Cipher } from "@bitwarden/common/models/domain/cipher";
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { CipherData } from "@bitwarden/common/models/data";
+import { Cipher, Organization } from "@bitwarden/common/models/domain";
 import { CipherCollectionsRequest } from "@bitwarden/common/models/request/cipherCollectionsRequest";
 
 import { CollectionsComponent as BaseCollectionsComponent } from "../../vault/collections.component";

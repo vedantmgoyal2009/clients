@@ -14,7 +14,7 @@ import { ProviderService } from "@bitwarden/common/abstractions/provider.service
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { PlanType } from "@bitwarden/common/enums/planType";
 import { ProviderUserType } from "@bitwarden/common/enums/providerUserType";
-import { Organization } from "@bitwarden/common/models/domain/organization";
+import { Organization } from "@bitwarden/common/models/domain";
 import { ProviderOrganizationOrganizationDetailsResponse } from "@bitwarden/common/models/response/provider/providerOrganizationResponse";
 
 import { WebProviderService } from "../services/webProvider.service";

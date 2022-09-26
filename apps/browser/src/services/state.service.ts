@@ -1,8 +1,7 @@
 import { Jsonify } from "type-fest";
 
 import { AbstractCachedStorageService } from "@bitwarden/common/abstractions/storage.service";
-import { GlobalState } from "@bitwarden/common/models/domain/globalState";
-import { StorageOptions } from "@bitwarden/common/models/domain/storageOptions";
+import { GlobalState, StorageOptions } from "@bitwarden/common/models/domain";
 import {
   StateService as BaseStateService,
   withPrototype,

@@ -1,9 +1,5 @@
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
-import { CardApi } from "../api/cardApi";
-import { FieldApi } from "../api/fieldApi";
-import { IdentityApi } from "../api/identityApi";
-import { LoginApi } from "../api/loginApi";
-import { SecureNoteApi } from "../api/secureNoteApi";
+import { CardApi, FieldApi, IdentityApi, LoginApi, SecureNoteApi } from "../api";
 
 import { AttachmentResponse } from "./attachmentResponse";
 import { BaseResponse } from "./baseResponse";

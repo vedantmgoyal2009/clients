@@ -6,25 +6,25 @@ import { DeepJsonify } from "@bitwarden/common/types/deep-jsonify";
 import { AuthenticationStatus } from "../../enums/authenticationStatus";
 import { KdfType } from "../../enums/kdfType";
 import { UriMatchType } from "../../enums/uriMatchType";
-import { CipherData } from "../data/cipherData";
-import { CollectionData } from "../data/collectionData";
-import { EncryptedOrganizationKeyData } from "../data/encryptedOrganizationKeyData";
-import { EventData } from "../data/eventData";
-import { FolderData } from "../data/folderData";
-import { OrganizationData } from "../data/organizationData";
-import { PolicyData } from "../data/policyData";
-import { ProviderData } from "../data/providerData";
-import { SendData } from "../data/sendData";
-import { ServerConfigData } from "../data/server-config.data";
-import { CipherView } from "../view/cipherView";
-import { CollectionView } from "../view/collectionView";
-import { SendView } from "../view/sendView";
+import {
+  CipherData,
+  CollectionData,
+  EncryptedOrganizationKeyData,
+  EventData,
+  FolderData,
+  OrganizationData,
+  PolicyData,
+  ProviderData,
+  SendData,
+  ServerConfigData,
+} from "../data";
+import { CipherView, CollectionView, SendView } from "../view";
 
-import { EncString } from "./encString";
-import { EnvironmentUrls } from "./environmentUrls";
-import { GeneratedPasswordHistory } from "./generatedPasswordHistory";
+import { EncString } from "./enc-string";
+import { EnvironmentUrls } from "./environment-urls";
+import { GeneratedPasswordHistory } from "./generated-password-history";
 import { Policy } from "./policy";
-import { SymmetricCryptoKey } from "./symmetricCryptoKey";
+import { SymmetricCryptoKey } from "./symmetric-crypto-key";
 
 export class EncryptionPair<TEncrypted, TDecrypted> {
   encrypted?: TEncrypted;

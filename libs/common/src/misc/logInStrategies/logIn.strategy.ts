@@ -8,13 +8,15 @@ import { StateService } from "../../abstractions/state.service";
 import { TokenService } from "../../abstractions/token.service";
 import { TwoFactorService } from "../../abstractions/twoFactor.service";
 import { TwoFactorProviderType } from "../../enums/twoFactorProviderType";
-import { Account, AccountProfile, AccountTokens } from "../../models/domain/account";
-import { AuthResult } from "../../models/domain/authResult";
 import {
+  Account,
+  AccountProfile,
+  AccountTokens,
+  AuthResult,
   ApiLogInCredentials,
   PasswordLogInCredentials,
   SsoLogInCredentials,
-} from "../../models/domain/logInCredentials";
+} from "../../models/domain";
 import { DeviceRequest } from "../../models/request/deviceRequest";
 import { ApiTokenRequest } from "../../models/request/identityToken/apiTokenRequest";
 import { PasswordTokenRequest } from "../../models/request/identityToken/passwordTokenRequest";

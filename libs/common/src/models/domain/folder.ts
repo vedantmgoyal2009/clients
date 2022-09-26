@@ -1,10 +1,10 @@
 import { Jsonify } from "type-fest";
 
-import { FolderData } from "../data/folderData";
-import { FolderView } from "../view/folderView";
+import { FolderData } from "../data";
+import { FolderView } from "../view";
 
-import Domain from "./domainBase";
-import { EncString } from "./encString";
+import { Domain } from "./domain-base";
+import { EncString } from "./enc-string";
 
 export class Folder extends Domain {
   id: string;

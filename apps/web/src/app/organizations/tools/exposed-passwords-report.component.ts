@@ -8,8 +8,8 @@ import { MessagingService } from "@bitwarden/common/abstractions/messaging.servi
 import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
 import { PasswordRepromptService } from "@bitwarden/common/abstractions/passwordReprompt.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { Cipher } from "@bitwarden/common/models/domain/cipher";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
+import { Cipher } from "@bitwarden/common/models/domain";
+import { CipherView } from "@bitwarden/common/models/view";
 
 // eslint-disable-next-line no-restricted-imports
 import { ExposedPasswordsReportComponent as BaseExposedPasswordsReportComponent } from "../../reports/pages/exposed-passwords-report.component";

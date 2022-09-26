@@ -5,14 +5,16 @@ import { CipherType } from "../enums/cipherType";
 import { FieldType } from "../enums/fieldType";
 import { SecureNoteType } from "../enums/secureNoteType";
 import { Utils } from "../misc/utils";
-import { ImportResult } from "../models/domain/importResult";
-import { CipherView } from "../models/view/cipherView";
-import { CollectionView } from "../models/view/collectionView";
-import { FieldView } from "../models/view/fieldView";
-import { FolderView } from "../models/view/folderView";
-import { LoginUriView } from "../models/view/loginUriView";
-import { LoginView } from "../models/view/loginView";
-import { SecureNoteView } from "../models/view/secureNoteView";
+import { ImportResult } from "../models/domain";
+import {
+  CipherView,
+  CollectionView,
+  FieldView,
+  FolderView,
+  LoginUriView,
+  LoginView,
+  SecureNoteView,
+} from "../models/view";
 import { ConsoleLogService } from "../services/consoleLog.service";
 
 export abstract class BaseImporter {

@@ -1,5 +1,5 @@
-import { CollectionData } from "@bitwarden/common/models/data/collectionData";
-import { Collection } from "@bitwarden/common/models/domain/collection";
+import { CollectionData } from "@bitwarden/common/models/data";
+import { Collection } from "@bitwarden/common/models/domain";
 
 import { mockEnc } from "../../utils";
 

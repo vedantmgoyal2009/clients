@@ -8,8 +8,7 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { NativeMessagingVersion } from "@bitwarden/common/enums/nativeMessagingVersion";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { EncString } from "@bitwarden/common/models/domain/encString";
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
+import { EncString, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
 import { StateService } from "@bitwarden/common/services/state.service";
 
 import { DecryptedCommandData } from "src/models/nativeMessaging/decryptedCommandData";

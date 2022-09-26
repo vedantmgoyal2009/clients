@@ -15,7 +15,7 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { TotpService } from "@bitwarden/common/abstractions/totp.service";
-import { Cipher } from "@bitwarden/common/models/domain/cipher";
+import { Cipher } from "@bitwarden/common/models/domain";
 
 import { AddEditComponent as BaseAddEditComponent } from "../vault/add-edit.component";
 

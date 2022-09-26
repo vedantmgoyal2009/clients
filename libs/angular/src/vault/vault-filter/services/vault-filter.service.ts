@@ -9,10 +9,8 @@ import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.serv
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
 import { ServiceUtils } from "@bitwarden/common/misc/serviceUtils";
-import { Organization } from "@bitwarden/common/models/domain/organization";
-import { TreeNode } from "@bitwarden/common/models/domain/treeNode";
-import { CollectionView } from "@bitwarden/common/models/view/collectionView";
-import { FolderView } from "@bitwarden/common/models/view/folderView";
+import { Organization, TreeNode } from "@bitwarden/common/models/domain";
+import { CollectionView, FolderView } from "@bitwarden/common/models/view";
 
 import { DynamicTreeNode } from "../models/dynamic-tree-node.model";
 
