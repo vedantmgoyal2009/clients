@@ -2,9 +2,11 @@ import { HashPurpose } from "../enums/hashPurpose";
 import { KdfType } from "../enums/kdfType";
 import { KeySuffixOptions } from "../enums/keySuffixOptions";
 import { EncArrayBuffer, EncString, SymmetricCryptoKey } from "../models/domain";
-import { ProfileOrganizationResponse } from "../models/response/profileOrganizationResponse";
-import { ProfileProviderOrganizationResponse } from "../models/response/profileProviderOrganizationResponse";
-import { ProfileProviderResponse } from "../models/response/profileProviderResponse";
+import {
+  ProfileOrganizationResponse,
+  ProfileProviderOrganizationResponse,
+  ProfileProviderResponse,
+} from "../models/response";
 
 export abstract class CryptoService {
   setKey: (key: SymmetricCryptoKey) => Promise<any>;

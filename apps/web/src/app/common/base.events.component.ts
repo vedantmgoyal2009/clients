@@ -5,8 +5,7 @@ import { FileDownloadService } from "@bitwarden/common/abstractions/fileDownload
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { EventResponse } from "@bitwarden/common/models/response/eventResponse";
-import { ListResponse } from "@bitwarden/common/models/response/listResponse";
+import { EventResponse, ListResponse } from "@bitwarden/common/models/response";
 import { EventView } from "@bitwarden/common/models/view";
 
 import { EventService } from "../core";

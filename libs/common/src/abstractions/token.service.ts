@@ -1,4 +1,4 @@
-import { IdentityTokenResponse } from "../models/response/identityTokenResponse";
+import { IdentityTokenResponse } from "../models/response";
 
 export abstract class TokenService {
   setTokens: (

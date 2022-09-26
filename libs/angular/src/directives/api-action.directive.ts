@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Input, OnChanges } from "@angular/core";
 
 import { LogService } from "@bitwarden/common/abstractions/log.service";
-import { ErrorResponse } from "@bitwarden/common/models/response/errorResponse";
+import { ErrorResponse } from "@bitwarden/common/models/response";
 
 import { ValidationService } from "../services/validation.service";
 

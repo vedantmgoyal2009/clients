@@ -16,9 +16,11 @@ import { OrganizationUserType } from "@bitwarden/common/enums/organizationUserTy
 import { ProviderUserStatusType } from "@bitwarden/common/enums/providerUserStatusType";
 import { ProviderUserType } from "@bitwarden/common/enums/providerUserType";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { ListResponse } from "@bitwarden/common/models/response/listResponse";
-import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
-import { ProviderUserUserDetailsResponse } from "@bitwarden/common/models/response/provider/providerUserResponse";
+import {
+  ListResponse,
+  OrganizationUserUserDetailsResponse,
+  ProviderUserUserDetailsResponse,
+} from "@bitwarden/common/models/response";
 
 import { UserConfirmComponent } from "../organizations/manage/user-confirm.component";
 

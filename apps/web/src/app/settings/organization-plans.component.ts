@@ -23,7 +23,7 @@ import {
   OrganizationUpgradeRequest,
   ProviderOrganizationCreateRequest,
 } from "@bitwarden/common/models/request";
-import { PlanResponse } from "@bitwarden/common/models/response/planResponse";
+import { PlanResponse } from "@bitwarden/common/models/response";
 
 import { PaymentComponent } from "./payment.component";
 import { TaxInfoComponent } from "./tax-info.component";

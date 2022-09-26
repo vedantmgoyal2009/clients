@@ -4,7 +4,7 @@ import {
   SyncCipherNotification,
   SyncFolderNotification,
   SyncSendNotification,
-} from "../../models/response/notificationResponse";
+} from "../../models/response";
 import { SyncEventArgs } from "../../types/syncEventArgs";
 
 export abstract class SyncService {

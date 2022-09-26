@@ -11,8 +11,7 @@ import {
   Policy,
   ResetPasswordPolicyOptions,
 } from "../../models/domain";
-import { ListResponse } from "../../models/response/listResponse";
-import { PolicyResponse } from "../../models/response/policyResponse";
+import { ListResponse, PolicyResponse } from "../../models/response";
 
 export class PolicyService implements InternalPolicyServiceAbstraction {
   policyCache: Policy[];

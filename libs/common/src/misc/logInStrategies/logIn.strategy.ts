@@ -25,9 +25,11 @@ import {
   TokenRequestTwoFactor,
   KeysRequest,
 } from "../../models/request";
-import { IdentityCaptchaResponse } from "../../models/response/identityCaptchaResponse";
-import { IdentityTokenResponse } from "../../models/response/identityTokenResponse";
-import { IdentityTwoFactorResponse } from "../../models/response/identityTwoFactorResponse";
+import {
+  IdentityCaptchaResponse,
+  IdentityTokenResponse,
+  IdentityTwoFactorResponse,
+} from "../../models/response";
 
 export abstract class LogInStrategy {
   protected abstract tokenRequest: ApiTokenRequest | PasswordTokenRequest | SsoTokenRequest;

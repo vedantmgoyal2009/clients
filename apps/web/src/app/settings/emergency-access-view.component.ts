@@ -7,7 +7,7 @@ import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { CipherData } from "@bitwarden/common/models/data";
 import { Cipher, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
-import { EmergencyAccessViewResponse } from "@bitwarden/common/models/response/emergencyAccessResponse";
+import { EmergencyAccessViewResponse } from "@bitwarden/common/models/response";
 import { CipherView } from "@bitwarden/common/models/view";
 
 import { EmergencyAccessAttachmentsComponent } from "./emergency-access-attachments.component";

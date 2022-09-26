@@ -7,7 +7,7 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { ProviderUpdateRequest } from "@bitwarden/common/models/request";
-import { ProviderResponse } from "@bitwarden/common/models/response/provider/providerResponse";
+import { ProviderResponse } from "@bitwarden/common/models/response";
 
 @Component({
   selector: "provider-account",

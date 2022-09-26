@@ -8,8 +8,7 @@ import {
   OrganizationTaxInfoUpdateRequest,
   TaxInfoUpdateRequest,
 } from "@bitwarden/common/models/request";
-import { TaxInfoResponse } from "@bitwarden/common/models/response/taxInfoResponse";
-import { TaxRateResponse } from "@bitwarden/common/models/response/taxRateResponse";
+import { TaxInfoResponse, TaxRateResponse } from "@bitwarden/common/models/response";
 
 type TaxInfoView = Omit<TaxInfoResponse, "taxIdType"> & {
   includeTaxId: boolean;

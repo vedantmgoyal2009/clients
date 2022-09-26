@@ -5,7 +5,7 @@ import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.serv
 import { DeviceType } from "@bitwarden/common/enums/deviceType";
 import { EventType } from "@bitwarden/common/enums/eventType";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
-import { EventResponse } from "@bitwarden/common/models/response/eventResponse";
+import { EventResponse } from "@bitwarden/common/models/response";
 
 @Injectable()
 export class EventService {

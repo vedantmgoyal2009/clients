@@ -17,17 +17,19 @@ import {
   StorageRequest,
   VerifyBankRequest,
 } from "../../models/request";
-import { ApiKeyResponse } from "../../models/response/apiKeyResponse";
-import { BillingResponse } from "../../models/response/billingResponse";
-import { ListResponse } from "../../models/response/listResponse";
-import { OrganizationSsoResponse } from "../../models/response/organization/organizationSsoResponse";
-import { OrganizationApiKeyInformationResponse } from "../../models/response/organizationApiKeyInformationResponse";
-import { OrganizationAutoEnrollStatusResponse } from "../../models/response/organizationAutoEnrollStatusResponse";
-import { OrganizationKeysResponse } from "../../models/response/organizationKeysResponse";
-import { OrganizationResponse } from "../../models/response/organizationResponse";
-import { OrganizationSubscriptionResponse } from "../../models/response/organizationSubscriptionResponse";
-import { PaymentResponse } from "../../models/response/paymentResponse";
-import { TaxInfoResponse } from "../../models/response/taxInfoResponse";
+import {
+  ApiKeyResponse,
+  BillingResponse,
+  ListResponse,
+  OrganizationSsoResponse,
+  OrganizationApiKeyInformationResponse,
+  OrganizationAutoEnrollStatusResponse,
+  OrganizationKeysResponse,
+  OrganizationResponse,
+  OrganizationSubscriptionResponse,
+  PaymentResponse,
+  TaxInfoResponse,
+} from "../../models/response";
 
 export class OrganizationApiService implements OrganizationApiServiceAbstraction {
   constructor(private apiService: ApiService) {}

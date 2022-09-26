@@ -15,8 +15,8 @@ import { Collection, Organization } from "@bitwarden/common/models/domain";
 import {
   CollectionDetailsResponse,
   CollectionResponse,
-} from "@bitwarden/common/models/response/collectionResponse";
-import { ListResponse } from "@bitwarden/common/models/response/listResponse";
+  ListResponse,
+} from "@bitwarden/common/models/response";
 import { CollectionView } from "@bitwarden/common/models/view";
 
 import { CollectionAddEditComponent } from "./collection-add-edit.component";

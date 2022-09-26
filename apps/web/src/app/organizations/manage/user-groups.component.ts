@@ -6,7 +6,7 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { OrganizationUserUpdateGroupsRequest } from "@bitwarden/common/models/request";
-import { GroupResponse } from "@bitwarden/common/models/response/groupResponse";
+import { GroupResponse } from "@bitwarden/common/models/response";
 
 @Component({
   selector: "app-user-groups",

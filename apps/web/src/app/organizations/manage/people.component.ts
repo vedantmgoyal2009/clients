@@ -26,9 +26,11 @@ import {
   OrganizationUserBulkRequest,
   OrganizationUserConfirmRequest,
 } from "@bitwarden/common/models/request";
-import { ListResponse } from "@bitwarden/common/models/response/listResponse";
-import { OrganizationUserBulkResponse } from "@bitwarden/common/models/response/organizationUserBulkResponse";
-import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
+import {
+  ListResponse,
+  OrganizationUserBulkResponse,
+  OrganizationUserUserDetailsResponse,
+} from "@bitwarden/common/models/response";
 
 import { BasePeopleComponent } from "../../common/base.people.component";
 

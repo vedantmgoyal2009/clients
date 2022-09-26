@@ -26,18 +26,18 @@ import {
   ProviderData,
   SendData,
 } from "../../models/data";
-import { CipherResponse } from "../../models/response/cipherResponse";
-import { CollectionDetailsResponse } from "../../models/response/collectionResponse";
-import { DomainsResponse } from "../../models/response/domainsResponse";
-import { FolderResponse } from "../../models/response/folderResponse";
 import {
+  CipherResponse,
+  CollectionDetailsResponse,
+  DomainsResponse,
+  FolderResponse,
   SyncCipherNotification,
   SyncFolderNotification,
   SyncSendNotification,
-} from "../../models/response/notificationResponse";
-import { PolicyResponse } from "../../models/response/policyResponse";
-import { ProfileResponse } from "../../models/response/profileResponse";
-import { SendResponse } from "../../models/response/sendResponse";
+  PolicyResponse,
+  ProfileResponse,
+  SendResponse,
+} from "../../models/response";
 import { SyncEventArgs } from "../../types/syncEventArgs";
 
 export class SyncService implements SyncServiceAbstraction {

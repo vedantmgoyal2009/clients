@@ -3,8 +3,7 @@ import { AuditService as AuditServiceAbstraction } from "../abstractions/audit.s
 import { CryptoFunctionService } from "../abstractions/cryptoFunction.service";
 import { throttle } from "../misc/throttle";
 import { Utils } from "../misc/utils";
-import { BreachAccountResponse } from "../models/response/breachAccountResponse";
-import { ErrorResponse } from "../models/response/errorResponse";
+import { BreachAccountResponse, ErrorResponse } from "../models/response";
 
 const PwnedPasswordsApi = "https://api.pwnedpasswords.com/range/";
 

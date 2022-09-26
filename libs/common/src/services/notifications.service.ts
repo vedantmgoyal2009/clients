@@ -16,7 +16,7 @@ import {
   SyncCipherNotification,
   SyncFolderNotification,
   SyncSendNotification,
-} from "../models/response/notificationResponse";
+} from "../models/response";
 
 export class NotificationsService implements NotificationsServiceAbstraction {
   private signalrConnection: signalR.HubConnection;

@@ -13,7 +13,7 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { AuthResult, SsoLogInCredentials } from "@bitwarden/common/models/domain";
-import { SsoPreValidateResponse } from "@bitwarden/common/models/response/ssoPreValidateResponse";
+import { SsoPreValidateResponse } from "@bitwarden/common/models/response";
 
 @Directive()
 export class SsoComponent {

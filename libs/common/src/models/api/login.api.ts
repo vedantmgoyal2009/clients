@@ -1,4 +1,4 @@
-import { BaseResponse } from "../response/baseResponse";
+import { BaseResponse } from "../response";
 
 import { LoginUriApi } from "./login-uri.api";
 

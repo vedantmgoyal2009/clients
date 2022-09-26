@@ -22,9 +22,11 @@ import {
   PasswordLogInCredentials,
 } from "@bitwarden/common/models/domain";
 import { PasswordTokenRequest, TokenRequestTwoFactor } from "@bitwarden/common/models/request";
-import { IdentityCaptchaResponse } from "@bitwarden/common/models/response/identityCaptchaResponse";
-import { IdentityTokenResponse } from "@bitwarden/common/models/response/identityTokenResponse";
-import { IdentityTwoFactorResponse } from "@bitwarden/common/models/response/identityTwoFactorResponse";
+import {
+  IdentityCaptchaResponse,
+  IdentityTokenResponse,
+  IdentityTwoFactorResponse,
+} from "@bitwarden/common/models/response";
 
 const email = "hello@world.com";
 const masterPassword = "password";

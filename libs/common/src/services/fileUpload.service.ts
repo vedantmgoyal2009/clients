@@ -3,8 +3,7 @@ import { FileUploadService as FileUploadServiceAbstraction } from "../abstractio
 import { LogService } from "../abstractions/log.service";
 import { FileUploadType } from "../enums/fileUploadType";
 import { EncArrayBuffer, EncString } from "../models/domain";
-import { AttachmentUploadDataResponse } from "../models/response/attachmentUploadDataResponse";
-import { SendFileUploadDataResponse } from "../models/response/sendFileUploadDataResponse";
+import { AttachmentUploadDataResponse, SendFileUploadDataResponse } from "../models/response";
 
 import { AzureFileUploadService } from "./azureFileUpload.service";
 import { BitwardenFileUploadService } from "./bitwardenFileUpload.service";

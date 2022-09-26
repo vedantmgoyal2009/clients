@@ -14,7 +14,7 @@ import {
   OrganizationKeysRequest,
   OrganizationUpdateRequest,
 } from "@bitwarden/common/models/request";
-import { OrganizationResponse } from "@bitwarden/common/models/response/organizationResponse";
+import { OrganizationResponse } from "@bitwarden/common/models/response";
 
 import { ApiKeyComponent } from "../../settings/api-key.component";
 import { PurgeVaultComponent } from "../../settings/purge-vault.component";

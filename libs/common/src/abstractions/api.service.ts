@@ -83,83 +83,72 @@ import {
   VerifyDeleteRecoverRequest,
   VerifyEmailRequest,
 } from "../models/request";
-import { ApiKeyResponse } from "../models/response/apiKeyResponse";
-import { AttachmentResponse } from "../models/response/attachmentResponse";
-import { AttachmentUploadDataResponse } from "../models/response/attachmentUploadDataResponse";
-import { RegisterResponse } from "../models/response/authentication/registerResponse";
-import { BillingHistoryResponse } from "../models/response/billingHistoryResponse";
-import { BillingPaymentResponse } from "../models/response/billingPaymentResponse";
-import { BreachAccountResponse } from "../models/response/breachAccountResponse";
-import { CipherResponse } from "../models/response/cipherResponse";
 import {
+  ApiKeyResponse,
+  AttachmentResponse,
+  AttachmentUploadDataResponse,
+  RegisterResponse,
+  BillingHistoryResponse,
+  BillingPaymentResponse,
+  BreachAccountResponse,
+  CipherResponse,
   CollectionGroupDetailsResponse,
   CollectionResponse,
-} from "../models/response/collectionResponse";
-import { DeviceVerificationResponse } from "../models/response/deviceVerificationResponse";
-import { DomainsResponse } from "../models/response/domainsResponse";
-import {
+  DeviceVerificationResponse,
+  DomainsResponse,
   EmergencyAccessGranteeDetailsResponse,
   EmergencyAccessGrantorDetailsResponse,
   EmergencyAccessTakeoverResponse,
   EmergencyAccessViewResponse,
-} from "../models/response/emergencyAccessResponse";
-import { EventResponse } from "../models/response/eventResponse";
-import { GroupDetailsResponse, GroupResponse } from "../models/response/groupResponse";
-import { IdentityCaptchaResponse } from "../models/response/identityCaptchaResponse";
-import { IdentityTokenResponse } from "../models/response/identityTokenResponse";
-import { IdentityTwoFactorResponse } from "../models/response/identityTwoFactorResponse";
-import { KeyConnectorUserKeyResponse } from "../models/response/keyConnectorUserKeyResponse";
-import { ListResponse } from "../models/response/listResponse";
-import {
+  EventResponse,
+  GroupDetailsResponse,
+  GroupResponse,
+  IdentityCaptchaResponse,
+  IdentityTokenResponse,
+  IdentityTwoFactorResponse,
+  KeyConnectorUserKeyResponse,
+  ListResponse,
   OrganizationConnectionConfigApis,
   OrganizationConnectionResponse,
-} from "../models/response/organizationConnectionResponse";
-import { OrganizationExportResponse } from "../models/response/organizationExportResponse";
-import { OrganizationSponsorshipSyncStatusResponse } from "../models/response/organizationSponsorshipSyncStatusResponse";
-import { OrganizationUserBulkPublicKeyResponse } from "../models/response/organizationUserBulkPublicKeyResponse";
-import { OrganizationUserBulkResponse } from "../models/response/organizationUserBulkResponse";
-import {
+  OrganizationExportResponse,
+  OrganizationSponsorshipSyncStatusResponse,
+  OrganizationUserBulkPublicKeyResponse,
+  OrganizationUserBulkResponse,
   OrganizationUserDetailsResponse,
   OrganizationUserResetPasswordDetailsReponse,
   OrganizationUserUserDetailsResponse,
-} from "../models/response/organizationUserResponse";
-import { PaymentResponse } from "../models/response/paymentResponse";
-import { PlanResponse } from "../models/response/planResponse";
-import { PolicyResponse } from "../models/response/policyResponse";
-import { PreloginResponse } from "../models/response/preloginResponse";
-import { ProfileResponse } from "../models/response/profileResponse";
-import {
+  PaymentResponse,
+  PlanResponse,
+  PolicyResponse,
+  PreloginResponse,
+  ProfileResponse,
   ProviderOrganizationOrganizationDetailsResponse,
   ProviderOrganizationResponse,
-} from "../models/response/provider/providerOrganizationResponse";
-import { ProviderResponse } from "../models/response/provider/providerResponse";
-import { ProviderUserBulkPublicKeyResponse } from "../models/response/provider/providerUserBulkPublicKeyResponse";
-import { ProviderUserBulkResponse } from "../models/response/provider/providerUserBulkResponse";
-import {
+  ProviderResponse,
+  ProviderUserBulkPublicKeyResponse,
+  ProviderUserBulkResponse,
   ProviderUserResponse,
   ProviderUserUserDetailsResponse,
-} from "../models/response/provider/providerUserResponse";
-import { SelectionReadOnlyResponse } from "../models/response/selectionReadOnlyResponse";
-import { SendAccessResponse } from "../models/response/sendAccessResponse";
-import { SendFileDownloadDataResponse } from "../models/response/sendFileDownloadDataResponse";
-import { SendFileUploadDataResponse } from "../models/response/sendFileUploadDataResponse";
-import { SendResponse } from "../models/response/sendResponse";
-import { SsoPreValidateResponse } from "../models/response/ssoPreValidateResponse";
-import { SubscriptionResponse } from "../models/response/subscriptionResponse";
-import { SyncResponse } from "../models/response/syncResponse";
-import { TaxInfoResponse } from "../models/response/taxInfoResponse";
-import { TaxRateResponse } from "../models/response/taxRateResponse";
-import { TwoFactorAuthenticatorResponse } from "../models/response/twoFactorAuthenticatorResponse";
-import { TwoFactorDuoResponse } from "../models/response/twoFactorDuoResponse";
-import { TwoFactorEmailResponse } from "../models/response/twoFactorEmailResponse";
-import { TwoFactorProviderResponse } from "../models/response/twoFactorProviderResponse";
-import { TwoFactorRecoverResponse } from "../models/response/twoFactorRescoverResponse";
-import {
+  SelectionReadOnlyResponse,
+  SendAccessResponse,
+  SendFileDownloadDataResponse,
+  SendFileUploadDataResponse,
+  SendResponse,
+  SsoPreValidateResponse,
+  SubscriptionResponse,
+  SyncResponse,
+  TaxInfoResponse,
+  TaxRateResponse,
+  TwoFactorAuthenticatorResponse,
+  TwoFactorDuoResponse,
+  TwoFactorEmailResponse,
+  TwoFactorProviderResponse,
+  TwoFactorRecoverResponse,
   ChallengeResponse,
   TwoFactorWebAuthnResponse,
-} from "../models/response/twoFactorWebAuthnResponse";
-import { TwoFactorYubiKeyResponse } from "../models/response/twoFactorYubiKeyResponse";
-import { UserKeyResponse } from "../models/response/userKeyResponse";
+  TwoFactorYubiKeyResponse,
+  UserKeyResponse,
+} from "../models/response";
 import { SendAccessView } from "../models/view";
 
 export abstract class ApiService {

@@ -20,9 +20,11 @@ import {
   BaseEncryptedOrganizationKey,
   SymmetricCryptoKey,
 } from "../models/domain";
-import { ProfileOrganizationResponse } from "../models/response/profileOrganizationResponse";
-import { ProfileProviderOrganizationResponse } from "../models/response/profileProviderOrganizationResponse";
-import { ProfileProviderResponse } from "../models/response/profileProviderResponse";
+import {
+  ProfileOrganizationResponse,
+  ProfileProviderOrganizationResponse,
+  ProfileProviderResponse,
+} from "../models/response";
 
 export class CryptoService implements CryptoServiceAbstraction {
   constructor(

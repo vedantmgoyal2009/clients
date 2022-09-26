@@ -5,8 +5,7 @@ import {
   Policy,
   ResetPasswordPolicyOptions,
 } from "../../models/domain";
-import { ListResponse } from "../../models/response/listResponse";
-import { PolicyResponse } from "../../models/response/policyResponse";
+import { ListResponse, PolicyResponse } from "../../models/response";
 
 export abstract class PolicyService {
   getAll: (type?: PolicyType, userId?: string) => Promise<Policy[]>;

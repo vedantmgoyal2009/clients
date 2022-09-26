@@ -11,7 +11,7 @@ import { OrganizationService } from "@bitwarden/common/abstractions/organization
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { ProviderService } from "@bitwarden/common/abstractions/provider.service";
 import { Organization } from "@bitwarden/common/models/domain";
-import { EventResponse } from "@bitwarden/common/models/response/eventResponse";
+import { EventResponse } from "@bitwarden/common/models/response";
 
 import { BaseEventsComponent } from "../../common/base.events.component";
 import { EventService } from "../../core";

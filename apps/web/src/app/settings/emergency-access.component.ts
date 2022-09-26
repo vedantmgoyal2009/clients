@@ -17,7 +17,7 @@ import { EmergencyAccessConfirmRequest } from "@bitwarden/common/models/request"
 import {
   EmergencyAccessGranteeDetailsResponse,
   EmergencyAccessGrantorDetailsResponse,
-} from "@bitwarden/common/models/response/emergencyAccessResponse";
+} from "@bitwarden/common/models/response";
 
 import { EmergencyAccessAddEditComponent } from "./emergency-access-add-edit.component";
 import { EmergencyAccessConfirmComponent } from "./emergency-access-confirm.component";

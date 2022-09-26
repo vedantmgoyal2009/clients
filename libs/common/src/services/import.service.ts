@@ -80,7 +80,7 @@ import {
   ImportOrganizationCiphersRequest,
   KvpRequest,
 } from "../models/request";
-import { ErrorResponse } from "../models/response/errorResponse";
+import { ErrorResponse } from "../models/response";
 import { CipherView } from "../models/view";
 
 export class ImportService implements ImportServiceAbstraction {

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { ErrorResponse } from "@bitwarden/common/models/response/errorResponse";
+import { ErrorResponse } from "@bitwarden/common/models/response";
 
 @Injectable()
 export class ValidationService {

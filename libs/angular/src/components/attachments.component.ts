@@ -9,7 +9,7 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Cipher, EncArrayBuffer } from "@bitwarden/common/models/domain";
-import { ErrorResponse } from "@bitwarden/common/models/response/errorResponse";
+import { ErrorResponse } from "@bitwarden/common/models/response";
 import { AttachmentView, CipherView } from "@bitwarden/common/models/view";
 
 @Directive()

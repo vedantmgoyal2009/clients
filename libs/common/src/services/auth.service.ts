@@ -26,7 +26,7 @@ import {
   SymmetricCryptoKey,
 } from "../models/domain";
 import { TokenRequestTwoFactor, PreloginRequest } from "../models/request";
-import { ErrorResponse } from "../models/response/errorResponse";
+import { ErrorResponse } from "../models/response";
 
 const sessionTimeoutLength = 2 * 60 * 1000; // 2 minutes
 

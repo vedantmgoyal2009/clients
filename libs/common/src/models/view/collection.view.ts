@@ -1,5 +1,5 @@
 import { Collection, ITreeNodeObject } from "../domain";
-import { CollectionGroupDetailsResponse } from "../response/collectionResponse";
+import { CollectionGroupDetailsResponse } from "../response";
 
 import { View } from "./view";
 

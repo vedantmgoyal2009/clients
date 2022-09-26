@@ -1,6 +1,6 @@
 import { ScimProviderType } from "@bitwarden/common/enums/scimProviderType";
 
-import { BaseResponse } from "../response/baseResponse";
+import { BaseResponse } from "../response";
 
 export class ScimConfigApi extends BaseResponse {
   enabled: boolean;

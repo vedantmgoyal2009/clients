@@ -15,8 +15,7 @@ import {
   OrganizationConnectionRequest,
   ScimConfigRequest,
 } from "@bitwarden/common/models/request";
-import { ApiKeyResponse } from "@bitwarden/common/models/response/apiKeyResponse";
-import { OrganizationConnectionResponse } from "@bitwarden/common/models/response/organizationConnectionResponse";
+import { ApiKeyResponse, OrganizationConnectionResponse } from "@bitwarden/common/models/response";
 
 @Component({
   selector: "app-org-manage-scim",

@@ -1,4 +1,4 @@
-import { PasswordHistoryResponse } from "../response/passwordHistoryResponse";
+import { PasswordHistoryResponse } from "../response";
 
 export class PasswordHistoryData {
   password: string;

@@ -14,7 +14,7 @@ import {
   KeyConnectorUserKeyRequest,
   KeysRequest,
 } from "../models/request";
-import { IdentityTokenResponse } from "../models/response/identityTokenResponse";
+import { IdentityTokenResponse } from "../models/response";
 
 export class KeyConnectorService implements KeyConnectorServiceAbstraction {
   constructor(

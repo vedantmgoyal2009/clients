@@ -7,7 +7,7 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification/userVerification.service.abstraction";
 import { TwoFactorProviderType } from "@bitwarden/common/enums/twoFactorProviderType";
 import { UpdateTwoFactorDuoRequest } from "@bitwarden/common/models/request";
-import { TwoFactorDuoResponse } from "@bitwarden/common/models/response/twoFactorDuoResponse";
+import { TwoFactorDuoResponse } from "@bitwarden/common/models/response";
 import { AuthResponse } from "@bitwarden/common/types/authResponse";
 
 import { TwoFactorBaseComponent } from "./two-factor-base.component";

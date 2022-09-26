@@ -29,7 +29,7 @@ import {
   TwoFactorEmailRequest,
   UpdateTempPasswordRequest,
 } from "@bitwarden/common/models/request";
-import { ErrorResponse } from "@bitwarden/common/models/response/errorResponse";
+import { ErrorResponse } from "@bitwarden/common/models/response";
 
 import { Response } from "../models/response";
 import { MessageResponse } from "../models/response/messageResponse";

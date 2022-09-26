@@ -8,7 +8,7 @@ import {
   BillingSyncConfigRequest,
   OrganizationConnectionRequest,
 } from "@bitwarden/common/models/request";
-import { OrganizationConnectionResponse } from "@bitwarden/common/models/response/organizationConnectionResponse";
+import { OrganizationConnectionResponse } from "@bitwarden/common/models/response";
 
 @Component({
   selector: "app-billing-sync-key",

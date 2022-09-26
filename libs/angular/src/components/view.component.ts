@@ -28,7 +28,7 @@ import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { EventType } from "@bitwarden/common/enums/eventType";
 import { FieldType } from "@bitwarden/common/enums/fieldType";
 import { EncArrayBuffer } from "@bitwarden/common/models/domain";
-import { ErrorResponse } from "@bitwarden/common/models/response/errorResponse";
+import { ErrorResponse } from "@bitwarden/common/models/response";
 import { AttachmentView, CipherView, LoginUriView } from "@bitwarden/common/models/view";
 
 const BroadcasterSubscriptionId = "ViewComponent";

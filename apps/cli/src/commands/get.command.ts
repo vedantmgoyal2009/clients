@@ -23,7 +23,7 @@ import {
   LoginUriExport,
   SecureNoteExport,
 } from "@bitwarden/common/models/export";
-import { ErrorResponse } from "@bitwarden/common/models/response/errorResponse";
+import { ErrorResponse } from "@bitwarden/common/models/response";
 import { CipherView, CollectionView, FolderView } from "@bitwarden/common/models/view";
 import { Response } from "@bitwarden/node/cli/models/response";
 import { StringResponse } from "@bitwarden/node/cli/models/response/stringResponse";

@@ -20,7 +20,7 @@ import { Utils } from "@bitwarden/common/misc/utils";
 import { SsoConfigApi } from "@bitwarden/common/models/api";
 import { Organization } from "@bitwarden/common/models/domain";
 import { OrganizationSsoRequest } from "@bitwarden/common/models/request";
-import { OrganizationSsoResponse } from "@bitwarden/common/models/response/organization/organizationSsoResponse";
+import { OrganizationSsoResponse } from "@bitwarden/common/models/response";
 import { SsoConfigView } from "@bitwarden/common/models/view";
 
 const defaultSigningAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";

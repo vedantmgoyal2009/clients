@@ -13,7 +13,7 @@ import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.serv
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { CollectionData } from "@bitwarden/common/models/data";
 import { Collection } from "@bitwarden/common/models/domain";
-import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collectionResponse";
+import { CollectionDetailsResponse } from "@bitwarden/common/models/response";
 import { CollectionView } from "@bitwarden/common/models/view";
 
 @Injectable()

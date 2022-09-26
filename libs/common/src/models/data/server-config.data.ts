@@ -4,7 +4,7 @@ import {
   ServerConfigResponse,
   ThirdPartyServerConfigResponse,
   EnvironmentServerConfigResponse,
-} from "../response/server-config-response";
+} from "../response";
 
 export class ServerConfigData {
   version: string;

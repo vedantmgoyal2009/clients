@@ -15,7 +15,7 @@ import {
   OrganizationUserUpdateRequest,
   SelectionReadOnlyRequest,
 } from "@bitwarden/common/models/request";
-import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collectionResponse";
+import { CollectionDetailsResponse } from "@bitwarden/common/models/response";
 import { CollectionView } from "@bitwarden/common/models/view";
 
 @Component({

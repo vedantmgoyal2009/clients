@@ -12,8 +12,7 @@ import { SendType } from "@bitwarden/common/enums/sendType";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { EncArrayBuffer, SendAccess, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
 import { SendAccessRequest } from "@bitwarden/common/models/request";
-import { ErrorResponse } from "@bitwarden/common/models/response/errorResponse";
-import { SendAccessResponse } from "@bitwarden/common/models/response/sendAccessResponse";
+import { ErrorResponse, SendAccessResponse } from "@bitwarden/common/models/response";
 import { SendAccessView } from "@bitwarden/common/models/view";
 
 @Component({

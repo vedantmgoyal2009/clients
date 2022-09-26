@@ -7,7 +7,7 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification/userVerification.service.abstraction";
 import { OrganizationApiKeyType } from "@bitwarden/common/enums/organizationApiKeyType";
 import { OrganizationApiKeyRequest } from "@bitwarden/common/models/request";
-import { ApiKeyResponse } from "@bitwarden/common/models/response/apiKeyResponse";
+import { ApiKeyResponse } from "@bitwarden/common/models/response";
 import { Verification } from "@bitwarden/common/types/verification";
 
 @Component({

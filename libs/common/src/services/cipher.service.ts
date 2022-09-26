@@ -43,8 +43,7 @@ import {
   CipherRequest,
   CipherShareRequest,
 } from "../models/request";
-import { CipherResponse } from "../models/response/cipherResponse";
-import { ErrorResponse } from "../models/response/errorResponse";
+import { CipherResponse, ErrorResponse } from "../models/response";
 import { AttachmentView, CipherView, FieldView, PasswordHistoryView, View } from "../models/view";
 
 const DomainMatchBlacklist = new Map<string, Set<string>>([

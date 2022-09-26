@@ -11,7 +11,7 @@ import {
   TwoFactorEmailRequest,
   UpdateTwoFactorEmailRequest,
 } from "@bitwarden/common/models/request";
-import { TwoFactorEmailResponse } from "@bitwarden/common/models/response/twoFactorEmailResponse";
+import { TwoFactorEmailResponse } from "@bitwarden/common/models/response";
 import { AuthResponse } from "@bitwarden/common/types/authResponse";
 
 import { TwoFactorBaseComponent } from "./two-factor-base.component";

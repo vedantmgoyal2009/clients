@@ -2,7 +2,7 @@ import Substitute, { Arg } from "@fluffy-spoon/substitute";
 
 import { SendType } from "@bitwarden/common/enums/sendType";
 import { SendAccess, SendText } from "@bitwarden/common/models/domain";
-import { SendAccessResponse } from "@bitwarden/common/models/response/sendAccessResponse";
+import { SendAccessResponse } from "@bitwarden/common/models/response";
 
 import { mockEnc } from "../../utils";
 

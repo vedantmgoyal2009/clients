@@ -21,7 +21,7 @@ import {
   EventExport,
   FolderWithIdExport as FolderExport,
 } from "../models/export";
-import { CollectionDetailsResponse } from "../models/response/collectionResponse";
+import { CollectionDetailsResponse } from "../models/response";
 import { CipherView, CollectionView, EventView, FolderView } from "../models/view";
 
 export class ExportService implements ExportServiceAbstraction {

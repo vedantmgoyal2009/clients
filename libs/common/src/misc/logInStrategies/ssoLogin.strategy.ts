@@ -10,7 +10,7 @@ import { TokenService } from "../../abstractions/token.service";
 import { TwoFactorService } from "../../abstractions/twoFactor.service";
 import { SsoLogInCredentials } from "../../models/domain";
 import { SsoTokenRequest } from "../../models/request";
-import { IdentityTokenResponse } from "../../models/response/identityTokenResponse";
+import { IdentityTokenResponse } from "../../models/response";
 
 import { LogInStrategy } from "./logIn.strategy";
 

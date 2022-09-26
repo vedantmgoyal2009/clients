@@ -4,7 +4,7 @@ import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
 import { Organization } from "@bitwarden/common/models/domain";
 import { PolicyRequest } from "@bitwarden/common/models/request";
-import { PolicyResponse } from "@bitwarden/common/models/response/policyResponse";
+import { PolicyResponse } from "@bitwarden/common/models/response";
 
 export abstract class BasePolicy {
   abstract name: string;

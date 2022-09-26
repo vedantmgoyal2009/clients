@@ -1,5 +1,5 @@
 import { Folder } from "@bitwarden/common/models/domain";
-import { FolderResponse } from "@bitwarden/common/models/response/folderResponse";
+import { FolderResponse } from "@bitwarden/common/models/response";
 
 export class FolderApiServiceAbstraction {
   save: (folder: Folder) => Promise<any>;

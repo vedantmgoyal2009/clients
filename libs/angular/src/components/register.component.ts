@@ -23,7 +23,7 @@ import {
   ReferenceEventRequest,
   RegisterRequest,
 } from "@bitwarden/common/models/request";
-import { RegisterResponse } from "@bitwarden/common/models/response/authentication/registerResponse";
+import { RegisterResponse } from "@bitwarden/common/models/response";
 
 import { PasswordColorText } from "../shared/components/password-strength/password-strength.component";
 

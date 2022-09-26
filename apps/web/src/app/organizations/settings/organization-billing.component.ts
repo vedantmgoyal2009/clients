@@ -8,7 +8,7 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { PaymentMethodType } from "@bitwarden/common/enums/paymentMethodType";
 import { TransactionType } from "@bitwarden/common/enums/transactionType";
 import { VerifyBankRequest } from "@bitwarden/common/models/request";
-import { BillingResponse } from "@bitwarden/common/models/response/billingResponse";
+import { BillingResponse } from "@bitwarden/common/models/response";
 
 @Component({
   selector: "app-org-billing",

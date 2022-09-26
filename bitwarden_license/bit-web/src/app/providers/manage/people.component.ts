@@ -20,9 +20,11 @@ import {
   ProviderUserBulkRequest,
   ProviderUserConfirmRequest,
 } from "@bitwarden/common/models/request";
-import { ListResponse } from "@bitwarden/common/models/response/listResponse";
-import { ProviderUserBulkResponse } from "@bitwarden/common/models/response/provider/providerUserBulkResponse";
-import { ProviderUserUserDetailsResponse } from "@bitwarden/common/models/response/provider/providerUserResponse";
+import {
+  ListResponse,
+  ProviderUserBulkResponse,
+  ProviderUserUserDetailsResponse,
+} from "@bitwarden/common/models/response";
 
 import { BasePeopleComponent } from "src/app/common/base.people.component";
 import { BulkStatusComponent } from "src/app/organizations/manage/bulk/bulk-status.component";
