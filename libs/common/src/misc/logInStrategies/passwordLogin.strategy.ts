@@ -10,8 +10,7 @@ import { TokenService } from "../../abstractions/token.service";
 import { TwoFactorService } from "../../abstractions/twoFactor.service";
 import { HashPurpose } from "../../enums/hashPurpose";
 import { AuthResult, PasswordLogInCredentials, SymmetricCryptoKey } from "../../models/domain";
-import { PasswordTokenRequest } from "../../models/request/identityToken/passwordTokenRequest";
-import { TokenRequestTwoFactor } from "../../models/request/identityToken/tokenRequestTwoFactor";
+import { PasswordTokenRequest, TokenRequestTwoFactor } from "../../models/request";
 
 import { LogInStrategy } from "./logIn.strategy";
 

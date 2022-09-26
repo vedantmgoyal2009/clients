@@ -14,7 +14,7 @@ import { PlanType } from "@bitwarden/common/enums/planType";
 import { ProductType } from "@bitwarden/common/enums/productType";
 import { PolicyData } from "@bitwarden/common/models/data";
 import { MasterPasswordPolicyOptions, Policy } from "@bitwarden/common/models/domain";
-import { ReferenceEventRequest } from "@bitwarden/common/models/request/referenceEventRequest";
+import { ReferenceEventRequest } from "@bitwarden/common/models/request";
 
 import { RouterService } from "./../../core/router.service";
 import { VerticalStepperComponent } from "./vertical-stepper/vertical-stepper.component";

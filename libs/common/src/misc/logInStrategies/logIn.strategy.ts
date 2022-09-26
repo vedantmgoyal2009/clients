@@ -17,12 +17,14 @@ import {
   PasswordLogInCredentials,
   SsoLogInCredentials,
 } from "../../models/domain";
-import { DeviceRequest } from "../../models/request/deviceRequest";
-import { ApiTokenRequest } from "../../models/request/identityToken/apiTokenRequest";
-import { PasswordTokenRequest } from "../../models/request/identityToken/passwordTokenRequest";
-import { SsoTokenRequest } from "../../models/request/identityToken/ssoTokenRequest";
-import { TokenRequestTwoFactor } from "../../models/request/identityToken/tokenRequestTwoFactor";
-import { KeysRequest } from "../../models/request/keysRequest";
+import {
+  DeviceRequest,
+  ApiTokenRequest,
+  PasswordTokenRequest,
+  SsoTokenRequest,
+  TokenRequestTwoFactor,
+  KeysRequest,
+} from "../../models/request";
 import { IdentityCaptchaResponse } from "../../models/response/identityCaptchaResponse";
 import { IdentityTokenResponse } from "../../models/response/identityTokenResponse";
 import { IdentityTwoFactorResponse } from "../../models/response/identityTwoFactorResponse";

@@ -13,7 +13,7 @@ import { PlanSponsorshipType } from "@bitwarden/common/enums/planSponsorshipType
 import { PlanType } from "@bitwarden/common/enums/planType";
 import { ProductType } from "@bitwarden/common/enums/productType";
 import { Organization } from "@bitwarden/common/models/domain";
-import { OrganizationSponsorshipRedeemRequest } from "@bitwarden/common/models/request/organization/organizationSponsorshipRedeemRequest";
+import { OrganizationSponsorshipRedeemRequest } from "@bitwarden/common/models/request";
 
 import { OrganizationPlansComponent } from "../../settings/organization-plans.component";
 import { DeleteOrganizationComponent } from "../settings/delete-organization.component";

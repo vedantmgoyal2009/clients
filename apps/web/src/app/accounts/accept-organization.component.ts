@@ -12,7 +12,7 @@ import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.serv
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { Policy } from "@bitwarden/common/models/domain";
-import { OrganizationUserAcceptRequest } from "@bitwarden/common/models/request/organizationUserAcceptRequest";
+import { OrganizationUserAcceptRequest } from "@bitwarden/common/models/request";
 
 import { BaseAcceptComponent } from "../common/base.accept.component";
 

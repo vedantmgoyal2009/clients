@@ -7,8 +7,10 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification/userVerification.service.abstraction";
 import { TwoFactorProviderType } from "@bitwarden/common/enums/twoFactorProviderType";
 import { VerificationType } from "@bitwarden/common/enums/verificationType";
-import { SecretVerificationRequest } from "@bitwarden/common/models/request/secretVerificationRequest";
-import { TwoFactorProviderRequest } from "@bitwarden/common/models/request/twoFactorProviderRequest";
+import {
+  SecretVerificationRequest,
+  TwoFactorProviderRequest,
+} from "@bitwarden/common/models/request";
 import { AuthResponseBase } from "@bitwarden/common/types/authResponse";
 
 @Directive()

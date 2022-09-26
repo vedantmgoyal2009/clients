@@ -14,7 +14,7 @@ import {
   MasterPasswordPolicyOptions,
   SymmetricCryptoKey,
 } from "@bitwarden/common/models/domain";
-import { OrganizationUserResetPasswordRequest } from "@bitwarden/common/models/request/organizationUserResetPasswordRequest";
+import { OrganizationUserResetPasswordRequest } from "@bitwarden/common/models/request";
 
 @Component({
   selector: "app-reset-password",

@@ -15,7 +15,7 @@ import {
   MasterPasswordPolicyOptions,
   SymmetricCryptoKey,
 } from "@bitwarden/common/models/domain";
-import { UpdateTempPasswordRequest } from "@bitwarden/common/models/request/updateTempPasswordRequest";
+import { UpdateTempPasswordRequest } from "@bitwarden/common/models/request";
 
 import { ChangePasswordComponent as BaseChangePasswordComponent } from "./change-password.component";
 

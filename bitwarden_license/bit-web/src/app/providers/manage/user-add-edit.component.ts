@@ -6,8 +6,10 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { ProviderUserType } from "@bitwarden/common/enums/providerUserType";
 import { PermissionsApi } from "@bitwarden/common/models/api";
-import { ProviderUserInviteRequest } from "@bitwarden/common/models/request/provider/providerUserInviteRequest";
-import { ProviderUserUpdateRequest } from "@bitwarden/common/models/request/provider/providerUserUpdateRequest";
+import {
+  ProviderUserInviteRequest,
+  ProviderUserUpdateRequest,
+} from "@bitwarden/common/models/request";
 
 @Component({
   selector: "provider-user-add-edit",

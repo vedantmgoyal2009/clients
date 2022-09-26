@@ -24,9 +24,11 @@ import {
   PasswordLogInCredentials,
   SsoLogInCredentials,
 } from "@bitwarden/common/models/domain";
-import { TokenRequestTwoFactor } from "@bitwarden/common/models/request/identityToken/tokenRequestTwoFactor";
-import { TwoFactorEmailRequest } from "@bitwarden/common/models/request/twoFactorEmailRequest";
-import { UpdateTempPasswordRequest } from "@bitwarden/common/models/request/updateTempPasswordRequest";
+import {
+  TokenRequestTwoFactor,
+  TwoFactorEmailRequest,
+  UpdateTempPasswordRequest,
+} from "@bitwarden/common/models/request";
 import { ErrorResponse } from "@bitwarden/common/models/response/errorResponse";
 
 import { Response } from "../models/response";

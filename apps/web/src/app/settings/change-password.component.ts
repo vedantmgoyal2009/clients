@@ -21,13 +21,15 @@ import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.ab
 import { EmergencyAccessStatusType } from "@bitwarden/common/enums/emergencyAccessStatusType";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { EncString, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
-import { CipherWithIdRequest } from "@bitwarden/common/models/request/cipherWithIdRequest";
-import { EmergencyAccessUpdateRequest } from "@bitwarden/common/models/request/emergencyAccessUpdateRequest";
-import { FolderWithIdRequest } from "@bitwarden/common/models/request/folderWithIdRequest";
-import { OrganizationUserResetPasswordEnrollmentRequest } from "@bitwarden/common/models/request/organizationUserResetPasswordEnrollmentRequest";
-import { PasswordRequest } from "@bitwarden/common/models/request/passwordRequest";
-import { SendWithIdRequest } from "@bitwarden/common/models/request/sendWithIdRequest";
-import { UpdateKeyRequest } from "@bitwarden/common/models/request/updateKeyRequest";
+import {
+  CipherWithIdRequest,
+  EmergencyAccessUpdateRequest,
+  FolderWithIdRequest,
+  OrganizationUserResetPasswordEnrollmentRequest,
+  PasswordRequest,
+  SendWithIdRequest,
+  UpdateKeyRequest,
+} from "@bitwarden/common/models/request";
 
 @Component({
   selector: "app-change-password",

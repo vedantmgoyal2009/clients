@@ -16,8 +16,10 @@ import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { ProviderUserStatusType } from "@bitwarden/common/enums/providerUserStatusType";
 import { ProviderUserType } from "@bitwarden/common/enums/providerUserType";
-import { ProviderUserBulkRequest } from "@bitwarden/common/models/request/provider/providerUserBulkRequest";
-import { ProviderUserConfirmRequest } from "@bitwarden/common/models/request/provider/providerUserConfirmRequest";
+import {
+  ProviderUserBulkRequest,
+  ProviderUserConfirmRequest,
+} from "@bitwarden/common/models/request";
 import { ListResponse } from "@bitwarden/common/models/response/listResponse";
 import { ProviderUserBulkResponse } from "@bitwarden/common/models/response/provider/providerUserBulkResponse";
 import { ProviderUserUserDetailsResponse } from "@bitwarden/common/models/response/provider/providerUserResponse";

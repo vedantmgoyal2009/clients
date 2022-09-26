@@ -18,9 +18,11 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { DEFAULT_KDF_ITERATIONS, DEFAULT_KDF_TYPE } from "@bitwarden/common/enums/kdfType";
 import { PasswordLogInCredentials } from "@bitwarden/common/models/domain";
-import { KeysRequest } from "@bitwarden/common/models/request/keysRequest";
-import { ReferenceEventRequest } from "@bitwarden/common/models/request/referenceEventRequest";
-import { RegisterRequest } from "@bitwarden/common/models/request/registerRequest";
+import {
+  KeysRequest,
+  ReferenceEventRequest,
+  RegisterRequest,
+} from "@bitwarden/common/models/request";
 import { RegisterResponse } from "@bitwarden/common/models/response/authentication/registerResponse";
 
 import { PasswordColorText } from "../shared/components/password-strength/password-strength.component";

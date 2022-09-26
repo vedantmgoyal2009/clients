@@ -8,8 +8,7 @@ import { OrganizationService } from "@bitwarden/common/abstractions/organization
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { EncString, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
-import { CollectionRequest } from "@bitwarden/common/models/request/collectionRequest";
-import { SelectionReadOnlyRequest } from "@bitwarden/common/models/request/selectionReadOnlyRequest";
+import { CollectionRequest, SelectionReadOnlyRequest } from "@bitwarden/common/models/request";
 import { GroupResponse } from "@bitwarden/common/models/response/groupResponse";
 
 @Component({

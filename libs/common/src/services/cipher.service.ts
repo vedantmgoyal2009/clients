@@ -32,15 +32,17 @@ import {
   SortedCiphersCache,
   SymmetricCryptoKey,
 } from "../models/domain";
-import { AttachmentRequest } from "../models/request/attachmentRequest";
-import { CipherBulkDeleteRequest } from "../models/request/cipherBulkDeleteRequest";
-import { CipherBulkMoveRequest } from "../models/request/cipherBulkMoveRequest";
-import { CipherBulkRestoreRequest } from "../models/request/cipherBulkRestoreRequest";
-import { CipherBulkShareRequest } from "../models/request/cipherBulkShareRequest";
-import { CipherCollectionsRequest } from "../models/request/cipherCollectionsRequest";
-import { CipherCreateRequest } from "../models/request/cipherCreateRequest";
-import { CipherRequest } from "../models/request/cipherRequest";
-import { CipherShareRequest } from "../models/request/cipherShareRequest";
+import {
+  AttachmentRequest,
+  CipherBulkDeleteRequest,
+  CipherBulkMoveRequest,
+  CipherBulkRestoreRequest,
+  CipherBulkShareRequest,
+  CipherCollectionsRequest,
+  CipherCreateRequest,
+  CipherRequest,
+  CipherShareRequest,
+} from "../models/request";
 import { CipherResponse } from "../models/response/cipherResponse";
 import { ErrorResponse } from "../models/response/errorResponse";
 import { AttachmentView, CipherView, FieldView, PasswordHistoryView, View } from "../models/view";

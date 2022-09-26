@@ -7,8 +7,7 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { CollectionData } from "@bitwarden/common/models/data";
 import { Collection } from "@bitwarden/common/models/domain";
-import { GroupRequest } from "@bitwarden/common/models/request/groupRequest";
-import { SelectionReadOnlyRequest } from "@bitwarden/common/models/request/selectionReadOnlyRequest";
+import { GroupRequest, SelectionReadOnlyRequest } from "@bitwarden/common/models/request";
 import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collectionResponse";
 import { CollectionView } from "@bitwarden/common/models/view";
 

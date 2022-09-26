@@ -3,7 +3,7 @@ import { FolderApiServiceAbstraction } from "@bitwarden/common/abstractions/fold
 import { InternalFolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
 import { FolderData } from "@bitwarden/common/models/data";
 import { Folder } from "@bitwarden/common/models/domain";
-import { FolderRequest } from "@bitwarden/common/models/request/folderRequest";
+import { FolderRequest } from "@bitwarden/common/models/request";
 import { FolderResponse } from "@bitwarden/common/models/response/folderResponse";
 
 export class FolderApiService implements FolderApiServiceAbstraction {

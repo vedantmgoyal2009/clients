@@ -5,7 +5,7 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { OrganizationUserUpdateGroupsRequest } from "@bitwarden/common/models/request/organizationUserUpdateGroupsRequest";
+import { OrganizationUserUpdateGroupsRequest } from "@bitwarden/common/models/request";
 import { GroupResponse } from "@bitwarden/common/models/response/groupResponse";
 
 @Component({

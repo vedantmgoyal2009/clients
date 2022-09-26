@@ -14,7 +14,7 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy-api.service.abstraction";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
-import { PolicyRequest } from "@bitwarden/common/models/request/policyRequest";
+import { PolicyRequest } from "@bitwarden/common/models/request";
 import { PolicyResponse } from "@bitwarden/common/models/response/policyResponse";
 
 import { BasePolicy, BasePolicyComponent } from "../policies/base-policy.component";

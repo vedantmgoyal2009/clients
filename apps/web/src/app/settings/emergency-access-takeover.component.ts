@@ -13,7 +13,7 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { KdfType } from "@bitwarden/common/enums/kdfType";
 import { PolicyData } from "@bitwarden/common/models/data";
 import { Policy, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
-import { EmergencyAccessPasswordRequest } from "@bitwarden/common/models/request/emergencyAccessPasswordRequest";
+import { EmergencyAccessPasswordRequest } from "@bitwarden/common/models/request";
 import { PolicyResponse } from "@bitwarden/common/models/response/policyResponse";
 
 @Component({

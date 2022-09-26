@@ -1,20 +1,22 @@
 import { ApiService } from "../../abstractions/api.service";
 import { OrganizationApiServiceAbstraction } from "../../abstractions/organization/organization-api.service.abstraction";
 import { OrganizationApiKeyType } from "../../enums/organizationApiKeyType";
-import { ImportDirectoryRequest } from "../../models/request/importDirectoryRequest";
-import { OrganizationSsoRequest } from "../../models/request/organization/organizationSsoRequest";
-import { OrganizationApiKeyRequest } from "../../models/request/organizationApiKeyRequest";
-import { OrganizationCreateRequest } from "../../models/request/organizationCreateRequest";
-import { OrganizationKeysRequest } from "../../models/request/organizationKeysRequest";
-import { OrganizationSubscriptionUpdateRequest } from "../../models/request/organizationSubscriptionUpdateRequest";
-import { OrganizationTaxInfoUpdateRequest } from "../../models/request/organizationTaxInfoUpdateRequest";
-import { OrganizationUpdateRequest } from "../../models/request/organizationUpdateRequest";
-import { OrganizationUpgradeRequest } from "../../models/request/organizationUpgradeRequest";
-import { PaymentRequest } from "../../models/request/paymentRequest";
-import { SeatRequest } from "../../models/request/seatRequest";
-import { SecretVerificationRequest } from "../../models/request/secretVerificationRequest";
-import { StorageRequest } from "../../models/request/storageRequest";
-import { VerifyBankRequest } from "../../models/request/verifyBankRequest";
+import {
+  ImportDirectoryRequest,
+  OrganizationSsoRequest,
+  OrganizationApiKeyRequest,
+  OrganizationCreateRequest,
+  OrganizationKeysRequest,
+  OrganizationSubscriptionUpdateRequest,
+  OrganizationTaxInfoUpdateRequest,
+  OrganizationUpdateRequest,
+  OrganizationUpgradeRequest,
+  PaymentRequest,
+  SeatRequest,
+  SecretVerificationRequest,
+  StorageRequest,
+  VerifyBankRequest,
+} from "../../models/request";
 import { ApiKeyResponse } from "../../models/response/apiKeyResponse";
 import { BillingResponse } from "../../models/response/billingResponse";
 import { ListResponse } from "../../models/response/listResponse";

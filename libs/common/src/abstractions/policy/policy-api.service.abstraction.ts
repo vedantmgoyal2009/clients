@@ -1,6 +1,6 @@
 import { PolicyType } from "@bitwarden/common/enums/policyType";
 import { MasterPasswordPolicyOptions, Policy } from "@bitwarden/common/models/domain";
-import { PolicyRequest } from "@bitwarden/common/models/request/policyRequest";
+import { PolicyRequest } from "@bitwarden/common/models/request";
 import { ListResponse } from "@bitwarden/common/models/response/listResponse";
 import { PolicyResponse } from "@bitwarden/common/models/response/policyResponse";
 

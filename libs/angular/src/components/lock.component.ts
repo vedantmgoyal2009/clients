@@ -18,7 +18,7 @@ import { HashPurpose } from "@bitwarden/common/enums/hashPurpose";
 import { KeySuffixOptions } from "@bitwarden/common/enums/keySuffixOptions";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { EncString, SymmetricCryptoKey } from "@bitwarden/common/models/domain";
-import { SecretVerificationRequest } from "@bitwarden/common/models/request/secretVerificationRequest";
+import { SecretVerificationRequest } from "@bitwarden/common/models/request";
 
 @Directive()
 export class LockComponent implements OnInit, OnDestroy {

@@ -21,9 +21,11 @@ import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.ab
 import { OrganizationUserStatusType } from "@bitwarden/common/enums/organizationUserStatusType";
 import { OrganizationUserType } from "@bitwarden/common/enums/organizationUserType";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
-import { OrganizationKeysRequest } from "@bitwarden/common/models/request/organizationKeysRequest";
-import { OrganizationUserBulkRequest } from "@bitwarden/common/models/request/organizationUserBulkRequest";
-import { OrganizationUserConfirmRequest } from "@bitwarden/common/models/request/organizationUserConfirmRequest";
+import {
+  OrganizationKeysRequest,
+  OrganizationUserBulkRequest,
+  OrganizationUserConfirmRequest,
+} from "@bitwarden/common/models/request";
 import { ListResponse } from "@bitwarden/common/models/response/listResponse";
 import { OrganizationUserBulkResponse } from "@bitwarden/common/models/response/organizationUserBulkResponse";
 import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";

@@ -11,9 +11,11 @@ import { MessagingService } from "@bitwarden/common/abstractions/messaging.servi
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { EncString } from "@bitwarden/common/models/domain";
-import { CipherWithIdRequest } from "@bitwarden/common/models/request/cipherWithIdRequest";
-import { FolderWithIdRequest } from "@bitwarden/common/models/request/folderWithIdRequest";
-import { UpdateKeyRequest } from "@bitwarden/common/models/request/updateKeyRequest";
+import {
+  CipherWithIdRequest,
+  FolderWithIdRequest,
+  UpdateKeyRequest,
+} from "@bitwarden/common/models/request";
 
 @Component({
   selector: "app-update-key",

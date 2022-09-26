@@ -10,7 +10,7 @@ import { StateService } from "../../abstractions/state.service";
 import { TokenService } from "../../abstractions/token.service";
 import { TwoFactorService } from "../../abstractions/twoFactor.service";
 import { ApiLogInCredentials } from "../../models/domain";
-import { ApiTokenRequest } from "../../models/request/identityToken/apiTokenRequest";
+import { ApiTokenRequest } from "../../models/request";
 import { IdentityTokenResponse } from "../../models/response/identityTokenResponse";
 
 import { LogInStrategy } from "./logIn.strategy";

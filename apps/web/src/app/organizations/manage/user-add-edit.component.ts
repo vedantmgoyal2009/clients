@@ -10,9 +10,11 @@ import { OrganizationUserType } from "@bitwarden/common/enums/organizationUserTy
 import { PermissionsApi } from "@bitwarden/common/models/api";
 import { CollectionData } from "@bitwarden/common/models/data";
 import { Collection } from "@bitwarden/common/models/domain";
-import { OrganizationUserInviteRequest } from "@bitwarden/common/models/request/organizationUserInviteRequest";
-import { OrganizationUserUpdateRequest } from "@bitwarden/common/models/request/organizationUserUpdateRequest";
-import { SelectionReadOnlyRequest } from "@bitwarden/common/models/request/selectionReadOnlyRequest";
+import {
+  OrganizationUserInviteRequest,
+  OrganizationUserUpdateRequest,
+  SelectionReadOnlyRequest,
+} from "@bitwarden/common/models/request";
 import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collectionResponse";
 import { CollectionView } from "@bitwarden/common/models/view";
 

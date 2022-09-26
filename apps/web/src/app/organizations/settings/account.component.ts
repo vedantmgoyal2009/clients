@@ -10,8 +10,10 @@ import { OrganizationService } from "@bitwarden/common/abstractions/organization
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
-import { OrganizationKeysRequest } from "@bitwarden/common/models/request/organizationKeysRequest";
-import { OrganizationUpdateRequest } from "@bitwarden/common/models/request/organizationUpdateRequest";
+import {
+  OrganizationKeysRequest,
+  OrganizationUpdateRequest,
+} from "@bitwarden/common/models/request";
 import { OrganizationResponse } from "@bitwarden/common/models/response/organizationResponse";
 
 import { ApiKeyComponent } from "../../settings/api-key.component";

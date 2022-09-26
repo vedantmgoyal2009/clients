@@ -9,9 +9,11 @@ import { TokenService } from "../abstractions/token.service";
 import { OrganizationUserType } from "../enums/organizationUserType";
 import { Utils } from "../misc/utils";
 import { SymmetricCryptoKey } from "../models/domain";
-import { SetKeyConnectorKeyRequest } from "../models/request/account/setKeyConnectorKeyRequest";
-import { KeyConnectorUserKeyRequest } from "../models/request/keyConnectorUserKeyRequest";
-import { KeysRequest } from "../models/request/keysRequest";
+import {
+  SetKeyConnectorKeyRequest,
+  KeyConnectorUserKeyRequest,
+  KeysRequest,
+} from "../models/request";
 import { IdentityTokenResponse } from "../models/response/identityTokenResponse";
 
 export class KeyConnectorService implements KeyConnectorServiceAbstraction {

@@ -6,7 +6,7 @@ import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstraction
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { UserVerificationService } from "@bitwarden/common/abstractions/userVerification/userVerification.service.abstraction";
 import { OrganizationApiKeyType } from "@bitwarden/common/enums/organizationApiKeyType";
-import { OrganizationApiKeyRequest } from "@bitwarden/common/models/request/organizationApiKeyRequest";
+import { OrganizationApiKeyRequest } from "@bitwarden/common/models/request";
 import { ApiKeyResponse } from "@bitwarden/common/models/response/apiKeyResponse";
 import { Verification } from "@bitwarden/common/types/verification";
 

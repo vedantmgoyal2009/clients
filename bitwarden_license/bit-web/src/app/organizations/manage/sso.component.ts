@@ -19,7 +19,7 @@ import {
 import { Utils } from "@bitwarden/common/misc/utils";
 import { SsoConfigApi } from "@bitwarden/common/models/api";
 import { Organization } from "@bitwarden/common/models/domain";
-import { OrganizationSsoRequest } from "@bitwarden/common/models/request/organization/organizationSsoRequest";
+import { OrganizationSsoRequest } from "@bitwarden/common/models/request";
 import { OrganizationSsoResponse } from "@bitwarden/common/models/response/organization/organizationSsoResponse";
 import { SsoConfigView } from "@bitwarden/common/models/view";
 

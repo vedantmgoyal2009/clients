@@ -1,5 +1,5 @@
 import { AuthenticationType } from "../../enums/authenticationType";
-import { TokenRequestTwoFactor } from "../request/identityToken/tokenRequestTwoFactor";
+import { TokenRequestTwoFactor } from "../request";
 
 export class PasswordLogInCredentials {
   readonly type = AuthenticationType.Password;
