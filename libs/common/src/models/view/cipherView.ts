@@ -1,6 +1,7 @@
 import { Jsonify } from "type-fest";
 
 import { IInitializerMetadata } from "@bitwarden/common/interfaces/IInitializerMetadata";
+import { InitializerKey } from "@bitwarden/common/services/cryptography/initializerKey";
 
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
@@ -18,7 +19,7 @@ import { SecureNoteView } from "./secureNoteView";
 import { View } from "./view";
 
 export class CipherView implements View, IInitializerMetadata {
-  readonly initializerKey = "CipherView";
+  readonly initializerKey = InitializerKey.CipherView;
 
   id: string = null;
   organizationId: string = null;

@@ -1,6 +1,7 @@
 import { Jsonify } from "type-fest";
 
 import { IDecryptable } from "@bitwarden/common/interfaces/IDecryptable";
+import { InitializerKey } from "@bitwarden/common/services/cryptography/initializerKey";
 
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
@@ -20,7 +21,7 @@ import { SecureNote } from "./secureNote";
 import { SymmetricCryptoKey } from "./symmetricCryptoKey";
 
 export class Cipher extends Domain implements IDecryptable<CipherView> {
-  readonly initializerKey = "Cipher";
+  readonly initializerKey = InitializerKey.Cipher;
 
   id: string;
   organizationId: string;

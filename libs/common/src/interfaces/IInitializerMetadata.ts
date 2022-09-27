@@ -1,4 +1,4 @@
-import { InitializerKey } from "../services/cryptography/classInitializers";
+import { InitializerKey } from "../services/cryptography/initializerKey";
 
 export interface IInitializerMetadata {
   initializerKey: InitializerKey;
