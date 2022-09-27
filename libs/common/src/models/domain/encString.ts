@@ -45,7 +45,7 @@ export class EncString implements IEncrypted {
   }
 
   static fromJSON(obj: Jsonify<EncString>): EncString {
-    return new EncString(obj);
+    return obj == null ? null : new EncString(obj);
   }
 
   private initFromData(encType: EncryptionType, data: string, iv: string, mac: string) {

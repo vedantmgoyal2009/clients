@@ -243,10 +243,42 @@ export class Cipher extends Domain implements IDecryptable<CipherView> {
   }
 
   static fromJSON(obj: Jsonify<Cipher>) {
-    // TODO this properly
-    return Object.assign(new Cipher(), obj, {
-      name: EncString.fromJSON(obj.name),
-      notes: EncString.fromJSON(obj.notes),
+    const domain = new Cipher();
+    const name = EncString.fromJSON(obj.name);
+    const notes = EncString.fromJSON(obj.notes);
+    const revisionDate = obj.revisionDate == null ? null : new Date(obj.revisionDate);
+    const deletedDate = obj.deletedDate == null ? null : new Date(obj.deletedDate);
+    const attachments = obj.attachments?.map((a: any) => Attachment.fromJSON(a));
+    const fields = obj.fields?.map((f: any) => Field.fromJSON(f));
+    const passwordHistory = obj.passwordHistory?.map((ph: any) => Password.fromJSON(ph));
+
+    Object.assign(domain, obj, {
+      name,
+      notes,
+      revisionDate,
+      deletedDate,
+      attachments,
+      fields,
+      passwordHistory,
     });
+
+    switch (obj.type) {
+      case CipherType.Card:
+        domain.card = Card.fromJSON(obj.card);
+        break;
+      case CipherType.Identity:
+        domain.identity = Identity.fromJSON(obj.identity);
+        break;
+      case CipherType.Login:
+        domain.login = Login.fromJSON(obj.login);
+        break;
+      case CipherType.SecureNote:
+        domain.secureNote = SecureNote.fromJSON(obj.secureNote);
+        break;
+      default:
+        break;
+    }
+
+    return domain;
   }
 }
