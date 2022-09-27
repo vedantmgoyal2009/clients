@@ -5,6 +5,7 @@ import { AuthService } from "@bitwarden/common/services/auth.service";
 import { CipherService } from "@bitwarden/common/services/cipher.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { EncryptService } from "@bitwarden/common/services/encrypt.service";
+import { MultithreadEncryptService } from "@bitwarden/common/services/multithreadEncrypt.service";
 import { NoopEventService } from "@bitwarden/common/services/noopEvent.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
 import { SettingsService } from "@bitwarden/common/services/settings.service";
@@ -12,6 +13,7 @@ import { StateMigrationService } from "@bitwarden/common/services/stateMigration
 import { WebCryptoFunctionService } from "@bitwarden/common/services/webCryptoFunction.service";
 
 import { AutoFillActiveTabCommand } from "../commands/autoFillActiveTabCommand";
+import { flagEnabled } from "../flags";
 import { Account } from "../models/account";
 import { StateService as AbstractStateService } from "../services/abstractions/state.service";
 import AutofillService from "../services/autofill.service";
@@ -87,8 +89,9 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
   // Don't love this pt.1
   let searchService: SearchService = null;
 
-  // TODO: multithread
-  const encryptService = new EncryptService(cryptoFunctionService, logService, true);
+  const encryptService = flagEnabled("multithreadDecryption")
+    ? new MultithreadEncryptService(cryptoFunctionService, logService, true)
+    : new EncryptService(cryptoFunctionService, logService, true);
 
   const cipherService = new CipherService(
     cryptoService,

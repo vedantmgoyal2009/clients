@@ -57,6 +57,7 @@ import { FileUploadService } from "@bitwarden/common/services/fileUpload.service
 import { FolderApiService } from "@bitwarden/common/services/folder/folder-api.service";
 import { KeyConnectorService } from "@bitwarden/common/services/keyConnector.service";
 import { MemoryStorageService } from "@bitwarden/common/services/memoryStorage.service";
+import { MultithreadEncryptService } from "@bitwarden/common/services/multithreadEncrypt.service";
 import { NotificationsService } from "@bitwarden/common/services/notifications.service";
 import { OrganizationService } from "@bitwarden/common/services/organization.service";
 import { PasswordGenerationService } from "@bitwarden/common/services/passwordGeneration.service";
@@ -80,6 +81,7 @@ import { WebCryptoFunctionService } from "@bitwarden/common/services/webCryptoFu
 
 import { BrowserApi } from "../browser/browserApi";
 import { SafariApp } from "../browser/safariApp";
+import { flagEnabled } from "../flags";
 import { Account } from "../models/account";
 import { PopupUtilsService } from "../popup/services/popup-utils.service";
 import { AutofillService as AutofillServiceAbstraction } from "../services/abstractions/autofill.service";
@@ -247,7 +249,9 @@ export default class MainBackground {
       }
     );
     this.i18nService = new I18nService(BrowserApi.getUILanguage(window));
-    this.encryptService = new EncryptService(this.cryptoFunctionService, this.logService, true);
+    this.encryptService = flagEnabled("multithreadDecryption")
+      ? new MultithreadEncryptService(this.cryptoFunctionService, this.logService, true)
+      : new EncryptService(this.cryptoFunctionService, this.logService, true);
     this.cryptoService = new BrowserCryptoService(
       this.cryptoFunctionService,
       this.encryptService,
