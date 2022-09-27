@@ -21,7 +21,7 @@ export class MultithreadEncryptService extends EncryptService {
 
   /**
    * Sends items to a web worker to decrypt them.
-   * This utilises multithreading to decrypt items faster without interrupting other operations (e.g. updating UI)
+   * This utilises multithreading to decrypt items faster without interrupting other operations (e.g. updating UI).
    */
   async decryptItems<T extends IInitializerMetadata>(
     items: IDecryptable<T>[],
