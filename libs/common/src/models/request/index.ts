@@ -60,6 +60,7 @@ export * from "./organization-user-update.request";
 export * from "./password-hint.request";
 export * from "./password-history.request";
 export * from "./password.request";
+export * from "./passwordless-create-auth.request";
 export * from "./payment.request";
 export * from "./policy.request";
 export * from "./prelogin.request";

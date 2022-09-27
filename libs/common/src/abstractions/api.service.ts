@@ -82,6 +82,7 @@ import {
   UpdateTwoFactorYubioOtpRequest,
   VerifyDeleteRecoverRequest,
   VerifyEmailRequest,
+  PasswordlessCreateAuthRequest,
 } from "../models/request";
 import {
   ApiKeyResponse,
@@ -148,6 +149,7 @@ import {
   TwoFactorWebAuthnResponse,
   TwoFactorYubiKeyResponse,
   UserKeyResponse,
+  AuthRequestResponse,
 } from "../models/response";
 import { SendAccessView } from "../models/view";
 
@@ -201,6 +203,9 @@ export abstract class ApiService {
   postUserRotateApiKey: (id: string, request: SecretVerificationRequest) => Promise<ApiKeyResponse>;
   putUpdateTempPassword: (request: UpdateTempPasswordRequest) => Promise<any>;
   postConvertToKeyConnector: () => Promise<void>;
+  //passwordless
+  postAuthRequest: (request: PasswordlessCreateAuthRequest) => Promise<AuthRequestResponse>;
+  getAuthResponse: (id: string, accessCode: string) => Promise<AuthRequestResponse>;
 
   getUserBillingHistory: () => Promise<BillingHistoryResponse>;
   getUserBillingPayment: () => Promise<BillingPaymentResponse>;

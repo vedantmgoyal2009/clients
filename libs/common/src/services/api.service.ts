@@ -90,6 +90,7 @@ import {
   UpdateTwoFactorYubioOtpRequest,
   VerifyDeleteRecoverRequest,
   VerifyEmailRequest,
+  PasswordlessCreateAuthRequest,
 } from "../models/request";
 import {
   ApiKeyResponse,
@@ -157,6 +158,7 @@ import {
   ChallengeResponse,
   TwoFactorYubiKeyResponse,
   UserKeyResponse,
+  AuthRequestResponse,
 } from "../models/response";
 import { SendAccessView } from "../models/view";
 
@@ -254,6 +256,17 @@ export class ApiService implements ApiServiceAbstraction {
     } catch (e) {
       return Promise.reject(null);
     }
+  }
+
+  async postAuthRequest(request: PasswordlessCreateAuthRequest): Promise<AuthRequestResponse> {
+    const r = await this.send("POST", "/auth-requests/", request, false, true);
+    return new AuthRequestResponse(r);
+  }
+
+  async getAuthResponse(id: string, accessCode: string): Promise<AuthRequestResponse> {
+    const path = `/auth-requests/${id}/response?code=${accessCode}`;
+    const r = await this.send("GET", path, null, false, true);
+    return new AuthRequestResponse(r);
   }
 
   // Account APIs

@@ -5,6 +5,7 @@ import { AbstractThemingService } from "@bitwarden/angular/services/theming/them
 import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { AccountApiService as AccountApiServiceAbstraction } from "@bitwarden/common/abstractions/account/account-api.service.abstraction";
 import { AccountService as AccountServiceAbstraction } from "@bitwarden/common/abstractions/account/account.service.abstraction";
+import { AnonymousHubService as AnonymousHubServiceAbstraction } from "@bitwarden/common/abstractions/anonymousHub.service";
 import { ApiService as ApiServiceAbstraction } from "@bitwarden/common/abstractions/api.service";
 import { AppIdService as AppIdServiceAbstraction } from "@bitwarden/common/abstractions/appId.service";
 import { AuditService as AuditServiceAbstraction } from "@bitwarden/common/abstractions/audit.service";
@@ -61,6 +62,7 @@ import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { Account, GlobalState } from "@bitwarden/common/models/domain";
 import { AccountApiService } from "@bitwarden/common/services/account/account-api.service";
 import { AccountService } from "@bitwarden/common/services/account/account.service";
+import { AnonymousHubService } from "@bitwarden/common/services/anonymousHub.service";
 import { ApiService } from "@bitwarden/common/services/api.service";
 import { AppIdService } from "@bitwarden/common/services/appId.service";
 import { AuditService } from "@bitwarden/common/services/audit.service";
@@ -542,6 +544,11 @@ import { ValidationService } from "./validation.service";
       provide: ConfigApiServiceAbstraction,
       useClass: ConfigApiService,
       deps: [ApiServiceAbstraction],
+    },
+    {
+      provide: AnonymousHubServiceAbstraction,
+      useClass: AnonymousHubService,
+      deps: [EnvironmentServiceAbstraction, AuthServiceAbstraction, LogService],
     },
   ],
 })

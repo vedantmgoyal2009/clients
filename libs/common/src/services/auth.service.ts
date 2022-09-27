@@ -1,3 +1,5 @@
+import { Observable, Subject } from "rxjs";
+
 import { ApiService } from "../abstractions/api.service";
 import { AppIdService } from "../abstractions/appId.service";
 import { AuthService as AuthServiceAbstraction } from "../abstractions/auth.service";
@@ -17,6 +19,7 @@ import { KdfType } from "../enums/kdfType";
 import { KeySuffixOptions } from "../enums/keySuffixOptions";
 import { ApiLogInStrategy } from "../misc/logInStrategies/apiLogin.strategy";
 import { PasswordLogInStrategy } from "../misc/logInStrategies/passwordLogin.strategy";
+import { PasswordlessLogInStrategy } from "../misc/logInStrategies/passwordlessLogin.strategy";
 import { SsoLogInStrategy } from "../misc/logInStrategies/ssoLogin.strategy";
 import {
   AuthResult,
@@ -24,9 +27,10 @@ import {
   PasswordLogInCredentials,
   SsoLogInCredentials,
   SymmetricCryptoKey,
+  PasswordlessLogInCredentials,
 } from "../models/domain";
-import { TokenRequestTwoFactor, PreloginRequest } from "../models/request";
-import { ErrorResponse } from "../models/response";
+import { PreloginRequest, TokenRequestTwoFactor } from "../models/request";
+import { AuthRequestPushNotification, ErrorResponse } from "../models/response";
 
 const sessionTimeoutLength = 2 * 60 * 1000; // 2 minutes
 
@@ -41,8 +45,14 @@ export class AuthService implements AuthServiceAbstraction {
       : null;
   }
 
-  private logInStrategy: ApiLogInStrategy | PasswordLogInStrategy | SsoLogInStrategy;
+  private logInStrategy:
+    | ApiLogInStrategy
+    | PasswordLogInStrategy
+    | SsoLogInStrategy
+    | PasswordlessLogInStrategy;
   private sessionTimeout: any;
+
+  private pushNotificationSubject = new Subject<string>();
 
   constructor(
     protected cryptoService: CryptoService,
@@ -60,52 +70,78 @@ export class AuthService implements AuthServiceAbstraction {
   ) {}
 
   async logIn(
-    credentials: ApiLogInCredentials | PasswordLogInCredentials | SsoLogInCredentials
+    credentials:
+      | ApiLogInCredentials
+      | PasswordLogInCredentials
+      | SsoLogInCredentials
+      | PasswordlessLogInCredentials
   ): Promise<AuthResult> {
     this.clearState();
 
-    let strategy: ApiLogInStrategy | PasswordLogInStrategy | SsoLogInStrategy;
+    let strategy:
+      | ApiLogInStrategy
+      | PasswordLogInStrategy
+      | SsoLogInStrategy
+      | PasswordlessLogInStrategy;
 
-    if (credentials.type === AuthenticationType.Password) {
-      strategy = new PasswordLogInStrategy(
-        this.cryptoService,
-        this.apiService,
-        this.tokenService,
-        this.appIdService,
-        this.platformUtilsService,
-        this.messagingService,
-        this.logService,
-        this.stateService,
-        this.twoFactorService,
-        this
-      );
-    } else if (credentials.type === AuthenticationType.Sso) {
-      strategy = new SsoLogInStrategy(
-        this.cryptoService,
-        this.apiService,
-        this.tokenService,
-        this.appIdService,
-        this.platformUtilsService,
-        this.messagingService,
-        this.logService,
-        this.stateService,
-        this.twoFactorService,
-        this.keyConnectorService
-      );
-    } else if (credentials.type === AuthenticationType.Api) {
-      strategy = new ApiLogInStrategy(
-        this.cryptoService,
-        this.apiService,
-        this.tokenService,
-        this.appIdService,
-        this.platformUtilsService,
-        this.messagingService,
-        this.logService,
-        this.stateService,
-        this.twoFactorService,
-        this.environmentService,
-        this.keyConnectorService
-      );
+    switch (credentials.type) {
+      case AuthenticationType.Password:
+        strategy = new PasswordLogInStrategy(
+          this.cryptoService,
+          this.apiService,
+          this.tokenService,
+          this.appIdService,
+          this.platformUtilsService,
+          this.messagingService,
+          this.logService,
+          this.stateService,
+          this.twoFactorService,
+          this
+        );
+        break;
+      case AuthenticationType.Sso:
+        strategy = new SsoLogInStrategy(
+          this.cryptoService,
+          this.apiService,
+          this.tokenService,
+          this.appIdService,
+          this.platformUtilsService,
+          this.messagingService,
+          this.logService,
+          this.stateService,
+          this.twoFactorService,
+          this.keyConnectorService
+        );
+        break;
+      case AuthenticationType.Api:
+        strategy = new ApiLogInStrategy(
+          this.cryptoService,
+          this.apiService,
+          this.tokenService,
+          this.appIdService,
+          this.platformUtilsService,
+          this.messagingService,
+          this.logService,
+          this.stateService,
+          this.twoFactorService,
+          this.environmentService,
+          this.keyConnectorService
+        );
+        break;
+      case AuthenticationType.Passwordless:
+        strategy = new PasswordlessLogInStrategy(
+          this.cryptoService,
+          this.apiService,
+          this.tokenService,
+          this.appIdService,
+          this.platformUtilsService,
+          this.messagingService,
+          this.logService,
+          this.stateService,
+          this.twoFactorService,
+          this
+        );
+        break;
     }
 
     const result = await strategy.logIn(credentials as any);
@@ -201,7 +237,21 @@ export class AuthService implements AuthServiceAbstraction {
     return this.cryptoService.makeKey(masterPassword, email, kdf, kdfIterations);
   }
 
-  private saveState(strategy: ApiLogInStrategy | PasswordLogInStrategy | SsoLogInStrategy) {
+  async authResponsePushNotifiction(notification: AuthRequestPushNotification): Promise<any> {
+    this.pushNotificationSubject.next(notification.id);
+  }
+
+  getPushNotifcationObs$(): Observable<any> {
+    return this.pushNotificationSubject.asObservable();
+  }
+
+  private saveState(
+    strategy:
+      | ApiLogInStrategy
+      | PasswordLogInStrategy
+      | SsoLogInStrategy
+      | PasswordlessLogInStrategy
+  ) {
     this.logInStrategy = strategy;
     this.startSessionTimeout();
   }

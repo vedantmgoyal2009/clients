@@ -1,6 +1,7 @@
 export * from "./api-key.response";
 export * from "./attachment-upload-data.response";
 export * from "./attachment.response";
+export * from "./auth-request.response";
 export * from "./base.response";
 export * from "./billing-history.response";
 export * from "./billing-payment.response";
@@ -63,6 +64,7 @@ export * from "./two-factor-rescover.response";
 export * from "./two-factor-web-authn.response";
 export * from "./two-factor-yubi-key.response";
 export * from "./user-key.response";
+
 export * from "./authentication/captcha-protected.response";
 export * from "./authentication/register.response";
 export * from "./organization/organization-sso.response";
