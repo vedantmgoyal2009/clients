@@ -8,7 +8,6 @@ export * from "./icon";
 export * from "./icon-button";
 export * from "./menu";
 export * from "./dialog";
-export * from "./submit-button";
 export * from "./link";
 export * from "./tabs";
 export * from "./table";

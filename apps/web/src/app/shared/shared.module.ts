@@ -18,7 +18,6 @@ import {
   IconModule,
   LinkModule,
   MenuModule,
-  SubmitButtonModule,
   TableModule,
   TabsModule,
 } from "@bitwarden/components";
@@ -48,7 +47,6 @@ import "./locales";
     ToastrModule,
     MenuModule,
     FormFieldModule,
-    SubmitButtonModule,
     IconModule,
     TabsModule,
     TableModule,
@@ -71,7 +69,6 @@ import "./locales";
     ToastrModule,
     MenuModule,
     FormFieldModule,
-    SubmitButtonModule,
     IconModule,
     TabsModule,
     TableModule,
