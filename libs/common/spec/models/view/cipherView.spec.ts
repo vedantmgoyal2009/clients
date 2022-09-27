@@ -7,6 +7,7 @@ import { IdentityView } from "@bitwarden/common/models/view/identityView";
 import { LoginView } from "@bitwarden/common/models/view/loginView";
 import { PasswordHistoryView } from "@bitwarden/common/models/view/passwordHistoryView";
 import { SecureNoteView } from "@bitwarden/common/models/view/secureNoteView";
+import { InitializerKey } from "@bitwarden/common/services/cryptography/initializerKey";
 
 import { mockFromJson } from "../../utils";
 
@@ -71,6 +72,12 @@ describe("CipherView", () => {
       } as any);
 
       expect(actual).toMatchObject(expected);
+    });
+
+    it("preserves the InitializerKey", () => {
+      const cipherView = new CipherView();
+      const actual = JSON.parse(JSON.stringify(cipherView));
+      expect(actual.initializerKey).toEqual(InitializerKey.CipherView);
     });
   });
 });

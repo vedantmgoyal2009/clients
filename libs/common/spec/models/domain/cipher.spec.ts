@@ -652,5 +652,11 @@ describe("Cipher DTO", () => {
 
       expect(actual).toMatchObject(expected);
     });
+
+    it("preserves the InitializerKey", () => {
+      const cipher = new Cipher();
+      const actual = JSON.parse(JSON.stringify(cipher));
+      expect(actual.initializerKey).toEqual(InitializerKey.Cipher);
+    });
   });
 });
