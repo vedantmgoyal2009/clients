@@ -1,4 +1,4 @@
-import Substitute, { Arg } from "@fluffy-spoon/substitute";
+import { Substitute, Arg } from "@fluffy-spoon/substitute";
 import { Jsonify } from "type-fest";
 
 import { CipherRepromptType } from "@bitwarden/common/enums/cipherRepromptType";
