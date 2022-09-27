@@ -128,23 +128,22 @@ export class Cipher extends Domain implements IDecryptable<CipherView> {
       encKey
     );
 
-    // TODO: uncomment this after serialization is done properly
-    // switch (this.type) {
-    //   case CipherType.Login:
-    //     model.login = await this.login.decrypt(this.organizationId, encKey);
-    //     break;
-    //   case CipherType.SecureNote:
-    //     model.secureNote = await this.secureNote.decrypt(this.organizationId, encKey);
-    //     break;
-    //   case CipherType.Card:
-    //     model.card = await this.card.decrypt(this.organizationId, encKey);
-    //     break;
-    //   case CipherType.Identity:
-    //     model.identity = await this.identity.decrypt(this.organizationId, encKey);
-    //     break;
-    //   default:
-    //     break;
-    // }
+    switch (this.type) {
+      case CipherType.Login:
+        model.login = await this.login.decrypt(this.organizationId, encKey);
+        break;
+      case CipherType.SecureNote:
+        model.secureNote = await this.secureNote.decrypt(this.organizationId, encKey);
+        break;
+      case CipherType.Card:
+        model.card = await this.card.decrypt(this.organizationId, encKey);
+        break;
+      case CipherType.Identity:
+        model.identity = await this.identity.decrypt(this.organizationId, encKey);
+        break;
+      default:
+        break;
+    }
 
     const orgId = this.organizationId;
 
