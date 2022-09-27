@@ -86,16 +86,16 @@ export class EncryptService implements AbstractEncryptService {
       key
     );
     if (fastParams.macKey != null && fastParams.mac != null) {
-      const computedMac = await this.cryptoFunctionService.hmacFast(
-        fastParams.macData,
-        fastParams.macKey,
-        "sha256"
-      );
-      const macsEqual = await this.cryptoFunctionService.compareFast(fastParams.mac, computedMac);
-      if (!macsEqual) {
-        this.logMacFailed("mac failed.");
-        return null;
-      }
+      // const computedMac = await this.cryptoFunctionService.hmacFast(
+      //   fastParams.macData,
+      //   fastParams.macKey,
+      //   "sha256"
+      // );
+      // const macsEqual = await this.cryptoFunctionService.compareFast(fastParams.mac, computedMac);
+      // if (!macsEqual) {
+      //   this.logMacFailed("mac failed.");
+      //   return null;
+      // }
     }
 
     return await this.cryptoFunctionService.aesDecryptFast(fastParams);
