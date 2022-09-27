@@ -10,10 +10,10 @@ import {
   SecureNoteView,
 } from "@bitwarden/common/models/view";
 
-jest.mock("@bitwarden/common/models/view");
-jest.mock("@bitwarden/common/models/view");
-jest.mock("@bitwarden/common/models/view");
-jest.mock("@bitwarden/common/models/view");
+jest.mock("@bitwarden/common/models/view/login.view");
+jest.mock("@bitwarden/common/models/view/attachment.view");
+jest.mock("@bitwarden/common/models/view/field.view");
+jest.mock("@bitwarden/common/models/view/password-history.view");
 
 describe("CipherView", () => {
   beforeEach(() => {

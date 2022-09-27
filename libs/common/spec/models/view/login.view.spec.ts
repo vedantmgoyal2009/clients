@@ -1,6 +1,6 @@
 import { LoginUriView, LoginView } from "@bitwarden/common/models/view";
 
-jest.mock("@bitwarden/common/models/view");
+jest.mock("@bitwarden/common/models/view/login-uri.view");
 
 describe("LoginView", () => {
   beforeEach(() => {
