@@ -9,7 +9,13 @@ export class OrganizationExportResponse extends BaseResponse {
 
   constructor(response: any) {
     super(response);
-    this.collections = this.getResponseProperty("Collections");
-    this.ciphers = this.getResponseProperty("Ciphers");
+    const collections = this.getResponseProperty("Collections");
+    if (collections != null) {
+      this.collections = new ListResponse(collections, CollectionResponse);
+    }
+    const ciphers = this.getResponseProperty("Ciphers");
+    if (ciphers != null) {
+      this.ciphers = new ListResponse(ciphers, CipherResponse);
+    }
   }
 }
