@@ -10,6 +10,7 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { ProviderService } from "@bitwarden/common/abstractions/provider.service";
+import { EventSystemUser } from "@bitwarden/common/enums/eventSystemUser";
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { EventResponse } from "@bitwarden/common/models/response/eventResponse";
 
@@ -111,6 +112,12 @@ export class EventsComponent extends BaseEventsComponent implements OnInit {
 
   protected getUserName(r: EventResponse, userId: string) {
     if (userId == null) {
+      if (r.systemUser != null) {
+        return {
+          name: EventSystemUser[r.systemUser],
+        };
+      }
+
       return null;
     }
 
