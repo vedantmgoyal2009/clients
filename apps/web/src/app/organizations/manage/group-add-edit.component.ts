@@ -17,6 +17,13 @@ import { GroupDetailsResponse } from "@bitwarden/common/models/response/groupRes
 import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
 import { CollectionView } from "@bitwarden/common/models/view/collectionView";
 
+enum CollectionPermission {
+  VIEW = "view",
+  VIEW_EXCEPT_PASSWORDS = "viewExceptPass",
+  EDIT = "edit",
+  EDIT_EXCEPT_PASSWORDS = "editExceptPass",
+}
+
 const convertToPermission = (value: SelectionReadOnly) => {
   if (value.readOnly) {
     return value.hidePasswords
@@ -36,13 +43,6 @@ const hidePassword = (perm: CollectionPermission) =>
   [CollectionPermission.VIEW_EXCEPT_PASSWORDS, CollectionPermission.EDIT_EXCEPT_PASSWORDS].includes(
     perm
   );
-
-enum CollectionPermission {
-  VIEW = "view",
-  VIEW_EXCEPT_PASSWORDS = "viewExceptPass",
-  EDIT = "edit",
-  EDIT_EXCEPT_PASSWORDS = "editExceptPass",
-}
 
 type GroupCollectionSelection = { id: string; permission: CollectionPermission };
 
