@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormControl, Validators } from "@angular/forms";
 
-import { FormSelectionList } from "@bitwarden/angular/utils/FormSelectionList";
+import { FormSelectionList, SelectionItemId } from "@bitwarden/angular/utils/FormSelectionList";
 import { SelectionReadOnly } from "@bitwarden/cli/src/models/selectionReadOnly";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
@@ -17,7 +17,7 @@ import { GroupDetailsResponse } from "@bitwarden/common/models/response/groupRes
 import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
 import { CollectionView } from "@bitwarden/common/models/view/collectionView";
 
-const fromSelectionReadonly = (value: SelectionReadOnly) => {
+const convertToPermission = (value: SelectionReadOnly) => {
   if (value.readOnly) {
     return value.hidePasswords
       ? CollectionPermission.VIEW_EXCEPT_PASSWORDS
@@ -62,7 +62,7 @@ export class GroupAddEditComponent implements OnInit {
   title: string;
   formPromise: Promise<any>;
   deletePromise: Promise<any>;
-  permissions = [
+  permissionList = [
     { perm: CollectionPermission.VIEW, labelId: "canView" },
     { perm: CollectionPermission.VIEW_EXCEPT_PASSWORDS, labelId: "canViewExceptPass" },
     { perm: CollectionPermission.EDIT, labelId: "canEdit" },
@@ -82,8 +82,8 @@ export class GroupAddEditComponent implements OnInit {
     (a, b) => this.i18nService.collator.compare(a.name, b.name)
   );
 
-  memberList = new FormSelectionList<OrganizationUserUserDetailsResponse, string>(
-    (item) => this.formBuilder.control(item.id),
+  memberList = new FormSelectionList<OrganizationUserUserDetailsResponse, SelectionItemId>(
+    (item) => this.formBuilder.group({ id: item.id }),
     (a, b) => this.i18nService.collator.compare(a.name + a.email + a.id, b.name + b.email + b.id)
   );
 
@@ -127,11 +127,14 @@ export class GroupAddEditComponent implements OnInit {
           this.collections,
           this.group.collections.map((gc) => ({
             id: gc.id,
-            permission: fromSelectionReadonly(gc),
+            permission: convertToPermission(gc),
           }))
         );
 
-        this.memberList.populateItems(this.members, users);
+        this.memberList.populateItems(
+          this.members,
+          users.map((u) => ({ id: u }))
+        );
       } catch (e) {
         this.logService.error(e);
       }
@@ -179,6 +182,7 @@ export class GroupAddEditComponent implements OnInit {
     request.name = formValue.name;
     request.externalId = formValue.externalId;
     request.accessAll = formValue.accessAll;
+    request.users = formValue.members?.map((m) => m.id) ?? [];
 
     if (!request.accessAll) {
       request.collections = formValue.collections.map(

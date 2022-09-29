@@ -5509,5 +5509,11 @@
   },
   "canEditExceptPass": {
     "message": "Can edit, except passwords"
+  },
+  "noCollectionsAdded": {
+    "message": "No collections added"
+  },
+  "noMembersAdded": {
+    "message": "No members added"
   }
 }

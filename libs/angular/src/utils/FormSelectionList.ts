@@ -1,6 +1,6 @@
 import { AbstractControl, FormArray } from "@angular/forms";
 
-type SelectionItemId = {
+export type SelectionItemId = {
   id: string;
 };
 
@@ -31,12 +31,11 @@ function findSortedIndex<T>(sortedArray: T[], val: T, compareFn: (a: T, b: T) =>
  *
  * The first type parameter TItem represents the item being selected/deselected, it must have an `id`
  * property for identification/comparison. The second type parameter TControlValue represents the value
- * type of the form control. It defaults to string, representing an item's identifier. Otherwise, it must
- * also have an `id` property.
+ * type of the form control.
  */
 export class FormSelectionList<
   TItem extends SelectionItemId,
-  TControlValue extends SelectionItemId | string = string
+  TControlValue extends SelectionItemId
 > {
   /**
    * Sorted list of selected items
@@ -69,7 +68,7 @@ export class FormSelectionList<
    * Select multiple items by their ids at once. Optionally provide an initial form control value.
    * @param ids - List of ids to select
    * @param initialValue - Value that will be applied to the corresponding form controls
-   * The provided `id` arguments will be automatically assigned to each form control
+   * The provided `id` arguments will be automatically assigned to each form control value
    */
   selectItems(ids: string[], initialValue?: Partial<TControlValue> | undefined) {
     for (const id of ids) {
@@ -114,16 +113,11 @@ export class FormSelectionList<
 
     const newControl = this.controlFactory(selectedOption);
 
-    if (typeof initialValue == "string") {
-      // A string type implies the form control value is the `id` of the selected item
-      newControl.setValue(initialValue);
-    } else {
-      // Otherwise, patch the value and ensure the `id` is set
-      newControl.patchValue({
-        id,
-        ...initialValue,
-      });
-    }
+    // Patch the value and ensure the `id` is set
+    newControl.patchValue({
+      id,
+      ...initialValue,
+    });
 
     this.formArray.insert(sortedInsertIndex, newControl);
   }
@@ -169,11 +163,7 @@ export class FormSelectionList<
     this.deselectedItems = items.sort(this.compareFn);
 
     for (const selectedItem of selectedItems) {
-      if (typeof selectedItem == "string") {
-        this.selectItem(selectedItem, selectedItem);
-      } else {
-        this.selectItem(selectedItem.id, selectedItem);
-      }
+      this.selectItem(selectedItem.id, selectedItem);
     }
   }
 }

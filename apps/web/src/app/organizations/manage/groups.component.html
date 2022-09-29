@@ -76,12 +76,12 @@
           <td bitCell (click)="check(g)">
             <input type="checkbox" [(ngModel)]="g.checked" />
           </td>
-          <td bitCell class="tw-text-lg tw-font-bold" (click)="edit(g)">
+          <td bitCell class="tw-cursor-pointer tw-text-lg tw-font-bold" (click)="edit(g)">
             <button bitLink>
               {{ g.name }}
             </button>
           </td>
-          <td bitCell (click)="edit(g, 2)">
+          <td bitCell class="tw-cursor-pointer" (click)="edit(g, 2)">
             <span
               *ngFor="let cName of g.collectionNames.slice(0, maxCollections); let last = last"
               bitBadge

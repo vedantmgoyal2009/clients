@@ -5,4 +5,5 @@ export class GroupRequest {
   accessAll: boolean;
   externalId: string;
   collections: SelectionReadOnlyRequest[] = [];
+  users: string[] = [];
 }

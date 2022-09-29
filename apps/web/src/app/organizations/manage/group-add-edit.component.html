@@ -1,10 +1,21 @@
-<bit-dialog dialogSize="large" disablePadding>
-  <span bitDialogTitle>
-    {{ title }}
-    <span *ngIf="editMode" class="tw-text-sm tw-normal-case tw-text-muted">{{ group?.name }}</span>
-  </span>
-  <div bitDialogContent>
-    <form [formGroup]="groupForm">
+<form #form [formGroup]="groupForm" (ngSubmit)="submit()" [appApiAction]="formPromise">
+  <bit-dialog dialogSize="large" [disablePadding]="!loading">
+    <span bitDialogTitle>
+      {{ title }}
+      <span *ngIf="editMode" class="tw-text-sm tw-normal-case tw-text-muted">{{
+        group?.name
+      }}</span>
+    </span>
+    <div bitDialogContent>
+      <div *ngIf="loading">
+        <i
+          class="bwi bwi-spinner bwi-spin text-muted"
+          title="{{ 'loading' | i18n }}"
+          aria-hidden="true"
+        ></i>
+        <span class="sr-only">{{ "loading" | i18n }}</span>
+      </div>
+
       <bit-tab-group *ngIf="!loading" [preserveContent]="true" [selectedIndex]="tabIndex">
         <bit-tab label="{{ 'groupInfo' | i18n }}">
           <bit-form-field>
@@ -24,7 +35,7 @@
             <bit-label>{{ "selectMembers" | i18n }}</bit-label>
             <!--TODO: Swap with CL NgSelect-->
             <select bitInput (change)="addMember($event)">
-              <option disabled selected value="">-- Type to filter --</option>
+              <option disabled selected value="">-- Type to filter not implemented yet --</option>
               <option *ngFor="let m of memberList.deselectedItems" [value]="m.id">
                 <span *ngIf="m.name">{{ m.name }} ({{ m.email }})</span>
                 <span *ngIf="!m.name">{{ m.email }}</span>
@@ -48,15 +59,15 @@
                     <div class="tw-flex tw-flex-col">
                       <div>
                         {{ m.name || m.email }}
-                        <span *ngIf="m.status == 0" bitBadge badgeType="secondary">{{
-                          "invited" | i18n
-                        }}</span>
+                        <span *ngIf="m.status == 0" bitBadge badgeType="secondary">
+                          {{ "invited" | i18n }}
+                        </span>
                       </div>
                       <div class="tw-text-muted" *ngIf="m.name">{{ m.email }}</div>
                     </div>
                   </div>
                 </td>
-                <td bitCell>{{ m.type }}</td>
+                <td bitCell>{{ m.type | userType }}</td>
                 <td bitCell>
                   <button
                     type="button"
@@ -66,6 +77,9 @@
                     (click)="memberList.deselectItem(m.id)"
                   ></button>
                 </td>
+              </tr>
+              <tr *ngIf="memberList.selectedItems.length == 0">
+                <td bitCell>{{ "noMembersAdded" | i18n }}</td>
               </tr>
             </ng-container>
           </bit-table>
@@ -89,7 +103,7 @@
                   [(ngModel)]="initialPermission"
                   [ngModelOptions]="{ standalone: true }"
                 >
-                  <option *ngFor="let p of permissions" [value]="p.perm">
+                  <option *ngFor="let p of permissionList" [value]="p.perm">
                     {{ p.labelId | i18n }}
                   </option>
                 </select>
@@ -99,7 +113,9 @@
                 <bit-label>{{ "selectCollections" | i18n }}</bit-label>
                 <!--TODO: Swap with CL NgSelect-->
                 <select bitInput (change)="addCollection($event)">
-                  <option disabled selected value="">-- Type to filter --</option>
+                  <option disabled selected value="">
+                    -- Type to filter not implemented yet --
+                  </option>
                   <option *ngFor="let m of collectionList.deselectedItems" [value]="m.id">
                     {{ m.name }}
                   </option>
@@ -128,12 +144,16 @@
                     </div>
                   </td>
                   <td bitCell>
+                    <label class="sr-only" [for]="'permission' + i">{{
+                      "permission" | i18n
+                    }}</label>
                     <select
                       bitInput
                       class="tw-w-72 tw-border-0 !tw-bg-transparent tw-font-bold"
                       formControlName="permission"
+                      [id]="'permission' + i"
                     >
-                      <option *ngFor="let p of permissions" [value]="p.perm">
+                      <option *ngFor="let p of permissionList" [value]="p.perm">
                         {{ p.labelId | i18n }}
                       </option>
                     </select>
@@ -148,24 +168,29 @@
                     ></button>
                   </td>
                 </tr>
+                <tr *ngIf="collectionList.selectedItems.length == 0">
+                  <td bitCell>{{ "noCollectionsAdded" | i18n }}</td>
+                </tr>
               </ng-container>
             </bit-table>
           </ng-container>
         </bit-tab>
       </bit-tab-group>
-    </form>
-  </div>
-  <div bitDialogFooter class="tw-flex tw-flex-row tw-gap-2">
-    <button bitButton buttonType="primary" (click)="submit()">Save</button>
-    <button bitButton buttonType="secondary" bitDialogClose>Cancel</button>
-    <div class="ml-auto">
+    </div>
+    <div bitDialogFooter class="tw-flex tw-flex-row tw-gap-2">
+      <button bitButton buttonType="primary" type="submit" [loading]="form.loading">
+        {{ "save" | i18n }}
+      </button>
+      <button bitButton buttonType="secondary" type="button" bitDialogClose>
+        {{ "cancel" | i18n }}
+      </button>
       <button
         #deleteBtn
+        bitButton
+        buttonType="danger"
         type="button"
         (click)="delete()"
-        bitButton
-        class="tw-px-0"
-        buttonType="danger"
+        class="tw-ml-auto tw-px-0"
         appA11yTitle="{{ 'delete' | i18n }}"
         *ngIf="editMode"
         [disabled]="deleteBtn.loading"
@@ -184,172 +209,5 @@
         ></i>
       </button>
     </div>
-  </div>
-</bit-dialog>
-
-<!--<div class="modal fade" role="dialog" aria-modal="true" aria-labelledby="groupAddEditTitle">-->
-<!--  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">-->
-<!--    <form-->
-<!--      class="modal-content"-->
-<!--      #form-->
-<!--      (ngSubmit)="submit()"-->
-<!--      [appApiAction]="formPromise"-->
-<!--      ngNativeValidate-->
-<!--    >-->
-<!--      <div class="modal-header">-->
-<!--        <h1 class="modal-title" id="groupAddEditTitle">-->
-<!--          {{ title }}-->
-<!--          <span *ngIf="editMode" class="tw-text-sm tw-normal-case tw-text-muted">{{ name }}</span>-->
-<!--        </h1>-->
-<!--        <button-->
-<!--          type="button"-->
-<!--          class="close"-->
-<!--          data-dismiss="modal"-->
-<!--          appA11yTitle="{{ 'close' | i18n }}"-->
-<!--        >-->
-<!--          <span aria-hidden="true">&times;</span>-->
-<!--        </button>-->
-<!--      </div>-->
-
-<!--      <div class="modal-body" *ngIf="loading">-->
-<!--        <i-->
-<!--          class="bwi bwi-spinner bwi-spin text-muted"-->
-<!--          title="{{ 'loading' | i18n }}"-->
-<!--          aria-hidden="true"-->
-<!--        ></i>-->
-<!--        <span class="sr-only">{{ "loading" | i18n }}</span>-->
-<!--      </div>-->
-
-<!--      <bit-tab-group *ngIf="!loading" [preserveContent]="true" [selectedIndex]="1">-->
-<!--        <bit-tab label="{{ 'groupInfo' | i18n }}">-->
-<!--          <bit-form-field>-->
-<!--            <bit-label>{{ "name" | i18n }}</bit-label>-->
-<!--            <input bitInput type="text" [(ngModel)]="name" name="Name" id="name" required />-->
-<!--          </bit-form-field>-->
-<!--          <bit-form-field>-->
-<!--            <bit-label>{{ "externalId" | i18n }}</bit-label>-->
-<!--            <input-->
-<!--              bitInput-->
-<!--              type="text"-->
-<!--              [(ngModel)]="externalId"-->
-<!--              name="ExternalId"-->
-<!--              id="externalId"-->
-<!--            />-->
-<!--            <bit-hint>{{ "externalIdDesc" | i18n }}</bit-hint>-->
-<!--          </bit-form-field>-->
-<!--        </bit-tab>-->
-
-<!--        <bit-tab label="{{ 'members' | i18n }}">-->
-<!--          <p>{{ "editGroupMembersDesc" | i18n }}</p>-->
-<!--          <bit-form-field>-->
-<!--            <bit-label>{{ "selectMembers" | i18n }}</bit-label>-->
-<!--            <select bitInput>-->
-<!--              <option disabled selected>&#45;&#45; Type to filter &#45;&#45;</option>-->
-<!--              <option>First</option>-->
-<!--              <option>Second</option>-->
-<!--              <option>Third</option>-->
-<!--            </select>-->
-<!--          </bit-form-field>-->
-
-<!--          <bit-table>-->
-<!--            <ng-container header>-->
-<!--              <tr>-->
-<!--                <th bitCell>{{ 'member' | i18n }}</th>-->
-<!--                <th bitCell>{{ 'role' | i18n }}</th>-->
-<!--                <th bitCell style="width: 50px;"> </th>-->
-<!--              </tr>-->
-<!--            </ng-container>-->
-<!--            <ng-container body>-->
-<!--              <tr bitRow *ngFor="let x of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 23, 2, 2,2 ,2 ,2,]">-->
-<!--                <td bitCell>-->
-<!--                  <div class="tw-flex tw-items-center">-->
-<!--                    <bit-avatar class="tw-mr-3" text="Shane Melton"></bit-avatar>-->
-<!--                    <div class="tw-flex tw-flex-col">-->
-<!--                      <div>-->
-<!--                        Shane Melton-->
-<!--                        <span bitBadge badgeType="secondary">Invited</span>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </td>-->
-<!--                <td bitCell>Admin</td>-->
-<!--                <td bitCell>-->
-<!--                  <button-->
-<!--                    type="button"-->
-<!--                    bitIconButton="bwi-close"-->
-<!--                    buttonType="muted"-->
-<!--                    appA11yTitle="{{ 'removeMember' | i18n }}"-->
-<!--                  ></button>-->
-<!--                </td>-->
-<!--              </tr>-->
-<!--              <tr bitRow>-->
-<!--                <td bitCell>-->
-<!--                  <div class="tw-flex tw-items-center">-->
-<!--                    <bit-avatar class="tw-mr-2" text="John Doe"></bit-avatar>-->
-<!--                    <div class="tw-flex tw-flex-col">-->
-<!--                      <div>John Doe</div>-->
-<!--                      <div class="tw-text-muted">johndoe@email.com</div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </td>-->
-<!--                <td bitCell>Admin</td>-->
-<!--                <td bitCell>-->
-<!--                  <button-->
-<!--                    type="button"-->
-<!--                    bitIconButton="bwi-close"-->
-<!--                    buttonType="muted"-->
-<!--                    appA11yTitle="{{ 'removeMember' | i18n }}"-->
-<!--                  ></button>-->
-<!--                </td>-->
-<!--              </tr>-->
-<!--            </ng-container>-->
-<!--          </bit-table>-->
-
-<!--        </bit-tab>-->
-
-<!--        <bit-tab label="{{ 'collections' | i18n }}"> </bit-tab>-->
-<!--      </bit-tab-group>-->
-
-<!--      <div class="modal-footer">-->
-<!--        <button type="submit" bitButton buttonType="primary" [disabled]="form.loading">-->
-<!--          <i-->
-<!--            class="bwi bwi-spinner bwi-spin"-->
-<!--            title="{{ 'loading' | i18n }}"-->
-<!--            aria-hidden="true"-->
-<!--            [hidden]="!form.loading"-->
-<!--          ></i>-->
-<!--          <span>{{ "save" | i18n }}</span>-->
-<!--        </button>-->
-<!--        <button type="button" bitButton buttonType="secondary" data-dismiss="modal">-->
-<!--          {{ "cancel" | i18n }}-->
-<!--        </button>-->
-<!--        <div class="ml-auto">-->
-<!--          <button-->
-<!--            #deleteBtn-->
-<!--            type="button"-->
-<!--            (click)="delete()"-->
-<!--            bitButton-->
-<!--            class="tw-px-0"-->
-<!--            buttonType="danger"-->
-<!--            appA11yTitle="{{ 'delete' | i18n }}"-->
-<!--            *ngIf="editMode"-->
-<!--            [disabled]="deleteBtn.loading"-->
-<!--            [appApiAction]="deletePromise"-->
-<!--          >-->
-<!--            <i-->
-<!--              class="bwi bwi-trash bwi-lg bwi-fw tw-mx-1"-->
-<!--              [hidden]="deleteBtn.loading"-->
-<!--              aria-hidden="true"-->
-<!--            ></i>-->
-<!--            <i-->
-<!--              class="bwi bwi-spinner bwi-spin bwi-lg bwi-fw"-->
-<!--              [hidden]="!deleteBtn.loading"-->
-<!--              aria-hidden="true"-->
-<!--              title="{{ 'loading' | i18n }}"-->
-<!--            ></i>-->
-<!--          </button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </form>-->
-<!--  </div>-->
-<!--</div>-->
+  </bit-dialog>
+</form>
