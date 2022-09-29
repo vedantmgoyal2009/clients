@@ -50,7 +50,6 @@ export class ProfileComponent implements OnInit {
   }
 
   async openChangeAvatar() {
-    this.profile.avatarColor = "#fefefe";
     await this.modalService.openViewRef(ChangeAvatarComponent, this.avatarModalRef, (modal) => {
       modal.profile = this.profile;
     });

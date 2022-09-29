@@ -5358,6 +5358,15 @@
   "numberOfUsers": {
     "message": "Number of users"
   },
+  "pickAnAvatarColor": {
+    "message": "Pick an avatar color"
+  },
+  "customizeAvatar": {
+    "message": "Customize avatar"
+  },
+  "avatarUpdated": {
+    "message": "Avatar updated"
+  },
   "brightBlue": {
     "message": "Bright Blue"
   },

@@ -69,6 +69,7 @@ import { TaxInfoUpdateRequest } from "../models/request/taxInfoUpdateRequest";
 import { TwoFactorEmailRequest } from "../models/request/twoFactorEmailRequest";
 import { TwoFactorProviderRequest } from "../models/request/twoFactorProviderRequest";
 import { TwoFactorRecoveryRequest } from "../models/request/twoFactorRecoveryRequest";
+import { UpdateAvatarRequest } from "../models/request/updateAvatarRequest";
 import { UpdateDomainsRequest } from "../models/request/updateDomainsRequest";
 import { UpdateKeyRequest } from "../models/request/updateKeyRequest";
 import { UpdateProfileRequest } from "../models/request/updateProfileRequest";
@@ -179,6 +180,7 @@ export abstract class ApiService {
   getUserSubscription: () => Promise<SubscriptionResponse>;
   getTaxInfo: () => Promise<TaxInfoResponse>;
   putProfile: (request: UpdateProfileRequest) => Promise<ProfileResponse>;
+  putAvatar: (request: UpdateAvatarRequest) => Promise<ProfileResponse>;
   putTaxInfo: (request: TaxInfoUpdateRequest) => Promise<any>;
   postPrelogin: (request: PreloginRequest) => Promise<PreloginResponse>;
   postEmailToken: (request: EmailTokenRequest) => Promise<any>;

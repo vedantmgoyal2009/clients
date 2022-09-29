@@ -77,6 +77,7 @@ import { TaxInfoUpdateRequest } from "../models/request/taxInfoUpdateRequest";
 import { TwoFactorEmailRequest } from "../models/request/twoFactorEmailRequest";
 import { TwoFactorProviderRequest } from "../models/request/twoFactorProviderRequest";
 import { TwoFactorRecoveryRequest } from "../models/request/twoFactorRecoveryRequest";
+import { UpdateAvatarRequest } from "../models/request/updateAvatarRequest";
 import { UpdateDomainsRequest } from "../models/request/updateDomainsRequest";
 import { UpdateKeyRequest } from "../models/request/updateKeyRequest";
 import { UpdateProfileRequest } from "../models/request/updateProfileRequest";
@@ -283,6 +284,11 @@ export class ApiService implements ApiServiceAbstraction {
 
   async putProfile(request: UpdateProfileRequest): Promise<ProfileResponse> {
     const r = await this.send("PUT", "/accounts/profile", request, true, true);
+    return new ProfileResponse(r);
+  }
+
+  async putAvatar(request: UpdateAvatarRequest): Promise<ProfileResponse> {
+    const r = await this.send("PUT", "/accounts/avatar", request, true, true);
     return new ProfileResponse(r);
   }
 

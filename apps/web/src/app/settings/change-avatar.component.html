@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title" id="customizeTitle">Customize Avatar</h2>
+        <h2 class="modal-title" id="customizeTitle">{{ "customizeAvatar" | i18n }}</h2>
         <button
           type="button"
           class="close"
@@ -20,8 +20,8 @@
         <app-callout type="error" *ngIf="error">
           {{ error }}
         </app-callout>
-        <p class="tw-text-lg">Pick an avatar color</p>
-        <div class="tw-flex tw-flex-wrap tw-gap-4">
+        <p class="tw-text-lg">{{ "pickAnAvatarColor" | i18n }}</p>
+        <div class="tw-flex tw-flex-wrap tw-justify-center tw-gap-16 tw-gap-y-8">
           <ng-container *ngFor="let c of defaultColorPalette">
             <bit-avatar
               appStopClick
@@ -37,11 +37,6 @@
             >
             </bit-avatar>
           </ng-container>
-          <!-- <bit-avatar appStopClick [selected]="customColorSelected" title="Custom color" [clickable]="true"
-          [style.background-color]="customColor$ "
-          icon="bwi-pencil" size="xlarge" [color]="customColor$ | async" class="tw-inline-block tw-p-5 tw-pr-0">
-        </bit-avatar> -->
-
           <span>
             <span
               [ngClass]="{
@@ -61,12 +56,17 @@
           </span>
         </div>
 
-        <input
-          [hidden]="!customColorSelected"
-          type="color"
-          [ngModel]="customColor$ | async"
-          (ngModelChange)="customColor$.next($event)"
-        />
+        <div [hidden]="!customColorSelected" class="tw-mt-8 tw-mr-8 tw-flex">
+          <span
+            [style.background]="customColor$ | async"
+            [cpToggle]="true"
+            [cpAlphaChannel]="'disabled'"
+            (colorPickerChange)="customColor$.next($event)"
+            [cpOutputFormat]="'hex'"
+            [cpDialogDisplay]="'inline'"
+            [(colorPicker)]="currentSelection"
+          ></span>
+        </div>
       </div>
       <div class="modal-footer">
         <button

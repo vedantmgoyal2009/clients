@@ -3,6 +3,7 @@ import { DatePipe, CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
+import { ColorPickerModule } from "ngx-color-picker";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ToastrModule } from "ngx-toastr";
 
@@ -68,6 +69,7 @@ import "./locales";
     SubmitButtonModule,
     IconModule,
     AvatarModule,
+    ColorPickerModule,
   ],
   providers: [DatePipe],
   bootstrap: [],
