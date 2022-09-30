@@ -240,7 +240,10 @@ export class WebCryptoFunctionService implements CryptoFunctionService {
     decipher.start({ iv: parameters.iv });
     decipher.update(dataBuffer);
     decipher.finish();
-    const val = decipher.output.toString();
+    let val = decipher.output.toString();
+    val = val.replace(/\0/g, "").replace(/NaN/g, "");
+    // eslint-disable-next-line
+    console.log(val);
     return Promise.resolve(val);
   }
 
