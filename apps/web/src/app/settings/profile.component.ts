@@ -1,4 +1,5 @@
-import { ViewChild, ViewContainerRef, Component, OnInit } from "@angular/core";
+import { ViewChild, ViewContainerRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { Subject, takeUntil } from "rxjs";
 
 import { ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -17,7 +18,7 @@ import { ChangeAvatarComponent } from "./change-avatar.component";
   selector: "app-profile",
   templateUrl: "profile.component.html",
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   loading = true;
   profile: ProfileResponse;
   fingerprint: string;
@@ -25,6 +26,7 @@ export class ProfileComponent implements OnInit {
   formPromise: Promise<any>;
   @ViewChild("avatarModalTemplate", { read: ViewContainerRef, static: true })
   avatarModalRef: ViewContainerRef;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private apiService: ApiService,
@@ -39,6 +41,7 @@ export class ProfileComponent implements OnInit {
 
   async ngOnInit() {
     this.profile = await this.apiService.getProfile();
+    await this.stateService.setAvatarColor(this.profile.avatarColor);
     this.loading = false;
     const fingerprint = await this.cryptoService.getFingerprint(
       await this.stateService.getUserId()
@@ -46,13 +49,25 @@ export class ProfileComponent implements OnInit {
     if (fingerprint != null) {
       this.fingerprint = fingerprint.join("-");
     }
-    this.openChangeAvatar();
+  }
+
+  async ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   async openChangeAvatar() {
-    await this.modalService.openViewRef(ChangeAvatarComponent, this.avatarModalRef, (modal) => {
-      modal.profile = this.profile;
-    });
+    const modalOpened = await this.modalService.openViewRef(
+      ChangeAvatarComponent,
+      this.avatarModalRef,
+      (modal) => {
+        modal.profile = this.profile;
+        modal.changeColor.pipe(takeUntil(this.destroy$)).subscribe((selection) => {
+          this.profile.avatarColor = selection;
+          modalOpened[0].close();
+        });
+      }
+    );
   }
 
   async submit() {

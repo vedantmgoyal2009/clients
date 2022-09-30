@@ -142,6 +142,7 @@ export class AccountSettings {
   vaultTimeout?: number;
   vaultTimeoutAction?: string = "lock";
   serverConfig?: ServerConfigData;
+  avatarColor: string;
 }
 
 export type AccountSettingsSettings = {

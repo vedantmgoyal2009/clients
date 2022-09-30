@@ -4,6 +4,7 @@ import { ThemingService } from "@bitwarden/angular/services/theming/theming.serv
 import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { AccountApiService as AccountApiServiceAbstraction } from "@bitwarden/common/abstractions/account/account-api.service.abstraction";
+import { AccountUpdateService as AccountUpdateServiceAbstraction } from "@bitwarden/common/abstractions/account/account-update.service";
 import { AccountService as AccountServiceAbstraction } from "@bitwarden/common/abstractions/account/account.service.abstraction";
 import { ApiService as ApiServiceAbstraction } from "@bitwarden/common/abstractions/api.service";
 import { AppIdService as AppIdServiceAbstraction } from "@bitwarden/common/abstractions/appId.service";
@@ -61,6 +62,7 @@ import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { Account } from "@bitwarden/common/models/domain/account";
 import { GlobalState } from "@bitwarden/common/models/domain/globalState";
 import { AccountApiService } from "@bitwarden/common/services/account/account-api.service";
+import { AccountUpdateService } from "@bitwarden/common/services/account/account-update.service";
 import { AccountService } from "@bitwarden/common/services/account/account.service";
 import { ApiService } from "@bitwarden/common/services/api.service";
 import { AppIdService } from "@bitwarden/common/services/appId.service";
@@ -265,6 +267,11 @@ import { ValidationService } from "./validation.service";
         MessagingServiceAbstraction,
         LogService,
       ],
+    },
+    {
+      provide: AccountUpdateServiceAbstraction,
+      useClass: AccountUpdateService,
+      deps: [],
     },
     { provide: LogService, useFactory: () => new ConsoleLogService(false) },
     {

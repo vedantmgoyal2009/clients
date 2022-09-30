@@ -33,14 +33,7 @@
     </div>
     <div class="col-6">
       <div class="mb-3">
-        <bit-avatar
-          data="{{ profile | userName }}"
-          [email]="profile.email"
-          dynamic="true"
-          size="75"
-          fontSize="35"
-        >
-        </bit-avatar>
+        <bit-avatar text="{{ profile | userName }}"> </bit-avatar>
         <button
           type="button"
           class="btn btn-outline-secondary tw-ml-3.5"

@@ -328,6 +328,8 @@ export class StateMigrationService<
       vaultTimeoutAction:
         (await this.get<string>(v1Keys.vaultTimeoutAction)) ??
         defaultAccount.settings.vaultTimeoutAction,
+      avatarColor:
+        (await this.get<string>(v1Keys.avatarColor)) ?? defaultAccount.settings.avatarColor,
     };
 
     // (userId == null) = no logged in user (so no known userId) and we need to temporarily store account specific settings in state to migrate on first auth

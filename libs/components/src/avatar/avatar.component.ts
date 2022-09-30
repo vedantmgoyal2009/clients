@@ -1,6 +1,18 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+} from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { debounceTime, Subject, takeUntil } from "rxjs";
 
+import { AccountUpdateService } from "@bitwarden/common/abstractions/account/account-update.service";
+import { ApiService } from "@bitwarden/common/abstractions/api.service";
+import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 
 type SizeTypes = "xlarge" | "large" | "default" | "small";
@@ -26,7 +38,7 @@ const SizeClasses: Record<SizeTypes, string[]> = {
     [ngClass]="classList"
   />`,
 })
-export class AvatarComponent implements OnChanges {
+export class AvatarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() border = false;
   // When a color is not provided, attempt to retrieve it from the user profile.
   @Input() color: string | null;
@@ -42,11 +54,32 @@ export class AvatarComponent implements OnChanges {
   private svgFontSize = 20;
   private svgFontWeight = 300;
   private svgSize = 48;
+  private destroy$ = new Subject<void>();
   @Output() select = new EventEmitter<string>();
 
   src: SafeResourceUrl;
 
-  constructor(public sanitizer: DomSanitizer) {}
+  constructor(
+    public sanitizer: DomSanitizer,
+    private apiService: ApiService,
+    private stateService: StateService,
+    private accountUpdateService: AccountUpdateService
+  ) {}
+
+  async ngOnInit() {
+    this.accountUpdateService.update
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
+      .subscribe((u) => {
+        if (u) {
+          this.generate();
+        }
+      });
+  }
+
+  async ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   ngOnChanges() {
     this.generate();
@@ -94,19 +127,20 @@ export class AvatarComponent implements OnChanges {
       chars = chars.match(Utils.regexpEmojiPresentation)[0];
     }
 
-    let svg: HTMLElement;
-    let hexColor = this.color;
+    let hexColor: string;
 
+    //Color takes priority as such: input color, state color, generated color
     if (this.color) {
-      svg = this.createSvgElement(this.svgSize, hexColor);
-      // } else if (this.id != null) {
-      //   hexColor = Utils.stringToColor(this.id.toString());
-      //   svg = this.createSvgElement(this.svgSize, hexColor);
+      hexColor = this.color;
     } else {
-      //TODO get user profile color
-      hexColor = "#000000";
-      svg = this.createSvgElement(this.svgSize, hexColor);
+      const stateColor = await this.loadColorFromState();
+      if (stateColor) {
+        hexColor = stateColor;
+      } else {
+        hexColor = Utils.stringToColor(upperCaseText);
+      }
     }
+    const svg: HTMLElement = this.createSvgElement(this.svgSize, hexColor);
     const charObj = this.createTextElement(chars, hexColor);
     svg.appendChild(charObj);
     const html = window.document.createElement("div").appendChild(svg).outerHTML;
@@ -114,6 +148,18 @@ export class AvatarComponent implements OnChanges {
     this.src = this.sanitizer.bypassSecurityTrustResourceUrl(
       "data:image/svg+xml;base64," + svgHtml
     );
+  }
+
+  private async loadColorFromState(): Promise<string | null> {
+    let color = await this.stateService.getAvatarColor();
+    //If empty, try loading it from the api, maybe the avatar color has yet to be loaded.
+    if (color === undefined) {
+      await this.apiService.getProfile().then((profile) => {
+        this.stateService.setAvatarColor(profile.avatarColor);
+        color = profile.avatarColor;
+      });
+    }
+    return color;
   }
 
   private getFirstLetters(data: string, count: number): string {

@@ -2295,6 +2295,23 @@ export class StateService<
     )?.settings?.serverConfig;
   }
 
+  async getAvatarColor(options?: StorageOptions): Promise<string> {
+    return (
+      await this.getAccount(this.reconcileOptions(options, await this.defaultOnDiskLocalOptions()))
+    )?.settings?.avatarColor;
+  }
+
+  async setAvatarColor(value: string, options?: StorageOptions): Promise<void> {
+    const account = await this.getAccount(
+      this.reconcileOptions(options, await this.defaultOnDiskLocalOptions())
+    );
+    account.settings.avatarColor = value;
+    return await this.saveAccount(
+      account,
+      this.reconcileOptions(options, await this.defaultOnDiskLocalOptions())
+    );
+  }
+
   protected async getGlobals(options: StorageOptions): Promise<TGlobalState> {
     let globals: TGlobalState;
     if (this.useMemory(options.storageLocation)) {

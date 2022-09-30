@@ -9,10 +9,12 @@ import {
 } from "@angular/core";
 import { BehaviorSubject, debounceTime, Subject, takeUntil } from "rxjs";
 
+import { AccountUpdateService } from "@bitwarden/common/abstractions/account/account-update.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
+import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { UpdateAvatarRequest } from "@bitwarden/common/models/request/updateAvatarRequest";
 import { ProfileResponse } from "@bitwarden/common/models/response/profileResponse";
@@ -20,13 +22,11 @@ import { ProfileResponse } from "@bitwarden/common/models/response/profileRespon
   selector: "app-change-avatar",
   templateUrl: "change-avatar.component.html",
   encapsulation: ViewEncapsulation.None,
-  styles: [
-    "color-picker { display: inline-block; margin: auto; margin-right: 0;  }",
-    "color-picker .color-picker { border: none; }",
-  ],
+  styles: ["color-picker { margin: auto; }", "color-picker .color-picker { border: none; }"],
 })
 export class ChangeAvatarComponent implements OnInit, OnDestroy {
   @Input() profile: ProfileResponse;
+  @Output() changeColor: EventEmitter<string | null> = new EventEmitter();
   loading = false;
   error: string;
   defaultColorPalette: NamedAvatarColor[] = [
@@ -45,7 +45,9 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
     private i18nService: I18nService,
     private platformUtilsService: PlatformUtilsService,
     private logService: LogService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private stateService: StateService,
+    private accountUpdateService: AccountUpdateService
   ) {}
 
   @Output() onSaved = new EventEmitter();
@@ -59,32 +61,39 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.defaultColorPalette.forEach((c) => (c.name = this.i18nService.t(c.name)));
 
-    this.customColor$.pipe(debounceTime(200), takeUntil(this.destroy$)).subscribe((color) => {
-      if (color == null) {
-        return;
-      }
-      this.customTextColor$.next(Utils.pickTextColorBasedOnBgColor(color));
-      this.customColorSelected = true;
-      this.currentSelection = color;
-    });
+    this.customColor$
+      .pipe(debounceTime(200), takeUntil(this.destroy$))
+      .subscribe((color: string | null) => {
+        if (color == null) {
+          return;
+        }
+        this.customTextColor$.next(Utils.pickTextColorBasedOnBgColor(color));
+        this.customColorSelected = true;
+        this.currentSelection = color;
+      });
 
-    const initalValue = Utils.validateHexColor(this.profile.avatarColor)
-      ? this.profile.avatarColor
-      : "#ffffff";
-    this.setSelection(initalValue);
+    this.setSelection(await this.loadColorFromState());
   }
 
   async showCustomPicker() {
-    this.setSelection(this.customColor$.value == null ? "#ffffff" : this.customColor$.value);
+    this.customColorSelected = true;
+    this.setSelection(this.customColor$.value);
+  }
+
+  async generateAvatarColor() {
+    Utils.stringToColor(this.profile.name.toString());
   }
 
   async submit() {
     try {
-      if (Utils.validateHexColor(this.currentSelection)) {
+      if (Utils.validateHexColor(this.currentSelection) || this.currentSelection == null) {
         const request = new UpdateAvatarRequest(this.currentSelection);
-        this.formPromise = this.apiService.putAvatar(request);
-        await this.formPromise;
-        this.platformUtilsService.showToast("success", null, this.i18nService.t("avatarUpdated"));
+        this.apiService.putAvatar(request).then(() => {
+          this.platformUtilsService.showToast("success", null, this.i18nService.t("avatarUpdated"));
+          this.stateService.setAvatarColor(this.currentSelection);
+          this.accountUpdateService.pushUpdate();
+          this.changeColor.emit(this.currentSelection);
+        });
       } else {
         this.platformUtilsService.showToast("error", null, this.i18nService.t("errorOccurred"));
       }
@@ -97,6 +106,18 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
   async ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private async loadColorFromState(): Promise<string | null> {
+    let color = await this.stateService.getAvatarColor();
+    //If empty, try loading it from the api, maybe the avatar color has yet to be loaded.
+    if (color === undefined) {
+      await this.apiService.getProfile().then((profile) => {
+        this.stateService.setAvatarColor(profile.avatarColor);
+        color = profile.avatarColor;
+      });
+    }
+    return color;
   }
 
   private async setSelection(color: string | null) {
