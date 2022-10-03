@@ -47,6 +47,7 @@
                   appStopClick
                   appA11yTitle="{{ 'generateUsername' | i18n }}"
                   (click)="generateUsername()"
+                  *ngIf="!(!cipher.edit && editMode)"
                 >
                   <i class="bwi bwi-lg bwi-generate" aria-hidden="true"></i>
                 </button>
@@ -107,6 +108,7 @@
                   appStopClick
                   appA11yTitle="{{ 'generatePassword' | i18n }}"
                   (click)="generatePassword()"
+                  *ngIf="!(!cipher.edit && editMode)"
                 >
                   <i class="bwi bwi-lg bwi-generate" aria-hidden="true"></i>
                 </button>

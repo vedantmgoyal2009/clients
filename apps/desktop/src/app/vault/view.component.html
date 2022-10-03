@@ -519,7 +519,7 @@
   >
     <i class="bwi bwi-files bwi-fw bwi-lg" aria-hidden="true"></i>
   </button>
-  <div class="right">
+  <div class="right" *ngIf="cipher.edit">
     <button
       type="button"
       (click)="delete()"
