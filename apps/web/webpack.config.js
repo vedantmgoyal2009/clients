@@ -243,8 +243,7 @@ const devServer =
                       https://*.paypal.com
                       https://www.paypalobjects.com
                       https://q.stripe.com
-                      https://haveibeenpwned.com
-                      https://www.gravatar.com;
+                      https://haveibeenpwned.com;
                   child-src
                     'self'
                     https://js.stripe.com
