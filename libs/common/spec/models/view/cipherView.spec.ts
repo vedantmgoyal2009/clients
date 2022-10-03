@@ -9,8 +9,7 @@ import { PasswordHistoryView } from "@bitwarden/common/models/view/passwordHisto
 import { SecureNoteView } from "@bitwarden/common/models/view/secureNoteView";
 import { InitializerKey } from "@bitwarden/common/services/cryptography/initializerKey";
 
-import { mockFromJson , mockFromJson } from "../../utils";
-
+import { mockFromJson } from "../../utils";
 
 jest.mock("@bitwarden/common/models/view/loginView");
 jest.mock("@bitwarden/common/models/view/attachmentView");
