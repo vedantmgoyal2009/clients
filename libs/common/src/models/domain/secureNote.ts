@@ -30,6 +30,10 @@ export class SecureNote extends Domain {
   }
 
   static fromJSON(obj: Jsonify<SecureNote>): SecureNote {
+    if (obj == null) {
+      return null;
+    }
+
     return Object.assign(new SecureNote(), obj);
   }
 }

@@ -238,6 +238,10 @@ export class Cipher extends Domain {
   }
 
   static fromJSON(obj: Jsonify<Cipher>) {
+    if (obj == null) {
+      return null;
+    }
+
     const domain = new Cipher();
     const name = EncString.fromJSON(obj.name);
     const notes = EncString.fromJSON(obj.notes);

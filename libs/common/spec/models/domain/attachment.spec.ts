@@ -147,5 +147,9 @@ describe("Attachment", () => {
       });
       expect(actual).toBeInstanceOf(Attachment);
     });
+
+    it("returns null if object is null", () => {
+      expect(Attachment.fromJSON(null)).toBeNull();
+    });
   });
 });

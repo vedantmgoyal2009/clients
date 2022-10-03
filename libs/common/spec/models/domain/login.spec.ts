@@ -123,5 +123,9 @@ describe("Login DTO", () => {
       });
       expect(actual).toBeInstanceOf(Login);
     });
+
+    it("returns null if object is null", () => {
+      expect(Login.fromJSON(null)).toBeNull();
+    });
   });
 });

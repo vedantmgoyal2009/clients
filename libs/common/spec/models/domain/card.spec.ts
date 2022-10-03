@@ -95,5 +95,9 @@ describe("Card", () => {
       });
       expect(actual).toBeInstanceOf(Card);
     });
+
+    it("returns null if object is null", () => {
+      expect(Card.fromJSON(null)).toBeNull();
+    });
   });
 });

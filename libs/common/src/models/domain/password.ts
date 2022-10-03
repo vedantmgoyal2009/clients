@@ -44,6 +44,10 @@ export class Password extends Domain {
   }
 
   static fromJSON(obj: Partial<Jsonify<Password>>): Password {
+    if (obj == null) {
+      return null;
+    }
+
     const password = EncString.fromJSON(obj.password);
     const lastUsedDate = obj.lastUsedDate == null ? null : new Date(obj.lastUsedDate);
 

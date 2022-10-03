@@ -646,5 +646,9 @@ describe("Cipher DTO", () => {
 
       expect(actual).toMatchObject(expected);
     });
+
+    it("returns null if object is null", () => {
+      expect(Cipher.fromJSON(null)).toBeNull();
+    });
   });
 });

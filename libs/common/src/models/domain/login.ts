@@ -89,6 +89,10 @@ export class Login extends Domain {
   }
 
   static fromJSON(obj: Partial<Jsonify<Login>>): Login {
+    if (obj == null) {
+      return null;
+    }
+
     const username = EncString.fromJSON(obj.username);
     const password = EncString.fromJSON(obj.password);
     const totp = EncString.fromJSON(obj.totp);
