@@ -71,5 +71,9 @@ describe("LoginUri", () => {
       });
       expect(actual).toBeInstanceOf(LoginUri);
     });
+
+    it("returns null if object is null", () => {
+      expect(LoginUri.fromJSON(null)).toBeNull();
+    });
   });
 });

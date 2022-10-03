@@ -658,5 +658,9 @@ describe("Cipher DTO", () => {
       const actual = JSON.parse(JSON.stringify(cipher));
       expect(actual.initializerKey).toEqual(InitializerKey.Cipher);
     });
+
+    it("returns null if object is null", () => {
+      expect(Cipher.fromJSON(null)).toBeNull();
+    });
   });
 });

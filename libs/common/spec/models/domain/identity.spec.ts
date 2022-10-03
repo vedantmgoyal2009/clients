@@ -180,5 +180,9 @@ describe("Identity", () => {
       });
       expect(actual).toBeInstanceOf(Identity);
     });
+
+    it("returns null if object is null", () => {
+      expect(Identity.fromJSON(null)).toBeNull();
+    });
   });
 });

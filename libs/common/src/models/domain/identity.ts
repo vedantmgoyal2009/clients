@@ -114,6 +114,10 @@ export class Identity extends Domain {
   }
 
   static fromJSON(obj: Jsonify<Identity>): Identity {
+    if (obj == null) {
+      return null;
+    }
+
     const title = EncString.fromJSON(obj.title);
     const firstName = EncString.fromJSON(obj.firstName);
     const middleName = EncString.fromJSON(obj.middleName);

@@ -66,6 +66,10 @@ export class Card extends Domain {
   }
 
   static fromJSON(obj: Partial<Jsonify<Card>>): Card {
+    if (obj == null) {
+      return null;
+    }
+
     const cardholderName = EncString.fromJSON(obj.cardholderName);
     const brand = EncString.fromJSON(obj.brand);
     const number = EncString.fromJSON(obj.number);

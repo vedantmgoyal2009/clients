@@ -1,10 +1,9 @@
 import { Jsonify } from "type-fest";
 
-import { IDecryptable } from "@bitwarden/common/interfaces/IDecryptable";
-import { InitializerKey } from "@bitwarden/common/services/cryptography/initializerKey";
-
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
+import { IDecryptable } from "../../interfaces/IDecryptable";
+import { InitializerKey } from "../../services/cryptography/initializerKey";
 import { CipherData } from "../data/cipherData";
 import { LocalData } from "../data/localData";
 import { CipherView } from "../view/cipherView";
@@ -243,6 +242,10 @@ export class Cipher extends Domain implements IDecryptable<CipherView> {
   }
 
   static fromJSON(obj: Jsonify<Cipher>) {
+    if (obj == null) {
+      return null;
+    }
+
     const domain = new Cipher();
     const name = EncString.fromJSON(obj.name);
     const notes = EncString.fromJSON(obj.notes);

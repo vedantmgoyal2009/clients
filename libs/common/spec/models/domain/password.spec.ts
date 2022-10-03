@@ -66,5 +66,9 @@ describe("Password", () => {
       });
       expect(actual).toBeInstanceOf(Password);
     });
+
+    it("returns null if object is null", () => {
+      expect(Password.fromJSON(null)).toBeNull();
+    });
   });
 });

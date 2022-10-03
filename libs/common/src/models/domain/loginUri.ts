@@ -55,6 +55,10 @@ export class LoginUri extends Domain {
   }
 
   static fromJSON(obj: Jsonify<LoginUri>): LoginUri {
+    if (obj == null) {
+      return null;
+    }
+
     const uri = EncString.fromJSON(obj.uri);
     return Object.assign(new LoginUri(), obj, {
       uri,

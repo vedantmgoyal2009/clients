@@ -78,5 +78,9 @@ describe("Field", () => {
       });
       expect(actual).toBeInstanceOf(Field);
     });
+
+    it("returns null if object is null", () => {
+      expect(Field.fromJSON(null)).toBeNull();
+    });
   });
 });
