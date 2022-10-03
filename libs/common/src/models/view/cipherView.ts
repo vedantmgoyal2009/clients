@@ -1,11 +1,10 @@
 import { Jsonify } from "type-fest";
 
-import { IInitializerMetadata } from "@bitwarden/common/interfaces/IInitializerMetadata";
-import { InitializerKey } from "@bitwarden/common/services/cryptography/initializerKey";
-
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
 import { LinkedIdType } from "../../enums/linkedIdType";
+import { IInitializerMetadata } from "../../interfaces/IInitializerMetadata";
+import { InitializerKey } from "../../services/cryptography/initializerKey";
 import { LocalData } from "../data/localData";
 import { Cipher } from "../domain/cipher";
 

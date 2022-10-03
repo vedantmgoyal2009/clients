@@ -1,11 +1,10 @@
 import { defaultIfEmpty, filter, firstValueFrom, fromEvent, map, Subject, takeUntil } from "rxjs";
 import { Jsonify } from "type-fest";
 
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
-
 import { IDecryptable } from "../interfaces/IDecryptable";
 import { IInitializerMetadata } from "../interfaces/IInitializerMetadata";
 import { Utils } from "../misc/utils";
+import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 
 import { getInitializer } from "./cryptography/classInitializers";
 import { EncryptService } from "./encrypt.service";

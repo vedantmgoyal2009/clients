@@ -1,7 +1,7 @@
 import { Jsonify } from "type-fest";
 
-import { Cipher } from "@bitwarden/common/models/domain/cipher";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
+import { Cipher } from "../../models/domain/cipher";
+import { CipherView } from "../../models/view/cipherView";
 
 import { InitializerKey } from "./initializerKey";
 
