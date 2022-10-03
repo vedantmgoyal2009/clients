@@ -1,16 +1,22 @@
 import { NgModule } from "@angular/core";
 
-import { SharedModule } from "@bitwarden/web-vault/app/shared";
-
+import { SecretsSecretsSharedModule } from "../secrets/shared/sm-secrets.shared.module";
 import { SecretsSharedModule } from "../shared/sm-shared.module";
 
-import { ProjectsListComponent } from "./projects-list.component";
+import { ProjectsListComponent } from "./project-list/projects-list.component";
+import { ProjectSecretsComponent } from "./project/project-secrets.component";
+import { ProjectComponent } from "./project/project.component";
 import { ProjectsRoutingModule } from "./projects-routing.module";
-import { ProjectsComponent } from "./projects.component";
+import { ProjectsComponent } from "./projects/projects.component";
 
 @NgModule({
-  imports: [SharedModule, ProjectsRoutingModule, SecretsSharedModule],
-  declarations: [ProjectsComponent, ProjectsListComponent],
+  imports: [SecretsSharedModule, SecretsSecretsSharedModule, ProjectsRoutingModule],
+  declarations: [
+    ProjectComponent,
+    ProjectsComponent,
+    ProjectSecretsComponent,
+    ProjectsListComponent,
+  ],
   providers: [],
 })
 export class ProjectsModule {}

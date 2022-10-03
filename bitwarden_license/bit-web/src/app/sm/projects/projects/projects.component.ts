@@ -4,7 +4,7 @@ import { combineLatestWith, startWith, Subject, switchMap, takeUntil } from "rxj
 
 import { ProjectListView } from "@bitwarden/common/models/view/projectListView";
 
-import { ProjectService } from "./project.service";
+import { ProjectService } from "../project.service";
 
 @Component({
   selector: "sm-projects",

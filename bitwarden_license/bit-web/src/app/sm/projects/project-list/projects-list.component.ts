@@ -2,7 +2,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
 
-import { ProjectResponse } from "./responses/project.response";
+import { ProjectResponse } from "../models/responses/project.response";
 
 @Component({
   selector: "sm-projects-list",
