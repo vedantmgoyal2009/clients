@@ -10,9 +10,7 @@ import {
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 
-import { AccountUpdateService } from "@bitwarden/common/abstractions/account/account-update.service";
-import { ApiService } from "@bitwarden/common/abstractions/api.service";
-import { StateService } from "@bitwarden/common/abstractions/state.service";
+import { AvatarUpdateService } from "@bitwarden/common/abstractions/account/avatar-update.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 
 type SizeTypes = "xlarge" | "large" | "default" | "small";
@@ -49,6 +47,7 @@ export class AvatarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() size: SizeTypes = "default";
   @Input() selected = false;
   @Input() clickable = false;
+  @Input() listenForUpdates = true;
 
   private svgCharCount = 2;
   private svgFontSize = 20;
@@ -59,21 +58,17 @@ export class AvatarComponent implements OnInit, OnChanges, OnDestroy {
 
   src: SafeResourceUrl;
 
-  constructor(
-    public sanitizer: DomSanitizer,
-    private apiService: ApiService,
-    private stateService: StateService,
-    private accountUpdateService: AccountUpdateService
-  ) {}
+  constructor(public sanitizer: DomSanitizer, private accountUpdateService: AvatarUpdateService) {}
 
   async ngOnInit() {
-    this.accountUpdateService.update
-      .pipe(debounceTime(500), takeUntil(this.destroy$))
-      .subscribe((u) => {
-        if (u) {
-          this.generate();
-        }
+    if (this.listenForUpdates) {
+      this.accountUpdateService.avatarUpdated$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((color) => {
+        this.color = color;
+        this.generate();
       });
+    }    
   }
 
   async ngOnDestroy() {
@@ -133,7 +128,7 @@ export class AvatarComponent implements OnInit, OnChanges, OnDestroy {
     if (this.color) {
       hexColor = this.color;
     } else {
-      const stateColor = await this.loadColorFromState();
+      const stateColor = await this.accountUpdateService.loadColorFromState();
       if (stateColor) {
         hexColor = stateColor;
       } else {
@@ -148,18 +143,6 @@ export class AvatarComponent implements OnInit, OnChanges, OnDestroy {
     this.src = this.sanitizer.bypassSecurityTrustResourceUrl(
       "data:image/svg+xml;base64," + svgHtml
     );
-  }
-
-  private async loadColorFromState(): Promise<string | null> {
-    let color = await this.stateService.getAvatarColor();
-    //If empty, try loading it from the api, maybe the avatar color has yet to be loaded.
-    if (color === undefined) {
-      await this.apiService.getProfile().then((profile) => {
-        this.stateService.setAvatarColor(profile.avatarColor);
-        color = profile.avatarColor;
-      });
-    }
-    return color;
   }
 
   private getFirstLetters(data: string, count: number): string {

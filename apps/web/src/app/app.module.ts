@@ -3,7 +3,7 @@ import { LayoutModule } from "@angular/cdk/layout";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ColorPickerModule } from "ngx-color-picker";
+import { ColorPickerModule } from "@iplab/ngx-color-picker";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { AppComponent } from "./app.component";

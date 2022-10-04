@@ -7,9 +7,11 @@ import {
   Output,
   ViewEncapsulation,
 } from "@angular/core";
+import { ColorPickerControl } from "@iplab/ngx-color-picker";
+import { Color } from "@iplab/ngx-color-picker/public-api";
 import { BehaviorSubject, debounceTime, Subject, takeUntil } from "rxjs";
 
-import { AccountUpdateService } from "@bitwarden/common/abstractions/account/account-update.service";
+import { AvatarUpdateService } from "@bitwarden/common/abstractions/account/avatar-update.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
@@ -18,15 +20,27 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { UpdateAvatarRequest } from "@bitwarden/common/models/request/updateAvatarRequest";
 import { ProfileResponse } from "@bitwarden/common/models/response/profileResponse";
+
+
 @Component({
   selector: "app-change-avatar",
   templateUrl: "change-avatar.component.html",
   encapsulation: ViewEncapsulation.None,
-  styles: ["color-picker { margin: auto; }", "color-picker .color-picker { border: none; }"],
+  styles: [
+    ".color-picker-parent chrome-picker { margin: auto; width: 100%; display: flex; box-shadow: none;  }",
+    "chrome-picker saturation-component { display: flex; width: 50%; border-radius: 4px;  }",
+    "chrome-picker .controls { width: 50%; padding-top: 0!important; padding-bottom: 0!important; display: flex; flex-direction: column; align-content: space-between; flex-flow: row wrap;  }",
+    "chrome-picker .controls .column hue-component { height: 24px; border-radius: 4px; }",
+    "chrome-picker .controls .column hue-component .pointer { width: 24px; height: 24px; top: 0px;  }",
+    "chrome-picker .controls .hue-alpha .column:first-child { display: none; }",
+  ],
 })
 export class ChangeAvatarComponent implements OnInit, OnDestroy {
   @Input() profile: ProfileResponse;
+
   @Output() changeColor: EventEmitter<string | null> = new EventEmitter();
+  @Output() onSaved = new EventEmitter();
+
   loading = false;
   error: string;
   defaultColorPalette: NamedAvatarColor[] = [
@@ -40,6 +54,13 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
     { name: "salmon", color: "#ffa3a3" },
     { name: "pink", color: "#ffa2d4" },
   ];
+  customColor$ = new BehaviorSubject<string | null>(null);
+  customTextColor$ = new BehaviorSubject<string>("#000000");
+  customColorSelected = false;
+  colorPickerControl: ColorPickerControl;
+  currentSelection: string;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private i18nService: I18nService,
@@ -47,36 +68,40 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
     private logService: LogService,
     private apiService: ApiService,
     private stateService: StateService,
-    private accountUpdateService: AccountUpdateService
-  ) {}
-
-  @Output() onSaved = new EventEmitter();
-  customColor$ = new BehaviorSubject<string | null>(null);
-  customTextColor$ = new BehaviorSubject<string>("#000000");
-  customColorSelected = false;
-  formPromise: Promise<any>;
-  private destroy$ = new Subject<void>();
-  currentSelection: string;
+    private accountUpdateService: AvatarUpdateService
+  ) {
+    this.setupCustomPicker();
+  }
 
   async ngOnInit() {
+    //localise the default colours
     this.defaultColorPalette.forEach((c) => (c.name = this.i18nService.t(c.name)));
 
-    this.customColor$
-      .pipe(debounceTime(200), takeUntil(this.destroy$))
-      .subscribe((color: string | null) => {
-        if (color == null) {
-          return;
-        }
-        this.customTextColor$.next(Utils.pickTextColorBasedOnBgColor(color));
-        this.customColorSelected = true;
-        this.currentSelection = color;
-      });
+    this.customColor$.pipe(takeUntil(this.destroy$)).subscribe((color: string | null) => {
+      if (color == null) {
+        return;
+      }
+      this.customTextColor$.next(Utils.pickTextColorBasedOnBgColor(color));
+      this.customColorSelected = true;
+      this.colorPickerControl.setValueFrom(color);
+      this.currentSelection = color;
+    });
 
-    this.setSelection(await this.loadColorFromState());
+    this.setSelection(await this.accountUpdateService.loadColorFromState());
+  }
+
+  async setupCustomPicker() {
+    this.colorPickerControl = new ColorPickerControl().hidePresets().hideAlphaChannel();
+    this.colorPickerControl.valueChanges
+      .pipe(debounceTime(200), takeUntil(this.destroy$))
+      .subscribe((color: Color) => {
+        this.customColor$.next(color.toHexString().toLowerCase());
+      });
   }
 
   async showCustomPicker() {
     this.customColorSelected = true;
+    this.colorPickerControl.setValueFrom("#ffffff");
     this.setSelection(this.customColor$.value);
   }
 
@@ -87,13 +112,9 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
   async submit() {
     try {
       if (Utils.validateHexColor(this.currentSelection) || this.currentSelection == null) {
-        const request = new UpdateAvatarRequest(this.currentSelection);
-        this.apiService.putAvatar(request).then(() => {
-          this.platformUtilsService.showToast("success", null, this.i18nService.t("avatarUpdated"));
-          this.stateService.setAvatarColor(this.currentSelection);
-          this.accountUpdateService.pushUpdate();
-          this.changeColor.emit(this.currentSelection);
-        });
+        await this.accountUpdateService.pushUpdate(this.currentSelection);
+        this.changeColor.emit(this.currentSelection);
+        this.platformUtilsService.showToast("success", null, this.i18nService.t("avatarUpdated"));
       } else {
         this.platformUtilsService.showToast("error", null, this.i18nService.t("errorOccurred"));
       }
@@ -108,26 +129,15 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private async loadColorFromState(): Promise<string | null> {
-    let color = await this.stateService.getAvatarColor();
-    //If empty, try loading it from the api, maybe the avatar color has yet to be loaded.
-    if (color === undefined) {
-      await this.apiService.getProfile().then((profile) => {
-        this.stateService.setAvatarColor(profile.avatarColor);
-        color = profile.avatarColor;
-      });
-    }
-    return color;
-  }
-
   private async setSelection(color: string | null) {
+    this.defaultColorPalette.filter((x) => x.selected).forEach((c) => (c.selected = false));
+
     if (color == null) {
       return;
     }
 
     color = color.toLowerCase();
 
-    this.defaultColorPalette.filter((x) => x.selected).forEach((c) => (c.selected = false));
     this.customColorSelected = false;
     //Allow for toggle
     if (this.currentSelection === color) {
