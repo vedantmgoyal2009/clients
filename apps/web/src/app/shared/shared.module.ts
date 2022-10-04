@@ -12,7 +12,6 @@ import {
   ButtonModule,
   CalloutModule,
   FormFieldModule,
-  SubmitButtonModule,
   MenuModule,
   IconModule,
 } from "@bitwarden/components";
@@ -43,7 +42,6 @@ import "./locales";
     ButtonModule,
     MenuModule,
     FormFieldModule,
-    SubmitButtonModule,
     IconModule,
     ScrollingModule,
   ],
@@ -62,7 +60,6 @@ import "./locales";
     ButtonModule,
     MenuModule,
     FormFieldModule,
-    SubmitButtonModule,
     IconModule,
     ScrollingModule,
   ],
