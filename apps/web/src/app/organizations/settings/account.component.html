@@ -66,9 +66,9 @@
       <bit-avatar [text]="org.name" [id]="org.id" size="large"></bit-avatar>
     </div>
   </div>
-  <bit-submit-button [loading]="form.loading">
+  <button type="submit" buttonType="primary" bitButton [loading]="form.loading">
     {{ "save" | i18n }}
-  </bit-submit-button>
+  </button>
 </form>
 <ng-container *ngIf="canUseApi">
   <div class="secondary-header border-0 mb-0">
