@@ -2,7 +2,7 @@
   <cdk-virtual-scroll-viewport scrollWindow itemSize="50">
     <table class="table table-hover table-list table-ciphers" *ngIf="filteredCiphers.length">
       <tbody>
-        <tr *cdkVirtualFor="let c of filteredCiphers">
+        <tr *cdkVirtualFor="let c of filteredCiphers; templateCacheSize: 0">
           <td (click)="checkCipher(c)" class="table-list-checkbox">
             <input type="checkbox" [(ngModel)]="c.checked" appStopProp />
           </td>

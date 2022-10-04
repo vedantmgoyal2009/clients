@@ -51,7 +51,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *cdkVirtualFor="let o of searchedClients">
+        <tr *cdkVirtualFor="let o of searchedClients; templateCacheSize: 0">
           <td width="30">
             <app-avatar
               [data]="o.organizationName"

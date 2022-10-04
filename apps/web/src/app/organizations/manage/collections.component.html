@@ -37,7 +37,7 @@
   <cdk-virtual-scroll-viewport scrollWindow itemSize="50">
     <table class="table table-hover table-list" *ngIf="searchedCollections.length">
       <tbody>
-        <tr *cdkVirtualFor="let c of searchedCollections">
+        <tr *cdkVirtualFor="let c of searchedCollections; templateCacheSize: 0">
           <td>
             <a href="#" appStopClick (click)="edit(c)">{{ c.name }}</a>
           </td>

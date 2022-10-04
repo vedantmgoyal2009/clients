@@ -89,7 +89,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *cdkVirtualFor="let u of searchedUsers" height="62.4px">
+              <tr *cdkVirtualFor="let u of searchedUsers; templateCacheSize: 0" height="62.4px">
                 <td class="table-list-checkbox" (click)="check(u)">
                   <input
                     type="checkbox"

@@ -109,7 +109,7 @@
     <cdk-virtual-scroll-viewport scrollWindow itemSize="61.4">
       <table class="table table-hover table-list">
         <tbody>
-          <tr *cdkVirtualFor="let u of searchedUsers" height="61.4px">
+          <tr *cdkVirtualFor="let u of searchedUsers; templateCacheSize: 0" height="61.4px">
             <td (click)="checkUser(u)" class="table-list-checkbox">
               <input type="checkbox" [(ngModel)]="u.checked" appStopProp />
             </td>
