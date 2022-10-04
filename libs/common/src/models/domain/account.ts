@@ -176,6 +176,7 @@ export class AccountProfile {
   apiKeyClientId?: string;
   authenticationStatus?: AuthenticationStatus;
   convertAccountToKeyConnector?: boolean;
+  name?: string;
   email?: string;
   emailVerified?: boolean;
   entityId?: string;

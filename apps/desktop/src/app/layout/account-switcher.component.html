@@ -59,7 +59,7 @@
         attr.aria-label="{{ 'switchAccount' | i18n }}"
       >
         <app-avatar
-          [text]="a.value.profile.email"
+          [text]="a.value.profile.name ?? a.value.profile.email"
           [id]="a.value.profile.userId"
           size="25"
           [circle]="true"
