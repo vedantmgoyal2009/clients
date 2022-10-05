@@ -53,7 +53,7 @@
     "message": "Zavihek"
   },
   "vault": {
-    "message": "Vault"
+    "message": "Sef"
   },
   "myVault": {
     "message": "Moj trezor"
@@ -2017,7 +2017,7 @@
     }
   },
   "lastSeenOn": {
-    "message": "last seen on $DATE$",
+    "message": "last seen on: $DATE$",
     "placeholders": {
       "date": {
         "content": "$1",
