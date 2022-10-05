@@ -41,7 +41,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.profile = await this.apiService.getProfile();
-    await this.stateService.setAvatarColor(this.profile.avatarColor);
     this.loading = false;
     const fingerprint = await this.cryptoService.getFingerprint(
       await this.stateService.getUserId()
@@ -62,8 +61,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.avatarModalRef,
       (modal) => {
         modal.profile = this.profile;
-        modal.changeColor.pipe(takeUntil(this.destroy$)).subscribe((selection) => {
-          this.profile.avatarColor = selection;
+        modal.changeColor.pipe(takeUntil(this.destroy$)).subscribe(() => {
           modalOpened[0].close();
         });
       }
