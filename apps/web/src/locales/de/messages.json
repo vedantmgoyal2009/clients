@@ -569,14 +569,26 @@
   "loginOrCreateNewAccount": {
     "message": "Sie müssen sich anmelden oder ein neues Konto erstellen, um auf den Tresor zugreifen zu können."
   },
+  "loginWithDevice": {
+    "message": "Mit Gerät anmelden"
+  },
+  "loginWithDeviceEnabledInfo": {
+    "message": "Mit Gerät anmelden muss in den Einstellungen der Bitwarden Mobile App aktiviert sein. Brauchst du eine andere Möglichkeit?"
+  },
   "createAccount": {
     "message": "Konto erstellen"
+  },
+  "newAroundHere": {
+    "message": "Neu hier?"
   },
   "startTrial": {
     "message": "Probephase starten"
   },
   "logIn": {
     "message": "Anmelden"
+  },
+  "logInInitiated": {
+    "message": "Anmeldung initiiert"
   },
   "submit": {
     "message": "Absenden"
@@ -635,7 +647,7 @@
   "confirmMasterPasswordRequired": {
     "message": "Erneute Eingabe des Master-Passworts ist erforderlich."
   },
-  "masterPasswordMinLength": {
+  "masterPasswordMinlength": {
     "message": "Das Master-Passwort muss mindestens 8 Zeichen lang sein."
   },
   "masterPassDoesntMatch": {
@@ -679,7 +691,7 @@
     "message": "Ungültiges Master-Passwort"
   },
   "invalidFilePassword": {
-    "message": "Ungültiges Dateipasswort, bitte verwende das Passwort, das du beim Erstellen der Exportdatei eingegeben hast."
+    "message": "Ungültiges Dateipasswort. Bitte verwende das Passwort, das du beim Erstellen der Exportdatei eingegeben hast."
   },
   "lockNow": {
     "message": "Jetzt sperren"
@@ -704,6 +716,9 @@
   },
   "noOrganizationsList": {
     "message": "Sie gehören keiner Organisation an. Organisationen erlauben es Ihnen Passwörter sicher mit anderen zu teilen."
+  },
+  "notificationSentDevice": {
+    "message": "Eine Benachrichtigung wurde an dein Gerät gesendet."
   },
   "versionNumber": {
     "message": "Version $VERSION_NUMBER$",
@@ -912,10 +927,10 @@
     "message": "Dateipasswort bestätigen"
   },
   "accountBackupOptionDescription": {
-    "message": "Nutzt die Verschlüsselung Ihres Bitwarden-Kontos, nicht das Master-Passwort, zum Schutz des Exports. Dieser Export kann nur in das aktuelle Konto importiert werden. Hiermit kannst du ein Backup erstellen, das nicht anderweitig verwendet werden kann."
+    "message": "Nutze den Verschlüsselungscode deines Kontos, um den Export zu verschlüsseln und den Import allein auf das aktuelle Bitwarden-Konto zu beschränken."
   },
   "passwordProtectedOptionDescription": {
-    "message": "Erstelle ein benutzergeneriertes Passwort, um den Export zu schützen. Verwende dies, um einen Export zu erstellen, der in anderen Konten verwendet werden kann."
+    "message": "Lege ein Passwort fest, um den Export zu verschlüsseln und ihn in ein beliebiges Bitwarden-Konto zu importieren, wobei das Passwort zum Entschlüsseln genutzt wird."
   },
   "fileTypeHeading": {
     "message": "Dateityp"
@@ -2532,6 +2547,9 @@
       }
     }
   },
+  "viewAllLoginOptions": {
+    "message": "Alle Anmelde-Optionen anzeigen"
+  },
   "viewedItemId": {
     "message": "Eintrag $ID$ angesehen.",
     "placeholders": {
@@ -3372,6 +3390,12 @@
     "message": "Um die Sicherheit ihres Verschlüsselungscodes zu gewähren, bestätigen Sie bitte den Prüfschlüssel des Benutzers.",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
   },
+  "fingerprintMatchInfo": {
+    "message": "Bitte stelle sicher, dass dein Tresor entsperrt ist und die Fingerabdruck-Phrase mit dem anderen Gerät übereinstimmt."
+  },
+  "fingerprintPhraseHeader": {
+    "message": "Fingerabdruck-Phrase"
+  },
   "dontAskFingerprintAgain": {
     "message": "Nicht erneut nach dem Prüfschlüssel fragen",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
@@ -4057,6 +4081,12 @@
   "permissions": {
     "message": "Berechtigungen"
   },
+  "managerPermissions": {
+    "message": "Manager-Berechtigungen"
+  },
+  "adminPermissions": {
+    "message": "Administrator-Berechtigungen"
+  },
   "accessEventLogs": {
     "message": "Zugriff auf Ereignisprotokolle"
   },
@@ -4365,6 +4395,9 @@
   },
   "reinviteSelected": {
     "message": "Einladungen erneut senden"
+  },
+  "resendNotification": {
+    "message": "Benachrichtigung erneut senden"
   },
   "noSelectedUsersApplicable": {
     "message": "Diese Aktion ist für keinen der ausgewählten Benutzer anwendbar."

@@ -569,14 +569,26 @@
   "loginOrCreateNewAccount": {
     "message": "Log in of maak een nieuw account aan om toegang te krijgen tot je beveiligde kluis."
   },
+  "loginWithDevice": {
+    "message": "Inloggen met apparaat"
+  },
+  "loginWithDeviceEnabledInfo": {
+    "message": "Inloggen met apparaat moet zijn ingeschakeld in de instellingen van de mobiele Bitwarden-app. Een andere optie nodig?"
+  },
   "createAccount": {
     "message": "Account aanmaken"
+  },
+  "newAroundHere": {
+    "message": "Nieuw hier?"
   },
   "startTrial": {
     "message": "Start proefperiode"
   },
   "logIn": {
     "message": "Inloggen"
+  },
+  "logInInitiated": {
+    "message": "Inloggen gestart"
   },
   "submit": {
     "message": "Versturen"
@@ -635,8 +647,8 @@
   "confirmMasterPasswordRequired": {
     "message": "Type je hoofdwachtwoord opnieuw in."
   },
-  "masterPasswordMinLength": {
-    "message": "Hoofdwachtwoord moet minimaal 8 tekens lang zijn."
+  "masterPasswordMinlength": {
+    "message": "Hoofdwachtwoord moet minstens 8 karakters lang zijn."
   },
   "masterPassDoesntMatch": {
     "message": "De hoofdwachtwoorden komen niet overeen."
@@ -704,6 +716,9 @@
   },
   "noOrganizationsList": {
     "message": "Je behoort niet tot een organisatie. Via organisaties deel je je items veilig met andere gebruikers."
+  },
+  "notificationSentDevice": {
+    "message": "Er is een bericht naar je apparaat verstuurd."
   },
   "versionNumber": {
     "message": "Versie $VERSION_NUMBER$",
@@ -1296,7 +1311,7 @@
     "message": "Ingeschakeld"
   },
   "restoreAccess": {
-    "message": "Restore Access"
+    "message": "Toegang herstellen"
   },
   "premium": {
     "message": "Premium",
@@ -1324,7 +1339,7 @@
     "message": "Uitschakelen"
   },
   "revokeAccess": {
-    "message": "Revoke Access"
+    "message": "Toegang intrekken"
   },
   "twoStepLoginProviderEnabled": {
     "message": "Deze tweestapsaanmeldingsaanbieder is geactiveerd voor je account."
@@ -2326,10 +2341,10 @@
     "message": "Weet je zeker dat je deze gebruiker wilt verwijderen?"
   },
   "removeOrgUserConfirmation": {
-    "message": "When a member is removed, they no longer have access to organization data and this action is irreversible. To add the member back to the organization, they must be invited and onboarded again."
+    "message": "Na het verwijderen heeft een lid onherroepelijk geen toegang meer tot de gegevens van de organisatie. Om een lid opnieuw aan de organisatie toe te voegen, moet je deze uitnodigen en opnieuw on-boarden."
   },
   "revokeUserConfirmation": {
-    "message": "When a member is revoked, they no longer have access to organization data. To quickly restore member access, go to the Revoked tab."
+    "message": "Na het intrekken van toegang heeft een lid geen toegang meer tot de gegevens van de organisatie. Om de toegang snel te herstellen, ga je naar het tabblad Ingetrokken."
   },
   "removeUserConfirmationKeyConnector": {
     "message": "Waarschuwing! Deze gebruiker vereist de Key Connector om de versleuteling te beheren. Als je deze gebruiker uit je organisatie verwijdert, wordt zijn account permanent uitgeschakeld. Deze actie kan niet ongedaan worden gemaakt. Wil je doorgaan?"
@@ -2532,6 +2547,9 @@
       }
     }
   },
+  "viewAllLoginOptions": {
+    "message": "Alle loginopties bekijken"
+  },
   "viewedItemId": {
     "message": "Bekeken item $ID$.",
     "placeholders": {
@@ -2677,7 +2695,7 @@
     }
   },
   "removeUserIdAccess": {
-    "message": "Remove $ID$ access",
+    "message": "Toegang $ID$ verwijderen",
     "placeholders": {
       "id": {
         "content": "$1",
@@ -2686,7 +2704,7 @@
     }
   },
   "revokedUserId": {
-    "message": "Revoked organization access for $ID$.",
+    "message": "Toegang tot de organisatie ingetrokken voor $ID$.",
     "placeholders": {
       "id": {
         "content": "$1",
@@ -2695,7 +2713,7 @@
     }
   },
   "restoredUserId": {
-    "message": "Restored organization access for $ID$.",
+    "message": "Toegang tot de organisatie hersteld voor $ID$.",
     "placeholders": {
       "id": {
         "content": "$1",
@@ -2704,7 +2722,7 @@
     }
   },
   "revokeUserId": {
-    "message": "Revoke $ID$ access",
+    "message": "Toegang $ID$ intrekken",
     "placeholders": {
       "id": {
         "content": "$1",
@@ -3372,6 +3390,12 @@
     "message": "Verzeker jezelf van de integriteit van je encryptiesleutels, controleer de vingerafdrukzin van de gebruiker voor je verder gaat.",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
   },
+  "fingerprintMatchInfo": {
+    "message": "Controleer of je kluis is ontgrendeld en de vingerafdrukzin overeenkomt met het andere apparaat."
+  },
+  "fingerprintPhraseHeader": {
+    "message": "Vingerafdrukzin"
+  },
   "dontAskFingerprintAgain": {
     "message": "Niet meer vragen om de vingerafdrukzin te controleren",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
@@ -3769,7 +3793,7 @@
     "message": "Uitgeschakeld"
   },
   "revoked": {
-    "message": "Revoked"
+    "message": "Ingetrokken"
   },
   "sendLink": {
     "message": "Send-koppeling",
@@ -4056,6 +4080,12 @@
   },
   "permissions": {
     "message": "Rechten"
+  },
+  "managerPermissions": {
+    "message": "Managersrechten"
+  },
+  "adminPermissions": {
+    "message": "Beheerdersrechten"
   },
   "accessEventLogs": {
     "message": "Eventlogs"
@@ -4366,6 +4396,9 @@
   "reinviteSelected": {
     "message": "Uitnodigingen opnieuw verzenden"
   },
+  "resendNotification": {
+    "message": "Bericht opnieuw verzenden"
+  },
   "noSelectedUsersApplicable": {
     "message": "Deze actie is niet van toepassing op de geselecteerde gebruikers."
   },
@@ -4373,10 +4406,10 @@
     "message": "Weet je zeker dat je de volgende gebruikers wilt verwijderen? Dit proces duurt enkele seconden en kan niet worden onderbroken of geannuleerd."
   },
   "removeOrgUsersConfirmation": {
-    "message": "When member(s) are removed, they no longer have access to organization data and this action is irreversible. To add the member back to the organization, they must be invited and onboarded again. The process may take a few seconds to complete and cannot be interrupted or canceled."
+    "message": "Na het verwijderen hebben leden onherroepelijk geen toegang meer tot de gegevens van de organisatie. Om een lid opnieuw aan de organisatie toe te voegen, moet je deze uitnodigen en opnieuw on-boarden. Dit proces neemt een paar seconden in beslag en je kunt het niet interrumperen of annuleren."
   },
   "revokeUsersWarning": {
-    "message": "When member(s) are revoked, they no longer have access to organization data. To quickly restore member access, go to the Revoked tab. The process may take a few seconds to complete and cannot be interrupted or canceled."
+    "message": "Na het intrekken van toegang hebben leden geen toegang meer tot de gegevens van de organisatie. Om de toegang snel te herstellen, ga je naar het tabblad Ingetrokken. Dit proces neemt een paar seconden in beslag en je kunt het niet interrumperen of annuleren."
   },
   "theme": {
     "message": "Thema"
@@ -4409,10 +4442,10 @@
     "message": "Succesvol verwijderd"
   },
   "bulkRevokedMessage": {
-    "message": "Revoked organization access successfully"
+    "message": "Toegang tot de organisatie ingetrokkeb"
   },
   "bulkRestoredMessage": {
-    "message": "Restored organization access successfully"
+    "message": "Toegang tot de organisatie hersteld"
   },
   "bulkFilteredMessage": {
     "message": "Uitgezonderd, niet van toepassing voor deze actie."
@@ -4424,10 +4457,10 @@
     "message": "Gebruikers verwijderen"
   },
   "revokeUsers": {
-    "message": "Revoke Users"
+    "message": "Gebruikers intrekken"
   },
   "restoreUsers": {
-    "message": "Restore Users"
+    "message": "Gebruikers herstellen"
   },
   "error": {
     "message": "Fout"
@@ -4849,7 +4882,7 @@
     "message": "Sponsoring verwijderd"
   },
   "ssoKeyConnectorError": {
-    "message": "Key Connector error: make sure Key Connector is available and working correctly."
+    "message": "Key-connector fout: zorg ervoor dat Key-connector beschikbaar is en werkt."
   },
   "keyConnectorUrl": {
     "message": "Key Connector URL"
@@ -5156,17 +5189,17 @@
     "message": "Type gebruikersnaam"
   },
   "plusAddressedEmail": {
-    "message": "Plus Addressed Email",
+    "message": "E-mailadres-met-plus",
     "description": "Username generator option that appends a random sub-address to the username. For example: address+subaddress@email.com"
   },
   "plusAddressedEmailDesc": {
-    "message": "Use your email provider's sub-addressing capabilities."
+    "message": "Gebruik de subadressen van je e-mailprovider."
   },
   "catchallEmail": {
     "message": "Catch-all e-mail"
   },
   "catchallEmailDesc": {
-    "message": "Use your domain's configured catch-all inbox."
+    "message": "Gebruik de catch-all inbox van je domein."
   },
   "random": {
     "message": "Willekeurig",
