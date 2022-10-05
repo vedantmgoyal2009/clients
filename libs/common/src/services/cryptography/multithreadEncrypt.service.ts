@@ -1,13 +1,13 @@
 import { defaultIfEmpty, filter, firstValueFrom, fromEvent, map, Subject, takeUntil } from "rxjs";
 import { Jsonify } from "type-fest";
 
-import { IDecryptable } from "../interfaces/IDecryptable";
-import { IInitializerMetadata } from "../interfaces/IInitializerMetadata";
-import { Utils } from "../misc/utils";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
+import { IDecryptable } from "../../interfaces/IDecryptable";
+import { IInitializerMetadata } from "../../interfaces/IInitializerMetadata";
+import { Utils } from "../../misc/utils";
+import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
+import { EncryptService } from "../encrypt.service";
 
-import { getInitializer } from "./cryptography/classInitializers";
-import { EncryptService } from "./encrypt.service";
+import { getInitializer } from "./classInitializers";
 
 // TTL (time to live) is not strictly required but avoids tying up memory resources if inactive
 const workerTTL = 3 * 60000; // 3 minutes

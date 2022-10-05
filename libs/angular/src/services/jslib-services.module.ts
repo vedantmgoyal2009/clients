@@ -74,6 +74,7 @@ import { ConfigApiService } from "@bitwarden/common/services/config/config-api.s
 import { ConfigService } from "@bitwarden/common/services/config/config.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
+import { MultithreadEncryptService } from "@bitwarden/common/services/cryptography/multithreadEncrypt.service";
 import { EncryptService } from "@bitwarden/common/services/encrypt.service";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { EventService } from "@bitwarden/common/services/event.service";
@@ -83,7 +84,6 @@ import { FolderApiService } from "@bitwarden/common/services/folder/folder-api.s
 import { FolderService } from "@bitwarden/common/services/folder/folder.service";
 import { FormValidationErrorsService } from "@bitwarden/common/services/formValidationErrors.service";
 import { KeyConnectorService } from "@bitwarden/common/services/keyConnector.service";
-import { MultithreadEncryptService } from "@bitwarden/common/services/multithreadEncrypt.service";
 import { NotificationsService } from "@bitwarden/common/services/notifications.service";
 import { OrganizationApiService } from "@bitwarden/common/services/organization/organization-api.service";
 import { OrganizationService } from "@bitwarden/common/services/organization/organization.service";
