@@ -329,14 +329,8 @@ export class CipherService implements CipherServiceAbstraction {
 
   @sequentialize(() => "getAllDecrypted")
   async getAllDecrypted(): Promise<CipherView[]> {
-    const userId = await this.stateService.getUserId();
     if ((await this.getDecryptedCipherCache()) != null) {
-      if (
-        this.searchService != null &&
-        (this.searchService().indexedEntityId ?? userId) !== userId
-      ) {
-        await this.searchService().indexCiphers(userId, await this.getDecryptedCipherCache());
-      }
+      await this.reindexCiphers();
       return await this.getDecryptedCipherCache();
     }
 
@@ -367,6 +361,15 @@ export class CipherService implements CipherServiceAbstraction {
     decCiphers.sort(this.getLocaleSortingFunction());
     await this.setDecryptedCipherCache(decCiphers);
     return decCiphers;
+  }
+
+  private async reindexCiphers() {
+    const userId = await this.stateService.getUserId();
+    const reindexRequired =
+      this.searchService != null && (this.searchService().indexedEntityId ?? userId) !== userId;
+    if (reindexRequired) {
+      await this.searchService().indexCiphers(userId, await this.getDecryptedCipherCache());
+    }
   }
 
   async getAllDecryptedForGrouping(groupingId: string, folder = true): Promise<CipherView[]> {
