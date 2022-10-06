@@ -19,6 +19,8 @@ import {
   TabsModule,
 } from "@bitwarden/components";
 
+import { BreadcrumbsModule } from "./components/breadcrumbs/breadcrumbs.module";
+
 // Register the locales for the application
 import "./locales";
 
@@ -70,6 +72,7 @@ import "./locales";
     IconModule,
     TabsModule,
     TableModule,
+    BreadcrumbsModule,
   ],
   providers: [DatePipe],
   bootstrap: [],
