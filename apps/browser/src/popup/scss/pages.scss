@@ -9,10 +9,17 @@ app-sync {
 }
 
 app-generator .generated-block {
-  font-size: $font-size-large;
+  font-size: $font-size-xlarge;
   font-family: $font-family-monospace;
-  margin: 20px;
+  margin: 10px;
+  padding: 10px;
   display: flex;
+  background-color: $box-background-color;
+  border-radius: 6px;
+
+  @include themify($themes) {
+    background-color: themed("boxBackgroundColor");
+  }
 
   .generated-wrapper {
     text-align: left;
@@ -20,15 +27,28 @@ app-generator .generated-block {
     min-width: 0;
     white-space: pre-wrap;
     word-break: break-all;
+    padding: 15px 30px;
+    border-radius: 6px;
+    background-color: #e6e9ed;
+    border: 1px solid;
+    border-color: #d2d9e6;
+
+    @include themify($themes) {
+      background-color: themed("backgroundColor");
+      border-color: themed("boxBorderColor");
+    }
   }
 
   .action-buttons {
     display: flex;
+    flex-direction: column;
     align-self: center;
+    height: 100%;
+    margin-left: 10px;
 
     button {
       padding: 5px;
-      margin: -5px -5px 5px 5px;
+      margin: 0;
     }
   }
 }

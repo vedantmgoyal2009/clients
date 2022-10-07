@@ -120,19 +120,19 @@
   z-index: 1;
   text-align: left;
 
-  &:before {
-    content: "";
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    height: 1px;
-    width: calc(100% - 10px);
-    border-bottom: 1px solid #000000;
+  // &:before {
+  //   content: "";
+  //   position: absolute;
+  //   right: 0;
+  //   bottom: 0;
+  //   height: 1px;
+  //   width: calc(100% - 10px);
+  //   border-bottom: 1px solid #000000;
 
-    @include themify($themes) {
-      border-bottom-color: themed("boxBorderColor");
-    }
-  }
+  //   @include themify($themes) {
+  //     border-bottom-color: themed("boxBorderColor");
+  //   }
+  // }
 
   &:first-child,
   &:last-child {
