@@ -441,7 +441,7 @@ import { ValidationService } from "./validation.service";
     },
     {
       provide: AbstractEncryptService,
-      useClass: flagEnabled("multithreadDecryption") ? MultithreadEncryptService : EncryptService,
+      useFactory: encryptServiceFactory,
       deps: [CryptoFunctionServiceAbstraction, LogService, LOG_MAC_FAILURES],
     },
     {
@@ -569,3 +569,13 @@ import { ValidationService } from "./validation.service";
   ],
 })
 export class JslibServicesModule {}
+
+function encryptServiceFactory(
+  cryptoFunctionservice: CryptoFunctionServiceAbstraction,
+  logService: LogService,
+  logMacFailures: boolean
+): AbstractEncryptService {
+  return flagEnabled("multithreadDecryption")
+    ? new MultithreadEncryptService(cryptoFunctionservice, logService, logMacFailures)
+    : new EncryptService(cryptoFunctionservice, logService, logMacFailures);
+}
