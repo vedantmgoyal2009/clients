@@ -1,5 +1,6 @@
 import { Jsonify } from "type-fest";
 
+import { InitializerMetadata } from "../../interfaces/initializer-metadata.interface";
 import { Cipher } from "../../models/domain/cipher";
 import { CipherView } from "../../models/view/cipherView";
 
@@ -14,6 +15,8 @@ const classInitializers: Record<InitializerKey, (obj: any) => any> = {
   [InitializerKey.CipherView]: CipherView.fromJSON,
 };
 
-export function getClassInitializer<T>(className: InitializerKey): (obj: Jsonify<T>) => T {
+export function getClassInitializer<T extends InitializerMetadata>(
+  className: InitializerKey
+): (obj: Jsonify<T>) => T {
   return classInitializers[className];
 }
