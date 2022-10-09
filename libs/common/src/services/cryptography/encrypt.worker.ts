@@ -6,8 +6,8 @@ import { ConsoleLogService } from "../../services/consoleLog.service";
 import { ContainerService } from "../../services/container.service";
 import { WebCryptoFunctionService } from "../../services/webCryptoFunction.service";
 
-import { getInitializer } from "./classInitializers";
 import { EncryptServiceImplementation } from "./encrypt.service.implementation";
+import { getClassInitializer } from "./get-class-initializer";
 
 const workerApi: Worker = self as any;
 
@@ -44,7 +44,7 @@ workerApi.addEventListener("message", async (event: { data: string }) => {
 
   const key = SymmetricCryptoKey.fromJSON(request.key);
   const items = request.items.map((jsonItem) => {
-    const initializer = getInitializer<Decryptable<any>>(jsonItem.initializerKey);
+    const initializer = getClassInitializer<Decryptable<any>>(jsonItem.initializerKey);
     return initializer(jsonItem);
   });
   const result = await encryptService.decryptItems(items, key);

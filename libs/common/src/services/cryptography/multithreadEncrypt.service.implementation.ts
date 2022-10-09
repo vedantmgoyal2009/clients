@@ -6,8 +6,8 @@ import { InitializerMetadata } from "../../interfaces/initializer-metadata.inter
 import { Utils } from "../../misc/utils";
 import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
 
-import { getInitializer } from "./classInitializers";
 import { EncryptServiceImplementation } from "./encrypt.service.implementation";
+import { getClassInitializer } from "./get-class-initializer";
 
 // TTL (time to live) is not strictly required but avoids tying up memory resources if inactive
 const workerTTL = 3 * 60000; // 3 minutes
@@ -52,7 +52,7 @@ export class MultithreadEncryptServiceImplementation extends EncryptServiceImple
         map((response) => JSON.parse(response.data.items)),
         map((items) =>
           items.map((jsonItem: Jsonify<T>) => {
-            const initializer = getInitializer<T>(jsonItem.initializerKey);
+            const initializer = getClassInitializer<T>(jsonItem.initializerKey);
             return initializer(jsonItem);
           })
         ),
