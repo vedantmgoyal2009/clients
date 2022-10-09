@@ -1,6 +1,6 @@
 import { Jsonify } from "type-fest";
 
-import { IDecryptable } from "../../interfaces/IDecryptable";
+import { Decryptable } from "../../interfaces/decryptable.interface";
 import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
 import { ConsoleLogService } from "../../services/consoleLog.service";
 import { ContainerService } from "../../services/container.service";
@@ -38,13 +38,13 @@ workerApi.addEventListener("message", async (event: { data: string }) => {
 
   const request: {
     id: string;
-    items: Jsonify<IDecryptable<any>>[];
+    items: Jsonify<Decryptable<any>>[];
     key: Jsonify<SymmetricCryptoKey>;
   } = JSON.parse(event.data);
 
   const key = SymmetricCryptoKey.fromJSON(request.key);
   const items = request.items.map((jsonItem) => {
-    const initializer = getInitializer<IDecryptable<any>>(jsonItem.initializerKey);
+    const initializer = getInitializer<Decryptable<any>>(jsonItem.initializerKey);
     return initializer(jsonItem);
   });
   const result = await encryptService.decryptItems(items, key);

@@ -7,7 +7,7 @@ import { InitializerKey } from "./initializerKey";
 
 /**
  * Internal reference of classes so we can reconstruct objects properly.
- * Each entry should be keyed using the IDecryptable.initializerKey property
+ * Each entry should be keyed using the Decryptable.initializerKey property
  */
 const classInitializers: Record<InitializerKey, (obj: any) => any> = {
   [InitializerKey.Cipher]: Cipher.fromJSON,

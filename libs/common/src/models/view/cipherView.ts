@@ -3,7 +3,7 @@ import { Jsonify } from "type-fest";
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
 import { CipherType } from "../../enums/cipherType";
 import { LinkedIdType } from "../../enums/linkedIdType";
-import { IInitializerMetadata } from "../../interfaces/IInitializerMetadata";
+import { InitializerMetadata } from "../../interfaces/initializer-metadata.interface";
 import { InitializerKey } from "../../services/cryptography/initializerKey";
 import { LocalData } from "../data/localData";
 import { Cipher } from "../domain/cipher";
@@ -17,7 +17,7 @@ import { PasswordHistoryView } from "./passwordHistoryView";
 import { SecureNoteView } from "./secureNoteView";
 import { View } from "./view";
 
-export class CipherView implements View, IInitializerMetadata {
+export class CipherView implements View, InitializerMetadata {
   readonly initializerKey = InitializerKey.CipherView;
 
   id: string = null;

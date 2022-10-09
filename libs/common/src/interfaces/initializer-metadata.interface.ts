@@ -5,7 +5,7 @@ import { InitializerKey } from "../services/cryptography/initializerKey";
  * will survive serialization. The enum can then be matched to a constructor or factory method for deserialization.
  *
  */
-export interface IInitializerMetadata {
+export interface InitializerMetadata {
   initializerKey: InitializerKey;
   toJSON?: () => { initializerKey: InitializerKey };
 }

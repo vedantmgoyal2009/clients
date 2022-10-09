@@ -1,12 +1,12 @@
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 
-import { IInitializerMetadata } from "./IInitializerMetadata";
+import { InitializerMetadata } from "./initializer-metadata.interface";
 
 /**
  * An object that contains EncStrings and knows how to decrypt them. This is usually a domain object with the
  * corresponding view object as the type argument.
- * @example Cipher implements IDecryptable<CipherView>
+ * @example Cipher implements Decryptable<CipherView>
  */
-export interface IDecryptable<T extends IInitializerMetadata> extends IInitializerMetadata {
+export interface Decryptable<T extends InitializerMetadata> extends InitializerMetadata {
   decrypt: (key?: SymmetricCryptoKey) => Promise<T>;
 }

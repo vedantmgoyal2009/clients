@@ -2,9 +2,9 @@ import { CryptoFunctionService } from "../../abstractions/cryptoFunction.service
 import { EncryptService } from "../../abstractions/encrypt.service";
 import { LogService } from "../../abstractions/log.service";
 import { EncryptionType } from "../../enums/encryptionType";
-import { IDecryptable } from "../../interfaces/IDecryptable";
 import { IEncrypted } from "../../interfaces/IEncrypted";
-import { IInitializerMetadata } from "../../interfaces/IInitializerMetadata";
+import { Decryptable } from "../../interfaces/decryptable.interface";
+import { InitializerMetadata } from "../../interfaces/initializer-metadata.interface";
 import { Utils } from "../../misc/utils";
 import { EncArrayBuffer } from "../../models/domain/encArrayBuffer";
 import { EncString } from "../../models/domain/encString";
@@ -150,8 +150,8 @@ export class EncryptServiceImplementation implements EncryptService {
     return result ?? null;
   }
 
-  async decryptItems<T extends IInitializerMetadata>(
-    items: IDecryptable<T>[],
+  async decryptItems<T extends InitializerMetadata>(
+    items: Decryptable<T>[],
     key: SymmetricCryptoKey
   ): Promise<T[]> {
     if (items == null || items.length < 1) {
