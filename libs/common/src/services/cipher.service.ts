@@ -350,15 +350,16 @@ export class CipherService implements CipherServiceAbstraction {
       groupedCiphers[c.organizationId].push(c);
     });
 
-    const decCiphers: CipherView[] = [];
-    const promises = Object.entries(groupedCiphers).map(([orgId, groupedCiphers]) =>
-      this.encryptService
-        .decryptItems(groupedCiphers, orgKeys.get(orgId) ?? userKey)
-        .then((cipherViews) => decCiphers.push(...cipherViews))
-    );
-    await Promise.all(promises);
+    const decCiphers = (
+      await Promise.all(
+        Object.entries(groupedCiphers).map(([orgId, groupedCiphers]) =>
+          this.encryptService.decryptItems(groupedCiphers, orgKeys.get(orgId) ?? userKey)
+        )
+      )
+    )
+      .flat()
+      .sort(this.getLocaleSortingFunction());
 
-    decCiphers.sort(this.getLocaleSortingFunction());
     await this.setDecryptedCipherCache(decCiphers);
     return decCiphers;
   }

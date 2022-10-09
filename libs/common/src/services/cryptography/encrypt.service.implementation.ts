@@ -158,16 +158,7 @@ export class EncryptServiceImplementation implements EncryptService {
       return [];
     }
 
-    const result: T[] = [];
-    const promises: Promise<number>[] = [];
-
-    items.forEach(async (item) => {
-      promises.push(item.decrypt(key).then((c) => result.push(c)));
-    });
-
-    await Promise.all(promises);
-
-    return result;
+    return await Promise.all(items.map((item) => item.decrypt(key)));
   }
 
   private async aesEncrypt(data: ArrayBuffer, key: SymmetricCryptoKey): Promise<EncryptedObject> {
