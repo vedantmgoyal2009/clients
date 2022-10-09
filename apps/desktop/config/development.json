@@ -1,7 +1,6 @@
 {
   "devFlags": {},
   "flags": {
-    "showDDGSetting": true,
-    "multithreadDecryption": false
+    "showDDGSetting": true
   }
 }

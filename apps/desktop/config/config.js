@@ -1,7 +1,15 @@
 function load(envName) {
   return {
-    ...loadConfig(envName),
-    ...loadConfig("local"),
+    flags: {
+      ...loadConfig("base").flags,
+      ...loadConfig(envName).flags,
+      ...loadConfig("local").flags,
+    },
+    devFlags: {
+      ...loadConfig("base").devFlags,
+      ...loadConfig(envName).devFlags,
+      ...loadConfig("local").devFlags,
+    },
   };
 }
 
