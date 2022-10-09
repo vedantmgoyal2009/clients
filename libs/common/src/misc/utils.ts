@@ -1,8 +1,8 @@
 /* eslint-disable no-useless-escape */
 import * as tldjs from "tldjs";
 
-import { AbstractEncryptService } from "../abstractions/abstractEncrypt.service";
 import { CryptoService } from "../abstractions/crypto.service";
+import { EncryptService } from "../abstractions/encrypt.service";
 import { I18nService } from "../abstractions/i18n.service";
 
 const nodeURL = typeof window === "undefined" ? require("url") : null;
@@ -14,7 +14,7 @@ declare global {
 
 interface BitwardenContainerService {
   getCryptoService: () => CryptoService;
-  getEncryptService: () => AbstractEncryptService;
+  getEncryptService: () => EncryptService;
 }
 
 export class Utils {

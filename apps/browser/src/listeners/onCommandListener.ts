@@ -4,8 +4,8 @@ import { GlobalState } from "@bitwarden/common/models/domain/globalState";
 import { AuthService } from "@bitwarden/common/services/auth.service";
 import { CipherService } from "@bitwarden/common/services/cipher.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
-import { MultithreadEncryptService } from "@bitwarden/common/services/cryptography/multithreadEncrypt.service";
-import { EncryptService } from "@bitwarden/common/services/encrypt.service";
+import { EncryptServiceImplementation } from "@bitwarden/common/services/cryptography/encrypt.service.implementation";
+import { MultithreadEncryptServiceImplementation } from "@bitwarden/common/services/cryptography/multithreadEncrypt.service.implementation";
 import { NoopEventService } from "@bitwarden/common/services/noopEvent.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
 import { SettingsService } from "@bitwarden/common/services/settings.service";
@@ -43,7 +43,7 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
   const secureStorageService = new BrowserLocalStorageService();
 
   const memoryStorageService = new LocalBackedSessionStorageService(
-    new EncryptService(cryptoFunctionService, logService, false),
+    new EncryptServiceImplementation(cryptoFunctionService, logService, false),
     new KeyGenerationService(cryptoFunctionService)
   );
 
@@ -74,7 +74,7 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
 
   const cryptoService = new BrowserCryptoService(
     cryptoFunctionService,
-    null, // AbstractEncryptService
+    null, // EncryptService
     platformUtils,
     logService,
     stateService
@@ -90,8 +90,8 @@ const doAutoFillLogin = async (tab: chrome.tabs.Tab): Promise<void> => {
   let searchService: SearchService = null;
 
   const encryptService = flagEnabled("multithreadDecryption")
-    ? new MultithreadEncryptService(cryptoFunctionService, logService, true)
-    : new EncryptService(cryptoFunctionService, logService, true);
+    ? new MultithreadEncryptServiceImplementation(cryptoFunctionService, logService, true)
+    : new EncryptServiceImplementation(cryptoFunctionService, logService, true);
 
   const cipherService = new CipherService(
     cryptoService,

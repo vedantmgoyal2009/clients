@@ -1,9 +1,9 @@
 import { Arg, Substitute, SubstituteOf } from "@fluffy-spoon/substitute";
 import { BehaviorSubject, firstValueFrom } from "rxjs";
 
-import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
+import { EncryptService } from "@bitwarden/common/abstractions/encrypt.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { FolderData } from "@bitwarden/common/models/data/folderData";
 import { EncString } from "@bitwarden/common/models/domain/encString";
@@ -16,7 +16,7 @@ describe("Folder Service", () => {
   let folderService: FolderService;
 
   let cryptoService: SubstituteOf<CryptoService>;
-  let encryptService: SubstituteOf<AbstractEncryptService>;
+  let encryptService: SubstituteOf<EncryptService>;
   let i18nService: SubstituteOf<I18nService>;
   let cipherService: SubstituteOf<CipherService>;
   let stateService: SubstituteOf<StateService>;

@@ -5,7 +5,7 @@ import { EncArrayBuffer } from "../models/domain/encArrayBuffer";
 import { EncString } from "../models/domain/encString";
 import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
 
-export abstract class AbstractEncryptService {
+export abstract class EncryptService {
   abstract encrypt(plainValue: string | ArrayBuffer, key: SymmetricCryptoKey): Promise<EncString>;
   abstract encryptToBytes: (
     plainValue: ArrayBuffer,

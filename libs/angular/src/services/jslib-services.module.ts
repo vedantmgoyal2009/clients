@@ -1,6 +1,5 @@
 import { Injector, LOCALE_ID, NgModule } from "@angular/core";
 
-import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
 import { AccountApiService as AccountApiServiceAbstraction } from "@bitwarden/common/abstractions/account/account-api.service.abstraction";
 import { AccountService as AccountServiceAbstraction } from "@bitwarden/common/abstractions/account/account.service.abstraction";
 import { AnonymousHubService as AnonymousHubServiceAbstraction } from "@bitwarden/common/abstractions/anonymousHub.service";
@@ -15,6 +14,7 @@ import { ConfigApiServiceAbstraction } from "@bitwarden/common/abstractions/conf
 import { ConfigServiceAbstraction } from "@bitwarden/common/abstractions/config/config.service.abstraction";
 import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "@bitwarden/common/abstractions/cryptoFunction.service";
+import { EncryptService } from "@bitwarden/common/abstractions/encrypt.service";
 import { EnvironmentService as EnvironmentServiceAbstraction } from "@bitwarden/common/abstractions/environment.service";
 import { EventService as EventServiceAbstraction } from "@bitwarden/common/abstractions/event.service";
 import { ExportService as ExportServiceAbstraction } from "@bitwarden/common/abstractions/export.service";
@@ -74,8 +74,8 @@ import { ConfigApiService } from "@bitwarden/common/services/config/config-api.s
 import { ConfigService } from "@bitwarden/common/services/config/config.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
-import { MultithreadEncryptService } from "@bitwarden/common/services/cryptography/multithreadEncrypt.service";
-import { EncryptService } from "@bitwarden/common/services/encrypt.service";
+import { EncryptServiceImplementation } from "@bitwarden/common/services/cryptography/encrypt.service.implementation";
+import { MultithreadEncryptServiceImplementation } from "@bitwarden/common/services/cryptography/multithreadEncrypt.service.implementation";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { EventService } from "@bitwarden/common/services/event.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
@@ -216,7 +216,7 @@ import { ValidationService } from "./validation.service";
         injector: Injector,
         logService: LogService,
         stateService: StateServiceAbstraction,
-        encryptService: AbstractEncryptService
+        encryptService: EncryptService
       ) =>
         new CipherService(
           cryptoService,
@@ -238,7 +238,7 @@ import { ValidationService } from "./validation.service";
         Injector, // TODO: Get rid of this circular dependency!
         LogService,
         StateServiceAbstraction,
-        AbstractEncryptService,
+        EncryptService,
       ],
     },
     {
@@ -297,7 +297,7 @@ import { ValidationService } from "./validation.service";
       useClass: CryptoService,
       deps: [
         CryptoFunctionServiceAbstraction,
-        AbstractEncryptService,
+        EncryptService,
         PlatformUtilsServiceAbstraction,
         LogService,
         StateServiceAbstraction,
@@ -440,7 +440,7 @@ import { ValidationService } from "./validation.service";
       deps: [WINDOW],
     },
     {
-      provide: AbstractEncryptService,
+      provide: EncryptService,
       useFactory: encryptServiceFactory,
       deps: [CryptoFunctionServiceAbstraction, LogService, LOG_MAC_FAILURES],
     },
@@ -574,8 +574,8 @@ function encryptServiceFactory(
   cryptoFunctionservice: CryptoFunctionServiceAbstraction,
   logService: LogService,
   logMacFailures: boolean
-): AbstractEncryptService {
+): EncryptService {
   return flagEnabled("multithreadDecryption")
-    ? new MultithreadEncryptService(cryptoFunctionservice, logService, logMacFailures)
-    : new EncryptService(cryptoFunctionservice, logService, logMacFailures);
+    ? new MultithreadEncryptServiceImplementation(cryptoFunctionservice, logService, logMacFailures)
+    : new EncryptServiceImplementation(cryptoFunctionservice, logService, logMacFailures);
 }

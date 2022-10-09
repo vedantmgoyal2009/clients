@@ -5,14 +5,15 @@ import { IDecryptable } from "../../interfaces/IDecryptable";
 import { IInitializerMetadata } from "../../interfaces/IInitializerMetadata";
 import { Utils } from "../../misc/utils";
 import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
-import { EncryptService } from "../encrypt.service";
 
 import { getInitializer } from "./classInitializers";
+import { EncryptServiceImplementation } from "./encrypt.service.implementation";
+
 
 // TTL (time to live) is not strictly required but avoids tying up memory resources if inactive
 const workerTTL = 3 * 60000; // 3 minutes
 
-export class MultithreadEncryptService extends EncryptService {
+export class MultithreadEncryptServiceImplementation extends EncryptServiceImplementation {
   private worker: Worker;
   private timeout: any;
 
