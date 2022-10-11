@@ -9,8 +9,8 @@ import {
   OperationType,
   ProjectDialogComponent,
   ProjectOperation,
-} from "./dialog/project-dialog.component";
-import { ProjectService } from "./project.service";
+} from "../dialog/project-dialog.component";
+import { ProjectService } from "../project.service";
 
 @Component({
   selector: "sm-projects",

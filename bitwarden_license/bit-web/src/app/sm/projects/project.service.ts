@@ -10,9 +10,9 @@ import { ListResponse } from "@bitwarden/common/models/response/listResponse";
 import { ProjectListView } from "@bitwarden/common/models/view/projectListView";
 import { ProjectView } from "@bitwarden/common/models/view/projectView";
 
-import { ProjectRequest } from "./requests/project.request";
-import { ProjectListItemResponse } from "./responses/project-list-item.response";
-import { ProjectResponse } from "./responses/project.response";
+import { ProjectRequest } from "./models/requests/project.request";
+import { ProjectListItemResponse } from "./models/responses/project-list-item.response";
+import { ProjectResponse } from "./models/responses/project.response";
 
 @Injectable({
   providedIn: "root",
