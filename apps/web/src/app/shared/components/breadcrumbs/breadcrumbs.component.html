@@ -6,7 +6,7 @@
 </ng-container>
 
 <ng-container *ngIf="hasOverflow">
-  <i class="bwi bwi-angle-right tw-mx-1.5 tw-text-main"></i>
+  <i *ngIf="beforeOverflow.length > 0" class="bwi bwi-angle-right tw-mx-1.5 tw-text-main"></i>
 
   <button bitLink linkType="secondary" [bitMenuTriggerFor]="overflowMenu" aria-haspopup>
     <i class="bwi bwi-ellipsis-h"></i>
