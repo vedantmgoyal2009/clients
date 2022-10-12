@@ -15,7 +15,9 @@ interface Breadcrumb {
   route: string;
 }
 
-@Component({})
+@Component({
+  template: "",
+})
 class EmptyComponent {}
 
 export default {
