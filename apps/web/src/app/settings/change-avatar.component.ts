@@ -12,15 +12,11 @@ import { Color } from "@iplab/ngx-color-picker/public-api";
 import { BehaviorSubject, debounceTime, Subject, takeUntil } from "rxjs";
 
 import { AvatarUpdateService } from "@bitwarden/common/abstractions/account/avatar-update.service";
-import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { UpdateAvatarRequest } from "@bitwarden/common/models/request/updateAvatarRequest";
 import { ProfileResponse } from "@bitwarden/common/models/response/profileResponse";
-
 
 @Component({
   selector: "app-change-avatar",
@@ -66,8 +62,6 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
     private i18nService: I18nService,
     private platformUtilsService: PlatformUtilsService,
     private logService: LogService,
-    private apiService: ApiService,
-    private stateService: StateService,
     private accountUpdateService: AvatarUpdateService
   ) {
     this.setupCustomPicker();

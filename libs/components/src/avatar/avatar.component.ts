@@ -8,7 +8,7 @@ import {
   Output,
 } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
-import { debounceTime, Subject, takeUntil } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 
 import { AvatarUpdateService } from "@bitwarden/common/abstractions/account/avatar-update.service";
 import { Utils } from "@bitwarden/common/misc/utils";
@@ -62,13 +62,11 @@ export class AvatarComponent implements OnInit, OnChanges, OnDestroy {
 
   async ngOnInit() {
     if (this.listenForUpdates) {
-      this.accountUpdateService.avatarUpdated$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((color) => {
+      this.accountUpdateService.avatarUpdated$.pipe(takeUntil(this.destroy$)).subscribe((color) => {
         this.color = color;
         this.generate();
       });
-    }    
+    }
   }
 
   async ngOnDestroy() {

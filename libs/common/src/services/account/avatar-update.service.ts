@@ -1,9 +1,9 @@
 import { Subject } from "rxjs";
 
-import { ApiService } from "@bitwarden/common/abstractions/api.service";
-import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { UpdateAvatarRequest } from "@bitwarden/common/models/request/updateAvatarRequest";
-import { ProfileResponse } from "@bitwarden/common/models/response/profileResponse";
+import { ApiService } from "../../abstractions/api.service";
+import { StateService } from "../../abstractions/state.service";
+import { UpdateAvatarRequest } from "../../models/request/updateAvatarRequest";
+import { ProfileResponse } from "../../models/response/profileResponse";
 
 export class AvatarUpdateService {
   avatarUpdated$ = new Subject<string | null>();
@@ -25,7 +25,7 @@ export class AvatarUpdateService {
   pushUpdate(color: string | null): Promise<ProfileResponse | void> {
     const request = new UpdateAvatarRequest(color);
     return this.apiService.putAvatar(request).then((response) => {
-      if (response.avatarColor === color) {   
+      if (response.avatarColor === color) {
         this.stateService.setAvatarColor(color);
         this.avatarUpdated$.next(color);
       }
