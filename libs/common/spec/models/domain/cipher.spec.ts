@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import { Substitute, Arg } from "@fluffy-spoon/substitute";
 import { Jsonify } from "type-fest";
 
@@ -41,6 +42,7 @@ describe("Cipher DTO", () => {
       revisionDate: null,
       collectionIds: undefined,
       localData: null,
+      creationDate: null,
       deletedDate: null,
       reprompt: undefined,
       attachments: null,
@@ -65,6 +67,7 @@ describe("Cipher DTO", () => {
         type: CipherType.Login,
         name: "EncryptedString",
         notes: "EncryptedString",
+        creationDate: "2022-01-01T12:00:00.000Z",
         deletedDate: null,
         reprompt: CipherRepromptType.None,
         login: {
@@ -130,6 +133,7 @@ describe("Cipher DTO", () => {
         revisionDate: new Date("2022-01-31T12:00:00.000Z"),
         collectionIds: undefined,
         localData: null,
+        creationDate: new Date("2022-01-01T12:00:00.000Z"),
         deletedDate: null,
         reprompt: 0,
         login: {
@@ -199,6 +203,7 @@ describe("Cipher DTO", () => {
       cipher.type = CipherType.Login;
       cipher.name = mockEnc("EncryptedString");
       cipher.notes = mockEnc("EncryptedString");
+      cipher.creationDate = new Date("2022-01-01T12:00:00.000Z");
       cipher.deletedDate = null;
       cipher.reprompt = CipherRepromptType.None;
 
@@ -229,6 +234,7 @@ describe("Cipher DTO", () => {
         passwordHistory: null,
         collectionIds: undefined,
         revisionDate: new Date("2022-01-31T12:00:00.000Z"),
+        creationDate: new Date("2022-01-01T12:00:00.000Z"),
         deletedDate: null,
         reprompt: 0,
         localData: undefined,
@@ -252,6 +258,7 @@ describe("Cipher DTO", () => {
         type: CipherType.SecureNote,
         name: "EncryptedString",
         notes: "EncryptedString",
+        creationDate: "2022-01-01T12:00:00.000Z",
         deletedDate: null,
         reprompt: CipherRepromptType.None,
         secureNote: {
@@ -277,6 +284,7 @@ describe("Cipher DTO", () => {
         revisionDate: new Date("2022-01-31T12:00:00.000Z"),
         collectionIds: undefined,
         localData: null,
+        creationDate: new Date("2022-01-01T12:00:00.000Z"),
         deletedDate: null,
         reprompt: 0,
         secureNote: { type: SecureNoteType.Generic },
@@ -304,6 +312,7 @@ describe("Cipher DTO", () => {
       cipher.type = CipherType.SecureNote;
       cipher.name = mockEnc("EncryptedString");
       cipher.notes = mockEnc("EncryptedString");
+      cipher.creationDate = new Date("2022-01-01T12:00:00.000Z");
       cipher.deletedDate = null;
       cipher.reprompt = CipherRepromptType.None;
       cipher.secureNote = new SecureNote();
@@ -328,6 +337,7 @@ describe("Cipher DTO", () => {
         passwordHistory: null,
         collectionIds: undefined,
         revisionDate: new Date("2022-01-31T12:00:00.000Z"),
+        creationDate: new Date("2022-01-01T12:00:00.000Z"),
         deletedDate: null,
         reprompt: 0,
         localData: undefined,
@@ -351,6 +361,7 @@ describe("Cipher DTO", () => {
         type: CipherType.Card,
         name: "EncryptedString",
         notes: "EncryptedString",
+        creationDate: "2022-01-01T12:00:00.000Z",
         deletedDate: null,
         reprompt: CipherRepromptType.None,
         card: {
@@ -381,6 +392,7 @@ describe("Cipher DTO", () => {
         revisionDate: new Date("2022-01-31T12:00:00.000Z"),
         collectionIds: undefined,
         localData: null,
+        creationDate: new Date("2022-01-01T12:00:00.000Z"),
         deletedDate: null,
         reprompt: 0,
         card: {
@@ -415,6 +427,7 @@ describe("Cipher DTO", () => {
       cipher.type = CipherType.Card;
       cipher.name = mockEnc("EncryptedString");
       cipher.notes = mockEnc("EncryptedString");
+      cipher.creationDate = new Date("2022-01-01T12:00:00.000Z");
       cipher.deletedDate = null;
       cipher.reprompt = CipherRepromptType.None;
 
@@ -445,6 +458,7 @@ describe("Cipher DTO", () => {
         passwordHistory: null,
         collectionIds: undefined,
         revisionDate: new Date("2022-01-31T12:00:00.000Z"),
+        creationDate: new Date("2022-01-01T12:00:00.000Z"),
         deletedDate: null,
         reprompt: 0,
         localData: undefined,
@@ -468,6 +482,7 @@ describe("Cipher DTO", () => {
         type: CipherType.Identity,
         name: "EncryptedString",
         notes: "EncryptedString",
+        creationDate: "2022-01-01T12:00:00.000Z",
         deletedDate: null,
         reprompt: CipherRepromptType.None,
         identity: {
@@ -510,6 +525,7 @@ describe("Cipher DTO", () => {
         revisionDate: new Date("2022-01-31T12:00:00.000Z"),
         collectionIds: undefined,
         localData: null,
+        creationDate: new Date("2022-01-01T12:00:00.000Z"),
         deletedDate: null,
         reprompt: 0,
         identity: {
@@ -556,6 +572,7 @@ describe("Cipher DTO", () => {
       cipher.type = CipherType.Identity;
       cipher.name = mockEnc("EncryptedString");
       cipher.notes = mockEnc("EncryptedString");
+      cipher.creationDate = new Date("2022-01-01T12:00:00.000Z");
       cipher.deletedDate = null;
       cipher.reprompt = CipherRepromptType.None;
 
@@ -586,6 +603,7 @@ describe("Cipher DTO", () => {
         passwordHistory: null,
         collectionIds: undefined,
         revisionDate: new Date("2022-01-31T12:00:00.000Z"),
+        creationDate: new Date("2022-01-01T12:00:00.000Z"),
         deletedDate: null,
         reprompt: 0,
         localData: undefined,
