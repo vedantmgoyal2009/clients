@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, TemplateRef, ViewChild } from "@angular/core";
 
 @Component({
   selector: "bit-breadcrumb",
@@ -7,4 +7,6 @@ import { Component, Input } from "@angular/core";
 export class BreadcrumbComponent {
   @Input()
   icon?: string;
+
+  @ViewChild(TemplateRef, { static: true }) content: TemplateRef<unknown>;
 }
