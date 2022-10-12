@@ -8,5 +8,8 @@ export class BreadcrumbComponent {
   @Input()
   icon?: string;
 
+  @Input()
+  route?: unknown = "";
+
   @ViewChild(TemplateRef, { static: true }) content: TemplateRef<unknown>;
 }

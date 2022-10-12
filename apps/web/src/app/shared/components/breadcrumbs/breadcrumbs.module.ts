@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 
-import { LinkModule } from "@bitwarden/components";
+import { LinkModule, MenuModule } from "@bitwarden/components";
 
 import { BreadcrumbComponent } from "./breadcrumb.component";
 import { BreadcrumbsComponent } from "./breadcrumbs.component";
 
 @NgModule({
-  imports: [LinkModule],
+  imports: [LinkModule, MenuModule],
   declarations: [BreadcrumbsComponent, BreadcrumbComponent],
   exports: [BreadcrumbsComponent, BreadcrumbComponent],
 })
