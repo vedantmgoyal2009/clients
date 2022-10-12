@@ -29,7 +29,7 @@ export default {
 const Template: Story<BreadcrumbsComponent> = (args: BreadcrumbsComponent) => ({
   props: args,
   template: `
-    <bit-breadcrumbs>
+    <bit-breadcrumbs [show]="show">
       <bit-breadcrumb *ngFor="let item of items" [icon]="item.icon">{{item.name}}</bit-breadcrumb>
     </bit-breadcrumbs>
   `,
@@ -43,4 +43,17 @@ TopLevel.args = {
 export const SecondLevel = Template.bind({});
 SecondLevel.args = {
   items: [{ name: "Acme Vault" }, { icon: "bwi-collection", name: "Collection" }] as Breadcrumb[],
+};
+
+export const Overflow = Template.bind({});
+Overflow.args = {
+  items: [
+    { name: "Acme Vault" },
+    { icon: "bwi-collection", name: "Collection" },
+    { icon: "bwi-collection", name: "Middle-Collection 1" },
+    { icon: "bwi-collection", name: "Middle-Collection 2" },
+    { icon: "bwi-collection", name: "Middle-Collection 3" },
+    { icon: "bwi-collection", name: "Middle-Collection 4" },
+    { icon: "bwi-collection", name: "End Collection" },
+  ] as Breadcrumb[],
 };
