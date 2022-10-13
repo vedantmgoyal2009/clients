@@ -21,6 +21,6 @@ export class TypographyDirective {
   @Input("bitTypography") bitTypography: TypographyType;
 
   @HostBinding("class") get classList() {
-    return styles[this.bitTypography] ?? ["hi"];
+    return styles[this.bitTypography];
   }
 }
