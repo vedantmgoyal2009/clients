@@ -18,7 +18,7 @@ const SizeClasses: Record<SizeTypes, string[]> = {
 export class AvatarComponent implements OnChanges {
   @Input() border = false;
   @Input() color?: string;
-  @Input() id?: number;
+  @Input() id?: string;
   @Input() text?: string;
   @Input() size: SizeTypes = "default";
 
@@ -58,9 +58,9 @@ export class AvatarComponent implements OnChanges {
     let svg: HTMLElement;
     let hexColor = this.color;
 
-    if (this.color != null) {
+    if (!Utils.isNullOrWhitespace(this.color)) {
       svg = this.createSvgElement(this.svgSize, hexColor);
-    } else if (this.id != null) {
+    } else if (!Utils.isNullOrWhitespace(this.id)) {
       hexColor = Utils.stringToColor(this.id.toString());
       svg = this.createSvgElement(this.svgSize, hexColor);
     } else {
