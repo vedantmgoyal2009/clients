@@ -68,7 +68,7 @@ export class StateService<
   private accountsSubject = new BehaviorSubject<{ [userId: string]: TAccount }>({});
   accounts$ = this.accountsSubject.asObservable();
 
-  private activeAccountSubject = new BehaviorSubject<string>(null);
+  private activeAccountSubject = new BehaviorSubject<string | null>(null);
   activeAccount$ = this.activeAccountSubject.asObservable();
 
   private activeAccountUnlockedSubject = new BehaviorSubject<boolean>(false);
