@@ -569,14 +569,26 @@
   "loginOrCreateNewAccount": {
     "message": "Accedi o crea un nuovo account per accedere alla tua cassaforte."
   },
+  "loginWithDevice": {
+    "message": "Accedi con il dispositivo"
+  },
+  "loginWithDeviceEnabledInfo": {
+    "message": "Il login con il dispositivo deve essere abilitato nelle impostazioni dell'app mobile Bitwarden. Hai bisogno di un'altra opzione?"
+  },
   "createAccount": {
     "message": "Crea account"
+  },
+  "newAroundHere": {
+    "message": "Nuovo da queste parti?"
   },
   "startTrial": {
     "message": "Inizia il periodo di prova"
   },
   "logIn": {
     "message": "Accedi"
+  },
+  "logInInitiated": {
+    "message": "Login avviato"
   },
   "submit": {
     "message": "Invia"
@@ -635,7 +647,7 @@
   "confirmMasterPasswordRequired": {
     "message": "È necessario reinserire la password principale."
   },
-  "masterPasswordMinLength": {
+  "masterPasswordMinlength": {
     "message": "La password principale deve essere lunga almeno 8 caratteri."
   },
   "masterPassDoesntMatch": {
@@ -704,6 +716,9 @@
   },
   "noOrganizationsList": {
     "message": "Non appartieni ad alcuna organizzazione. Le organizzazioni ti consentono di condividere oggetti in modo sicuro con altri utenti."
+  },
+  "notificationSentDevice": {
+    "message": "Una notifica è stata inviata al tuo dispositivo."
   },
   "versionNumber": {
     "message": "Versione $VERSION_NUMBER$",
@@ -2532,6 +2547,9 @@
       }
     }
   },
+  "viewAllLoginOptions": {
+    "message": "Visualizza tutte le opzioni di accesso"
+  },
   "viewedItemId": {
     "message": "Elemento visualizzato $ID$.",
     "placeholders": {
@@ -3372,6 +3390,12 @@
     "message": "Per garantire l'integrità delle tue chiavi di cifratura, verifica la frase impronta dell'utente prima di continuare.",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
   },
+  "fingerprintMatchInfo": {
+    "message": "Assicurati che la tua cassaforte sia sbloccata e che la \"frase impronta\" corrisponda sull'altro dispositivo."
+  },
+  "fingerprintPhraseHeader": {
+    "message": "Frase impronta"
+  },
   "dontAskFingerprintAgain": {
     "message": "Non chiedere di verificare di nuovo la frase impronta",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
@@ -4058,10 +4082,10 @@
     "message": "Permessi"
   },
   "managerPermissions": {
-    "message": "Manager Permissions"
+    "message": "Permessi del Manager"
   },
   "adminPermissions": {
-    "message": "Admin Permissions"
+    "message": "Permessi dell'Amministratore"
   },
   "accessEventLogs": {
     "message": "Accedi ai log degli eventi"
@@ -4371,6 +4395,9 @@
   },
   "reinviteSelected": {
     "message": "Invia nuovamente l'invito"
+  },
+  "resendNotification": {
+    "message": "Invia nuova notifica"
   },
   "noSelectedUsersApplicable": {
     "message": "Questa azione non è applicabile a nessuno degli utenti selezionati."

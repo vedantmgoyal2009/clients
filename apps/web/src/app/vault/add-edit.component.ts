@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 
 import { AddEditComponent as BaseAddEditComponent } from "@bitwarden/angular/components/add-edit.component";
 import { AuditService } from "@bitwarden/common/abstractions/audit.service";
@@ -9,7 +9,7 @@ import { FolderService } from "@bitwarden/common/abstractions/folder/folder.serv
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
-import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
+import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PasswordGenerationService } from "@bitwarden/common/abstractions/passwordGeneration.service";
 import { PasswordRepromptService } from "@bitwarden/common/abstractions/passwordReprompt.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
@@ -24,7 +24,7 @@ import { LoginUriView } from "@bitwarden/common/models/view/loginUriView";
   selector: "app-vault-add-edit",
   templateUrl: "add-edit.component.html",
 })
-export class AddEditComponent extends BaseAddEditComponent {
+export class AddEditComponent extends BaseAddEditComponent implements OnInit, OnDestroy {
   canAccessPremium: boolean;
   totpCode: string;
   totpCodeFormatted: string;
@@ -95,6 +95,10 @@ export class AddEditComponent extends BaseAddEditComponent {
     }
   }
 
+  ngOnDestroy() {
+    super.ngOnDestroy();
+  }
+
   toggleFavorite() {
     this.cipher.favorite = !this.cipher.favorite;
   }
@@ -133,7 +137,7 @@ export class AddEditComponent extends BaseAddEditComponent {
   async generatePassword(): Promise<boolean> {
     const confirmed = await super.generatePassword();
     if (confirmed) {
-      const options = (await this.passwordGenerationService.getOptions())[0];
+      const options = (await this.passwordGenerationService.getOptions())?.[0] ?? {};
       this.cipher.login.password = await this.passwordGenerationService.generatePassword(options);
     }
     return confirmed;

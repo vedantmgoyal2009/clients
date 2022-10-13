@@ -569,14 +569,26 @@
   "loginOrCreateNewAccount": {
     "message": "Pieraksties vai izveido jaunu kontu, lai piekļūtu drošajai glabātavai!"
   },
+  "loginWithDevice": {
+    "message": "Pierakstīties ar ierīci"
+  },
+  "loginWithDeviceEnabledInfo": {
+    "message": "Pierakstīšanās ar ierīci ir jābūt iespējotai Bitwarden lietotnes iestatījumos. Nepieciešama cita iespēja?"
+  },
   "createAccount": {
     "message": "Izveidot kontu"
+  },
+  "newAroundHere": {
+    "message": "Jauns šeit?"
   },
   "startTrial": {
     "message": "Uzsākt izmēģinājumu"
   },
   "logIn": {
     "message": "Pierakstīties"
+  },
+  "logInInitiated": {
+    "message": "Uzsākta pierakstīšanās"
   },
   "submit": {
     "message": "Iesniegt"
@@ -635,7 +647,7 @@
   "confirmMasterPasswordRequired": {
     "message": "Ir nepieciešama galvenās paroles atkārtota ievadīšana."
   },
-  "masterPasswordMinLength": {
+  "masterPasswordMinlength": {
     "message": "Galvenajai parolei ir jābūt vismaz 8 rakstzīmes garai."
   },
   "masterPassDoesntMatch": {
@@ -704,6 +716,9 @@
   },
   "noOrganizationsList": {
     "message": "Tu neesi iekļauts nevienā apvienībā. Apvienības sniedz iespēju droši kopīgot vienumus ar citiem lietotājiem."
+  },
+  "notificationSentDevice": {
+    "message": "Uz ierīci ir nosūtīts paziņojums."
   },
   "versionNumber": {
     "message": "Laidiens $VERSION_NUMBER$",
@@ -1296,7 +1311,7 @@
     "message": "Iespējots"
   },
   "restoreAccess": {
-    "message": "Restore Access"
+    "message": "Atjaunot piekļuvi"
   },
   "premium": {
     "message": "Premium",
@@ -1324,7 +1339,7 @@
     "message": "Atspējot"
   },
   "revokeAccess": {
-    "message": "Revoke Access"
+    "message": "Atsaukt piekļuvi"
   },
   "twoStepLoginProviderEnabled": {
     "message": "Šis divpakāpju pierakstīšanās nodrošinātājs ir iespējots kontā."
@@ -2532,6 +2547,9 @@
       }
     }
   },
+  "viewAllLoginOptions": {
+    "message": "Apskatīt visas pierakstīšanās iespējas"
+  },
   "viewedItemId": {
     "message": "Skatīts vienums $ID$.",
     "placeholders": {
@@ -2677,7 +2695,7 @@
     }
   },
   "removeUserIdAccess": {
-    "message": "Remove $ID$ access",
+    "message": "Noņemt piekļuvi $ID$",
     "placeholders": {
       "id": {
         "content": "$1",
@@ -3372,6 +3390,12 @@
     "message": "Lai pārliecinātos par šifrēšanas atslēgu neskartību, lūgums pirms turpināšanas pārbaudīt lietotāja atpazīšanas vārdkopu.",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
   },
+  "fingerprintMatchInfo": {
+    "message": "Jāpārliecinās, ka glabātava ir atslēgta un atpazīšanas vārdkopa ir tāda pati arī citā ierīcē."
+  },
+  "fingerprintPhraseHeader": {
+    "message": "Atpazīšanas vārdkopa"
+  },
   "dontAskFingerprintAgain": {
     "message": "Vairs nevaicāt pārbaudīt atpazīšanas vārdkopu",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
@@ -3769,7 +3793,7 @@
     "message": "Atspējots"
   },
   "revoked": {
-    "message": "Revoked"
+    "message": "Atsaukts"
   },
   "sendLink": {
     "message": "\"Send\" saite",
@@ -4372,6 +4396,9 @@
   "reinviteSelected": {
     "message": "Atkārtoti nosūtīt uzaicinājumus"
   },
+  "resendNotification": {
+    "message": "Atkārtoti nosūtīt paziņojumu"
+  },
   "noSelectedUsersApplicable": {
     "message": "Šī darbība nav attiecināma uz nevienu no atlasītajiem lietotājiem."
   },
@@ -4430,10 +4457,10 @@
     "message": "Noņemt lietotājus"
   },
   "revokeUsers": {
-    "message": "Revoke Users"
+    "message": "Atsaukt lietotāju piekļuvi"
   },
   "restoreUsers": {
-    "message": "Restore Users"
+    "message": "Atjaunot lietotāju piekļuvi"
   },
   "error": {
     "message": "Kļūda"
@@ -4566,10 +4593,10 @@
     "message": "Atjaunināt galveno paroli"
   },
   "updateMasterPasswordWarning": {
-    "message": "Apvienības pārvaldnieks nesen nomainīja galveno paroli. Lai piekļūtu glabātavai, tā ir jāatjaunina. Turpinot tiks izbeigta pašreizējā sesija un tiks pieprasīta atkārtota pierakstīšanās. Esošās sesijas citās iekārtās var turpināt darboties līdz vienai stundai."
+    "message": "Apvienības pārvaldnieks nesen nomainīja galveno paroli. Lai piekļūtu glabātavai, tā ir jāatjaunina. Turpinot tiks izbeigta pašreizējā sesija un tiks pieprasīta atkārtota pierakstīšanās. Esošās sesijas citās ierīcēs var turpināt darboties līdz vienai stundai."
   },
   "masterPasswordInvalidWarning": {
-    "message": "Galvenā parole neatbilst apvienības nosacījumu prasībām. Lai pievienotos apvienībai, ir nepieciešams atjaunināt galveno paroli. Turpinot notiks izrakstīšanās no pašreizējās sesijas, pieprasot atkal pierakstīties. Esošās sesijas citās iekārtās var turpināt darboties līdz vienai stundai."
+    "message": "Galvenā parole neatbilst apvienības nosacījumu prasībām. Lai pievienotos apvienībai, ir nepieciešams atjaunināt galveno paroli. Turpinot notiks izrakstīšanās no pašreizējās sesijas, pieprasot atkal pierakstīties. Esošās sesijas citās ierīcēs var turpināt darboties līdz vienai stundai."
   },
   "maximumVaultTimeout": {
     "message": "Glabātavas noildze"
@@ -5283,7 +5310,7 @@
     "description": "the text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimEnabledCheckboxDesc": {
-    "message": "Enable SCIM",
+    "message": "Iespējot SCIM",
     "description": "the text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimEnabledCheckboxDescHelpText": {
@@ -5309,7 +5336,7 @@
     "message": "Rotate Key"
   },
   "scimApiKey": {
-    "message": "SCIM API Key",
+    "message": "SCIM API atslēga",
     "description": "the text, 'SCIM' and 'API', are acronymns and should not be translated."
   },
   "copyScimUrl": {

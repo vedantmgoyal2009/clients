@@ -1,14 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { UntypedFormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
-import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
+import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
@@ -35,7 +44,7 @@ interface OnSuccessArgs {
   selector: "app-organization-plans",
   templateUrl: "organization-plans.component.html",
 })
-export class OrganizationPlansComponent implements OnInit {
+export class OrganizationPlansComponent implements OnInit, OnDestroy {
   @ViewChild(PaymentComponent) paymentComponent: PaymentComponent;
   @ViewChild(TaxInfoComponent) taxComponent: TaxInfoComponent;
 
@@ -72,6 +81,8 @@ export class OrganizationPlansComponent implements OnInit {
   });
 
   plans: PlanResponse[];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private apiService: ApiService,
@@ -114,7 +125,19 @@ export class OrganizationPlansComponent implements OnInit {
       this.formGroup.controls.billingEmail.addValidators(Validators.required);
     }
 
+    this.policyService
+      .policyAppliesToActiveUser$(PolicyType.SingleOrg)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((policyAppliesToActiveUser) => {
+        this.singleOrgPolicyBlock = policyAppliesToActiveUser;
+      });
+
     this.loading = false;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get createOrganization() {
@@ -288,8 +311,6 @@ export class OrganizationPlansComponent implements OnInit {
   }
 
   async submit() {
-    this.singleOrgPolicyBlock = await this.userHasBlockingSingleOrgPolicy();
-
     if (this.singleOrgPolicyBlock) {
       return;
     }
@@ -351,10 +372,6 @@ export class OrganizationPlansComponent implements OnInit {
     } catch (e) {
       this.logService.error(e);
     }
-  }
-
-  private async userHasBlockingSingleOrgPolicy() {
-    return this.policyService.policyAppliesToUser(PolicyType.SingleOrg);
   }
 
   private async updateOrganization(orgId: string) {

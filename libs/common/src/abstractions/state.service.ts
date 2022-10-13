@@ -103,7 +103,13 @@ export abstract class StateService<T extends Account = Account> {
   ) => Promise<void>;
   getDecryptedPinProtected: (options?: StorageOptions) => Promise<EncString>;
   setDecryptedPinProtected: (value: EncString, options?: StorageOptions) => Promise<void>;
+  /**
+   * @deprecated Do not call this, use PolicyService
+   */
   getDecryptedPolicies: (options?: StorageOptions) => Promise<Policy[]>;
+  /**
+   * @deprecated Do not call this, use PolicyService
+   */
   setDecryptedPolicies: (value: Policy[], options?: StorageOptions) => Promise<void>;
   getDecryptedPrivateKey: (options?: StorageOptions) => Promise<ArrayBuffer>;
   setDecryptedPrivateKey: (value: ArrayBuffer, options?: StorageOptions) => Promise<void>;
@@ -214,7 +220,13 @@ export abstract class StateService<T extends Account = Account> {
   ) => Promise<void>;
   getEncryptedPinProtected: (options?: StorageOptions) => Promise<string>;
   setEncryptedPinProtected: (value: string, options?: StorageOptions) => Promise<void>;
+  /**
+   * @deprecated Do not call this directly, use PolicyService
+   */
   getEncryptedPolicies: (options?: StorageOptions) => Promise<{ [id: string]: PolicyData }>;
+  /**
+   * @deprecated Do not call this directly, use PolicyService
+   */
   setEncryptedPolicies: (
     value: { [id: string]: PolicyData },
     options?: StorageOptions
@@ -273,7 +285,13 @@ export abstract class StateService<T extends Account = Account> {
   setOpenAtLogin: (value: boolean, options?: StorageOptions) => Promise<void>;
   getOrganizationInvitation: (options?: StorageOptions) => Promise<any>;
   setOrganizationInvitation: (value: any, options?: StorageOptions) => Promise<void>;
+  /**
+   * @deprecated Do not call this directly, use OrganizationService
+   */
   getOrganizations: (options?: StorageOptions) => Promise<{ [id: string]: OrganizationData }>;
+  /**
+   * @deprecated Do not call this directly, use OrganizationService
+   */
   setOrganizations: (
     value: { [id: string]: OrganizationData },
     options?: StorageOptions
