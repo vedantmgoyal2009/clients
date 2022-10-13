@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from "rxjs";
+import { Observable } from "rxjs";
 
 import { KdfType } from "../enums/kdfType";
 import { ThemeType } from "../enums/themeType";
@@ -27,7 +27,7 @@ import { CollectionView } from "../models/view/collectionView";
 import { SendView } from "../models/view/sendView";
 
 export abstract class StateService<T extends Account = Account> {
-  accounts: BehaviorSubject<{ [userId: string]: T }>;
+  accounts$: Observable<{ [userId: string]: T }>;
   activeAccount$: Observable<string>;
   activeAccountUnlocked$: Observable<boolean>;
 

@@ -65,7 +65,9 @@ export class StateService<
   TAccount extends Account = Account
 > implements StateServiceAbstraction<TAccount>
 {
-  accounts = new BehaviorSubject<{ [userId: string]: TAccount }>({});
+  private accountsSubject = new BehaviorSubject<{ [userId: string]: TAccount }>({});
+  accounts$ = this.accountsSubject.asObservable();
+
   private activeAccountSubject = new BehaviorSubject<string>(null);
   activeAccount$ = this.activeAccountSubject.asObservable();
 
@@ -2551,11 +2553,11 @@ export class StateService<
     await this.pruneInMemoryAccounts();
     await this.state().then((state) => {
       if (state.accounts == null || Object.keys(state.accounts).length < 1) {
-        this.accounts.next(null);
+        this.accountsSubject.next(null);
         return;
       }
 
-      this.accounts.next(state.accounts);
+      this.accountsSubject.next(state.accounts);
     });
   }
 

@@ -86,7 +86,7 @@ export class AccountSwitcherComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     // eslint-disable-next-line rxjs-angular/prefer-takeuntil, rxjs/no-async-subscribe
-    this.stateService.accounts.subscribe(async (accounts: { [userId: string]: Account }) => {
+    this.stateService.accounts$.subscribe(async (accounts: { [userId: string]: Account }) => {
       for (const userId in accounts) {
         accounts[userId].profile.authenticationStatus = await this.authService.getAuthStatus(
           userId
