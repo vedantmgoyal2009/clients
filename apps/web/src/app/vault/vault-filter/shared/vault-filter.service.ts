@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, filter, Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 
 import { DynamicTreeNode } from "@bitwarden/angular/vault/vault-filter/models/dynamic-tree-node.model";
 import { VaultFilterService as BaseVaultFilterService } from "@bitwarden/angular/vault/vault-filter/services/vault-filter.service";
@@ -18,10 +18,8 @@ import { CollectionView } from "@bitwarden/common/models/view/collectionView";
 
 @Injectable()
 export class VaultFilterService extends BaseVaultFilterService {
-  private _collapsedFilterNodes = new BehaviorSubject<Set<string> | null>(null);
-  collapsedFilterNodes$: Observable<Set<string>> = this._collapsedFilterNodes.pipe(
-    filter((x) => x !== null)
-  );
+  private _collapsedFilterNodes = new BehaviorSubject<Set<string>>(new Set());
+  collapsedFilterNodes$: Observable<Set<string>> = this._collapsedFilterNodes.asObservable();
 
   constructor(
     stateService: StateService,
