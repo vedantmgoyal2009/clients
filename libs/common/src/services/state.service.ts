@@ -2553,7 +2553,7 @@ export class StateService<
     await this.pruneInMemoryAccounts();
     await this.state().then((state) => {
       if (state.accounts == null || Object.keys(state.accounts).length < 1) {
-        this.accountsSubject.next(null);
+        this.accountsSubject.next({});
         return;
       }
 
