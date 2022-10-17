@@ -215,6 +215,42 @@ describe("vault filter service", () => {
         expect(result.children[0].children.map((c) => c.node.id)).toEqual(["id-3"]);
         expect(result.children[0].children[0].node.name).toBe("Collection 2/Collection 3");
       });
+
+      it("returns tree with parents", async () => {
+        const storedCollections = [
+          createCollectionView("id-1", "Collection 1", "org test id"),
+          createCollectionView("id-2", "Collection 1/Collection 2", "org test id"),
+          createCollectionView("id-3", "Collection 1/Collection 2/Collection 3", "org test id"),
+          createCollectionView("id-4", "Collection 1/Collection 4", "org test id"),
+        ];
+        collectionService.getAllDecrypted.mockResolvedValue(storedCollections);
+        vaultFilterService.reloadCollections();
+
+        const result = await firstValueFrom(vaultFilterService.collectionTree$);
+
+        const c1 = result.children[0];
+        const c2 = c1.children[0];
+        const c3 = c2.children[0];
+        const c4 = c1.children[1];
+        expect(c2.parent.node.id).toEqual("id-1");
+        expect(c3.parent.node.id).toEqual("id-2");
+        expect(c4.parent.node.id).toEqual("id-1");
+      });
+
+      it("returns tree where non-existing collections are excluded from parents", async () => {
+        const storedCollections = [
+          createCollectionView("id-1", "Collection 1", "org test id"),
+          createCollectionView("id-3", "Collection 1/Collection 2/Collection 3", "org test id"),
+        ];
+        collectionService.getAllDecrypted.mockResolvedValue(storedCollections);
+        vaultFilterService.reloadCollections();
+
+        const result = await firstValueFrom(vaultFilterService.collectionTree$);
+
+        const c1 = result.children[0];
+        const c3 = c1.children[0];
+        expect(c3.parent.node.id).toEqual("id-1");
+      });
     });
   });
 

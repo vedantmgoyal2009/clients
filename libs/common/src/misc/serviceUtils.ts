@@ -15,7 +15,7 @@ export class ServiceUtils {
     partIndex: number,
     parts: string[],
     obj: ITreeNodeObject,
-    parent: ITreeNodeObject,
+    parent: TreeNode<ITreeNodeObject> | undefined,
     delimiter: string
   ) {
     if (parts.length <= partIndex) {
@@ -39,7 +39,7 @@ export class ServiceUtils {
         partIndex + 1,
         parts,
         obj,
-        nodeTree[i].node,
+        nodeTree[i],
         delimiter
       );
       return;
