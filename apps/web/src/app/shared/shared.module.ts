@@ -51,6 +51,7 @@ import "./locales";
     IconModule,
     TabsModule,
     TableModule,
+    BreadcrumbsModule,
   ],
   exports: [
     CommonModule,
