@@ -155,14 +155,6 @@ export default class NotificationBackground {
       return;
     }
 
-    let theme = await this.stateService.getTheme();
-
-    if (theme === "system") {
-      theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? ThemeType.Dark
-        : ThemeType.Light;
-    }
-
     for (let i = 0; i < this.notificationQueue.length; i++) {
       if (
         this.notificationQueue[i].tabId !== tab.id ||
@@ -176,7 +168,7 @@ export default class NotificationBackground {
           type: "add",
           typeData: {
             isVaultLocked: this.notificationQueue[i].wasVaultLocked,
-            theme,
+            theme: await this.getCurrentTheme(),
           },
         });
       } else if (this.notificationQueue[i].type === NotificationQueueMessageType.ChangePassword) {
@@ -184,12 +176,24 @@ export default class NotificationBackground {
           type: "change",
           typeData: {
             isVaultLocked: this.notificationQueue[i].wasVaultLocked,
-            theme,
+            theme: await this.getCurrentTheme(),
           },
         });
       }
       break;
     }
+  }
+
+  private async getCurrentTheme() {
+    const theme = await this.stateService.getTheme();
+
+    if (theme !== ThemeType.System) {
+      return theme;
+    }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? ThemeType.Dark
+      : ThemeType.Light;
   }
 
   private removeTabFromNotificationQueue(tab: chrome.tabs.Tab) {
