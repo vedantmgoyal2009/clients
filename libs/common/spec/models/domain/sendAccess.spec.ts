@@ -1,8 +1,9 @@
+// eslint-disable-next-line no-restricted-imports
 import { Substitute, Arg } from "@fluffy-spoon/substitute";
 
 import { SendType } from "@bitwarden/common/enums/sendType";
-import { SendAccess } from "@bitwarden/common/models/domain/sendAccess";
-import { SendText } from "@bitwarden/common/models/domain/sendText";
+import { SendAccess } from "@bitwarden/common/models/domain/send-access";
+import { SendText } from "@bitwarden/common/models/domain/send-text";
 import { SendAccessResponse } from "@bitwarden/common/models/response/sendAccessResponse";
 
 import { mockEnc } from "../../utils";

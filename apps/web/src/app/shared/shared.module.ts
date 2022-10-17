@@ -8,13 +8,14 @@ import { ToastrModule } from "ngx-toastr";
 
 import { JslibModule } from "@bitwarden/angular/jslib.module";
 import {
+  AsyncActionsModule,
+  AvatarModule,
   BadgeModule,
   ButtonModule,
   CalloutModule,
   FormFieldModule,
-  MenuModule,
   IconModule,
-  AvatarModule,
+  MenuModule,
 } from "@bitwarden/components";
 
 // Register the locales for the application
@@ -49,6 +50,7 @@ import "./locales";
   ],
   exports: [
     CommonModule,
+    AsyncActionsModule,
     DragDropModule,
     FormsModule,
     InfiniteScrollModule,
