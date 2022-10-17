@@ -2,6 +2,9 @@
 require("./bar.scss");
 
 document.addEventListener("DOMContentLoaded", () => {
+  const theme = getQueryVariable("theme");
+  document.documentElement.classList.add("theme_" + theme);
+
   let i18n = {};
   let lang = window.navigator.language;
 
@@ -39,10 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     var changeButton = document.querySelector("#template-change .change-save");
     changeButton.textContent = i18n.notificationChangeSave;
 
-    var closeIcon = document.getElementById("close");
-    closeIcon.src = chrome.runtime.getURL("images/close.png");
-    closeIcon.alt = i18n.close;
-
     var closeButton = document.getElementById("close-button");
     closeButton.title = i18n.close;
     closeButton.setAttribute("aria-label", i18n.close);
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#template-change .change-text").textContent =
       i18n.notificationChangeDesc;
 
-    if (getQueryVariable("add")) {
+    if (getQueryVariable("type") === "add") {
       setContent(document.getElementById("template-add"));
 
       var addButton = document.querySelector("#template-add-clone .add-save"), // eslint-disable-line
@@ -88,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
           responseCommand: responseFoldersCommand,
         });
       }
-    } else if (getQueryVariable("change")) {
+    } else if (getQueryVariable("type") === "change") {
       setContent(document.getElementById("template-change"));
       var changeButton = document.querySelector("#template-change-clone .change-save"); // eslint-disable-line
       changeButton.addEventListener("click", (e) => {
