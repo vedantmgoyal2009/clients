@@ -9,10 +9,10 @@
     <ng-content></ng-content>
   </span>
   <button
+    type="button"
     bitIconButton="bwi-close"
     buttonType="contrast"
     size="default"
-    type="button"
     (click)="onClose.emit()"
     [attr.title]="'close' | i18n"
     [attr.aria-label]="'close' | i18n"
