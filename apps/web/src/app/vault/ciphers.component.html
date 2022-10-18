@@ -55,6 +55,7 @@
         </td>
         <td class="table-list-options">
           <button
+            type="button"
             [bitMenuTriggerFor]="cipherOptions"
             class="tw-border-none tw-bg-transparent tw-text-main"
             type="button"
@@ -64,11 +65,16 @@
           </button>
           <bit-menu #cipherOptions>
             <ng-container *ngIf="c.type === cipherType.Login && !c.isDeleted">
-              <button bitMenuItem (click)="copy(c, c.login.username, 'username', 'Username')">
+              <button
+                type="button"
+                bitMenuItem
+                (click)="copy(c, c.login.username, 'username', 'Username')"
+              >
                 <i class="bwi bwi-fw bwi-clone" aria-hidden="true"></i>
                 {{ "copyUsername" | i18n }}
               </button>
               <button
+                type="button"
                 bitMenuItem
                 (click)="copy(c, c.login.password, 'password', 'Password')"
                 *ngIf="c.viewPassword"
@@ -77,6 +83,7 @@
                 {{ "copyPassword" | i18n }}
               </button>
               <button
+                type="button"
                 bitMenuItem
                 (click)="copy(c, c.login.totp, 'verificationCodeTotp', 'TOTP')"
                 *ngIf="displayTotpCopyButton(c)"
@@ -84,16 +91,23 @@
                 <i class="bwi bwi-fw bwi-clone" aria-hidden="true"></i>
                 {{ "copyVerificationCode" | i18n }}
               </button>
-              <button bitMenuItem *ngIf="c.login.canLaunch" (click)="launch(c.login.launchUri)">
+              <button
+                type="button"
+                bitMenuItem
+                *ngIf="c.login.canLaunch"
+                (click)="launch(c.login.launchUri)"
+              >
                 <i class="bwi bwi-fw bwi-share-square" aria-hidden="true"></i>
                 {{ "launch" | i18n }}
               </button>
             </ng-container>
-            <button bitMenuItem (click)="attachments(c)">
+            <button type="button" bitMenuItem (click)="attachments(c)">
               <i class="bwi bwi-fw bwi-paperclip" aria-hidden="true"></i>
               {{ "attachments" | i18n }}
             </button>
             <button
+              type="button"
+              type="button"
               bitMenuItem
               *ngIf="((!organization && !c.organizationId) || organization) && !c.isDeleted"
               (click)="clone(c)"
@@ -102,6 +116,7 @@
               {{ "clone" | i18n }}
             </button>
             <button
+              type="button"
               bitMenuItem
               *ngIf="!organization && !c.organizationId && !c.isDeleted"
               (click)="share(c)"
@@ -109,19 +124,29 @@
               <i class="bwi bwi-fw bwi-arrow-circle-right" aria-hidden="true"></i>
               {{ "moveToOrganization" | i18n }}
             </button>
-            <button bitMenuItem *ngIf="c.organizationId && !c.isDeleted" (click)="collections(c)">
+            <button
+              type="button"
+              bitMenuItem
+              *ngIf="c.organizationId && !c.isDeleted"
+              (click)="collections(c)"
+            >
               <i class="bwi bwi-fw bwi-collection" aria-hidden="true"></i>
               {{ "collections" | i18n }}
             </button>
-            <button bitMenuItem *ngIf="c.organizationId && accessEvents" (click)="events(c)">
+            <button
+              type="button"
+              bitMenuItem
+              *ngIf="c.organizationId && accessEvents"
+              (click)="events(c)"
+            >
               <i class="bwi bwi-fw bwi-file-text" aria-hidden="true"></i>
               {{ "eventLogs" | i18n }}
             </button>
-            <button bitMenuItem (click)="restore(c)" *ngIf="c.isDeleted">
+            <button type="button" bitMenuItem (click)="restore(c)" *ngIf="c.isDeleted">
               <i class="bwi bwi-fw bwi-undo" aria-hidden="true"></i>
               {{ "restore" | i18n }}
             </button>
-            <button bitMenuItem (click)="delete(c)">
+            <button type="button" bitMenuItem (click)="delete(c)">
               <span class="tw-text-danger">
                 <i class="bwi bwi-fw bwi-trash" aria-hidden="true"></i>
                 {{ (c.isDeleted ? "permanentlyDelete" : "delete") | i18n }}
@@ -144,7 +169,12 @@
     <ng-container *ngIf="loaded">
       <img class="no-items-image" aria-hidden="true" />
       <p>{{ "noItemsInList" | i18n }}</p>
-      <button (click)="addCipher()" class="btn btn-outline-primary" *ngIf="showAddNew">
+      <button
+        type="button"
+        (click)="addCipher()"
+        class="btn btn-outline-primary"
+        *ngIf="showAddNew"
+      >
         <i class="bwi bwi-plus bwi-fw"></i>{{ "addItem" | i18n }}
       </button>
     </ng-container>

@@ -85,6 +85,7 @@
         </button>
         <bit-menu #trustedContactOptions>
           <button
+            type="button"
             bitMenuItem
             *ngIf="c.status === emergencyAccessStatusType.Invited"
             (click)="reinvite(c)"
@@ -93,6 +94,7 @@
             {{ "resendInvitation" | i18n }}
           </button>
           <button
+            type="button"
             bitMenuItem
             *ngIf="c.status === emergencyAccessStatusType.Accepted"
             (click)="confirm(c)"
@@ -101,6 +103,7 @@
             {{ "confirm" | i18n }}
           </button>
           <button
+            type="button"
             bitMenuItem
             *ngIf="c.status === emergencyAccessStatusType.RecoveryInitiated"
             (click)="approve(c)"
@@ -109,6 +112,7 @@
             {{ "approve" | i18n }}
           </button>
           <button
+            type="button"
             bitMenuItem
             *ngIf="
               c.status === emergencyAccessStatusType.RecoveryInitiated ||
@@ -119,7 +123,7 @@
             <i class="bwi bwi-fw bwi-close" aria-hidden="true"></i>
             {{ "reject" | i18n }}
           </button>
-          <button bitMenuItem (click)="remove(c)">
+          <button type="button" bitMenuItem (click)="remove(c)">
             <i class="bwi bwi-fw bwi-close" aria-hidden="true"></i>
             {{ "remove" | i18n }}
           </button>
@@ -200,6 +204,7 @@
         </button>
         <bit-menu #grantedContactOptions>
           <button
+            type="button"
             bitMenuItem
             *ngIf="c.status === emergencyAccessStatusType.Confirmed"
             (click)="requestAccess(c)"
@@ -208,6 +213,7 @@
             {{ "requestAccess" | i18n }}
           </button>
           <button
+            type="button"
             bitMenuItem
             *ngIf="
               c.status === emergencyAccessStatusType.RecoveryApproved &&
@@ -219,6 +225,7 @@
             {{ "takeover" | i18n }}
           </button>
           <button
+            type="button"
             bitMenuItem
             *ngIf="
               c.status === emergencyAccessStatusType.RecoveryApproved &&
@@ -229,7 +236,7 @@
             <i class="bwi bwi-fw bwi-eye" aria-hidden="true"></i>
             {{ "view" | i18n }}
           </button>
-          <button bitMenuItem (click)="remove(c)">
+          <button type="button" bitMenuItem (click)="remove(c)">
             <i class="bwi bwi-fw bwi-close" aria-hidden="true"></i>
             {{ "remove" | i18n }}
           </button>

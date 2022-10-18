@@ -60,6 +60,7 @@
             <app-vertical-step label="Organization Information" [subLabel]="orgInfoSubLabel">
               <app-org-info [nameOnly]="true" [formGroup]="orgInfoFormGroup"></app-org-info>
               <button
+                type="button"
                 bitButton
                 buttonType="primary"
                 [disabled]="orgInfoFormGroup.get('name').hasError('required')"
@@ -84,10 +85,11 @@
                 [orgLabel]="orgLabel"
               ></app-trial-confirmation-details>
               <div class="tw-mb-3 tw-flex">
-                <button bitButton buttonType="primary" (click)="navigateToOrgVault()">
+                <button type="button" bitButton buttonType="primary" (click)="navigateToOrgVault()">
                   Get Started
                 </button>
                 <button
+                  type="button"
                   bitButton
                   buttonType="secondary"
                   (click)="navigateToOrgInvite()"

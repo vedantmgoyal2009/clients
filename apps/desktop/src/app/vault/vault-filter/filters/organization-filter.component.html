@@ -3,6 +3,7 @@
     <ng-container *ngSwitchCase="'personalOwnershipPolicy'">
       <div class="filter-heading" [ngClass]="{ active: !hasActiveFilter }">
         <button
+          type="button"
           class="toggle-button"
           appA11yTitle="{{ 'toggleCollapse' | i18n }} {{ organizationGrouping.name | i18n }}"
           (click)="toggleCollapse()"
@@ -21,6 +22,7 @@
         &nbsp;
         <h2>
           <button
+            type="button"
             class="filter-button"
             (click)="clearFilter()"
             [attr.aria-pressed]="!hasActiveFilter"
@@ -38,6 +40,7 @@
         >
           <span class="filter-buttons">
             <button
+              type="button"
               class="filter-button"
               (click)="applyOrganizationFilter(organization)"
               [attr.aria-pressed]="activeFilter.myVaultOnly"
@@ -53,6 +56,7 @@
     <ng-container *ngSwitchDefault>
       <div class="filter-heading" [ngClass]="{ active: !hasActiveFilter }">
         <button
+          type="button"
           appA11yTitle="{{ 'toggleCollapse' | i18n }} {{ organizationGrouping.name | i18n }}"
           (click)="toggleCollapse()"
           [attr.aria-expanded]="!isCollapsed"
@@ -70,6 +74,7 @@
         &nbsp;
         <h2>
           <button
+            type="button"
             class="filter-button"
             (click)="clearFilter()"
             [attr.aria-pressed]="!hasActiveFilter"
@@ -83,6 +88,7 @@
         <li class="filter-option" [ngClass]="{ active: activeFilter.myVaultOnly }">
           <span class="filter-buttons">
             <button
+              type="button"
               class="filter-button"
               (click)="applyMyVaultFilter()"
               [attr.aria-pressed]="activeFilter.myVaultOnly"
@@ -100,6 +106,7 @@
         >
           <span class="filter-buttons">
             <button
+              type="button"
               class="filter-button"
               (click)="applyOrganizationFilter(organization)"
               appA11yTitle="{{ 'vault' | i18n }}: {{ organization.name }}"

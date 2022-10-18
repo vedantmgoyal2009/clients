@@ -5,6 +5,7 @@
         <li class="filter-option active">
           <span class="filter-buttons">
             <button
+              type="button"
               class="filter-button"
               [attr.aria-pressed]="activeFilter.myVaultOnly"
               appA11yTitle="{{ 'vault' | i18n }}: {{ 'myVault' | i18n }}"
@@ -27,6 +28,7 @@
     <ng-container *ngSwitchCase="'personalOwnershipPolicy'">
       <div class="filter-heading">
         <button
+          type="button"
           (click)="toggleCollapse()"
           title="{{ 'toggleCollapse' | i18n }}"
           class="toggle-button"
@@ -43,6 +45,7 @@
           ></i>
         </button>
         <button
+          type="button"
           class="filter-button"
           (click)="clearFilter()"
           [ngClass]="{ active: !hasActiveFilter }"
@@ -59,6 +62,7 @@
         >
           <span class="filter-buttons">
             <button
+              type="button"
               class="filter-button"
               (click)="applyOrganizationFilter(organization)"
               [attr.aria-pressed]="activeFilter.selectedOrganizationId === organization.id"
@@ -68,7 +72,7 @@
               {{ organization.name }}
             </button>
             <ng-container *ngIf="organization.id === activeFilter.selectedOrganizationId">
-              <button [bitMenuTriggerFor]="orgMenu" class="org-options ml-auto">
+              <button type="button" [bitMenuTriggerFor]="orgMenu" class="org-options ml-auto">
                 <i class="bwi bwi-ellipsis-v" aria-hidden="true"></i>
               </button>
               <bit-menu class="filter-organization-options" #orgMenu>
@@ -90,6 +94,7 @@
     <ng-container *ngSwitchCase="'singleOrganizationAndPersonalOwnershipPolicies'">
       <div class="filter-heading">
         <button
+          type="button"
           class="filter-button active"
           [attr.aria-pressed]="activeFilter.selectedOrganizationId === organizations[0].id"
           appA11yTitle="{{ 'vault' | i18n }}: {{ organizations[0].name }}"
@@ -98,7 +103,7 @@
           {{ organizations[0].name }}
         </button>
         <span class="tw-ml-auto">
-          <button [bitMenuTriggerFor]="orgMenu" class="org-options">
+          <button type="button" [bitMenuTriggerFor]="orgMenu" class="org-options">
             <i class="bwi bwi-ellipsis-v" aria-hidden="true"></i>
           </button>
           <bit-menu class="filter-organization-options" #orgMenu>
@@ -110,6 +115,7 @@
     <ng-container *ngSwitchDefault>
       <div class="filter-heading">
         <button
+          type="button"
           class="toggle-button"
           title="{{ 'toggleCollapse' | i18n }}"
           (click)="toggleCollapse()"
@@ -126,6 +132,7 @@
           ></i>
         </button>
         <button
+          type="button"
           class="filter-button"
           (click)="clearFilter()"
           [ngClass]="{ active: !hasActiveFilter }"
@@ -138,6 +145,7 @@
         <li class="filter-option" [ngClass]="{ active: activeFilter.myVaultOnly }">
           <span class="filter-buttons">
             <button
+              type="button"
               class="filter-button"
               (click)="applyMyVaultFilter()"
               appA11yTitle="{{ 'vault' | i18n }}: {{ 'myVault' | i18n }}"
@@ -155,6 +163,7 @@
         >
           <span class="filter-buttons">
             <button
+              type="button"
               class="filter-button"
               [ngClass]="{ 'disabled-organization': !organization.enabled }"
               (click)="applyOrganizationFilter(organization)"
@@ -170,7 +179,7 @@
                 aria-label="{{ 'organizationIsDisabled' | i18n }}"
                 appA11yTitle="{{ 'organizationIsDisabled' | i18n }}"
               ></i
-              ><button [bitMenuTriggerFor]="orgMenu" class="org-options">
+              ><button type="button" [bitMenuTriggerFor]="orgMenu" class="org-options">
                 <i class="bwi bwi-ellipsis-v" aria-hidden="true"></i>
               </button>
               <bit-menu class="filter-organization-options" #orgMenu>

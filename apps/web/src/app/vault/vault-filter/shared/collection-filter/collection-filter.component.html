@@ -1,6 +1,7 @@
 <ng-container *ngIf="show">
   <div class="filter-heading">
     <button
+      type="button"
       (click)="toggleCollapse(collectionsGrouping)"
       [attr.aria-expanded]="!isCollapsed(collectionsGrouping)"
       aria-controls="collection-filters"
@@ -29,6 +30,7 @@
       >
         <span class="filter-buttons">
           <button
+            type="button"
             class="toggle-button"
             *ngIf="c.children.length"
             (click)="toggleCollapse(c.node)"
@@ -45,7 +47,7 @@
               aria-hidden="true"
             ></i>
           </button>
-          <button class="filter-button" (click)="applyFilter(c.node)">
+          <button type="button" class="filter-button" (click)="applyFilter(c.node)">
             <i
               *ngIf="c.children.length === 0"
               class="bwi bwi-collection bwi-fw"

@@ -4,6 +4,7 @@
     <li class="filter-option" [ngClass]="{ active: activeFilter.status === 'all' }">
       <span class="filter-buttons">
         <button
+          type="button"
           class="filter-button"
           (click)="applyFilter('all')"
           [attr.aria-pressed]="activeFilter.status === 'all'"
@@ -19,6 +20,7 @@
     >
       <span class="filter-buttons">
         <button
+          type="button"
           class="filter-button"
           (click)="applyFilter('favorites')"
           [attr.aria-pressed]="activeFilter.status === 'favorites'"
@@ -34,6 +36,7 @@
     >
       <span class="filter-buttons">
         <button
+          type="button"
           class="filter-button"
           (click)="applyFilter('trash')"
           [attr.aria-pressed]="activeFilter.status === 'trash'"

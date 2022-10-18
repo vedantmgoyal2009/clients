@@ -1,6 +1,7 @@
 <ng-container *ngIf="!hide">
   <div class="filter-heading">
     <button
+      type="button"
       class="toggle-button"
       (click)="toggleCollapse(foldersGrouping)"
       [attr.aria-expanded]="!isCollapsed(foldersGrouping)"
@@ -18,6 +19,7 @@
     </button>
     <h3 class="filter-title">&nbsp;{{ "folders" | i18n }}</h3>
     <button
+      type="button"
       class="text-muted ml-auto add-button"
       (click)="addFolder()"
       appA11yTitle="{{ 'addFolder' | i18n }}"
@@ -36,6 +38,7 @@
       >
         <span class="filter-buttons">
           <button
+            type="button"
             *ngIf="f.children.length"
             title="{{ 'toggleCollapse' | i18n }}"
             (click)="toggleCollapse(f.node)"
@@ -52,11 +55,12 @@
               aria-hidden="true"
             ></i>
           </button>
-          <button class="filter-button" (click)="applyFilter(f.node)">
+          <button type="button" class="filter-button" (click)="applyFilter(f.node)">
             <i *ngIf="f.children.length === 0" class="bwi bwi-fw bwi-folder" aria-hidden="true"></i
             >&nbsp;{{ f.node.name }}
           </button>
           <button
+            type="button"
             class="edit-button"
             (click)="editFolder(f.node)"
             appA11yTitle="{{ 'editFolder' | i18n }}"

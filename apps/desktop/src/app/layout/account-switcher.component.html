@@ -1,4 +1,5 @@
 <button
+  type="button"
   class="account-switcher"
   (click)="toggle()"
   cdkOverlayOrigin
@@ -51,6 +52,7 @@
   >
     <div class="accounts" *ngIf="numberOfAccounts > 0">
       <button
+        type="button"
         *ngFor="let a of accounts | keyvalue"
         class="account"
         (click)="switch(a.key)"

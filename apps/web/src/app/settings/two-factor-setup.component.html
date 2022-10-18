@@ -5,7 +5,7 @@
 <p *ngIf="organizationId">{{ "twoStepLoginOrganizationDesc" | i18n }}</p>
 <bit-callout type="warning" *ngIf="!organizationId">
   <p>{{ "twoStepLoginRecoveryWarning" | i18n }}</p>
-  <button bitButton buttonType="secondary" (click)="recoveryCode()">
+  <button type="button" bitButton buttonType="secondary" (click)="recoveryCode()">
     {{ "viewRecoveryCode" | i18n }}
   </button>
 </bit-callout>
@@ -45,6 +45,7 @@
     </div>
     <div class="ml-auto">
       <button
+        type="button"
         bitButton
         buttonType="secondary"
         [disabled]="!canAccessPremium && p.premium"

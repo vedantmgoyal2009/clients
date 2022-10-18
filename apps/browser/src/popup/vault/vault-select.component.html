@@ -3,6 +3,7 @@
     <ng-container *ngIf="selectedVault$ | async as vaultFilterDisplay">
       <button
         #toggleVaults
+        type="button"
         class="org-filter"
         (click)="openOverlay()"
         aria-haspopup="menu"
@@ -28,6 +29,7 @@
         aria-modal="true"
       >
         <button
+          type="button"
           appStopClick
           (click)="selectAllVaults()"
           [ngClass]="{ active: !myVaultOnly && !selectOrganizationId }"
@@ -35,11 +37,17 @@
           <i class="bwi bwi-fw bwi-filter" aria-hidden="true"></i>
           &nbsp;{{ "allVaults" | i18n }}
         </button>
-        <button *ngIf="!enforcePersonalOwnwership" appStopClick (click)="selectMyVault()">
+        <button
+          type="button"
+          *ngIf="!enforcePersonalOwnwership"
+          appStopClick
+          (click)="selectMyVault()"
+        >
           <i class="bwi bwi-fw bwi-user" aria-hidden="true"></i>
           &nbsp;{{ "myVault" | i18n }}
         </button>
         <button
+          type="button"
           *ngFor="let organization of organizations"
           appStopClick
           (click)="selectOrganization(organization)"

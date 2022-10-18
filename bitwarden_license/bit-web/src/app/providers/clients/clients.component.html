@@ -17,6 +17,7 @@
       {{ "newClientOrganization" | i18n }}
     </a>
     <button
+      type="button"
       class="btn btn-sm btn-outline-primary ml-3"
       (click)="addExistingOrganization()"
       *ngIf="manageOrganizations && showAddExisting"

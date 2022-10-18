@@ -1,5 +1,6 @@
 <div class="filter-heading">
   <button
+    type="button"
     class="toggle-button"
     [attr.aria-expanded]="!isCollapsed"
     aria-controls="type-filters"
@@ -23,14 +24,14 @@
     [ngClass]="{ active: activeFilter.cipherType === cipherTypeEnum.Login }"
   >
     <span class="filter-buttons">
-      <button class="filter-button" (click)="applyFilter(cipherTypeEnum.Login)">
+      <button type="button" class="filter-button" (click)="applyFilter(cipherTypeEnum.Login)">
         <i class="bwi bwi-fw bwi-globe" aria-hidden="true"></i>&nbsp;{{ "typeLogin" | i18n }}
       </button>
     </span>
   </li>
   <li class="filter-option" [ngClass]="{ active: activeFilter.cipherType === cipherTypeEnum.Card }">
     <span class="filter-buttons">
-      <button class="filter-button" (click)="applyFilter(cipherTypeEnum.Card)">
+      <button type="button" class="filter-button" (click)="applyFilter(cipherTypeEnum.Card)">
         <i class="bwi bwi-fw bwi-credit-card" aria-hidden="true"></i>&nbsp;{{ "typeCard" | i18n }}
       </button>
     </span>
@@ -40,7 +41,7 @@
     [ngClass]="{ active: activeFilter.cipherType === cipherTypeEnum.Identity }"
   >
     <span class="filter-buttons">
-      <button class="filter-button" (click)="applyFilter(cipherTypeEnum.Identity)">
+      <button type="button" class="filter-button" (click)="applyFilter(cipherTypeEnum.Identity)">
         <i class="bwi bwi-fw bwi-id-card" aria-hidden="true"></i>&nbsp;{{ "typeIdentity" | i18n }}
       </button>
     </span>
@@ -50,7 +51,7 @@
     [ngClass]="{ active: activeFilter.cipherType === cipherTypeEnum.SecureNote }"
   >
     <span class="filter-buttons">
-      <button class="filter-button" (click)="applyFilter(cipherTypeEnum.SecureNote)">
+      <button type="button" class="filter-button" (click)="applyFilter(cipherTypeEnum.SecureNote)">
         <i class="bwi bwi-fw bwi-sticky-note" aria-hidden="true"></i>&nbsp;{{
           "typeSecureNote" | i18n
         }}
