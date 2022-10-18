@@ -76,8 +76,6 @@ export class VaultComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    (window as any).test = (callback: (x: unknown) => void) => callback(this);
-
     this.trashCleanupWarning = this.i18nService.t(
       this.platformUtilsService.isSelfHost()
         ? "trashCleanupWarningSelfHosted"
