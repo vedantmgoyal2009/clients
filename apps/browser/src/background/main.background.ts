@@ -42,8 +42,8 @@ import { AuthenticationStatus } from "@bitwarden/common/enums/authenticationStat
 import { CipherRepromptType } from "@bitwarden/common/enums/cipherRepromptType";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
-import { GlobalState } from "@bitwarden/common/models/domain/globalState";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
+import { GlobalState } from "@bitwarden/common/models/domain/global-state";
+import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 import { ApiService } from "@bitwarden/common/services/api.service";
 import { AppIdService } from "@bitwarden/common/services/appId.service";
 import { AuditService } from "@bitwarden/common/services/audit.service";
@@ -250,7 +250,8 @@ export default class MainBackground {
 
           return promise.then((result) => result.response === "unlocked");
         }
-      }
+      },
+      window
     );
     this.i18nService = new I18nService(BrowserApi.getUILanguage(window));
     this.encryptService = flagEnabled("multithreadDecryption")

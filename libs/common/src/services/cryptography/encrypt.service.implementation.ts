@@ -6,10 +6,10 @@ import { IEncrypted } from "../../interfaces/IEncrypted";
 import { Decryptable } from "../../interfaces/decryptable.interface";
 import { InitializerMetadata } from "../../interfaces/initializer-metadata.interface";
 import { Utils } from "../../misc/utils";
-import { EncArrayBuffer } from "../../models/domain/encArrayBuffer";
-import { EncString } from "../../models/domain/encString";
-import { EncryptedObject } from "../../models/domain/encryptedObject";
-import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
+import { EncArrayBuffer } from "../../models/domain/enc-array-buffer";
+import { EncString } from "../../models/domain/enc-string";
+import { EncryptedObject } from "../../models/domain/encrypted-object";
+import { SymmetricCryptoKey } from "../../models/domain/symmetric-crypto-key";
 
 export class EncryptServiceImplementation implements EncryptService {
   constructor(
