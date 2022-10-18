@@ -2,7 +2,7 @@ import { Jsonify } from "type-fest";
 
 import { InitializerMetadata } from "../../interfaces/initializer-metadata.interface";
 import { Cipher } from "../../models/domain/cipher";
-import { CipherView } from "../../models/view/cipherView";
+import { CipherView } from "../../models/view/cipher.view";
 
 import { InitializerKey } from "./initializerKey";
 

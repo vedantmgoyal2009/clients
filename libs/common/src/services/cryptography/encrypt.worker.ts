@@ -1,7 +1,7 @@
 import { Jsonify } from "type-fest";
 
 import { Decryptable } from "../../interfaces/decryptable.interface";
-import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
+import { SymmetricCryptoKey } from "../../models/domain/symmetric-crypto-key";
 import { ConsoleLogService } from "../../services/consoleLog.service";
 import { ContainerService } from "../../services/container.service";
 import { WebCryptoFunctionService } from "../../services/webCryptoFunction.service";

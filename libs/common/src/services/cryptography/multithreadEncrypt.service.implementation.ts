@@ -4,7 +4,7 @@ import { Jsonify } from "type-fest";
 import { Decryptable } from "../../interfaces/decryptable.interface";
 import { InitializerMetadata } from "../../interfaces/initializer-metadata.interface";
 import { Utils } from "../../misc/utils";
-import { SymmetricCryptoKey } from "../../models/domain/symmetricCryptoKey";
+import { SymmetricCryptoKey } from "../../models/domain/symmetric-crypto-key";
 
 import { EncryptServiceImplementation } from "./encrypt.service.implementation";
 import { getClassInitializer } from "./get-class-initializer";
