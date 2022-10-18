@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from "@angular/core";
 
 @Component({
   selector: "bit-breadcrumb",
@@ -9,10 +9,17 @@ export class BreadcrumbComponent {
   icon?: string;
 
   @Input()
-  route?: unknown = "";
+  route?: unknown = undefined;
 
   @Input()
   queryParams?: Record<string, string> = {};
 
+  @Output()
+  click = new EventEmitter();
+
   @ViewChild(TemplateRef, { static: true }) content: TemplateRef<unknown>;
+
+  onClick(args: unknown) {
+    this.click.next(args);
+  }
 }

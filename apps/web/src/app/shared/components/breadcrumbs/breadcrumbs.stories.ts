@@ -41,15 +41,26 @@ export default {
     breadcrumbs: {
       table: { disable: true },
     },
+    click: { action: "clicked" },
   },
 } as Meta;
 
 const Template: Story<BreadcrumbsComponent> = (args: BreadcrumbsComponent) => ({
   props: args,
   template: `
-    <bit-breadcrumbs [show]="show">
-      <bit-breadcrumb *ngFor="let item of items" [icon]="item.icon" [route]="[item.route]">{{item.name}}</bit-breadcrumb>
-    </bit-breadcrumbs>
+    <h3 class="tw-text-main">Router links</h3>
+    <p>
+      <bit-breadcrumbs [show]="show">
+        <bit-breadcrumb *ngFor="let item of items" [icon]="item.icon" [route]="[item.route]">{{item.name}}</bit-breadcrumb>
+      </bit-breadcrumbs>
+    </p>
+
+    <h3 class="tw-text-main">Click emit</h3>
+    <p>
+      <bit-breadcrumbs [show]="show">
+        <bit-breadcrumb *ngFor="let item of items" [icon]="item.icon" (click)="click($event)">{{item.name}}</bit-breadcrumb>
+      </bit-breadcrumbs>
+    </p>
   `,
 });
 
