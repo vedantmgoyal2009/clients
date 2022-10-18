@@ -6,10 +6,10 @@ import { PasswordGenerationService as PasswordGenerationServiceAbstraction } fro
 import { PolicyService } from "../abstractions/policy/policy.service.abstraction";
 import { StateService } from "../abstractions/state.service";
 import { PolicyType } from "../enums/policyType";
-import { EEFLongWordList } from "../misc/wordlist";
-import { EncString } from "../models/domain/encString";
-import { GeneratedPasswordHistory } from "../models/domain/generatedPasswordHistory";
-import { PasswordGeneratorPolicyOptions } from "../models/domain/passwordGeneratorPolicyOptions";
+import { EFFLongWordList } from "../misc/wordlist";
+import { EncString } from "../models/domain/enc-string";
+import { GeneratedPasswordHistory } from "../models/domain/generated-password-history";
+import { PasswordGeneratorPolicyOptions } from "../models/domain/password-generator-policy-options";
 import { Policy } from "../models/domain/policy";
 
 const DefaultOptions = {
@@ -161,14 +161,14 @@ export class PasswordGenerationService implements PasswordGenerationServiceAbstr
       o.includeNumber = false;
     }
 
-    const listLength = EEFLongWordList.length - 1;
+    const listLength = EFFLongWordList.length - 1;
     const wordList = new Array(o.numWords);
     for (let i = 0; i < o.numWords; i++) {
       const wordIndex = await this.cryptoService.randomNumber(0, listLength);
       if (o.capitalize) {
-        wordList[i] = this.capitalize(EEFLongWordList[wordIndex]);
+        wordList[i] = this.capitalize(EFFLongWordList[wordIndex]);
       } else {
-        wordList[i] = EEFLongWordList[wordIndex];
+        wordList[i] = EFFLongWordList[wordIndex];
       }
     }
 
