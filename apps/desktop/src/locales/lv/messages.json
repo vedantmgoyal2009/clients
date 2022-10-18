@@ -1266,6 +1266,10 @@
     "message": "Atjaunināts",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Izveidots",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Parole atjaunināta",
     "description": "ex. Date this password was updated"
@@ -1570,6 +1574,12 @@
   "enableBrowserIntegrationDesc": {
     "message": "Pārlūka saistīšana tiek izmantota pārlūka biometrijas nodrošināšanai."
   },
+  "enableDuckDuckGoBrowserIntegration": {
+    "message": "Atļaut DuckDuckGo pārlūka saistīšanu"
+  },
+  "enableDuckDuckGoBrowserIntegrationDesc": {
+    "message": "Izmantot Bitwarden glabātavu, kad pārlūko ar DuckDuckGo."
+  },
   "browserIntegrationUnsupportedTitle": {
     "message": "Pārlūka saistīšana nav atbalstīta"
   },
@@ -1596,6 +1606,21 @@
   },
   "verifyBrowserDesc": {
     "message": "Lūgums pārliecināties, ka attēlotā atpazīšanas vārdkopa ir tāda pati kā tā, kas ir redzama pārlūka paplašinājumā."
+  },
+  "verifyNativeMessagingConnectionTitle": {
+    "message": "$APPID$ pieprasa savienojumu ar Bitwarden",
+    "placeholders": {
+      "appid": {
+        "content": "$1",
+        "example": "My App"
+      }
+    }
+  },
+  "verifyNativeMessagingConnectionDesc": {
+    "message": "Vai apstiprināt šo pieprasījumu?"
+  },
+  "verifyNativeMessagingConnectionWarning": {
+    "message": "Ja Tu neuzsāki šo pieprasījumu, neapstiprini to!"
   },
   "biometricsNotEnabledTitle": {
     "message": "Biometrija nav iespējota"

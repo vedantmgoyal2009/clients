@@ -1239,7 +1239,7 @@
     "description": "Default URI match detection for auto-fill."
   },
   "toggleOptions": {
-    "message": "Переключить настройки"
+    "message": "Настройки перебора"
   },
   "organization": {
     "message": "Организация",
@@ -1265,6 +1265,10 @@
   "dateUpdated": {
     "message": "Обновлено",
     "description": "ex. Date this item was updated"
+  },
+  "dateCreated": {
+    "message": "Создан",
+    "description": "ex. Date this item was created"
   },
   "datePasswordUpdated": {
     "message": "Пароль обновлен",
@@ -1570,6 +1574,12 @@
   "enableBrowserIntegrationDesc": {
     "message": "Используется для биометрии в браузере."
   },
+  "enableDuckDuckGoBrowserIntegration": {
+    "message": "Разрешить интеграцию в браузер DuckDuckGo"
+  },
+  "enableDuckDuckGoBrowserIntegrationDesc": {
+    "message": "Использовать хранилище Bitwarden совместно с браузером DuckDuckGo."
+  },
   "browserIntegrationUnsupportedTitle": {
     "message": "Интеграция с браузером не поддерживается"
   },
@@ -1596,6 +1606,21 @@
   },
   "verifyBrowserDesc": {
     "message": "Пожалуйста, убедитесь, что отображаемый отпечаток идентичен отпечатку, отображаемому в расширении браузера."
+  },
+  "verifyNativeMessagingConnectionTitle": {
+    "message": "$APPID$ хочет подключиться к Bitwarden",
+    "placeholders": {
+      "appid": {
+        "content": "$1",
+        "example": "My App"
+      }
+    }
+  },
+  "verifyNativeMessagingConnectionDesc": {
+    "message": "Вы хотите одобрить этот запрос?"
+  },
+  "verifyNativeMessagingConnectionWarning": {
+    "message": "Если запрос инициировали не вы, не одобряйте его."
   },
   "biometricsNotEnabledTitle": {
     "message": "Биометрия не включена"

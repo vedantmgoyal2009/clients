@@ -3,28 +3,28 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { KdfType } from "../enums/kdfType";
 import { ThemeType } from "../enums/themeType";
 import { UriMatchType } from "../enums/uriMatchType";
-import { CipherData } from "../models/data/cipherData";
-import { CollectionData } from "../models/data/collectionData";
-import { EncryptedOrganizationKeyData } from "../models/data/encryptedOrganizationKeyData";
-import { EventData } from "../models/data/eventData";
-import { FolderData } from "../models/data/folderData";
-import { LocalData } from "../models/data/localData";
-import { OrganizationData } from "../models/data/organizationData";
-import { PolicyData } from "../models/data/policyData";
-import { ProviderData } from "../models/data/providerData";
-import { SendData } from "../models/data/sendData";
+import { CipherData } from "../models/data/cipher.data";
+import { CollectionData } from "../models/data/collection.data";
+import { EncryptedOrganizationKeyData } from "../models/data/encrypted-organization-key.data";
+import { EventData } from "../models/data/event.data";
+import { FolderData } from "../models/data/folder.data";
+import { LocalData } from "../models/data/local.data";
+import { OrganizationData } from "../models/data/organization.data";
+import { PolicyData } from "../models/data/policy.data";
+import { ProviderData } from "../models/data/provider.data";
+import { SendData } from "../models/data/send.data";
 import { ServerConfigData } from "../models/data/server-config.data";
 import { Account, AccountSettingsSettings } from "../models/domain/account";
-import { EncString } from "../models/domain/encString";
-import { EnvironmentUrls } from "../models/domain/environmentUrls";
-import { GeneratedPasswordHistory } from "../models/domain/generatedPasswordHistory";
+import { EncString } from "../models/domain/enc-string";
+import { EnvironmentUrls } from "../models/domain/environment-urls";
+import { GeneratedPasswordHistory } from "../models/domain/generated-password-history";
 import { Policy } from "../models/domain/policy";
-import { StorageOptions } from "../models/domain/storageOptions";
-import { SymmetricCryptoKey } from "../models/domain/symmetricCryptoKey";
-import { WindowState } from "../models/domain/windowState";
-import { CipherView } from "../models/view/cipherView";
-import { CollectionView } from "../models/view/collectionView";
-import { SendView } from "../models/view/sendView";
+import { StorageOptions } from "../models/domain/storage-options";
+import { SymmetricCryptoKey } from "../models/domain/symmetric-crypto-key";
+import { WindowState } from "../models/domain/window-state";
+import { CipherView } from "../models/view/cipher.view";
+import { CollectionView } from "../models/view/collection.view";
+import { SendView } from "../models/view/send.view";
 
 export abstract class StateService<T extends Account = Account> {
   accounts: BehaviorSubject<{ [userId: string]: T }>;
@@ -78,8 +78,6 @@ export abstract class StateService<T extends Account = Account> {
   getCryptoMasterKeyBiometric: (options?: StorageOptions) => Promise<string>;
   hasCryptoMasterKeyBiometric: (options?: StorageOptions) => Promise<boolean>;
   setCryptoMasterKeyBiometric: (value: string, options?: StorageOptions) => Promise<void>;
-  getDecodedToken: (options?: StorageOptions) => Promise<any>;
-  setDecodedToken: (value: any, options?: StorageOptions) => Promise<void>;
   getDecryptedCiphers: (options?: StorageOptions) => Promise<CipherView[]>;
   setDecryptedCiphers: (value: CipherView[], options?: StorageOptions) => Promise<void>;
   getDecryptedCollections: (options?: StorageOptions) => Promise<CollectionView[]>;
@@ -105,7 +103,13 @@ export abstract class StateService<T extends Account = Account> {
   ) => Promise<void>;
   getDecryptedPinProtected: (options?: StorageOptions) => Promise<EncString>;
   setDecryptedPinProtected: (value: EncString, options?: StorageOptions) => Promise<void>;
+  /**
+   * @deprecated Do not call this, use PolicyService
+   */
   getDecryptedPolicies: (options?: StorageOptions) => Promise<Policy[]>;
+  /**
+   * @deprecated Do not call this, use PolicyService
+   */
   setDecryptedPolicies: (value: Policy[], options?: StorageOptions) => Promise<void>;
   getDecryptedPrivateKey: (options?: StorageOptions) => Promise<ArrayBuffer>;
   setDecryptedPrivateKey: (value: ArrayBuffer, options?: StorageOptions) => Promise<void>;
@@ -141,6 +145,8 @@ export abstract class StateService<T extends Account = Account> {
   setDontShowCardsCurrentTab: (value: boolean, options?: StorageOptions) => Promise<void>;
   getDontShowIdentitiesCurrentTab: (options?: StorageOptions) => Promise<boolean>;
   setDontShowIdentitiesCurrentTab: (value: boolean, options?: StorageOptions) => Promise<void>;
+  getDuckDuckGoSharedKey: (options?: StorageOptions) => Promise<string>;
+  setDuckDuckGoSharedKey: (value: string, options?: StorageOptions) => Promise<void>;
   getEmail: (options?: StorageOptions) => Promise<string>;
   setEmail: (value: string, options?: StorageOptions) => Promise<void>;
   getEmailVerified: (options?: StorageOptions) => Promise<boolean>;
@@ -160,6 +166,11 @@ export abstract class StateService<T extends Account = Account> {
   ) => Promise<void>;
   getEnableCloseToTray: (options?: StorageOptions) => Promise<boolean>;
   setEnableCloseToTray: (value: boolean, options?: StorageOptions) => Promise<void>;
+  getEnableDuckDuckGoBrowserIntegration: (options?: StorageOptions) => Promise<boolean>;
+  setEnableDuckDuckGoBrowserIntegration: (
+    value: boolean,
+    options?: StorageOptions
+  ) => Promise<void>;
   getEnableFullWidth: (options?: StorageOptions) => Promise<boolean>;
   setEnableFullWidth: (value: boolean, options?: StorageOptions) => Promise<void>;
   getEnableGravitars: (options?: StorageOptions) => Promise<boolean>;
@@ -209,7 +220,13 @@ export abstract class StateService<T extends Account = Account> {
   ) => Promise<void>;
   getEncryptedPinProtected: (options?: StorageOptions) => Promise<string>;
   setEncryptedPinProtected: (value: string, options?: StorageOptions) => Promise<void>;
+  /**
+   * @deprecated Do not call this directly, use PolicyService
+   */
   getEncryptedPolicies: (options?: StorageOptions) => Promise<{ [id: string]: PolicyData }>;
+  /**
+   * @deprecated Do not call this directly, use PolicyService
+   */
   setEncryptedPolicies: (
     value: { [id: string]: PolicyData },
     options?: StorageOptions
@@ -268,7 +285,13 @@ export abstract class StateService<T extends Account = Account> {
   setOpenAtLogin: (value: boolean, options?: StorageOptions) => Promise<void>;
   getOrganizationInvitation: (options?: StorageOptions) => Promise<any>;
   setOrganizationInvitation: (value: any, options?: StorageOptions) => Promise<void>;
+  /**
+   * @deprecated Do not call this directly, use OrganizationService
+   */
   getOrganizations: (options?: StorageOptions) => Promise<{ [id: string]: OrganizationData }>;
+  /**
+   * @deprecated Do not call this directly, use OrganizationService
+   */
   setOrganizations: (
     value: { [id: string]: OrganizationData },
     options?: StorageOptions

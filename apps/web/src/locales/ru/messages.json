@@ -569,14 +569,26 @@
   "loginOrCreateNewAccount": {
     "message": "Войдите или создайте новый аккаунт для доступа к вашему защищенному хранилищу."
   },
+  "loginWithDevice": {
+    "message": "Войти с помощью устройства"
+  },
+  "loginWithDeviceEnabledInfo": {
+    "message": "Вход с устройства должен быть включен в настройках мобильного приложения Bitwarden. Нужен другой вариант?"
+  },
   "createAccount": {
     "message": "Создать аккаунт"
+  },
+  "newAroundHere": {
+    "message": "Вы здесь впервые?"
   },
   "startTrial": {
     "message": "Начать пробный период"
   },
   "logIn": {
     "message": "Войти"
+  },
+  "logInInitiated": {
+    "message": "Вход инициирован"
   },
   "submit": {
     "message": "Подтвердить"
@@ -635,7 +647,7 @@
   "confirmMasterPasswordRequired": {
     "message": "Необходимо повторно ввести мастер-пароль."
   },
-  "masterPasswordMinLength": {
+  "masterPasswordMinlength": {
     "message": "Мастер-пароль должен содержать не менее 8 символов."
   },
   "masterPassDoesntMatch": {
@@ -704,6 +716,9 @@
   },
   "noOrganizationsList": {
     "message": "Вы не являетесь членом какой-либо организации. Организации позволяют безопасно обмениваться элементами с другими пользователями."
+  },
+  "notificationSentDevice": {
+    "message": "На ваше устройство отправлено уведомление."
   },
   "versionNumber": {
     "message": "Версия $VERSION_NUMBER$",
@@ -2532,6 +2547,9 @@
       }
     }
   },
+  "viewAllLoginOptions": {
+    "message": "Посмотреть все варианты авторизации"
+  },
   "viewedItemId": {
     "message": "Просмотрен элемент $ID$.",
     "placeholders": {
@@ -3295,6 +3313,10 @@
     "message": "Обновлено",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Создан",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Пароль обновлен",
     "description": "ex. Date this password was updated"
@@ -3371,6 +3393,12 @@
   "fingerprintEnsureIntegrityVerify": {
     "message": "Чтобы обеспечить целостность ваших ключей шифрования, перед продолжением верифицируйте фразу отпечатка пользователя.",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
+  },
+  "fingerprintMatchInfo": {
+    "message": "Убедитесь, что ваше хранилище разблокировано, а фраза отпечатка соответствует другому устройству."
+  },
+  "fingerprintPhraseHeader": {
+    "message": "Фраза отпечатка"
   },
   "dontAskFingerprintAgain": {
     "message": "Никогда не запрашивать верификацию фразы отпечатка для приглашенных пользователей (не рекомендуется)",
@@ -4057,6 +4085,12 @@
   "permissions": {
     "message": "Разрешения"
   },
+  "managerPermissions": {
+    "message": "Права менеджера"
+  },
+  "adminPermissions": {
+    "message": "Права администратора"
+  },
   "accessEventLogs": {
     "message": "Доступ к журналам событий"
   },
@@ -4365,6 +4399,9 @@
   },
   "reinviteSelected": {
     "message": "Отправить приглашения повторно"
+  },
+  "resendNotification": {
+    "message": "Отправить уведомление повторно"
   },
   "noSelectedUsersApplicable": {
     "message": "Это действие не применимо ни к одному из выбранных пользователей."
@@ -5357,5 +5394,17 @@
   },
   "numberOfUsers": {
     "message": "Количество пользователей"
+  },
+  "multiSelectPlaceholder": {
+    "message": "-- Тип фильтра --"
+  },
+  "multiSelectLoading": {
+    "message": "Получение параметров..."
+  },
+  "multiSelectNotFound": {
+    "message": "Элементов не найдено"
+  },
+  "multiSelectClearAll": {
+    "message": "Очистить все"
   }
 }

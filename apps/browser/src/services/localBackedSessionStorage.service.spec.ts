@@ -1,8 +1,9 @@
+// eslint-disable-next-line no-restricted-imports
 import { Arg, Substitute, SubstituteOf } from "@fluffy-spoon/substitute";
 
 import { Utils } from "@bitwarden/common/misc/utils";
-import { EncString } from "@bitwarden/common/models/domain/encString";
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
+import { EncString } from "@bitwarden/common/models/domain/enc-string";
+import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetric-crypto-key";
 import { EncryptService } from "@bitwarden/common/src/services/encrypt.service";
 
 import BrowserLocalStorageService from "./browserLocalStorage.service";
@@ -95,6 +96,13 @@ describe("Browser Session Storage Service", () => {
           await sut.get("test");
           expect(cache.has("test")).toBe(true);
           expect(cache.get("test")).toEqual(session.test);
+        });
+
+        it("should use a deserializer if provided", async () => {
+          const deserializer = jest.fn().mockReturnValue(testObj);
+          const result = await sut.get("test", { deserializer: deserializer });
+          expect(deserializer).toHaveBeenCalledWith(session.test);
+          expect(result).toEqual(testObj);
         });
       });
     });

@@ -14,10 +14,10 @@
     "message": "Güvenli kasanıza ulaşmak için giriş yapın veya yeni bir hesap oluşturun."
   },
   "createAccount": {
-    "message": "Hesap oluştur"
+    "message": "Hesap Oluştur"
   },
   "login": {
-    "message": "Giriş yap"
+    "message": "Giriş Yap"
   },
   "enterpriseSingleSignOn": {
     "message": "Kurumsal tek oturum açma (SSO)"
@@ -32,10 +32,10 @@
     "message": "Gönder"
   },
   "emailAddress": {
-    "message": "E-posta adresi"
+    "message": "E-posta Adresi"
   },
   "masterPass": {
-    "message": "Ana parola"
+    "message": "Ana Parola"
   },
   "masterPassDesc": {
     "message": "Ana parola, kasanıza ulaşmak için kullanacağınız paroladır. Ana parolanızı unutmamanız çok önemlidir. Unutursanız parolalarınızı asla kurtaramazsınız."
@@ -44,7 +44,7 @@
     "message": "Ana parolanızı unutursanız bu ipucuna bakınca size ana parolanızı hatırlatacak bir şey yazabilirsiniz."
   },
   "reTypeMasterPass": {
-    "message": "Ana parolayı tekrar yazın"
+    "message": "Ana Parolayı Tekrar Yazın"
   },
   "masterPassHint": {
     "message": "Ana Parola İpucu (isteğe bağlı)"
@@ -68,10 +68,10 @@
     "message": "Ayarlar"
   },
   "currentTab": {
-    "message": "Geçerli sekme"
+    "message": "Mevcut Sekme"
   },
   "copyPassword": {
-    "message": "Parolayı kopyala"
+    "message": "Parolayı Kopyala"
   },
   "copyNote": {
     "message": "Notu kopyala"
@@ -80,19 +80,19 @@
     "message": "URI'yi kopyala"
   },
   "copyUsername": {
-    "message": "Kullanıcı adını kopyala"
+    "message": "Kullanıcı Adını Kopyala"
   },
   "copyNumber": {
-    "message": "Numarayı kopyala"
+    "message": "Numarayı Kopyala"
   },
   "copySecurityCode": {
-    "message": "Güvenlik kodunu kopyala"
+    "message": "Güvenlik Kodunu Kopyala"
   },
   "autoFill": {
     "message": "Otomatik doldur"
   },
   "generatePasswordCopied": {
-    "message": "Parola oluştur (ve kopyala)"
+    "message": "Parola Oluştur (kopyalandı)"
   },
   "copyElementIdentifier": {
     "message": "Özel alan adını kopyala"
@@ -110,13 +110,13 @@
     "message": "Mevcut sekme için otomatik doldurulacak giriş bilgisi bulunmuyor."
   },
   "addLogin": {
-    "message": "Hesap ekle"
+    "message": "Oturum Ekle"
   },
   "addItem": {
-    "message": "Kayıt ekle"
+    "message": "Hesap Ekle"
   },
   "passwordHint": {
-    "message": "Parola ipucu"
+    "message": "Parola İpucu"
   },
   "enterEmailToGetHint": {
     "message": "Ana parola ipucunu almak için hesabınızın e-posta adresini girin."
@@ -137,7 +137,7 @@
     "message": "Kod gönderildi"
   },
   "verificationCode": {
-    "message": "Doğrulama kodu"
+    "message": "Doğrulama Kodu"
   },
   "confirmIdentity": {
     "message": "Devam etmek için kimliğinizi doğrulayın."
@@ -146,10 +146,10 @@
     "message": "Hesap"
   },
   "changeMasterPassword": {
-    "message": "Ana Parolayı Değiştir"
+    "message": "Ana parolayı değiştir"
   },
   "fingerprintPhrase": {
-    "message": "Özgün Cümle",
+    "message": "Parmak izi ifadesi",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
   },
   "yourAccountsFingerprint": {
@@ -157,10 +157,10 @@
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
   },
   "twoStepLogin": {
-    "message": "İki Aşamalı Giriş"
+    "message": "İki aşamalı giriş"
   },
   "logOut": {
-    "message": "Çıkış Yap"
+    "message": "Çıkış yap"
   },
   "about": {
     "message": "Hakkında"
@@ -175,16 +175,16 @@
     "message": "Taşı"
   },
   "addFolder": {
-    "message": "Klasör ekle"
+    "message": "Klasör Ekle"
   },
   "name": {
     "message": "Ad"
   },
   "editFolder": {
-    "message": "Klasörü düzenle"
+    "message": "Klasörü Düzenle"
   },
   "deleteFolder": {
-    "message": "Klasörü sil"
+    "message": "Klasörü Sil"
   },
   "folders": {
     "message": "Klasörler"
@@ -193,16 +193,16 @@
     "message": "Listelenecek klasör yok."
   },
   "helpFeedback": {
-    "message": "Yardım & Geribildirim"
+    "message": "Yardım ve geribildirim"
   },
   "sync": {
     "message": "Eşitle"
   },
   "syncVaultNow": {
-    "message": "Kasayı şimdi eşitle"
+    "message": "Kasayı Şimdi Eşitle"
   },
   "lastSync": {
-    "message": "Son eşitleme:"
+    "message": "Son Eşitleme:"
   },
   "passGen": {
     "message": "Parola Oluşturucu"
@@ -215,19 +215,19 @@
     "message": "Hesaplarınız için otomatik olarak güçlü, özgün parolalar oluşturun."
   },
   "bitWebVault": {
-    "message": "Bitwarden Web Kasası"
+    "message": "Bitwarden web kasası"
   },
   "importItems": {
-    "message": "Hesapları İçe Aktar"
+    "message": "Hesapları içe aktar"
   },
   "select": {
     "message": "Seç"
   },
   "generatePassword": {
-    "message": "Parola oluştur"
+    "message": "Parola Oluştur"
   },
   "regeneratePassword": {
-    "message": "Yeni parola oluştur"
+    "message": "Tekrar Parola Oluştur"
   },
   "options": {
     "message": "Seçenekler"
@@ -248,26 +248,26 @@
     "message": "Özel karakterler (!@#$%^&*)"
   },
   "numWords": {
-    "message": "Kelime sayısı"
+    "message": "Kelime Sayısı"
   },
   "wordSeparator": {
-    "message": "Kelime ayracı"
+    "message": "Kelime Ayracı"
   },
   "capitalize": {
     "message": "Baş harfleri büyük yap",
     "description": "Make the first letter of a work uppercase."
   },
   "includeNumber": {
-    "message": "Rakam ekle"
+    "message": "Sayı Ekle"
   },
   "minNumbers": {
-    "message": "En az rakam"
+    "message": "En Az Rakam"
   },
   "minSpecial": {
-    "message": "En az özel karakter"
+    "message": "En Az Özel Karakter"
   },
   "avoidAmbChar": {
-    "message": "Okurken karışabilecek karakterleri kullanma"
+    "message": "Belirsiz Karakterler Kullanma"
   },
   "searchVault": {
     "message": "Kasada ara"
@@ -282,7 +282,7 @@
     "message": "Listelenecek kayıt yok."
   },
   "itemInformation": {
-    "message": "Hesap Bilgileri"
+    "message": "Hesap Bilgisi"
   },
   "username": {
     "message": "Kullanıcı adı"
@@ -367,7 +367,7 @@
     "message": "Kasa zaman aşımı"
   },
   "lockNow": {
-    "message": "Şimdi Kilitle"
+    "message": "Şimdi kilitle"
   },
   "immediately": {
     "message": "Hemen"
@@ -403,10 +403,10 @@
     "message": "4 saat"
   },
   "onLocked": {
-    "message": "Sistem Kilitliyken"
+    "message": "Sistem kilitlenince"
   },
   "onRestart": {
-    "message": "Tarayıcı Yeniden Başlatıldığında"
+    "message": "Tarayıcı yeniden başlatılınca"
   },
   "never": {
     "message": "Asla"
@@ -485,7 +485,7 @@
     "message": "Klasör eklendi"
   },
   "changeMasterPass": {
-    "message": "Ana parolayı değiştir"
+    "message": "Ana Parolayı Değiştir"
   },
   "changeMasterPasswordConfirmation": {
     "message": "Ana parolanızı bitwarden.com web kasası üzerinden değiştirebilirsiniz. Siteye gitmek ister misiniz?"
@@ -494,7 +494,7 @@
     "message": "İki aşamalı giriş, hesabınıza girererken işlemi bir güvenlik anahtarı, şifrematik uygulaması, SMS, telefon araması veya e-posta gibi ek bir yöntemle doğrulamanızı isteyerek hesabınızın güvenliğini artırır. İki aşamalı giriş özelliğini bitwarden.com web kasası üzerinden etkinleştirebilirsiniz. Şimdi siteye gitmek ister misiniz?"
   },
   "editedFolder": {
-    "message": "Klasör düzenlendi"
+    "message": "Klasör Düzenlendi"
   },
   "deleteFolderConfirmation": {
     "message": "Bu klasörü silmek istediğinizden emin misiniz?"
@@ -567,14 +567,14 @@
     "message": "Arama türü"
   },
   "noneFolder": {
-    "message": "Klasör yok",
+    "message": "Klasör Yok",
     "description": "This is the folder for uncategorized items"
   },
   "enableAddLoginNotification": {
     "message": "Hesap eklemeyi öner"
   },
   "addLoginNotificationDesc": {
-    "message": "\"Hesap Ekle Bildirimi\" otomatik olarak, ilk kez oturum açtığınız hesabınızı kasanıza kaydetmeniz için uyarı verir."
+    "message": "\"Hesap ekle\" bildirimi, ilk kez kullandığınız hesap bilgilerini kasanıza kaydetmek isteyip istemediğinizi otomatik olarak sorar."
   },
   "showCardsCurrentTab": {
     "message": "Sekme sayfasında kartları göster"
@@ -589,7 +589,7 @@
     "message": "Kolay otomatik doldurma için sekme sayfasında kimlik öğelerini listele"
   },
   "clearClipboard": {
-    "message": "Panoyu Temizle",
+    "message": "Panoyu temizle",
     "description": "Clipboard is the operating system thing where you copy/paste data to on your device."
   },
   "clearClipboardDesc": {
@@ -646,7 +646,7 @@
     "description": "'Solarized' is a noun and the name of a color scheme. It should not be translated."
   },
   "exportVault": {
-    "message": "Kasayı Dışa Aktar"
+    "message": "Kasayı dışa aktar"
   },
   "fileFormat": {
     "message": "Dosya biçimi"
@@ -750,7 +750,7 @@
     "message": "Şifreleme anahtarınızı güncellemeden bu özelliği kullanamazsınız."
   },
   "premiumMembership": {
-    "message": "Premium Üyelik"
+    "message": "Premium üyelik"
   },
   "premiumManage": {
     "message": "Üyeliğimi yönet"
@@ -885,7 +885,7 @@
     "message": "İki aşamalı doğrulama sağlayıcılarınıza ulaşamıyor musunuz? Kurtarma kodunuzu kullanarak hesabınızdaki tüm iki aşamalı giriş sağlayıcılarını devre dışı bırakabilirsiniz."
   },
   "recoveryCodeTitle": {
-    "message": "Kurtarma kodu"
+    "message": "Kurtarma Kodu"
   },
   "authenticatorAppTitle": {
     "message": "Kimlik doğrulama uygulaması"
@@ -966,7 +966,7 @@
     "message": "Hesaplar için varsayılan otomatik doldurma ayarı"
   },
   "defaultAutoFillOnPageLoadDesc": {
-    "message": "\"Sayfa yüklendiğinde otomatik doldur\"u açtıktan sonra her hesap için bu özelliği ayrı ayrı açıp kapatabilirsiniz. Bu ayar, özellikle ayarlama yapmadığınız hesaplarda kullanılacak varsayılan ayardır."
+    "message": "\"Sayfa yüklendiğinde otomatik doldur\"u her hesabın \"Düzenle\" görünümünden ayrı ayrı kapatabilirsiniz."
   },
   "itemAutoFillOnPageLoad": {
     "message": "Sayfa yüklendiğinde otomatik doldur (seçeneklerde etkinleştirilmişse)"
@@ -1002,7 +1002,7 @@
     "message": "Özel alanlar"
   },
   "copyValue": {
-    "message": "Değeri kopyala"
+    "message": "Değeri Kopyala"
   },
   "value": {
     "message": "Değer"
@@ -1296,7 +1296,7 @@
     "message": "Türler"
   },
   "allItems": {
-    "message": "Tüm kayıtlar"
+    "message": "Tüm ögeler"
   },
   "noPasswordsInList": {
     "message": "Listelenecek parola yok."
@@ -1311,8 +1311,12 @@
     "message": "Güncelleme",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Oluşturma",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
-    "message": "Parola güncelleme",
+    "message": "Parola Güncellendi",
     "description": "ex. Date this password was updated"
   },
   "neverLockWarning": {
@@ -1898,7 +1902,7 @@
     "message": "Kişisel Kasayı Dışa Aktar"
   },
   "exportingPersonalVaultDescription": {
-    "message": "Yalnızca $EMAIL$ ile ilişkili kişisel kasa öğeleri dışa aktarılacaktır. Kuruluş kasası öğeleri dahil edilmeyecektir.",
+    "message": "Yalnızca $EMAIL$ ile ilişkili kişisel kasadaki kayıtlar dışa aktarılacaktır. Kuruluş kasasındaki kayıtlar dahil edilmeyecektir.",
     "placeholders": {
       "email": {
         "content": "$1",
@@ -2008,7 +2012,7 @@
     "message": "Üçüncü Taraf"
   },
   "thirdPartyServerMessage": {
-    "message": "Üçüncü taraf sunucu uygulamasına bağlandı, $SERVERNAME$. Lütfen resmi sunucuyu kullanarak hataları doğrulayın veya üçüncü taraf sunucuya bildirin.",
+    "message": "$SERVERNAME$ adresindeki üçüncü taraf sunucuya bağlandınız. Lütfen resmi sunucuyu kullanarak hataları doğrulayın veya üçüncü taraf sunucuya bildirin.",
     "placeholders": {
       "servername": {
         "content": "$1",

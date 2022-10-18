@@ -569,14 +569,26 @@
   "loginOrCreateNewAccount": {
     "message": "Pieraksties vai izveido jaunu kontu, lai piekļūtu drošajai glabātavai!"
   },
+  "loginWithDevice": {
+    "message": "Pierakstīties ar ierīci"
+  },
+  "loginWithDeviceEnabledInfo": {
+    "message": "Pierakstīšanās ar ierīci ir jābūt iespējotai Bitwarden lietotnes iestatījumos. Nepieciešama cita iespēja?"
+  },
   "createAccount": {
     "message": "Izveidot kontu"
+  },
+  "newAroundHere": {
+    "message": "Jauns šeit?"
   },
   "startTrial": {
     "message": "Uzsākt izmēģinājumu"
   },
   "logIn": {
     "message": "Pierakstīties"
+  },
+  "logInInitiated": {
+    "message": "Uzsākta pierakstīšanās"
   },
   "submit": {
     "message": "Iesniegt"
@@ -635,7 +647,7 @@
   "confirmMasterPasswordRequired": {
     "message": "Ir nepieciešama galvenās paroles atkārtota ievadīšana."
   },
-  "masterPasswordMinLength": {
+  "masterPasswordMinlength": {
     "message": "Galvenajai parolei ir jābūt vismaz 8 rakstzīmes garai."
   },
   "masterPassDoesntMatch": {
@@ -704,6 +716,9 @@
   },
   "noOrganizationsList": {
     "message": "Tu neesi iekļauts nevienā apvienībā. Apvienības sniedz iespēju droši kopīgot vienumus ar citiem lietotājiem."
+  },
+  "notificationSentDevice": {
+    "message": "Uz ierīci ir nosūtīts paziņojums."
   },
   "versionNumber": {
     "message": "Laidiens $VERSION_NUMBER$",
@@ -1296,7 +1311,7 @@
     "message": "Iespējots"
   },
   "restoreAccess": {
-    "message": "Restore Access"
+    "message": "Atjaunot piekļuvi"
   },
   "premium": {
     "message": "Premium",
@@ -1324,7 +1339,7 @@
     "message": "Atspējot"
   },
   "revokeAccess": {
-    "message": "Revoke Access"
+    "message": "Atsaukt piekļuvi"
   },
   "twoStepLoginProviderEnabled": {
     "message": "Šis divpakāpju pierakstīšanās nodrošinātājs ir iespējots kontā."
@@ -2532,6 +2547,9 @@
       }
     }
   },
+  "viewAllLoginOptions": {
+    "message": "Apskatīt visas pierakstīšanās iespējas"
+  },
   "viewedItemId": {
     "message": "Skatīts vienums $ID$.",
     "placeholders": {
@@ -2677,7 +2695,7 @@
     }
   },
   "removeUserIdAccess": {
-    "message": "Remove $ID$ access",
+    "message": "Noņemt piekļuvi $ID$",
     "placeholders": {
       "id": {
         "content": "$1",
@@ -3295,6 +3313,10 @@
     "message": "Atjaunināts",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Izveidots",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Parole atjaunināta",
     "description": "ex. Date this password was updated"
@@ -3371,6 +3393,12 @@
   "fingerprintEnsureIntegrityVerify": {
     "message": "Lai pārliecinātos par šifrēšanas atslēgu neskartību, lūgums pirms turpināšanas pārbaudīt lietotāja atpazīšanas vārdkopu.",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
+  },
+  "fingerprintMatchInfo": {
+    "message": "Jāpārliecinās, ka glabātava ir atslēgta un atpazīšanas vārdkopa ir tāda pati arī citā ierīcē."
+  },
+  "fingerprintPhraseHeader": {
+    "message": "Atpazīšanas vārdkopa"
   },
   "dontAskFingerprintAgain": {
     "message": "Vairs nevaicāt pārbaudīt atpazīšanas vārdkopu",
@@ -3769,7 +3797,7 @@
     "message": "Atspējots"
   },
   "revoked": {
-    "message": "Revoked"
+    "message": "Atsaukts"
   },
   "sendLink": {
     "message": "\"Send\" saite",
@@ -4056,6 +4084,12 @@
   },
   "permissions": {
     "message": "Atļaujas"
+  },
+  "managerPermissions": {
+    "message": "Pārvaldnieka atļaujas"
+  },
+  "adminPermissions": {
+    "message": "Administratora atļaujas"
   },
   "accessEventLogs": {
     "message": "Piekļūt notikumu žurnāla ierakstiem"
@@ -4366,6 +4400,9 @@
   "reinviteSelected": {
     "message": "Atkārtoti nosūtīt uzaicinājumus"
   },
+  "resendNotification": {
+    "message": "Atkārtoti nosūtīt paziņojumu"
+  },
   "noSelectedUsersApplicable": {
     "message": "Šī darbība nav attiecināma uz nevienu no atlasītajiem lietotājiem."
   },
@@ -4424,10 +4461,10 @@
     "message": "Noņemt lietotājus"
   },
   "revokeUsers": {
-    "message": "Revoke Users"
+    "message": "Atsaukt lietotāju piekļuvi"
   },
   "restoreUsers": {
-    "message": "Restore Users"
+    "message": "Atjaunot lietotāju piekļuvi"
   },
   "error": {
     "message": "Kļūda"
@@ -4560,10 +4597,10 @@
     "message": "Atjaunināt galveno paroli"
   },
   "updateMasterPasswordWarning": {
-    "message": "Apvienības pārvaldnieks nesen nomainīja galveno paroli. Lai piekļūtu glabātavai, tā ir jāatjaunina. Turpinot tiks izbeigta pašreizējā sesija un tiks pieprasīta atkārtota pierakstīšanās. Esošās sesijas citās iekārtās var turpināt darboties līdz vienai stundai."
+    "message": "Apvienības pārvaldnieks nesen nomainīja galveno paroli. Lai piekļūtu glabātavai, tā ir jāatjaunina. Turpinot tiks izbeigta pašreizējā sesija un tiks pieprasīta atkārtota pierakstīšanās. Esošās sesijas citās ierīcēs var turpināt darboties līdz vienai stundai."
   },
   "masterPasswordInvalidWarning": {
-    "message": "Galvenā parole neatbilst apvienības nosacījumu prasībām. Lai pievienotos apvienībai, ir nepieciešams atjaunināt galveno paroli. Turpinot notiks izrakstīšanās no pašreizējās sesijas, pieprasot atkal pierakstīties. Esošās sesijas citās iekārtās var turpināt darboties līdz vienai stundai."
+    "message": "Galvenā parole neatbilst apvienības nosacījumu prasībām. Lai pievienotos apvienībai, ir nepieciešams atjaunināt galveno paroli. Turpinot notiks izrakstīšanās no pašreizējās sesijas, pieprasot atkal pierakstīties. Esošās sesijas citās ierīcēs var turpināt darboties līdz vienai stundai."
   },
   "maximumVaultTimeout": {
     "message": "Glabātavas noildze"
@@ -5269,45 +5306,45 @@
     "message": "Nepieciešams Premium abonements"
   },
   "scim": {
-    "message": "SCIM Provisioning",
+    "message": "SCIM nodrošināšana",
     "description": "The text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimDescription": {
-    "message": "Automatically provision users and groups with your preferred identity provider via SCIM provisioning",
+    "message": "Automātiski nodrošina lietotājus un kopas ar vēlamo identitātes nodrošinātāju, izmantojot SCIM nodrošināšanu",
     "description": "the text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimEnabledCheckboxDesc": {
-    "message": "Enable SCIM",
+    "message": "Iespējot SCIM",
     "description": "the text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimEnabledCheckboxDescHelpText": {
-    "message": "Set up your preferred identity provider by configuring the URL and SCIM API Key",
+    "message": "Uzstādīt vēlamo identitātes nodrošinātāju ar URL un SCIM API atslēgas iestatīšanu",
     "description": "the text, 'SCIM', is an acronymn and should not be translated."
   },
   "scimApiKeyHelperText": {
-    "message": "This API key has access to manage users within your organization. It should be kept secret."
+    "message": "Šai API atslēgai ir piekļuve pāŗvaldīt apvienības lietotājus. Tā ir jātur noslēpumā."
   },
   "copyScimKey": {
-    "message": "Copy the SCIM API Key to your clipboard",
+    "message": "Ievietot SCIM API atslēgu starpliktuvē",
     "description": "the text, 'SCIM' and 'API', are acronymns and should not be translated."
   },
   "rotateScimKey": {
-    "message": "Rotate the SCIM API Key",
+    "message": "Nomainīt SCIM API atslēgu",
     "description": "the text, 'SCIM' and 'API', are acronymns and should not be translated."
   },
   "rotateScimKeyWarning": {
-    "message": "Are you sure you want to rotate the SCIM API Key? The current key will no longer work for any existing integrations.",
+    "message": "Vai tiešām nomainīt SCIM API atslēgu? Pašreizējā atslēga vairs nedarbosies nekur, kur tā ir norādīta.",
     "description": "the text, 'SCIM' and 'API', are acronymns and should not be translated."
   },
   "rotateKey": {
-    "message": "Rotate Key"
+    "message": "Mainīt atslēgu"
   },
   "scimApiKey": {
-    "message": "SCIM API Key",
+    "message": "SCIM API atslēga",
     "description": "the text, 'SCIM' and 'API', are acronymns and should not be translated."
   },
   "copyScimUrl": {
-    "message": "Copy the SCIM endpoint URL to your clipboard",
+    "message": "Ievietot SCIM galapunkta URL starpliktuvē",
     "description": "the text, 'SCIM' and 'URL', are acronymns and should not be translated."
   },
   "scimUrl": {
@@ -5315,11 +5352,11 @@
     "description": "the text, 'SCIM' and 'URL', are acronymns and should not be translated."
   },
   "scimApiKeyRotated": {
-    "message": "The SCIM API Key has been successfully rotated",
+    "message": "SCIM API atslēga ir veiksmīgi nomainīta",
     "description": "the text, 'SCIM' and 'API', are acronymns and should not be translated."
   },
   "scimSettingsSaved": {
-    "message": "SCIM settings have been saved successfully",
+    "message": "SCIM iestatījumi ir veiksmīgi saglabāti",
     "description": "the text, 'SCIM', is an acronymn and should not be translated."
   },
   "inputRequired": {
@@ -5357,5 +5394,17 @@
   },
   "numberOfUsers": {
     "message": "Lietotāju skaits"
+  },
+  "multiSelectPlaceholder": {
+    "message": "-- Rakstīt, lai atlasītu --"
+  },
+  "multiSelectLoading": {
+    "message": "Iegūst iespējas..."
+  },
+  "multiSelectNotFound": {
+    "message": "Netika atrasti vienumi"
+  },
+  "multiSelectClearAll": {
+    "message": "Notīrīt visu"
   }
 }

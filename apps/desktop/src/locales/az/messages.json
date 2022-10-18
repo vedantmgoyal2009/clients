@@ -1266,6 +1266,10 @@
     "message": "Güncəlləndi",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Yaradıldı",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Parol güncəlləndi",
     "description": "ex. Date this password was updated"
@@ -1570,6 +1574,12 @@
   "enableBrowserIntegrationDesc": {
     "message": "Brauzer inteqrasiyası, brauzerdə biometrik təsdiqləmə üçün istifadə olunur."
   },
+  "enableDuckDuckGoBrowserIntegration": {
+    "message": "DuckDuckGo brauzer inteqrasiyasına icazə ver"
+  },
+  "enableDuckDuckGoBrowserIntegrationDesc": {
+    "message": "DuckDuckGo ilə gəzinərkən Bitwarden anbarınızı istifadə edin."
+  },
   "browserIntegrationUnsupportedTitle": {
     "message": "Brauzer inteqrasiyası dəstəklənmir"
   },
@@ -1596,6 +1606,21 @@
   },
   "verifyBrowserDesc": {
     "message": "Zəhmət olmasa göstərilən barmaq izinin brauzer genişləndirməsində göstərilən barmaq izi ilə eyni olduğuna əmin olun."
+  },
+  "verifyNativeMessagingConnectionTitle": {
+    "message": "$APPID$, Bitwarden ilə bağlantı qurmaq istəyir",
+    "placeholders": {
+      "appid": {
+        "content": "$1",
+        "example": "My App"
+      }
+    }
+  },
+  "verifyNativeMessagingConnectionDesc": {
+    "message": "Bu tələbi təsdiqləmək istəyirsiniz?"
+  },
+  "verifyNativeMessagingConnectionWarning": {
+    "message": "Bu tələbi siz etməmisinizsə, təsdiqləməyin."
   },
   "biometricsNotEnabledTitle": {
     "message": "Biometriklə fəal deyil"

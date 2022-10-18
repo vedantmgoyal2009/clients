@@ -1,15 +1,16 @@
-import { Substitute, SubstituteOf } from "@fluffy-spoon/substitute";
+// eslint-disable-next-line no-restricted-imports
+import { Arg, Substitute, SubstituteOf } from "@fluffy-spoon/substitute";
 
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import {
-  AbstractCachedStorageService,
+  MemoryStorageServiceInterface,
   AbstractStorageService,
 } from "@bitwarden/common/abstractions/storage.service";
 import { SendType } from "@bitwarden/common/enums/sendType";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
-import { GlobalState } from "@bitwarden/common/models/domain/globalState";
+import { GlobalState } from "@bitwarden/common/models/domain/global-state";
 import { State } from "@bitwarden/common/models/domain/state";
-import { SendView } from "@bitwarden/common/models/view/sendView";
+import { SendView } from "@bitwarden/common/models/view/send.view";
 import { StateMigrationService } from "@bitwarden/common/services/stateMigration.service";
 
 import { Account } from "../models/account";
@@ -49,7 +50,7 @@ describe("Browser State Service", () => {
   });
 
   describe("direct memory storage access", () => {
-    let memoryStorageService: AbstractCachedStorageService;
+    let memoryStorageService: LocalBackedSessionStorageService;
 
     beforeEach(() => {
       // We need `AbstractCachedStorageService` in the prototype chain to correctly test cache bypass.
@@ -79,12 +80,12 @@ describe("Browser State Service", () => {
   });
 
   describe("state methods", () => {
-    let memoryStorageService: SubstituteOf<AbstractStorageService>;
+    let memoryStorageService: SubstituteOf<AbstractStorageService & MemoryStorageServiceInterface>;
 
     beforeEach(() => {
       memoryStorageService = Substitute.for();
       const stateGetter = (key: string) => Promise.resolve(JSON.parse(JSON.stringify(state)));
-      memoryStorageService.get("state").mimicks(stateGetter);
+      memoryStorageService.get("state", Arg.any()).mimicks(stateGetter);
 
       sut = new StateService(
         diskStorageService,

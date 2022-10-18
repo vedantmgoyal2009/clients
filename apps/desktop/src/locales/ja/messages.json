@@ -1266,6 +1266,10 @@
     "message": "更新日",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "作成日",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "パスワード更新日",
     "description": "ex. Date this password was updated"
@@ -1570,6 +1574,12 @@
   "enableBrowserIntegrationDesc": {
     "message": "ブラウザでの生体認証のためにブラウザ統合を使用します。"
   },
+  "enableDuckDuckGoBrowserIntegration": {
+    "message": "DuckDuckGo ブラウザの統合を許可する"
+  },
+  "enableDuckDuckGoBrowserIntegrationDesc": {
+    "message": "DuckDuckGo でブラウズするときに Bitwarden 保管庫を使用します。"
+  },
   "browserIntegrationUnsupportedTitle": {
     "message": "ブラウザー統合はサポートされていません"
   },
@@ -1596,6 +1606,21 @@
   },
   "verifyBrowserDesc": {
     "message": "表示されているパスフレーズがブラウザ拡張に表示されているものと同じであることを確認してください。"
+  },
+  "verifyNativeMessagingConnectionTitle": {
+    "message": "$APPID$ が Bitwarden に接続しようとしています",
+    "placeholders": {
+      "appid": {
+        "content": "$1",
+        "example": "My App"
+      }
+    }
+  },
+  "verifyNativeMessagingConnectionDesc": {
+    "message": "このリクエストを承認しますか？"
+  },
+  "verifyNativeMessagingConnectionWarning": {
+    "message": "このリクエストが自身でしたものでない場合は、承認しないでください。"
   },
   "biometricsNotEnabledTitle": {
     "message": "生体認証が有効になっていません。"

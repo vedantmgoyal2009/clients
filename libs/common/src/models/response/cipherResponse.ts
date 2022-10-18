@@ -1,9 +1,9 @@
 import { CipherRepromptType } from "../../enums/cipherRepromptType";
-import { CardApi } from "../api/cardApi";
-import { FieldApi } from "../api/fieldApi";
-import { IdentityApi } from "../api/identityApi";
-import { LoginApi } from "../api/loginApi";
-import { SecureNoteApi } from "../api/secureNoteApi";
+import { CardApi } from "../api/card.api";
+import { FieldApi } from "../api/field.api";
+import { IdentityApi } from "../api/identity.api";
+import { LoginApi } from "../api/login.api";
+import { SecureNoteApi } from "../api/secure-note.api";
 
 import { AttachmentResponse } from "./attachmentResponse";
 import { BaseResponse } from "./baseResponse";
@@ -29,6 +29,7 @@ export class CipherResponse extends BaseResponse {
   attachments: AttachmentResponse[];
   passwordHistory: PasswordHistoryResponse[];
   collectionIds: string[];
+  creationDate: string;
   deletedDate: string;
   reprompt: CipherRepromptType;
 
@@ -50,6 +51,7 @@ export class CipherResponse extends BaseResponse {
     this.organizationUseTotp = this.getResponseProperty("OrganizationUseTotp");
     this.revisionDate = this.getResponseProperty("RevisionDate");
     this.collectionIds = this.getResponseProperty("CollectionIds");
+    this.creationDate = this.getResponseProperty("CreationDate");
     this.deletedDate = this.getResponseProperty("DeletedDate");
 
     const login = this.getResponseProperty("Login");
