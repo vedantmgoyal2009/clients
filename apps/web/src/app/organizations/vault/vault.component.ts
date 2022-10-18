@@ -303,7 +303,7 @@ export class VaultComponent implements OnInit, OnDestroy {
 
     return collections
       .map((c) => c)
-      .slice(1, -1) // 1 for self, -1 for "top collections node"
+      .slice(1) // 1 for self
       .reverse();
   }
 
