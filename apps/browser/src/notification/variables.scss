@@ -7,6 +7,7 @@ $brand-primary: #175ddc;
 
 $background-color: #f0f0f0;
 
+$solarizedDarkBase02: #073642;
 $solarizedDarkBase03: #002b36;
 $solarizedDarkBase2: #eee8d5;
 $solarizedDarkCyan: #2aa198;
@@ -18,28 +19,28 @@ $themes: (
     backgroundColor: $background-color,
     primaryColor: $brand-primary,
     buttonPrimaryColor: $brand-primary,
-    textContrast: #ffffff,
+    textContrast: $background-color,
   ),
   dark: (
     textColor: #ffffff,
     backgroundColor: #2f343d,
     buttonPrimaryColor: #6f9df1,
     primaryColor: #6f9df1,
-    textContrast: #ffffff,
+    textContrast: #2f343d,
   ),
   nord: (
     textColor: $nord5,
     backgroundColor: $nord1,
     buttonPrimaryColor: $nord8,
     primaryColor: $nord9,
-    textContrast: #ffffff,
+    textContrast: $nord2,
   ),
   solarizedDark: (
     textColor: $solarizedDarkBase2,
     backgroundColor: $solarizedDarkBase03,
     buttonPrimaryColor: $solarizedDarkCyan,
     primaryColor: $solarizedDarkGreen,
-    textContrast: #ffffff,
+    textContrast: $solarizedDarkBase02,
   ),
 );
 
