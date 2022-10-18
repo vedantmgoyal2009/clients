@@ -20,7 +20,8 @@
         <bit-breadcrumb
           *ngFor="let collection of breadcrumbs"
           icon="bwi-collection"
-          [route]="'/home'"
+          route="."
+          [queryParams]="{ collectionId: collection.id }"
           >{{ collection.name }}</bit-breadcrumb
         >
       </bit-breadcrumbs>

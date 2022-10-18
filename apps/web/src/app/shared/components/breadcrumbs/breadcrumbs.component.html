@@ -1,5 +1,10 @@
 <ng-container *ngFor="let breadcrumb of beforeOverflow; let last = last">
-  <a bitLink linkType="primary" [routerLink]="breadcrumb.route ? breadcrumb.route : null">
+  <a
+    bitLink
+    linkType="primary"
+    [routerLink]="breadcrumb.route"
+    [queryParams]="breadcrumb.queryParams"
+  >
     <ng-container [ngTemplateOutlet]="breadcrumb.content"></ng-container>
   </a>
   <i *ngIf="!last" class="bwi bwi-angle-right tw-mx-1.5 tw-text-main"></i>
@@ -14,7 +19,7 @@
 
   <bit-menu #overflowMenu>
     <ng-container *ngFor="let breadcrumb of overflow">
-      <a bitMenuItem [routerLink]="breadcrumb.route ? breadcrumb.route : null">
+      <a bitMenuItem [routerLink]="breadcrumb.route" [queryParams]="breadcrumb.queryParams">
         <ng-container [ngTemplateOutlet]="breadcrumb.content"></ng-container>
       </a>
     </ng-container>
@@ -22,7 +27,12 @@
   <i class="bwi bwi-angle-right tw-mx-1.5 tw-text-main"></i>
 
   <ng-container *ngFor="let breadcrumb of afterOverflow; let last = last">
-    <a bitLink linkType="primary" [routerLink]="breadcrumb.route ? breadcrumb.route : null">
+    <a
+      bitLink
+      linkType="primary"
+      [routerLink]="breadcrumb.route"
+      [queryParams]="breadcrumb.queryParams"
+    >
       <ng-container [ngTemplateOutlet]="breadcrumb.content"></ng-container>
     </a>
     <i *ngIf="!last" class="bwi bwi-angle-right tw-mx-1.5 tw-text-main"></i>

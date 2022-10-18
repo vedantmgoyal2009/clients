@@ -11,5 +11,8 @@ export class BreadcrumbComponent {
   @Input()
   route?: unknown = "";
 
+  @Input()
+  queryParams?: Record<string, string> = {};
+
   @ViewChild(TemplateRef, { static: true }) content: TemplateRef<unknown>;
 }
