@@ -20,9 +20,8 @@
         <bit-breadcrumb
           *ngFor="let collection of breadcrumbs"
           icon="bwi-collection"
-          route="."
-          [queryParams]="{ collectionId: collection.id }"
-          >{{ collection.name }}</bit-breadcrumb
+          (click)="applyCollectionFilter(collection)"
+          >{{ collection.node.name }}</bit-breadcrumb
         >
       </bit-breadcrumbs>
       <div class="page-header d-flex">
