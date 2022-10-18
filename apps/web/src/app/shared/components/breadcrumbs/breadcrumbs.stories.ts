@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { Meta, Story, moduleMetadata } from "@storybook/angular";
 
-import { LinkModule, MenuModule } from "@bitwarden/components";
+import { IconButtonModule, LinkModule, MenuModule } from "@bitwarden/components";
 
 import { PreloadedEnglishI18nModule } from "../../../tests/preloaded-english-i18n.module";
 
@@ -29,6 +29,7 @@ export default {
       imports: [
         LinkModule,
         MenuModule,
+        IconButtonModule,
         PreloadedEnglishI18nModule,
         RouterModule.forRoot([{ path: "**", component: EmptyComponent }], { useHash: true }),
       ],

@@ -20,9 +20,7 @@
 <ng-container *ngIf="hasOverflow">
   <i *ngIf="beforeOverflow.length > 0" class="bwi bwi-angle-right tw-mx-1.5 tw-text-main"></i>
 
-  <button bitLink linkType="secondary" [bitMenuTriggerFor]="overflowMenu" aria-haspopup>
-    <i class="bwi bwi-ellipsis-h"></i>
-  </button>
+  <button bitIconButton="bwi-ellipsis-h" [bitMenuTriggerFor]="overflowMenu" aria-haspopup></button>
 
   <bit-menu #overflowMenu>
     <ng-container *ngFor="let breadcrumb of overflow">
