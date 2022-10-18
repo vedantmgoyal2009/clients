@@ -17,6 +17,18 @@
       </div>
     </div>
     <div [ngClass]="{ 'col-6': isShowingCards, 'col-9': !isShowingCards }">
+      <bit-breadcrumbs *ngIf="breadcrumbs.length > 0">
+        <bit-breadcrumb
+          *ngFor="let collection of breadcrumbs; let first = first"
+          [icon]="first ? undefined : 'bwi-collection'"
+          (click)="applyCollectionFilter(collection)"
+        >
+          <ng-container *ngIf="first; else notTranslated">{{
+            collection.node.name | i18n
+          }}</ng-container>
+          <ng-template #notTranslated>{{ collection.node.name }}</ng-template>
+        </bit-breadcrumb>
+      </bit-breadcrumbs>
       <div class="page-header d-flex">
         <h1>
           {{ "vaultItems" | i18n }}
