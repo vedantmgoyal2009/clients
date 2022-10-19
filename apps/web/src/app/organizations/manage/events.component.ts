@@ -12,7 +12,7 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { ProviderService } from "@bitwarden/common/abstractions/provider.service";
 import { EventSystemUser } from "@bitwarden/common/enums/eventSystemUser";
 import { Organization } from "@bitwarden/common/models/domain/organization";
-import { EventResponse } from "@bitwarden/common/models/response/eventResponse";
+import { EventResponse } from "@bitwarden/common/models/response/event.response";
 
 import { BaseEventsComponent } from "../../common/base.events.component";
 import { EventService } from "../../core";
