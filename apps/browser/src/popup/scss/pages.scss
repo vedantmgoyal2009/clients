@@ -49,6 +49,14 @@ app-generator .generated-block {
     button {
       padding: 5px;
       margin: 0;
+
+      &:hover {
+        color: $brand-primary;
+
+        @include themify($themes) {
+          color: $icon-hover-color;
+        }
+      }
     }
   }
 }
