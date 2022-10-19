@@ -60,7 +60,9 @@ img {
   height: 16px;
 
   > path {
-    fill: currentColor;
+    @include themify($themes) {
+      fill: themed("closeButtonColor");
+    }
   }
 }
 

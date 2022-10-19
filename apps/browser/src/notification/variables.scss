@@ -20,6 +20,7 @@ $themes: (
     primaryColor: $brand-primary,
     buttonPrimaryColor: $brand-primary,
     textContrast: $background-color,
+    closeButtonColor: $text-color,
   ),
   dark: (
     textColor: #ffffff,
@@ -27,6 +28,7 @@ $themes: (
     buttonPrimaryColor: #6f9df1,
     primaryColor: #6f9df1,
     textContrast: #2f343d,
+    closeButtonColor: currentColor,
   ),
   nord: (
     textColor: $nord5,
@@ -34,6 +36,7 @@ $themes: (
     buttonPrimaryColor: $nord8,
     primaryColor: $nord9,
     textContrast: $nord2,
+    closeButtonColor: currentColor,
   ),
   solarizedDark: (
     textColor: $solarizedDarkBase2,
@@ -41,6 +44,7 @@ $themes: (
     buttonPrimaryColor: $solarizedDarkCyan,
     primaryColor: $solarizedDarkGreen,
     textContrast: $solarizedDarkBase02,
+    closeButtonColor: currentColor,
   ),
 );
 
