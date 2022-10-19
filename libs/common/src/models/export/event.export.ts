@@ -13,7 +13,7 @@ export class EventExport {
   ip: string;
   type: string;
   installationId: string;
-  systemUser: EventSystemUser;
+  systemUser: string;
 
   constructor(event: EventView) {
     this.message = event.humanReadableMessage;
@@ -26,6 +26,6 @@ export class EventExport {
     this.ip = event.ip;
     this.type = EventType[event.type];
     this.installationId = event.installationId;
-    this.systemUser = event.systemUser;
+    this.systemUser = EventSystemUser[event.systemUser];
   }
 }
