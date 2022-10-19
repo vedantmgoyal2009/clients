@@ -1,3 +1,4 @@
+import { EventSystemUser } from "../../enums/eventSystemUser";
 import { EventType } from "../../enums/eventType";
 import { EventView } from "../view/event.view";
 
@@ -12,6 +13,7 @@ export class EventExport {
   ip: string;
   type: string;
   installationId: string;
+  systemUser: EventSystemUser;
 
   constructor(event: EventView) {
     this.message = event.humanReadableMessage;
@@ -24,5 +26,6 @@ export class EventExport {
     this.ip = event.ip;
     this.type = EventType[event.type];
     this.installationId = event.installationId;
+    this.systemUser = event.systemUser;
   }
 }

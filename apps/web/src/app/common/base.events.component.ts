@@ -138,6 +138,7 @@ export abstract class BaseEventsComponent {
           ip: r.ipAddress,
           type: r.type,
           installationId: r.installationId,
+          systemUser: r.systemUser,
         });
       })
     );
