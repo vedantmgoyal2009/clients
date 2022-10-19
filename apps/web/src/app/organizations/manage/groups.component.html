@@ -47,19 +47,20 @@
               (change)="toggleAllVisible($event)"
               id="selectAll"
             />
-            <label class="tw-mb-0" for="selectAll">{{ "all" | i18n }}</label>
+            <label class="tw-mb-0 !tw-font-bold !tw-text-muted" for="selectAll">{{
+              "all" | i18n
+            }}</label>
           </th>
           <th bitCell>{{ "name" | i18n }}</th>
           <th bitCell>{{ "collections" | i18n }}</th>
           <th bitCell class="tw-w-10">
             <button
-              class="tw-border-none tw-bg-transparent tw-text-muted"
               [bitMenuTriggerFor]="headerMenu"
               type="button"
+              bitIconButton="bwi-ellipsis-v"
+              size="small"
               appA11yTitle="{{ 'options' | i18n }}"
-            >
-              <i aria-hidden="true" class="bwi bwi-ellipsis-v bwi-lg tw-font-bold"></i>
-            </button>
+            ></button>
 
             <bit-menu #headerMenu>
               <button type="button" bitMenuItem (click)="deleteAllSelected()">
@@ -73,40 +74,29 @@
       </ng-container>
       <ng-container body>
         <tr bitRow *ngFor="let g of visibleGroups">
-          <td bitCell (click)="check(g)">
+          <td bitCell (click)="check(g)" class="tw-cursor-pointer">
             <input type="checkbox" [(ngModel)]="g.checked" />
           </td>
-          <td bitCell class="tw-cursor-pointer tw-text-lg tw-font-bold" (click)="edit(g)">
-            <button bitLink>
-              {{ g.name }}
+          <td bitCell class="tw-cursor-pointer tw-font-bold" (click)="edit(g)">
+            <button (click)="edit(g)" bitLink>
+              {{ g.details.name }}
             </button>
           </td>
-          <td bitCell class="tw-cursor-pointer" (click)="edit(g, 2)">
-            <span
-              *ngFor="let cName of g.collectionNames.slice(0, maxCollections); let last = last"
-              bitBadge
+          <td bitCell (click)="edit(g)" class="tw-cursor-pointer">
+            <bit-badge-list
+              [items]="g.collectionNames"
+              [maxItems]="2"
               badgeType="secondary"
-              class="tw-mx-1"
-            >
-              {{ cName }} <span class="sr-only" *ngIf="!last">, </span>
-            </span>
-            <span
-              *ngIf="g.collectionNames.length > maxCollections"
-              bitBadge
-              badgeType="secondary"
-              class="tw-mx-1"
-            >
-              {{ "plusNMore" | i18n: (g.collectionNames.length - maxCollections).toString() }}
-            </span>
+            ></bit-badge-list>
           </td>
           <td bitCell>
             <button
-              class="tw-border-none tw-bg-transparent tw-text-muted"
               [bitMenuTriggerFor]="rowMenu"
               type="button"
-            >
-              <i aria-hidden="true" class="bwi bwi-ellipsis-v bwi-lg tw-font-bold"></i>
-            </button>
+              bitIconButton="bwi-ellipsis-v"
+              size="small"
+              appA11yTitle="{{ 'options' | i18n }}"
+            ></button>
 
             <bit-menu #rowMenu>
               <button type="button" bitMenuItem (click)="edit(g)">
@@ -130,5 +120,4 @@
     </bit-table>
   </ng-container>
   <ng-template #addEdit></ng-template>
-  <ng-template #usersTemplate></ng-template>
 </div>

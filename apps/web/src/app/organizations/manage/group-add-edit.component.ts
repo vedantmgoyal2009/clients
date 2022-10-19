@@ -5,6 +5,7 @@ import { FormSelectionList, SelectionItemId } from "@bitwarden/angular/utils/For
 import { SelectionReadOnly } from "@bitwarden/cli/src/models/selectionReadOnly";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
+import { GroupServiceAbstraction } from "@bitwarden/common/abstractions/group";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
@@ -13,9 +14,9 @@ import { Collection } from "@bitwarden/common/models/domain/collection";
 import { GroupRequest } from "@bitwarden/common/models/request/groupRequest";
 import { SelectionReadOnlyRequest } from "@bitwarden/common/models/request/selectionReadOnlyRequest";
 import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collectionResponse";
-import { GroupDetailsResponse } from "@bitwarden/common/models/response/groupResponse";
 import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organizationUserResponse";
 import { CollectionView } from "@bitwarden/common/models/view/collectionView";
+import { GroupView } from "@bitwarden/common/models/view/group-view";
 
 enum CollectionPermission {
   VIEW = "view",
@@ -71,7 +72,7 @@ export class GroupAddEditComponent implements OnInit {
   initialPermission = CollectionPermission.VIEW;
   collections: CollectionView[] = [];
   members: OrganizationUserUserDetailsResponse[] = [];
-  group: GroupDetailsResponse;
+  group: GroupView;
 
   collectionList = new FormSelectionList<CollectionView, GroupCollectionSelection>(
     (item) =>
@@ -97,6 +98,7 @@ export class GroupAddEditComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
+    private groupService: GroupServiceAbstraction,
     private i18nService: I18nService,
     private collectionService: CollectionService,
     private platformUtilsService: PlatformUtilsService,
@@ -115,7 +117,7 @@ export class GroupAddEditComponent implements OnInit {
       this.editMode = true;
       this.title = this.i18nService.t("editGroup");
       try {
-        this.group = await this.apiService.getGroupDetails(this.organizationId, this.groupId);
+        this.group = await this.groupService.get(this.organizationId, this.groupId);
         const users = await this.apiService.getGroupUsers(this.organizationId, this.groupId);
         this.groupForm.patchValue({
           name: this.group.name,
@@ -226,7 +228,7 @@ export class GroupAddEditComponent implements OnInit {
     }
 
     try {
-      this.deletePromise = this.apiService.deleteGroup(this.organizationId, this.groupId);
+      this.deletePromise = this.groupService.delete(this.organizationId, this.groupId);
       await this.deletePromise;
       this.platformUtilsService.showToast(
         "success",
