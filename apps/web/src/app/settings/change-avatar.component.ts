@@ -7,9 +7,7 @@ import {
   Output,
   ViewEncapsulation,
 } from "@angular/core";
-import { ColorPickerControl } from "@iplab/ngx-color-picker";
-import { Color } from "@iplab/ngx-color-picker/public-api";
-import { BehaviorSubject, debounceTime, Subject, takeUntil } from "rxjs";
+import { BehaviorSubject, Subject, takeUntil } from "rxjs";
 
 import { AvatarUpdateService } from "@bitwarden/common/abstractions/account/avatar-update.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
@@ -53,7 +51,6 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
   customColor$ = new BehaviorSubject<string | null>(null);
   customTextColor$ = new BehaviorSubject<string>("#000000");
   customColorSelected = false;
-  colorPickerControl: ColorPickerControl;
   currentSelection: string;
 
   private destroy$ = new Subject<void>();
@@ -77,7 +74,7 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
       }
       this.customTextColor$.next(Utils.pickTextColorBasedOnBgColor(color));
       this.customColorSelected = true;
-      this.colorPickerControl.setValueFrom(color);
+      // this.colorPickerControl.setValueFrom(color);
       this.currentSelection = color;
     });
 
@@ -85,17 +82,12 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
   }
 
   async setupCustomPicker() {
-    this.colorPickerControl = new ColorPickerControl().hidePresets().hideAlphaChannel();
-    this.colorPickerControl.valueChanges
-      .pipe(debounceTime(200), takeUntil(this.destroy$))
-      .subscribe((color: Color) => {
-        this.customColor$.next(color.toHexString().toLowerCase());
-      });
+    //do this
   }
 
   async showCustomPicker() {
     this.customColorSelected = true;
-    this.colorPickerControl.setValueFrom("#ffffff");
+    // this.colorPickerControl.setValueFrom("#ffffff");
     this.setSelection(this.customColor$.value);
   }
 
