@@ -9,6 +9,7 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { ProviderService } from "@bitwarden/common/abstractions/provider.service";
+import { EventSystemUser } from "@bitwarden/common/enums/event-system-user";
 import { EventResponse } from "@bitwarden/common/models/response/event.response";
 import { BaseEventsComponent } from "@bitwarden/web-vault/app/common/base.events.component";
 import { EventService } from "@bitwarden/web-vault/app/core";
@@ -82,8 +83,22 @@ export class EventsComponent extends BaseEventsComponent implements OnInit {
   }
 
   protected getUserName(r: EventResponse, userId: string) {
-    return userId != null && this.providerUsersUserIdMap.has(userId)
-      ? this.providerUsersUserIdMap.get(userId)
-      : null;
+    if (r.installationId != null) {
+      return `Installation: ${r.installationId}`;
+    }
+
+    if (userId == null) {
+      if (r.systemUser != null) {
+        return {
+          name: EventSystemUser[r.systemUser],
+        };
+      }
+    } else {
+      if (this.providerUsersUserIdMap.has(userId)) {
+        return this.providerUsersUserIdMap.get(userId);
+      }
+    }
+
+    return null;
   }
 }

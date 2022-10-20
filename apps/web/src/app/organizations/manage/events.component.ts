@@ -111,24 +111,26 @@ export class EventsComponent extends BaseEventsComponent implements OnInit {
   }
 
   protected getUserName(r: EventResponse, userId: string) {
+    if (r.installationId != null) {
+      return `Installation: ${r.installationId}`;
+    }
+
     if (userId == null) {
       if (r.systemUser != null) {
         return {
           name: EventSystemUser[r.systemUser],
         };
       }
+    } else {
+      if (this.orgUsersUserIdMap.has(userId)) {
+        return this.orgUsersUserIdMap.get(userId);
+      }
 
-      return null;
-    }
-
-    if (this.orgUsersUserIdMap.has(userId)) {
-      return this.orgUsersUserIdMap.get(userId);
-    }
-
-    if (r.providerId != null && r.providerId === this.organization.providerId) {
-      return {
-        name: this.organization.providerName,
-      };
+      if (r.providerId != null && r.providerId === this.organization.providerId) {
+        return {
+          name: this.organization.providerName,
+        };
+      }
     }
 
     return null;
