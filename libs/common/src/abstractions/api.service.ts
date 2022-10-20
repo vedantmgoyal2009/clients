@@ -95,73 +95,73 @@ import { CipherResponse } from "../models/response/cipherResponse";
 import {
   CollectionGroupDetailsResponse,
   CollectionResponse,
-} from "../models/response/collectionResponse";
-import { DeviceVerificationResponse } from "../models/response/deviceVerificationResponse";
-import { DomainsResponse } from "../models/response/domainsResponse";
+} from "../models/response/collection.response";
+import { DeviceVerificationResponse } from "../models/response/device-verification.response";
+import { DomainsResponse } from "../models/response/domains.response";
 import {
   EmergencyAccessGranteeDetailsResponse,
   EmergencyAccessGrantorDetailsResponse,
   EmergencyAccessTakeoverResponse,
   EmergencyAccessViewResponse,
-} from "../models/response/emergencyAccessResponse";
-import { EventResponse } from "../models/response/eventResponse";
-import { GroupDetailsResponse, GroupResponse } from "../models/response/groupResponse";
-import { IdentityCaptchaResponse } from "../models/response/identityCaptchaResponse";
-import { IdentityTokenResponse } from "../models/response/identityTokenResponse";
-import { IdentityTwoFactorResponse } from "../models/response/identityTwoFactorResponse";
-import { KeyConnectorUserKeyResponse } from "../models/response/keyConnectorUserKeyResponse";
-import { ListResponse } from "../models/response/listResponse";
+} from "../models/response/emergency-access.response";
+import { EventResponse } from "../models/response/event.response";
+import { GroupDetailsResponse, GroupResponse } from "../models/response/group.response";
+import { IdentityCaptchaResponse } from "../models/response/identity-captcha.response";
+import { IdentityTokenResponse } from "../models/response/identity-token.response";
+import { IdentityTwoFactorResponse } from "../models/response/identity-two-factor.response";
+import { KeyConnectorUserKeyResponse } from "../models/response/key-connector-user-key.response";
+import { ListResponse } from "../models/response/list.response";
 import {
   OrganizationConnectionConfigApis,
   OrganizationConnectionResponse,
-} from "../models/response/organizationConnectionResponse";
-import { OrganizationExportResponse } from "../models/response/organizationExportResponse";
-import { OrganizationSponsorshipSyncStatusResponse } from "../models/response/organizationSponsorshipSyncStatusResponse";
-import { OrganizationUserBulkPublicKeyResponse } from "../models/response/organizationUserBulkPublicKeyResponse";
-import { OrganizationUserBulkResponse } from "../models/response/organizationUserBulkResponse";
+} from "../models/response/organization-connection.response";
+import { OrganizationExportResponse } from "../models/response/organization-export.response";
+import { OrganizationSponsorshipSyncStatusResponse } from "../models/response/organization-sponsorship-sync-status.response";
+import { OrganizationUserBulkPublicKeyResponse } from "../models/response/organization-user-bulk-public-key.response";
+import { OrganizationUserBulkResponse } from "../models/response/organization-user-bulk.response";
 import {
   OrganizationUserDetailsResponse,
-  OrganizationUserResetPasswordDetailsReponse,
   OrganizationUserUserDetailsResponse,
-} from "../models/response/organizationUserResponse";
-import { PaymentResponse } from "../models/response/paymentResponse";
-import { PlanResponse } from "../models/response/planResponse";
-import { PolicyResponse } from "../models/response/policyResponse";
-import { PreloginResponse } from "../models/response/preloginResponse";
-import { ProfileResponse } from "../models/response/profileResponse";
+  OrganizationUserResetPasswordDetailsReponse,
+} from "../models/response/organization-user.response";
+import { PaymentResponse } from "../models/response/payment.response";
+import { PlanResponse } from "../models/response/plan.response";
+import { PolicyResponse } from "../models/response/policy.response";
+import { PreloginResponse } from "../models/response/prelogin.response";
+import { ProfileResponse } from "../models/response/profile.response";
 import {
   ProviderOrganizationOrganizationDetailsResponse,
   ProviderOrganizationResponse,
-} from "../models/response/provider/providerOrganizationResponse";
-import { ProviderResponse } from "../models/response/provider/providerResponse";
-import { ProviderUserBulkPublicKeyResponse } from "../models/response/provider/providerUserBulkPublicKeyResponse";
-import { ProviderUserBulkResponse } from "../models/response/provider/providerUserBulkResponse";
+} from "../models/response/provider/provider-organization.response";
+import { ProviderUserBulkPublicKeyResponse } from "../models/response/provider/provider-user-bulk-public-key.response";
+import { ProviderUserBulkResponse } from "../models/response/provider/provider-user-bulk.response";
 import {
-  ProviderUserResponse,
   ProviderUserUserDetailsResponse,
-} from "../models/response/provider/providerUserResponse";
-import { SelectionReadOnlyResponse } from "../models/response/selectionReadOnlyResponse";
-import { SendAccessResponse } from "../models/response/sendAccessResponse";
-import { SendFileDownloadDataResponse } from "../models/response/sendFileDownloadDataResponse";
-import { SendFileUploadDataResponse } from "../models/response/sendFileUploadDataResponse";
-import { SendResponse } from "../models/response/sendResponse";
-import { SsoPreValidateResponse } from "../models/response/ssoPreValidateResponse";
-import { SubscriptionResponse } from "../models/response/subscriptionResponse";
-import { SyncResponse } from "../models/response/syncResponse";
-import { TaxInfoResponse } from "../models/response/taxInfoResponse";
-import { TaxRateResponse } from "../models/response/taxRateResponse";
-import { TwoFactorAuthenticatorResponse } from "../models/response/twoFactorAuthenticatorResponse";
-import { TwoFactorDuoResponse } from "../models/response/twoFactorDuoResponse";
-import { TwoFactorEmailResponse } from "../models/response/twoFactorEmailResponse";
-import { TwoFactorProviderResponse } from "../models/response/twoFactorProviderResponse";
-import { TwoFactorRecoverResponse } from "../models/response/twoFactorRescoverResponse";
+  ProviderUserResponse,
+} from "../models/response/provider/provider-user.response";
+import { ProviderResponse } from "../models/response/provider/provider.response";
+import { SelectionReadOnlyResponse } from "../models/response/selection-read-only.response";
+import { SendAccessResponse } from "../models/response/send-access.response";
+import { SendFileDownloadDataResponse } from "../models/response/send-file-download-data.response";
+import { SendFileUploadDataResponse } from "../models/response/send-file-upload-data.response";
+import { SendResponse } from "../models/response/send.response";
+import { SsoPreValidateResponse } from "../models/response/sso-pre-validate.response";
+import { SubscriptionResponse } from "../models/response/subscription.response";
+import { SyncResponse } from "../models/response/sync.response";
+import { TaxInfoResponse } from "../models/response/tax-info.response";
+import { TaxRateResponse } from "../models/response/tax-rate.response";
+import { TwoFactorAuthenticatorResponse } from "../models/response/two-factor-authenticator.response";
+import { TwoFactorDuoResponse } from "../models/response/two-factor-duo.response";
+import { TwoFactorEmailResponse } from "../models/response/two-factor-email.response";
+import { TwoFactorProviderResponse } from "../models/response/two-factor-provider.response";
+import { TwoFactorRecoverResponse } from "../models/response/two-factor-recover.response";
 import {
-  ChallengeResponse,
   TwoFactorWebAuthnResponse,
-} from "../models/response/twoFactorWebAuthnResponse";
-import { TwoFactorYubiKeyResponse } from "../models/response/twoFactorYubiKeyResponse";
-import { UserKeyResponse } from "../models/response/userKeyResponse";
-import { SendAccessView } from "../models/view/sendAccessView";
+  ChallengeResponse,
+} from "../models/response/two-factor-web-authn.response";
+import { TwoFactorYubiKeyResponse } from "../models/response/two-factor-yubi-key.response";
+import { UserKeyResponse } from "../models/response/user-key.response";
+import { SendAccessView } from "../models/view/send-access.view";
 
 export abstract class ApiService {
   send: (
