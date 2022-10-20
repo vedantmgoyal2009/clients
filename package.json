@@ -148,7 +148,6 @@
     "@angular/platform-browser": "^14.0.6",
     "@angular/platform-browser-dynamic": "^14.0.6",
     "@angular/router": "^14.0.6",
-    "@iplab/ngx-color-picker": "^14.2.1",
     "@koa/multer": "^3.0.0",
     "@koa/router": "^10.1.1",
     "@microsoft/signalr": "^6.0.7",
