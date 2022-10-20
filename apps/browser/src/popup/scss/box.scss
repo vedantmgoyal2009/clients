@@ -52,8 +52,6 @@
   }
 
   .box-content {
-    // border-top: 1px solid #000000;
-    // border-bottom: 1px solid #000000;
 
     @include themify($themes) {
       background-color: themed("backgroundColor");
