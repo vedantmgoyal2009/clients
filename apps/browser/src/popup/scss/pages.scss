@@ -9,13 +9,13 @@ app-sync {
 }
 
 app-generator .generated-block {
-  font-size: $font-size-xlarge;
+  font-size: $font-size-large;
   font-family: $font-family-monospace;
   margin: 10px;
   padding: 10px;
   display: flex;
-  background-color: $box-background-color;
-  border-radius: 6px;
+  // background-color: $box-background-color;
+  border-radius: $border-radius;
 
   @include themify($themes) {
     background-color: themed("boxBackgroundColor");
@@ -27,8 +27,8 @@ app-generator .generated-block {
     min-width: 0;
     white-space: pre-wrap;
     word-break: break-all;
-    padding: 15px 30px;
-    border-radius: 6px;
+    padding: 15px;
+    border-radius: $border-radius;
     background-color: #e6e9ed;
     border: 1px solid;
     border-color: #d2d9e6;
@@ -47,14 +47,13 @@ app-generator .generated-block {
     margin-left: 10px;
 
     button {
-      padding: 5px;
-      margin: 0;
+      padding: 6px;
+      margin: 2px;
+      border-radius: $border-radius;
 
       &:hover {
-        color: $brand-primary;
-
         @include themify($themes) {
-          color: $icon-hover-color;
+          background-color: darken($icon-hover-color, 50%);
         }
       }
     }
