@@ -305,6 +305,7 @@ export default class AutofillService implements AutofillServiceInterface {
     let pf: AutofillField = null;
     let username: AutofillField = null;
     const login = options.cipher.login;
+    fillScript.savedUrls = login?.uris?.map((u) => u.uri) ?? [];
 
     if (!login.password || login.password === "") {
       // No password for this login. Maybe they just wanted to auto-fill some custom fields?
