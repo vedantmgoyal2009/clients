@@ -227,7 +227,7 @@
     "message": "Wachtwoord genereren"
   },
   "regeneratePassword": {
-    "message": "Opnieuw genereren"
+    "message": "Wachtwoord opnieuw genereren"
   },
   "options": {
     "message": "Opties"
@@ -996,7 +996,7 @@
     "message": "Kluis vergrendelen"
   },
   "privateModeWarning": {
-    "message": "Private mode support is experimental and some features are limited."
+    "message": "Private mode ondersteuning is experimenteel en sommige functies zijn beperkt."
   },
   "customFields": {
     "message": "Aangepaste velden"
@@ -1127,7 +1127,7 @@
     "message": "Voornaam"
   },
   "middleName": {
-    "message": "Tweede naam"
+    "message": "Tussenvoegsel"
   },
   "lastName": {
     "message": "Achternaam"
@@ -1310,6 +1310,10 @@
   "dateUpdated": {
     "message": "Bijgewerkt",
     "description": "ex. Date this item was updated"
+  },
+  "dateCreated": {
+    "message": "Created",
+    "description": "ex. Date this item was created"
   },
   "datePasswordUpdated": {
     "message": "Wachtwoord bijgewerkt",
@@ -1997,5 +2001,32 @@
   },
   "environmentEditedReset": {
     "message": "om terug te gaan naar vooraf geconfigureerde instellingen"
+  },
+  "serverVersion": {
+    "message": "Serverversie"
+  },
+  "selfHosted": {
+    "message": "Zelfgehost"
+  },
+  "thirdParty": {
+    "message": "Third-party"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Verbonden met server implementatie van derden, $SERVERNAME$. Reproduceer bugs via de officiële server, of meld ze bij het serverproject.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "laatst gezien op: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }

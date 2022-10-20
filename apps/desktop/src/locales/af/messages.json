@@ -1266,6 +1266,10 @@
     "message": "Bygewerk",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Created",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Wagwoord bygewerk",
     "description": "ex. Date this password was updated"
@@ -1570,6 +1574,12 @@
   "enableBrowserIntegrationDesc": {
     "message": "Blaaierintegrasie word gebruik vir biometrie in blaaier."
   },
+  "enableDuckDuckGoBrowserIntegration": {
+    "message": "Staan DuckDuckGo-blaaierintegrasie toe"
+  },
+  "enableDuckDuckGoBrowserIntegrationDesc": {
+    "message": "Gebruik u Bitwarden-kluis wanneer u met DuckDuckGo blaai."
+  },
   "browserIntegrationUnsupportedTitle": {
     "message": "Blaaierintegrasie word nie ondersteun nie"
   },
@@ -1596,6 +1606,21 @@
   },
   "verifyBrowserDesc": {
     "message": "Maak seker dat die getoonde vingerafdruk identies is aan dié wat in die blaaieruitbreiding vertoon word."
+  },
+  "verifyNativeMessagingConnectionTitle": {
+    "message": "$APPID$ wil aan Bitwarden koppel",
+    "placeholders": {
+      "appid": {
+        "content": "$1",
+        "example": "My App"
+      }
+    }
+  },
+  "verifyNativeMessagingConnectionDesc": {
+    "message": "Wil u hierdie versoek goedkeur?"
+  },
+  "verifyNativeMessagingConnectionWarning": {
+    "message": "Indien u nie hierdie versoek geïnisieer het nie, moet dit dan nie goedkeur nie."
   },
   "biometricsNotEnabledTitle": {
     "message": "Biometrie is geaktiveer"
@@ -1993,5 +2018,8 @@
   },
   "cardBrandMir": {
     "message": "Mir"
+  },
+  "vault": {
+    "message": "Kluis"
   }
 }

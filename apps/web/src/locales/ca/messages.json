@@ -569,14 +569,26 @@
   "loginOrCreateNewAccount": {
     "message": "Inicieu sessió o creeu un compte nou per accedir a la caixa forta."
   },
+  "loginWithDevice": {
+    "message": "Inicieu sessió amb el dispositiu"
+  },
+  "loginWithDeviceEnabledInfo": {
+    "message": "L'inici de sessió amb el dispositiu ha d'estar activat a la configuració de l'aplicació mòbil Bitwarden. Necessiteu una altra opció?"
+  },
   "createAccount": {
     "message": "Crea un compte"
+  },
+  "newAroundHere": {
+    "message": "Nou per ací?"
   },
   "startTrial": {
     "message": "Comença la prova"
   },
   "logIn": {
     "message": "Inicia sessió"
+  },
+  "logInInitiated": {
+    "message": "S'ha iniciat la sessió"
   },
   "submit": {
     "message": "Envia"
@@ -635,8 +647,8 @@
   "confirmMasterPasswordRequired": {
     "message": "Cal tornar a escriure la contrasenya mestra."
   },
-  "masterPasswordMinLength": {
-    "message": "La contrasenya mestra ha de tenir almenys 8 caràcters."
+  "masterPasswordMinlength": {
+    "message": "La contrasenya mestra ha de contenir almenys 8 caràcters."
   },
   "masterPassDoesntMatch": {
     "message": "La confirmació de la contrasenya mestra no coincideix."
@@ -704,6 +716,9 @@
   },
   "noOrganizationsList": {
     "message": "No pertanyeu a cap organització. Les organitzacions permeten compartir elements amb altres usuaris de forma segura."
+  },
+  "notificationSentDevice": {
+    "message": "S'ha enviat una notificació al vostre dispositiu."
   },
   "versionNumber": {
     "message": "Versió $VERSION_NUMBER$",
@@ -2532,6 +2547,9 @@
       }
     }
   },
+  "viewAllLoginOptions": {
+    "message": "Veure totes les opcions d'inici de sessió"
+  },
   "viewedItemId": {
     "message": "$ID$ de l'element vist.",
     "placeholders": {
@@ -3295,6 +3313,10 @@
     "message": "Actualitzat",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Created",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Contrasenya actualitzada",
     "description": "ex. Date this password was updated"
@@ -3371,6 +3393,12 @@
   "fingerprintEnsureIntegrityVerify": {
     "message": "Per assegurar la integritat de les vostres claus de xifratge, comproveu la frase de l'empremta digital de l'usuari abans de continuar.",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
+  },
+  "fingerprintMatchInfo": {
+    "message": "Assegureu-vos que la vostra caixa forta estiga desbloquejada i que la frase d'empremta digital coincidisca amb l'altre dispositiu."
+  },
+  "fingerprintPhraseHeader": {
+    "message": "Frase d'empremta digital"
   },
   "dontAskFingerprintAgain": {
     "message": "No sol·liciteu tornar a comprovar la frase de les empremtes dactilars (No recomanat)",
@@ -4057,6 +4085,12 @@
   "permissions": {
     "message": "Permisos"
   },
+  "managerPermissions": {
+    "message": "Permisos de l'administrador"
+  },
+  "adminPermissions": {
+    "message": "Permisos de l'administrador"
+  },
   "accessEventLogs": {
     "message": "Registres d'esdeveniments dels accessos"
   },
@@ -4365,6 +4399,9 @@
   },
   "reinviteSelected": {
     "message": "Tornar a enviar invitacions"
+  },
+  "resendNotification": {
+    "message": "Torna a enviar la notificació"
   },
   "noSelectedUsersApplicable": {
     "message": "Aquesta acció no és aplicable a cap dels usuaris seleccionats."
@@ -5357,5 +5394,17 @@
   },
   "numberOfUsers": {
     "message": "Nombre d'usuaris"
+  },
+  "multiSelectPlaceholder": {
+    "message": "-- Escriviu per filtrar --"
+  },
+  "multiSelectLoading": {
+    "message": "Obtenint opcions..."
+  },
+  "multiSelectNotFound": {
+    "message": "No s'ha trobat cap element"
+  },
+  "multiSelectClearAll": {
+    "message": "Esborra-ho tot"
   }
 }

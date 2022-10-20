@@ -12,7 +12,10 @@ module.exports = {
   corePlugins: { preflight: false },
   theme: {
     colors: {
-      transparent: colors.transparent,
+      transparent: {
+        DEFAULT: colors.transparent,
+        hover: "var(--color-transparent-hover)",
+      },
       current: colors.current,
       black: colors.black,
       primary: {
@@ -47,6 +50,7 @@ module.exports = {
         muted: rgba("--color-text-muted"),
         contrast: rgba("--color-text-contrast"),
         alt2: rgba("--color-text-alt2"),
+        code: rgba("--color-text-code"),
       },
       background: {
         DEFAULT: rgba("--color-background"),
@@ -59,6 +63,7 @@ module.exports = {
       muted: rgba("--color-text-muted"),
       contrast: rgba("--color-text-contrast"),
       alt2: rgba("--color-text-alt2"),
+      code: rgba("--color-text-code"),
       success: rgba("--color-success-500"),
       danger: rgba("--color-danger-500"),
       warning: rgba("--color-warning-500"),
@@ -77,6 +82,9 @@ module.exports = {
       width: {
         "50vw": "50vw",
         "75vw": "75vw",
+      },
+      maxWidth: {
+        "90vw": "90vw",
       },
     },
   },

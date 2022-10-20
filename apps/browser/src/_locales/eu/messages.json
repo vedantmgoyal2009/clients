@@ -56,7 +56,7 @@
     "message": "Kutxa gotorra"
   },
   "myVault": {
-    "message": "Nire kutxa gotorra"
+    "message": "Kutxa gotorra"
   },
   "allVaults": {
     "message": "Kutxa gotor guztiak"
@@ -1311,6 +1311,10 @@
     "message": "Eguneratua",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Created",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Pasahitza eguneratu da",
     "description": "ex. Date this password was updated"
@@ -1997,5 +2001,32 @@
   },
   "environmentEditedReset": {
     "message": "ezarpen lehenetsiak ezartzeko"
+  },
+  "serverVersion": {
+    "message": "Zerbitzariaren bertsioa"
+  },
+  "selfHosted": {
+    "message": "Ostatatze propioduna"
+  },
+  "thirdParty": {
+    "message": "Hirugarrenen aplikazioak"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Hirugarrenen zerbitzariaren inplementaziora konektatuta, $SERVERNAME$. Mesedez, egiaztatu akatsak zerbitzari ofiziala erabiliz, edo galdetu hirugarren zerbitzariari.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "Azkenekoz ikusia: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }

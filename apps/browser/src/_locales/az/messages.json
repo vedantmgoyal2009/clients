@@ -1311,6 +1311,10 @@
     "message": "Güncəlləndi",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Yaradıldı",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Parol güncəlləndi",
     "description": "ex. Date this password was updated"
@@ -1997,5 +2001,32 @@
   },
   "environmentEditedReset": {
     "message": "ön konfiqurasiyalı tənzimləmələri sıfırlamaq üçün"
+  },
+  "serverVersion": {
+    "message": "Server Versiyası"
+  },
+  "selfHosted": {
+    "message": "Öz-özünə sahiblik edən"
+  },
+  "thirdParty": {
+    "message": "Üçüncü tərəf"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Üçüncü tərəf server tətbiqetməsi ilə bağlantı quruldu, $SERVERNAME$. Zəhmət olmasa rəsmi serveri istifadə edərək xətaları təsdiqləyin və ya onları üçüncü tərəf serverə bildirin.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "son görünmə $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }

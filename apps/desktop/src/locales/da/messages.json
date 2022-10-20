@@ -1266,6 +1266,10 @@
     "message": "Opdateret",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Created",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Adgangskode opdateret",
     "description": "ex. Date this password was updated"
@@ -1570,6 +1574,12 @@
   "enableBrowserIntegrationDesc": {
     "message": "Bruges til biometri i browser."
   },
+  "enableDuckDuckGoBrowserIntegration": {
+    "message": "Tillad DuckDuckGo browserintegration"
+  },
+  "enableDuckDuckGoBrowserIntegrationDesc": {
+    "message": "Brug din Bitwarden-boks, når du browser med DuckDuckGo."
+  },
   "browserIntegrationUnsupportedTitle": {
     "message": "Browserintegration understøttes ikke"
   },
@@ -1596,6 +1606,21 @@
   },
   "verifyBrowserDesc": {
     "message": "Sørg for, at det viste fingeraftryk er identisk med det fingeraftryk, der vises i browserudvidelsen."
+  },
+  "verifyNativeMessagingConnectionTitle": {
+    "message": "$APPID$ ønsker at oprette forbindelse til Bitwarden",
+    "placeholders": {
+      "appid": {
+        "content": "$1",
+        "example": "My App"
+      }
+    }
+  },
+  "verifyNativeMessagingConnectionDesc": {
+    "message": "Vil du godkende denne anmodning?"
+  },
+  "verifyNativeMessagingConnectionWarning": {
+    "message": "Hvis du ikke indledte denne anmodning, skal du ikke godkende den."
   },
   "biometricsNotEnabledTitle": {
     "message": "Biometri ikke aktiveret"
@@ -1993,5 +2018,8 @@
   },
   "cardBrandMir": {
     "message": "Mir"
+  },
+  "vault": {
+    "message": "Boks"
   }
 }

@@ -1239,7 +1239,7 @@
     "description": "Default URI match detection for auto-fill."
   },
   "toggleOptions": {
-    "message": "Переключить настройки"
+    "message": "Настройки перебора"
   },
   "organization": {
     "message": "Организация",
@@ -1265,6 +1265,10 @@
   "dateUpdated": {
     "message": "Обновлено",
     "description": "ex. Date this item was updated"
+  },
+  "dateCreated": {
+    "message": "Создан",
+    "description": "ex. Date this item was created"
   },
   "datePasswordUpdated": {
     "message": "Пароль обновлен",
@@ -1570,6 +1574,12 @@
   "enableBrowserIntegrationDesc": {
     "message": "Используется для биометрии в браузере."
   },
+  "enableDuckDuckGoBrowserIntegration": {
+    "message": "Разрешить интеграцию в браузер DuckDuckGo"
+  },
+  "enableDuckDuckGoBrowserIntegrationDesc": {
+    "message": "Использовать хранилище Bitwarden совместно с браузером DuckDuckGo."
+  },
   "browserIntegrationUnsupportedTitle": {
     "message": "Интеграция с браузером не поддерживается"
   },
@@ -1577,7 +1587,7 @@
     "message": "К сожалению, интеграция браузера пока поддерживается только в версии Mac App Store."
   },
   "browserIntegrationWindowsStoreDesc": {
-    "message": "К сожалению, интеграция с браузером на текущий момент не поддерживается в версии из магазина Windows."
+    "message": "К сожалению, интеграция браузера в версии для Microsoft Store в настоящее время не поддерживается."
   },
   "browserIntegrationLinuxDesc": {
     "message": "К сожалению, интеграция с браузером на текущий момент не поддерживается в версии для linux."
@@ -1596,6 +1606,21 @@
   },
   "verifyBrowserDesc": {
     "message": "Пожалуйста, убедитесь, что отображаемый отпечаток идентичен отпечатку, отображаемому в расширении браузера."
+  },
+  "verifyNativeMessagingConnectionTitle": {
+    "message": "$APPID$ хочет подключиться к Bitwarden",
+    "placeholders": {
+      "appid": {
+        "content": "$1",
+        "example": "My App"
+      }
+    }
+  },
+  "verifyNativeMessagingConnectionDesc": {
+    "message": "Вы хотите одобрить этот запрос?"
+  },
+  "verifyNativeMessagingConnectionWarning": {
+    "message": "Если запрос инициировали не вы, не одобряйте его."
   },
   "biometricsNotEnabledTitle": {
     "message": "Биометрия не включена"
@@ -1993,5 +2018,8 @@
   },
   "cardBrandMir": {
     "message": "Mir"
+  },
+  "vault": {
+    "message": "Хранилище"
   }
 }

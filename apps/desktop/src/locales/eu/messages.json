@@ -1266,6 +1266,10 @@
     "message": "Eguneratua",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Created",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Pasahitza eguneratu da",
     "description": "ex. Date this password was updated"
@@ -1570,6 +1574,12 @@
   "enableBrowserIntegrationDesc": {
     "message": "Nabigatzailean biometria erabiltzen da."
   },
+  "enableDuckDuckGoBrowserIntegration": {
+    "message": "Baimendu DuckDuckGo nabigatzailearekin integratzea"
+  },
+  "enableDuckDuckGoBrowserIntegrationDesc": {
+    "message": "Erabili zure Bitwarden kutxa gotorra, DuckDuckGo-rekin nabigatzean."
+  },
   "browserIntegrationUnsupportedTitle": {
     "message": "Ez da nabigatzailearen integrazioa onartzen"
   },
@@ -1596,6 +1606,21 @@
   },
   "verifyBrowserDesc": {
     "message": "Ziurtatu bistaratutako hatz-marka digitala nabigatzailearen gehigarrian agertzen den hatz-marka digitalaren berdina dela."
+  },
+  "verifyNativeMessagingConnectionTitle": {
+    "message": "$APPID$-ek Bitwardenekin konektatu nahi du",
+    "placeholders": {
+      "appid": {
+        "content": "$1",
+        "example": "My App"
+      }
+    }
+  },
+  "verifyNativeMessagingConnectionDesc": {
+    "message": "Eskaera hau onartu nahi duzu?"
+  },
+  "verifyNativeMessagingConnectionWarning": {
+    "message": "Eskaera hasi ez baduzu, ez onartu."
   },
   "biometricsNotEnabledTitle": {
     "message": "Biometria desgaitua"
@@ -1631,7 +1656,7 @@
     "description": "'Send' is a noun and the name of a feature called 'Bitwarden Send'. It should not be translated."
   },
   "myVault": {
-    "message": "Nire kutxa gotorra"
+    "message": "Kutxa gotorra"
   },
   "text": {
     "message": "Testua"
@@ -1993,5 +2018,8 @@
   },
   "cardBrandMir": {
     "message": "Mir"
+  },
+  "vault": {
+    "message": "Kutxa gotorra"
   }
 }

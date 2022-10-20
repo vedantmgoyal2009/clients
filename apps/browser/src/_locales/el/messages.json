@@ -32,7 +32,7 @@
     "message": "Υποβολή"
   },
   "emailAddress": {
-    "message": "Διεύθυνση Email"
+    "message": "Διεύθυνση email"
   },
   "masterPass": {
     "message": "Κύριος κωδικός"
@@ -1311,6 +1311,10 @@
     "message": "Ενημερώθηκε",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Created",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Ο Κωδικός Ενημερώθηκε",
     "description": "ex. Date this password was updated"
@@ -1997,5 +2001,32 @@
   },
   "environmentEditedReset": {
     "message": "επαναφορά στις προ-ρυθμισμένες ρυθμίσεις"
+  },
+  "serverVersion": {
+    "message": "Έκδοση διακομιστή"
+  },
+  "selfHosted": {
+    "message": "Self-hosted"
+  },
+  "thirdParty": {
+    "message": "Third-party"
+  },
+  "thirdPartyServerMessage": {
+    "message": "Connected to third-party server implementation, $SERVERNAME$. Please verify bugs using the official server, or report them to the third-party server.",
+    "placeholders": {
+      "servername": {
+        "content": "$1",
+        "example": "ThirdPartyServerName"
+      }
+    }
+  },
+  "lastSeenOn": {
+    "message": "last seen on: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Jun 15, 2015"
+      }
+    }
   }
 }

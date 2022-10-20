@@ -1,34 +1,35 @@
 import { ApiService } from "../../abstractions/api.service";
 import { OrganizationApiServiceAbstraction } from "../../abstractions/organization/organization-api.service.abstraction";
+import { SyncService } from "../../abstractions/sync/sync.service.abstraction";
 import { OrganizationApiKeyType } from "../../enums/organizationApiKeyType";
-import { ImportDirectoryRequest } from "../../models/request/importDirectoryRequest";
-import { OrganizationSsoRequest } from "../../models/request/organization/organizationSsoRequest";
-import { OrganizationApiKeyRequest } from "../../models/request/organizationApiKeyRequest";
-import { OrganizationCreateRequest } from "../../models/request/organizationCreateRequest";
-import { OrganizationKeysRequest } from "../../models/request/organizationKeysRequest";
-import { OrganizationSubscriptionUpdateRequest } from "../../models/request/organizationSubscriptionUpdateRequest";
-import { OrganizationTaxInfoUpdateRequest } from "../../models/request/organizationTaxInfoUpdateRequest";
-import { OrganizationUpdateRequest } from "../../models/request/organizationUpdateRequest";
-import { OrganizationUpgradeRequest } from "../../models/request/organizationUpgradeRequest";
-import { PaymentRequest } from "../../models/request/paymentRequest";
-import { SeatRequest } from "../../models/request/seatRequest";
-import { SecretVerificationRequest } from "../../models/request/secretVerificationRequest";
-import { StorageRequest } from "../../models/request/storageRequest";
-import { VerifyBankRequest } from "../../models/request/verifyBankRequest";
-import { ApiKeyResponse } from "../../models/response/apiKeyResponse";
-import { BillingResponse } from "../../models/response/billingResponse";
-import { ListResponse } from "../../models/response/listResponse";
-import { OrganizationSsoResponse } from "../../models/response/organization/organizationSsoResponse";
-import { OrganizationApiKeyInformationResponse } from "../../models/response/organizationApiKeyInformationResponse";
-import { OrganizationAutoEnrollStatusResponse } from "../../models/response/organizationAutoEnrollStatusResponse";
-import { OrganizationKeysResponse } from "../../models/response/organizationKeysResponse";
-import { OrganizationResponse } from "../../models/response/organizationResponse";
-import { OrganizationSubscriptionResponse } from "../../models/response/organizationSubscriptionResponse";
-import { PaymentResponse } from "../../models/response/paymentResponse";
-import { TaxInfoResponse } from "../../models/response/taxInfoResponse";
+import { ImportDirectoryRequest } from "../../models/request/import-directory.request";
+import { OrganizationApiKeyRequest } from "../../models/request/organization-api-key.request";
+import { OrganizationCreateRequest } from "../../models/request/organization-create.request";
+import { OrganizationKeysRequest } from "../../models/request/organization-keys.request";
+import { OrganizationSubscriptionUpdateRequest } from "../../models/request/organization-subscription-update.request";
+import { OrganizationTaxInfoUpdateRequest } from "../../models/request/organization-tax-info-update.request";
+import { OrganizationUpdateRequest } from "../../models/request/organization-update.request";
+import { OrganizationUpgradeRequest } from "../../models/request/organization-upgrade.request";
+import { OrganizationSsoRequest } from "../../models/request/organization/organization-sso.request";
+import { PaymentRequest } from "../../models/request/payment.request";
+import { SeatRequest } from "../../models/request/seat.request";
+import { SecretVerificationRequest } from "../../models/request/secret-verification.request";
+import { StorageRequest } from "../../models/request/storage.request";
+import { VerifyBankRequest } from "../../models/request/verify-bank.request";
+import { ApiKeyResponse } from "../../models/response/api-key.response";
+import { BillingResponse } from "../../models/response/billing.response";
+import { ListResponse } from "../../models/response/list.response";
+import { OrganizationApiKeyInformationResponse } from "../../models/response/organization-api-key-information.response";
+import { OrganizationAutoEnrollStatusResponse } from "../../models/response/organization-auto-enroll-status.response";
+import { OrganizationKeysResponse } from "../../models/response/organization-keys.response";
+import { OrganizationSubscriptionResponse } from "../../models/response/organization-subscription.response";
+import { OrganizationResponse } from "../../models/response/organization.response";
+import { OrganizationSsoResponse } from "../../models/response/organization/organization-sso.response";
+import { PaymentResponse } from "../../models/response/payment.response";
+import { TaxInfoResponse } from "../../models/response/tax-info.response";
 
 export class OrganizationApiService implements OrganizationApiServiceAbstraction {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private syncService: SyncService) {}
 
   async get(id: string): Promise<OrganizationResponse> {
     const r = await this.apiService.send("GET", "/organizations/" + id, null, true, true);
@@ -80,6 +81,8 @@ export class OrganizationApiService implements OrganizationApiServiceAbstraction
 
   async create(request: OrganizationCreateRequest): Promise<OrganizationResponse> {
     const r = await this.apiService.send("POST", "/organizations", request, true, true);
+    // Forcing a sync will notify organization service that they need to repull
+    await this.syncService.fullSync(true);
     return new OrganizationResponse(r);
   }
 
@@ -90,7 +93,9 @@ export class OrganizationApiService implements OrganizationApiServiceAbstraction
 
   async save(id: string, request: OrganizationUpdateRequest): Promise<OrganizationResponse> {
     const r = await this.apiService.send("PUT", "/organizations/" + id, request, true, true);
-    return new OrganizationResponse(r);
+    const data = new OrganizationResponse(r);
+    await this.syncService.fullSync(true);
+    return data;
   }
 
   async updatePayment(id: string, request: PaymentRequest): Promise<void> {
@@ -144,7 +149,7 @@ export class OrganizationApiService implements OrganizationApiServiceAbstraction
   }
 
   async verifyBank(id: string, request: VerifyBankRequest): Promise<void> {
-    return this.apiService.send(
+    await this.apiService.send(
       "POST",
       "/organizations/" + id + "/verify-bank",
       request,
@@ -162,15 +167,17 @@ export class OrganizationApiService implements OrganizationApiServiceAbstraction
   }
 
   async leave(id: string): Promise<void> {
-    return this.apiService.send("POST", "/organizations/" + id + "/leave", null, true, false);
+    await this.apiService.send("POST", "/organizations/" + id + "/leave", null, true, false);
+    await this.syncService.fullSync(true);
   }
 
   async delete(id: string, request: SecretVerificationRequest): Promise<void> {
-    return this.apiService.send("DELETE", "/organizations/" + id, request, true, false);
+    await this.apiService.send("DELETE", "/organizations/" + id, request, true, false);
+    await this.syncService.fullSync(true);
   }
 
   async updateLicense(id: string, data: FormData): Promise<void> {
-    return this.apiService.send("POST", "/organizations/" + id + "/license", data, true, false);
+    await this.apiService.send("POST", "/organizations/" + id + "/license", data, true, false);
   }
 
   async importDirectory(organizationId: string, request: ImportDirectoryRequest): Promise<void> {
@@ -223,6 +230,7 @@ export class OrganizationApiService implements OrganizationApiServiceAbstraction
   }
 
   async updateTaxInfo(id: string, request: OrganizationTaxInfoUpdateRequest): Promise<void> {
+    // Can't broadcast anything because the response doesn't have content
     return this.apiService.send("PUT", "/organizations/" + id + "/tax", request, true, false);
   }
 
@@ -242,6 +250,7 @@ export class OrganizationApiService implements OrganizationApiServiceAbstraction
       true,
       true
     );
+    // Not broadcasting anything because data on this response doesn't correspond to `Organization`
     return new OrganizationKeysResponse(r);
   }
 
@@ -258,6 +267,7 @@ export class OrganizationApiService implements OrganizationApiServiceAbstraction
       true,
       true
     );
+    // Not broadcasting anything because data on this response doesn't correspond to `Organization`
     return new OrganizationSsoResponse(r);
   }
 }

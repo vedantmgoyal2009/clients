@@ -569,14 +569,26 @@
   "loginOrCreateNewAccount": {
     "message": "Log ind eller opret en ny konto for at få adgang til din sikre boks."
   },
+  "loginWithDevice": {
+    "message": "Log ind med enhed"
+  },
+  "loginWithDeviceEnabledInfo": {
+    "message": "Log ind med enhed skal være aktiveret i indstillingerne for Bitwarden-mobilappen. Har du brug for en anden mulighed?"
+  },
   "createAccount": {
     "message": "Opret konto"
+  },
+  "newAroundHere": {
+    "message": "Ny her?"
   },
   "startTrial": {
     "message": "Start prøveperiode"
   },
   "logIn": {
     "message": "Log ind"
+  },
+  "logInInitiated": {
+    "message": "Indlogning påbegyndt"
   },
   "submit": {
     "message": "Indsend"
@@ -635,8 +647,8 @@
   "confirmMasterPasswordRequired": {
     "message": "Hovedadgangskode kræves angivet igen."
   },
-  "masterPasswordMinLength": {
-    "message": "Hovedadgangskode skal være på mindst 8 tegn."
+  "masterPasswordMinlength": {
+    "message": "Hovedadgangskoden skal være på mindst 8 tegn."
   },
   "masterPassDoesntMatch": {
     "message": "De to hovedadgangskoder matcher ikke."
@@ -704,6 +716,9 @@
   },
   "noOrganizationsList": {
     "message": "Du tilhører ikke nogen organisationer. Organisationer giver dig mulighed for at dele elementer med andre brugere på en sikker måde."
+  },
+  "notificationSentDevice": {
+    "message": "En notifikation er sendt til din enhed."
   },
   "versionNumber": {
     "message": "Version $VERSION_NUMBER$",
@@ -912,10 +927,10 @@
     "message": "Bekræft filadgangskode"
   },
   "accountBackupOptionDescription": {
-    "message": "Udnytter din Bitwarden-kontokryptering, ikke hovedadgangskode, for at beskytte eksporten. Denne eksport kan kun importeres til den aktuelle konto. Brug denne til at oprette en sikkerhedskopi, der ikke kan bruges andre steder."
+    "message": "Brug din kontos krypteringsnøgle til at kryptere eksporten og begrænse importen til udelukkende den aktuelle Bitwarden-konto."
   },
   "passwordProtectedOptionDescription": {
-    "message": "Opret en brugergenereret adgangskode for at beskytte eksporten. Brug denne til at oprette en eksport, der kan bruges via andre konti."
+    "message": "Opret en adgangskode til at kryptere eksporten og importér den til enhver Bitwarden-konto ved hjælp af adgangskoden til dekryptering."
   },
   "fileTypeHeading": {
     "message": "Filtype"
@@ -2532,6 +2547,9 @@
       }
     }
   },
+  "viewAllLoginOptions": {
+    "message": "Vis alle indlogningsmuligheder"
+  },
   "viewedItemId": {
     "message": "Viste element $ID$.",
     "placeholders": {
@@ -3295,6 +3313,10 @@
     "message": "Opdateret",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Oprettet",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Adgangskode opdateret",
     "description": "ex. Date this password was updated"
@@ -3371,6 +3393,12 @@
   "fingerprintEnsureIntegrityVerify": {
     "message": "For at sikre integriteten af dine krypteringsnøgler, bedes du bekræfte brugerens fingeraftrykssætning, inden du fortsætter.",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
+  },
+  "fingerprintMatchInfo": {
+    "message": "Sørg for, at din boks er låst op, og at fingeraftrykssætningen matcher den anden enhed."
+  },
+  "fingerprintPhraseHeader": {
+    "message": "Fingeraftrykssætning"
   },
   "dontAskFingerprintAgain": {
     "message": "Bed aldrig om at bekræfte fingeraftrykssætninger for inviterede brugere (anbefales ikke)",
@@ -4057,6 +4085,12 @@
   "permissions": {
     "message": "Tilladelser"
   },
+  "managerPermissions": {
+    "message": "Bestyrer-tilladelser"
+  },
+  "adminPermissions": {
+    "message": "Admin-tilladelser"
+  },
   "accessEventLogs": {
     "message": "Tilgå begivenhedslogger"
   },
@@ -4365,6 +4399,9 @@
   },
   "reinviteSelected": {
     "message": "Gensend invitationer"
+  },
+  "resendNotification": {
+    "message": "Gensend notifikation"
   },
   "noSelectedUsersApplicable": {
     "message": "Denne handling er ikke anvendelig for nogen af de valgte brugere."
@@ -5357,5 +5394,17 @@
   },
   "numberOfUsers": {
     "message": "Antal brugere"
+  },
+  "multiSelectPlaceholder": {
+    "message": "-- Type at filtrere --"
+  },
+  "multiSelectLoading": {
+    "message": "Henter indstillinger..."
+  },
+  "multiSelectNotFound": {
+    "message": "Ingen emner fundet"
+  },
+  "multiSelectClearAll": {
+    "message": "Ryd alt"
   }
 }

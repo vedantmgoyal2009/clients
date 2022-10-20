@@ -108,14 +108,6 @@
                   </label>
                 </div>
               </div>
-
-              <div class="form-group">
-                <label>{{ "deleteAccount" | i18n }}</label>
-                <small class="help-block">
-                  {{ "deleteAccountDesc" | i18n }}
-                  <a (click)="openDeleteAccount()">{{ "deleteAccount" | i18n }}</a>
-                </small>
-              </div>
             </ng-container>
           </div>
         </div>
@@ -316,6 +308,23 @@
                   </label>
                 </div>
                 <small class="help-block">{{ "enableBrowserIntegrationDesc" | i18n }}</small>
+              </div>
+              <div class="form-group" *ngIf="showDuckDuckGoIntegrationOption">
+                <div class="checkbox">
+                  <label for="enableDuckDuckGoBrowserIntegration">
+                    <input
+                      id="enableDuckDuckGoBrowserIntegration"
+                      type="checkbox"
+                      name="enableDuckDuckGoBrowserIntegration"
+                      [(ngModel)]="enableDuckDuckGoBrowserIntegration"
+                      (change)="saveDdgBrowserIntegration()"
+                    />
+                    {{ "enableDuckDuckGoBrowserIntegration" | i18n }}
+                  </label>
+                </div>
+                <small class="help-block">{{
+                  "enableDuckDuckGoBrowserIntegrationDesc" | i18n
+                }}</small>
               </div>
               <div class="form-group">
                 <div class="checkbox">

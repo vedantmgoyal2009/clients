@@ -425,7 +425,7 @@
     "message": "Ni"
   },
   "myVault": {
-    "message": "Nire Kutxa Gotorra"
+    "message": "Kutxa Gotorra"
   },
   "allVaults": {
     "message": "Kutxa Gotor guztiak"
@@ -569,14 +569,26 @@
   "loginOrCreateNewAccount": {
     "message": "Saioa hasi edo sortu kontu berri bat zure kutxa gotorrera sartzeko."
   },
+  "loginWithDevice": {
+    "message": "Hasi saioa gailuarekin"
+  },
+  "loginWithDeviceEnabledInfo": {
+    "message": "Bitwarden mugikorreko aplikazioaren konfigurazioan, gailuarekin saioa hastea gaituta egon behar du. Beste aukerarik behar duzu?"
+  },
   "createAccount": {
     "message": "Sortu kontua"
+  },
+  "newAroundHere": {
+    "message": "Berria hemendik?"
   },
   "startTrial": {
     "message": "Hasi probaldia"
   },
   "logIn": {
     "message": "Hasi saioa"
+  },
+  "logInInitiated": {
+    "message": "Saioa hastea martxan da"
   },
   "submit": {
     "message": "Bidali"
@@ -635,8 +647,8 @@
   "confirmMasterPasswordRequired": {
     "message": "Pasahitz nagusia berridaztea derrigorrezkoa da."
   },
-  "masterPasswordMinLength": {
-    "message": "Pasahitz nagusiak gutxienez 8 karaktere izan behar ditu."
+  "masterPasswordMinlength": {
+    "message": "Pasahitz nagusiak 8 karaktere izan behar ditu gutxienez."
   },
   "masterPassDoesntMatch": {
     "message": "Pasahitz nagusiaren egiaztatzea ez dator bat."
@@ -679,7 +691,7 @@
     "message": "Master pasahitz baliogabea"
   },
   "invalidFilePassword": {
-    "message": "Invalid file password, please use the password you entered when you created the export file."
+    "message": "Fitxategi pasahitzak ez du balio; mesedez, erabili esportazio fitxategia sortzean sartutako pasahitza."
   },
   "lockNow": {
     "message": "Blokeatu orain"
@@ -704,6 +716,9 @@
   },
   "noOrganizationsList": {
     "message": "Zu ez zara inongo erakundekoa. Erakundeek elementuak beste erabiltzaile batzuekin modu seguruan partekatzeko aukera ematen dute."
+  },
+  "notificationSentDevice": {
+    "message": "Jakinarazpen bat bidali da zure gailura."
   },
   "versionNumber": {
     "message": "$VERSION_NUMBER$ bertsioa",
@@ -894,46 +909,46 @@
     "message": "Fitxategiaren formatua"
   },
   "fileEncryptedExportWarningDesc": {
-    "message": "This file export will be password protected and require the file password to decrypt."
+    "message": "Fitxategien esportazio hori pasahitzaren bidez babestuta egongo da eta deszifratzeko fitxategi pasahitza beharko da."
   },
   "exportPasswordDescription": {
-    "message": "This password will be used to export and import this file"
+    "message": "Fitxategi hau esportatu eta inportatzeko erabiliko da pasahitz hau"
   },
   "confirmMasterPassword": {
-    "message": "Confirm Master Password"
+    "message": "Pasahitz nagusia baieztatu"
   },
   "confirmFormat": {
-    "message": "Confirm Format"
+    "message": "Formatua baieztatu"
   },
   "filePassword": {
-    "message": "File Password"
+    "message": "Fitxategi pasahitza"
   },
   "confirmFilePassword": {
-    "message": "Confirm File Password"
+    "message": "Fitxategi pasahitza berretsi"
   },
   "accountBackupOptionDescription": {
-    "message": "Use your account encryption key to encrypt the export and restrict import to only the current Bitwarden account."
+    "message": "Erabili zure kontuaren zifratze-gakoa esportazioa zifratzeko eta inportazioa egungo Bitwarden kontura bakarrik mugatzeko."
   },
   "passwordProtectedOptionDescription": {
-    "message": "Set a password to encrypt the export and import it to any Bitwarden account using the password for decryption."
+    "message": "Erabili pasahitza esportazioa zifratzeko eta Bitwardeneko edozein kontutara inportatzean deszifratzeko."
   },
   "fileTypeHeading": {
     "message": "Fitxategi mota"
   },
   "accountBackup": {
-    "message": "Account Backup"
+    "message": "Kontuaren segurtasun kopia"
   },
   "passwordProtected": {
-    "message": "Password Protected"
+    "message": "Pasahitz babestua"
   },
   "filePasswordAndConfirmFilePasswordDoNotMatch": {
-    "message": "“File password”  and “Confirm File Password“ do not match."
+    "message": "“Fitxategi pasahitza” eta “Fitxategi pasahitza berretsi” ez datoz bat."
   },
   "confirmVaultImport": {
-    "message": "Confirm Vault Import"
+    "message": "Berretsi kutxa gotorra inportatzea"
   },
   "confirmVaultImportDesc": {
-    "message": "This file is password-protected. Please enter the file password to import data."
+    "message": "Fitxategi hau pasahitzez babestuta dago. Sartu fitxategiaren pasahitza datuak inportatzeko."
   },
   "exportSuccess": {
     "message": "Zure kutxa gotorra esportatu da."
@@ -2532,6 +2547,9 @@
       }
     }
   },
+  "viewAllLoginOptions": {
+    "message": "Ikusi erregistro guztiak ezarpenetan"
+  },
   "viewedItemId": {
     "message": "$ID$ elementua ikusia.",
     "placeholders": {
@@ -3295,6 +3313,10 @@
     "message": "Eguneratua",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Created",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Pasahitza eguneratu da",
     "description": "ex. Date this password was updated"
@@ -3371,6 +3393,12 @@
   "fingerprintEnsureIntegrityVerify": {
     "message": "Zifratze-gakoen osotasuna bermatzeko, egiaztatu erabiltzailearen hatz-marka esaldia jarraitu aurretik.",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
+  },
+  "fingerprintMatchInfo": {
+    "message": "Mesedez, ziurtatu kutxa gotorra desblokeatuta dagoela eta hatz-marka digitalaren esaldia bat datorrela beste gailuarekin."
+  },
+  "fingerprintPhraseHeader": {
+    "message": "Hatz-marka digitalaren esaldia"
   },
   "dontAskFingerprintAgain": {
     "message": "Inoiz ez da beharrezkoa gonbidatutako erabiltzaileentzat hatz-marka esaldiak egiaztatzea (ez da gomendatzen)",
@@ -4057,6 +4085,12 @@
   "permissions": {
     "message": "Baimenak"
   },
+  "managerPermissions": {
+    "message": "Kudeatu baimenak"
+  },
+  "adminPermissions": {
+    "message": "Kudeatzailearen baimenak"
+  },
   "accessEventLogs": {
     "message": "Sarreren erregistroak"
   },
@@ -4365,6 +4399,9 @@
   },
   "reinviteSelected": {
     "message": "Birbidali gonbidapenak"
+  },
+  "resendNotification": {
+    "message": "Berbidali jakinarazpena"
   },
   "noSelectedUsersApplicable": {
     "message": "Ekintza hau ezin zaie hautatutako erabiltzaileei aplikatu."
@@ -5357,5 +5394,17 @@
   },
   "numberOfUsers": {
     "message": "Erabiltzaile kopurua"
+  },
+  "multiSelectPlaceholder": {
+    "message": "-- Type to Filter --"
+  },
+  "multiSelectLoading": {
+    "message": "Retrieving options..."
+  },
+  "multiSelectNotFound": {
+    "message": "No items found"
+  },
+  "multiSelectClearAll": {
+    "message": "Clear all"
   }
 }
