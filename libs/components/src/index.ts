@@ -10,6 +10,7 @@ export * from "./icon-button";
 export * from "./icon";
 export * from "./link";
 export * from "./menu";
+export * from "./multi-select";
 export * from "./tabs";
 export * from "./toggle-group";
 export * from "./utils/i18n-mock.service";
