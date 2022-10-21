@@ -13,7 +13,7 @@ import { BitHintComponent } from "./hint.component";
 import { BitLabel } from "./label.directive";
 import { BitPrefixDirective } from "./prefix.directive";
 import { BitSuffixDirective } from "./suffix.directive";
-import { BitToggleDirective } from "./toggle.directive";
+import { BitPasswordInputToggleDirective } from "./toggle.directive";
 
 @NgModule({
   imports: [SharedModule, InputModule, MultiSelectModule],
@@ -23,9 +23,9 @@ import { BitToggleDirective } from "./toggle.directive";
     BitFormFieldComponent,
     BitHintComponent,
     BitLabel,
+    BitPasswordInputToggleDirective,
     BitPrefixDirective,
     BitSuffixDirective,
-    BitToggleDirective,
   ],
   exports: [
     BitErrorComponent,
@@ -34,9 +34,9 @@ import { BitToggleDirective } from "./toggle.directive";
     BitHintComponent,
     BitInputDirective,
     BitLabel,
+    BitPasswordInputToggleDirective,
     BitPrefixDirective,
     BitSuffixDirective,
-    BitToggleDirective,
     MultiSelectComponent,
   ],
 })

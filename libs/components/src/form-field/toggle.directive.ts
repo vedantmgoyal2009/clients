@@ -5,10 +5,9 @@ import { ButtonComponent } from "../button";
 import { BitFormFieldComponent } from "./form-field.component";
 
 @Directive({
-  selector: "[bitToggle]",
-  exportAs: "bitToggle",
+  selector: "[bitPasswordInputToggle]",
 })
-export class BitToggleDirective implements AfterViewInit {
+export class BitPasswordInputToggleDirective implements AfterViewInit {
   @Input("bitToggle") input: HTMLInputElement;
 
   toggled = false;
