@@ -15,18 +15,23 @@ export class BitToggleDirective implements AfterViewInit {
 
   constructor(@Host() private button: ButtonComponent, private formField: BitFormFieldComponent) {}
 
+  get icon() {
+    return this.toggled ? "bwi-eye-slash" : "bwi-eye";
+  }
+
   ngAfterViewInit(): void {
-    this.updateIcon();
+    this.toggled = this.formField.input.type !== "password";
+    this.button.icon = this.icon;
   }
 
   @HostListener("click") onClick() {
     this.toggled = !this.toggled;
-    this.updateIcon();
-    this.formField.input.elementRef.nativeElement.focus();
-  }
 
-  protected updateIcon() {
-    this.button.icon = this.toggled ? "bwi-eye-slash" : "bwi-eye";
-    this.formField.input.elementRef.nativeElement.type = this.toggled ? "text" : "password";
+    this.button.icon = this.icon;
+    if (this.formField.input.type != null) {
+      this.formField.input.type = this.toggled ? "text" : "password";
+    }
+
+    this.formField.input?.focus();
   }
 }

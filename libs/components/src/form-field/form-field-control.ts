@@ -1,5 +1,3 @@
-import { ElementRef } from "@angular/core";
-
 export abstract class BitFormFieldControl {
   ariaDescribedBy: string;
   id: string;
@@ -7,5 +5,6 @@ export abstract class BitFormFieldControl {
   required: boolean;
   hasError: boolean;
   error: [string, any];
-  elementRef: ElementRef;
+  type?: "text" | "password";
+  focus?: () => void;
 }
