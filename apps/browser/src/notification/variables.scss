@@ -1,14 +1,18 @@
 ﻿@import "~nord/src/sass/nord.scss";
 
 $font-family-sans-serif: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-size-base: 14px;
 $text-color: #333333;
+$border-color-dark: #ddd;
+$border-radius: 3px;
 
 $brand-primary: #175ddc;
 
 $background-color: #f0f0f0;
 
-$solarizedDarkBase02: #073642;
 $solarizedDarkBase03: #002b36;
+$solarizedDarkBase02: #073642;
+$solarizedDarkBase01: #586e75;
 $solarizedDarkBase2: #eee8d5;
 $solarizedDarkCyan: #2aa198;
 $solarizedDarkGreen: #859900;
@@ -20,6 +24,8 @@ $themes: (
     primaryColor: $brand-primary,
     buttonPrimaryColor: $brand-primary,
     textContrast: $background-color,
+    inputBorderColor: darken($border-color-dark, 7%),
+    inputBackgroundColor: #ffffff,
   ),
   dark: (
     textColor: #ffffff,
@@ -27,6 +33,8 @@ $themes: (
     buttonPrimaryColor: #6f9df1,
     primaryColor: #6f9df1,
     textContrast: #2f343d,
+    inputBorderColor: #4c525f,
+    inputBackgroundColor: #2f343d,
   ),
   nord: (
     textColor: $nord5,
@@ -34,6 +42,8 @@ $themes: (
     buttonPrimaryColor: $nord8,
     primaryColor: $nord9,
     textContrast: $nord2,
+    inputBorderColor: $nord0,
+    inputBackgroundColor: $nord2,
   ),
   solarizedDark: (
     textColor: $solarizedDarkBase2,
@@ -41,6 +51,8 @@ $themes: (
     buttonPrimaryColor: $solarizedDarkCyan,
     primaryColor: $solarizedDarkGreen,
     textContrast: $solarizedDarkBase02,
+    inputBorderColor: rgba($solarizedDarkBase2, 0.2),
+    inputBackgroundColor: $solarizedDarkBase01,
   ),
 );
 
