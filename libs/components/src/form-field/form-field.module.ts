@@ -11,9 +11,9 @@ import { BitErrorComponent } from "./error.component";
 import { BitFormFieldComponent } from "./form-field.component";
 import { BitHintComponent } from "./hint.component";
 import { BitLabel } from "./label.directive";
+import { BitPasswordInputToggleDirective } from "./password-input-toggle.directive";
 import { BitPrefixDirective } from "./prefix.directive";
 import { BitSuffixDirective } from "./suffix.directive";
-import { BitPasswordInputToggleDirective } from "./toggle.directive";
 
 @NgModule({
   imports: [SharedModule, InputModule, MultiSelectModule],
