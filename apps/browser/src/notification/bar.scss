@@ -61,7 +61,7 @@ img {
 
   > path {
     @include themify($themes) {
-      fill: themed("closeButtonColor");
+      fill: themed("textColor");
     }
   }
 }
