@@ -56,8 +56,8 @@ img {
 
 #close {
   display: block;
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
 
   > path {
     @include themify($themes) {
@@ -66,16 +66,25 @@ img {
   }
 }
 
-button:not(.link),
-button:not(.neutral) {
-  padding: 5px 15px;
-  border-radius: 3px;
-  border: 0;
-  cursor: pointer;
+#close-button:hover {
+  @include themify($themes) {
+    border-color: rgba(themed("textColor"), 0.2);
+    background-color: rgba(themed("textColor"), 0.2);
+  }
+}
 
+button {
+  padding: 0.35rem 15px;
+  border-radius: $border-radius;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+button:not(.neutral):not(.link) {
   @include themify($themes) {
     background-color: themed("primaryColor");
     color: themed("textContrast");
+    border-color: themed("primaryColor");
   }
 
   &:hover {
@@ -88,10 +97,6 @@ button:not(.neutral) {
 
 button.link,
 button.neutral {
-  padding: 5px 15px;
-  border: 0;
-  cursor: pointer;
-
   @include themify($themes) {
     background-color: transparent;
     color: themed("primaryColor");
