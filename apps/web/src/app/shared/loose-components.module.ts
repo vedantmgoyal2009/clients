@@ -38,8 +38,6 @@ import { CollectionAddEditComponent as OrgCollectionAddEditComponent } from "../
 import { CollectionsComponent as OrgManageCollectionsComponent } from "../organizations/manage/collections.component";
 import { EntityEventsComponent as OrgEntityEventsComponent } from "../organizations/manage/entity-events.component";
 import { EventsComponent as OrgEventsComponent } from "../organizations/manage/events.component";
-import { GroupAddEditComponent as OrgGroupAddEditComponent } from "../organizations/manage/group-add-edit.component";
-import { GroupsComponent as OrgGroupsComponent } from "../organizations/manage/groups.component";
 import { ManageComponent as OrgManageComponent } from "../organizations/manage/manage.component";
 import { PeopleComponent as OrgPeopleComponent } from "../organizations/manage/people.component";
 import { ResetPasswordComponent as OrgResetPasswordComponent } from "../organizations/manage/reset-password.component";
@@ -191,8 +189,6 @@ import { SharedModule } from ".";
     OrgEntityEventsComponent,
     OrgEventsComponent,
     OrgExposedPasswordsReportComponent,
-    OrgGroupAddEditComponent,
-    OrgGroupsComponent,
     OrgInactiveTwoFactorReportComponent,
     OrgManageCollectionsComponent,
     OrgManageComponent,
@@ -315,8 +311,6 @@ import { SharedModule } from ".";
     OrgEntityEventsComponent,
     OrgEventsComponent,
     OrgExposedPasswordsReportComponent,
-    OrgGroupAddEditComponent,
-    OrgGroupsComponent,
     OrgInactiveTwoFactorReportComponent,
     OrgManageCollectionsComponent,
     OrgManageComponent,
