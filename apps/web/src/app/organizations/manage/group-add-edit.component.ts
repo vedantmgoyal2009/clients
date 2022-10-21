@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormControl, Validators } from "@angular/forms";
 
-import { FormSelectionList, SelectionItemId } from "@bitwarden/angular/utils/FormSelectionList";
-import { SelectionReadOnly } from "@bitwarden/cli/src/models/selectionReadOnly";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
 import { GroupServiceAbstraction } from "@bitwarden/common/abstractions/group";
@@ -12,40 +10,17 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { CollectionData } from "@bitwarden/common/models/data/collection.data";
 import { Collection } from "@bitwarden/common/models/domain/collection";
 import { GroupRequest } from "@bitwarden/common/models/request/group.request";
-import { SelectionReadOnlyRequest } from "@bitwarden/common/models/request/selection-read-only.request";
 import { CollectionDetailsResponse } from "@bitwarden/common/models/response/collection.response";
-import { OrganizationUserUserDetailsResponse } from "@bitwarden/common/models/response/organization-user.response";
-import { CollectionView } from "@bitwarden/common/models/view/collection.view";
 import { GroupView } from "@bitwarden/common/models/view/group-view";
 
-enum CollectionPermission {
-  VIEW = "view",
-  VIEW_EXCEPT_PASSWORDS = "viewExceptPass",
-  EDIT = "edit",
-  EDIT_EXCEPT_PASSWORDS = "editExceptPass",
-}
-
-const convertToPermission = (value: SelectionReadOnly) => {
-  if (value.readOnly) {
-    return value.hidePasswords
-      ? CollectionPermission.VIEW_EXCEPT_PASSWORDS
-      : CollectionPermission.VIEW;
-  } else {
-    return value.hidePasswords
-      ? CollectionPermission.EDIT_EXCEPT_PASSWORDS
-      : CollectionPermission.EDIT;
-  }
-};
-
-const isReadonly = (perm: CollectionPermission) =>
-  [CollectionPermission.VIEW, CollectionPermission.VIEW_EXCEPT_PASSWORDS].includes(perm);
-
-const hidePassword = (perm: CollectionPermission) =>
-  [CollectionPermission.VIEW_EXCEPT_PASSWORDS, CollectionPermission.EDIT_EXCEPT_PASSWORDS].includes(
-    perm
-  );
-
-type GroupCollectionSelection = { id: string; permission: CollectionPermission };
+import {
+  AccessItemType,
+  AccessItemValue,
+  AccessItemView,
+  convertToPermission,
+  convertToSelectionReadOnly,
+  PermissionMode,
+} from "../components/access-selector";
 
 @Component({
   selector: "app-group-add-edit",
@@ -57,43 +32,24 @@ export class GroupAddEditComponent implements OnInit {
   @Output() onSavedGroup = new EventEmitter();
   @Output() onDeletedGroup = new EventEmitter();
 
+  protected permissionMode = PermissionMode;
+
   tabIndex = 0;
   loading = true;
   editMode = false;
   title: string;
   formPromise: Promise<any>;
   deletePromise: Promise<any>;
-  permissionList = [
-    { perm: CollectionPermission.VIEW, labelId: "canView" },
-    { perm: CollectionPermission.VIEW_EXCEPT_PASSWORDS, labelId: "canViewExceptPass" },
-    { perm: CollectionPermission.EDIT, labelId: "canEdit" },
-    { perm: CollectionPermission.EDIT_EXCEPT_PASSWORDS, labelId: "canEditExceptPass" },
-  ];
-  initialPermission = CollectionPermission.VIEW;
-  collections: CollectionView[] = [];
-  members: OrganizationUserUserDetailsResponse[] = [];
+  collections: AccessItemView[] = [];
+  members: AccessItemView[] = [];
   group: GroupView;
-
-  collectionList = new FormSelectionList<CollectionView, GroupCollectionSelection>(
-    (item) =>
-      this.formBuilder.group({
-        id: item.id,
-        permission: this.initialPermission,
-      }),
-    (a, b) => this.i18nService.collator.compare(a.name, b.name)
-  );
-
-  memberList = new FormSelectionList<OrganizationUserUserDetailsResponse, SelectionItemId>(
-    (item) => this.formBuilder.group({ id: item.id }),
-    (a, b) => this.i18nService.collator.compare(a.name + a.email + a.id, b.name + b.email + b.id)
-  );
 
   groupForm = this.formBuilder.group({
     accessAll: new FormControl(false),
     name: new FormControl("", Validators.required),
     externalId: new FormControl(""),
-    members: this.memberList.formArray,
-    collections: this.collectionList.formArray,
+    members: new FormControl<AccessItemValue[]>([]),
+    collections: new FormControl<AccessItemValue[]>([]),
   });
 
   constructor(
@@ -119,31 +75,26 @@ export class GroupAddEditComponent implements OnInit {
       try {
         this.group = await this.groupService.get(this.organizationId, this.groupId);
         const users = await this.apiService.getGroupUsers(this.organizationId, this.groupId);
+
         this.groupForm.patchValue({
           name: this.group.name,
           externalId: this.group.externalId,
           accessAll: this.group.accessAll,
-        });
-
-        this.collectionList.populateItems(
-          this.collections,
-          this.group.collections.map((gc) => ({
+          members: users.map((u) => ({
+            id: u,
+            type: AccessItemType.Member,
+          })),
+          collections: this.group.collections.map((gc) => ({
             id: gc.id,
+            type: AccessItemType.Collection,
             permission: convertToPermission(gc),
-          }))
-        );
-
-        this.memberList.populateItems(
-          this.members,
-          users.map((u) => ({ id: u }))
-        );
+          })),
+        });
       } catch (e) {
         this.logService.error(e);
       }
     } else {
       this.title = this.i18nService.t("addGroup");
-      this.memberList.populateItems(this.members);
-      this.collectionList.populateItems(this.collections);
     }
 
     this.loading = false;
@@ -154,28 +105,25 @@ export class GroupAddEditComponent implements OnInit {
     const collections = response.data.map(
       (r) => new Collection(new CollectionData(r as CollectionDetailsResponse))
     );
-    this.collections = await this.collectionService.decryptMany(collections);
+    this.collections = (await this.collectionService.decryptMany(collections)).map((c) => ({
+      id: c.id,
+      type: AccessItemType.Collection,
+      labelName: c.name,
+      listName: c.name,
+    }));
   }
 
   async loadMembers() {
     const response = await this.apiService.getOrganizationUsers(this.organizationId);
-    this.members = response.data;
-  }
-
-  addMember(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const addedId = target.value;
-    this.memberList.selectItem(addedId);
-    target.value = "";
-  }
-
-  addCollection(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const addedId = target.value;
-    this.collectionList.selectItem(addedId, {
-      permission: this.initialPermission,
-    });
-    target.value = "";
+    this.members = response.data.map((m) => ({
+      id: m.id,
+      type: AccessItemType.Member,
+      email: m.email,
+      role: m.type,
+      listName: m.name?.length > 0 ? `${m.name} (${m.email})` : m.email,
+      labelName: m.name || m.email,
+      status: m.status,
+    }));
   }
 
   async submit() {
@@ -187,10 +135,7 @@ export class GroupAddEditComponent implements OnInit {
     request.users = formValue.members?.map((m) => m.id) ?? [];
 
     if (!request.accessAll) {
-      request.collections = formValue.collections.map(
-        (c) =>
-          new SelectionReadOnlyRequest(c.id, isReadonly(c.permission), hidePassword(c.permission))
-      );
+      request.collections = formValue.collections.map((c) => convertToSelectionReadOnly(c));
     }
 
     try {
