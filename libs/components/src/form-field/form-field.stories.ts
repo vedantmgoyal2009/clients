@@ -166,8 +166,8 @@ const ButtonGroupTemplate: Story<BitFormFieldComponent> = (args: BitFormFieldCom
   template: `
     <bit-form-field>
       <bit-label>Label</bit-label>
-      <input #input bitInput placeholder="Placeholder" />
-      <button bitSuffix bitButton [bitToggle]="input"></button>
+      <input bitInput placeholder="Placeholder" />
+      <button bitSuffix bitButton bitToggle></button>
       <button bitSuffix bitButton bitIconButton="bwi-clone"></button>
     </bit-form-field>
   `,

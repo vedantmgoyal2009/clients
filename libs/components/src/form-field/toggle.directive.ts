@@ -2,6 +2,8 @@ import { AfterViewInit, Directive, Host, HostListener, Input } from "@angular/co
 
 import { ButtonComponent } from "../button";
 
+import { BitFormFieldComponent } from "./form-field.component";
+
 @Directive({
   selector: "[bitToggle]",
   exportAs: "bitToggle",
@@ -11,7 +13,7 @@ export class BitToggleDirective implements AfterViewInit {
 
   toggled = false;
 
-  constructor(@Host() private button: ButtonComponent) {}
+  constructor(@Host() private button: ButtonComponent, private formField: BitFormFieldComponent) {}
 
   ngAfterViewInit(): void {
     this.updateIcon();
@@ -20,11 +22,11 @@ export class BitToggleDirective implements AfterViewInit {
   @HostListener("click") onClick() {
     this.toggled = !this.toggled;
     this.updateIcon();
-    this.input.focus();
+    this.formField.input.elementRef.nativeElement.focus();
   }
 
   protected updateIcon() {
     this.button.icon = this.toggled ? "bwi-eye-slash" : "bwi-eye";
-    this.input.type = this.toggled ? "text" : "password";
+    this.formField.input.elementRef.nativeElement.type = this.toggled ? "text" : "password";
   }
 }

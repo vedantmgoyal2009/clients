@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input, Optional, Self } from "@angular/core";
+import { Directive, ElementRef, HostBinding, Input, Optional, Self } from "@angular/core";
 import { NgControl, Validators } from "@angular/forms";
 
 import { BitFormFieldControl } from "../form-field/form-field-control";
@@ -70,5 +70,6 @@ export class BitInputDirective implements BitFormFieldControl {
     const key = Object.keys(this.ngControl.errors)[0];
     return [key, this.ngControl.errors[key]];
   }
-  constructor(@Optional() @Self() private ngControl: NgControl) {}
+  constructor(@Optional() @Self() private ngControl: NgControl, public elementRef: ElementRef) {}
+  @Input() type: string;
 }
