@@ -20,6 +20,7 @@ import {
   IconModule,
   LinkModule,
   MenuModule,
+  MultiSelectModule,
   TableModule,
   TabsModule,
 } from "@bitwarden/components";
@@ -51,6 +52,7 @@ import "./locales";
     BadgeListModule,
     ButtonModule,
     MenuModule,
+    MultiSelectModule,
     FormFieldModule,
     IconModule,
     TabsModule,
@@ -75,6 +77,7 @@ import "./locales";
     CalloutModule,
     ToastrModule,
     MenuModule,
+    MultiSelectModule,
     FormFieldModule,
     IconModule,
     TabsModule,
