@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, Input, NgZone, Optional, Self } from "@angular/core";
+import { Directive, ElementRef, HostBinding, Input, Optional, Self } from "@angular/core";
 import { NgControl, Validators } from "@angular/forms";
 
 import { BitFormFieldControl } from "../form-field/form-field-control";
@@ -76,17 +76,14 @@ export class BitInputDirective implements BitFormFieldControl {
 
   constructor(
     @Optional() @Self() private ngControl: NgControl,
-    private elementRef: ElementRef<HTMLInputElement>,
-    private ngZone: NgZone
+    private elementRef: ElementRef<HTMLInputElement>
   ) {}
 
   focus() {
     const end = this.elementRef.nativeElement.value.length;
-    this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.elementRef.nativeElement.setSelectionRange(end, end);
-        this.elementRef.nativeElement.focus();
-      });
+    setTimeout(() => {
+      this.elementRef.nativeElement.setSelectionRange(end, end);
+      this.elementRef.nativeElement.focus();
     });
   }
 
