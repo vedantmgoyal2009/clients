@@ -37,9 +37,9 @@ import { CipherBulkRestoreRequest } from "../models/request/cipher-bulk-restore.
 import { CipherBulkShareRequest } from "../models/request/cipher-bulk-share.request";
 import { CipherCollectionsRequest } from "../models/request/cipher-collections.request";
 import { CipherCreateRequest } from "../models/request/cipher-create.request";
+import { CipherPartialRequest } from "../models/request/cipher-partial.request";
 import { CipherShareRequest } from "../models/request/cipher-share.request";
 import { CipherRequest } from "../models/request/cipher.request";
-import { CipherPartialRequest } from "../models/request/cipherPartialRequest";
 import { CipherResponse } from "../models/response/cipher.response";
 import { ErrorResponse } from "../models/response/error.response";
 import { AttachmentView } from "../models/view/attachment.view";
