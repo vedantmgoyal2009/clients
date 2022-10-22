@@ -1,9 +1,8 @@
-import { CipherType } from "../enums/cipherType";
-import { ImportResult } from "../models/domain/import-result";
-import { CardView } from "../models/view/card.view";
-
-import { BaseImporter } from "./baseImporter";
-import { Importer } from "./importer";
+import { CipherType } from "../../enums/cipherType";
+import { ImportResult } from "../../models/domain/import-result";
+import { CardView } from "../../models/view/card.view";
+import { BaseImporter } from "../baseImporter";
+import { Importer } from "../importer";
 
 export class FSecureFskImporter extends BaseImporter implements Importer {
   parse(data: string): Promise<ImportResult> {

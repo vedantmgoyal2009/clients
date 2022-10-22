@@ -1,4 +1,4 @@
-import { FSecureFskImporter as Importer } from "@bitwarden/common/importers/fsecureFskImporter";
+import { FSecureFskImporter as Importer } from "@bitwarden/common/importers/fsecureImporters/fsecureFskImporter";
 
 const TestDataWithStyleSetToWebsite: string = JSON.stringify({
   data: {
