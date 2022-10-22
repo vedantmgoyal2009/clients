@@ -29,7 +29,6 @@ export interface FskEntry {
   username: string;
   createdDate: number; // UNIX timestamp
   modifiedDate: number; // UNIX timestamp
-  autofillAndroid?: string;
 }
 
 export interface PasswordList {
