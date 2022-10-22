@@ -25,6 +25,7 @@ export class FSecureFskImporter extends BaseImporter implements Importer {
       const cipher = this.initLoginCipher();
       cipher.name = this.getValueOrDefault(value.service);
       cipher.notes = this.getValueOrDefault(value.notes);
+      cipher.favorite = value.favorite > 0;
 
       switch (value.type) {
         case FskEntryTypesEnum.Login:

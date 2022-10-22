@@ -13,6 +13,7 @@ describe("FSecure FSK Importer", () => {
     const cipher = result.ciphers.shift();
 
     expect(cipher.name).toEqual("example.com");
+    expect(cipher.favorite).toBe(true);
     expect(cipher.notes).toEqual("some note for example.com");
 
     expect(cipher.type).toBe(CipherType.Login);
@@ -33,6 +34,7 @@ describe("FSecure FSK Importer", () => {
     const cipher = result.ciphers.shift();
 
     expect(cipher.name).toEqual("My credit card");
+    expect(cipher.favorite).toBe(false);
     expect(cipher.notes).toEqual("some notes to my card");
 
     expect(cipher.type).toBe(CipherType.Card);
