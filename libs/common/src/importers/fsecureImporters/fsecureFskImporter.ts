@@ -4,10 +4,12 @@ import { CardView } from "../../models/view/card.view";
 import { BaseImporter } from "../baseImporter";
 import { Importer } from "../importer";
 
+import { FskFile } from "./types/fsecureFskTypes";
+
 export class FSecureFskImporter extends BaseImporter implements Importer {
   parse(data: string): Promise<ImportResult> {
     const result = new ImportResult();
-    const results = JSON.parse(data);
+    const results: FskFile = JSON.parse(data);
     if (results == null || results.data == null) {
       result.success = false;
       return Promise.resolve(result);
