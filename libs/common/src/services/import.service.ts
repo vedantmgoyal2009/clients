@@ -31,7 +31,7 @@ import { EncryptrCsvImporter } from "../importers/encryptrCsvImporter";
 import { EnpassCsvImporter } from "../importers/enpassCsvImporter";
 import { EnpassJsonImporter } from "../importers/enpassJsonImporter";
 import { FirefoxCsvImporter } from "../importers/firefoxCsvImporter";
-import { FSecureFskImporter } from "../importers/fsecureImporters/fsecureFskImporter";
+import { FSecureFskImporter } from "../importers/fsecureImporters/fsecure-fsk-importer";
 import { GnomeJsonImporter } from "../importers/gnomeJsonImporter";
 import { ImportError } from "../importers/importError";
 import { Importer } from "../importers/importer";

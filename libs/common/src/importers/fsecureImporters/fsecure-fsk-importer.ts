@@ -4,7 +4,7 @@ import { CardView } from "../../models/view/card.view";
 import { BaseImporter } from "../baseImporter";
 import { Importer } from "../importer";
 
-import { FskEntryTypesEnum, FskFile } from "./types/fsecureFskTypes";
+import { FskEntryTypesEnum, FskFile } from "./types/fsecure-fsk-types";
 
 export class FSecureFskImporter extends BaseImporter implements Importer {
   parse(data: string): Promise<ImportResult> {

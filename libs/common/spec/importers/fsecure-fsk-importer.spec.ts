@@ -1,7 +1,7 @@
 import { CipherType } from "@bitwarden/common/enums/cipherType";
-import { FSecureFskImporter as Importer } from "@bitwarden/common/importers/fsecureImporters/fsecureFskImporter";
+import { FSecureFskImporter as Importer } from "@bitwarden/common/importers/fsecureImporters/fsecure-fsk-importer";
 
-import { CreditCardTestEntry, LoginTestEntry } from "./testData/fsecureFsk/testData";
+import { CreditCardTestEntry, LoginTestEntry } from "./testData/fsecureFsk/fsk-test-data";
 
 describe("FSecure FSK Importer", () => {
   it("should import data of type login", async () => {
