@@ -1,13 +1,25 @@
-<img alt="Bitwarden" class="logo-themed tw-box-border tw-block tw-w-full tw-py-5 tw-px-3" />
+<img alt="Bitwarden" class="logo-themed tw-box-border tw-block tw-w-full tw-px-3 tw-pt-5" />
+<h1 class="tw-pl-12 tw-text-lg tw-lowercase !tw-text-alt2">
+  <span class="tw-font-semibold">Secrets</span><span class="tw-font-light">Manager</span>
+</h1>
 
-<div class="card mb-4 tw-m-2">
-  <div class="list-group list-group-flush">
-    <a routerLink="projects" class="list-group-item" routerLinkActive="active"> Projects </a>
-    <a routerLink="secrets" class="list-group-item" routerLinkActive="active"> Secrets </a>
-    <a routerLink="serviceAccounts" class="list-group-item" routerLinkActive="active">
-      Service Accounts
-    </a>
-    <a routerLink="trash" class="list-group-item" routerLinkActive="active"> Trash </a>
-    <a routerLink="settings" class="list-group-item" routerLinkActive="active"> Settings </a>
-  </div>
-</div>
+<a bitNavigation routerLink="projects">
+  <i class="bwi bwi-fw bwi-collection"></i>
+  <span>Projects</span>
+</a>
+<a bitNavigation routerLink="secrets">
+  <i class="bwi bwi-fw bwi-key"></i>
+  <span>Secrets</span>
+</a>
+<a bitNavigation routerLink="serviceAccounts">
+  <i class="bwi bwi-fw bwi-wrench"></i>
+  <span>Service Accounts</span>
+</a>
+<a bitNavigation routerLink="trash">
+  <i class="bwi bwi-fw bwi-trash"></i>
+  <span>Trash</span>
+</a>
+<a bitNavigation routerLink="settings">
+  <i class="bwi bwi-fw bwi-cog"></i>
+  <span>Settings</span>
+</a>

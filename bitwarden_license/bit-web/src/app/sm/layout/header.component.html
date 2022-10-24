@@ -1,8 +1,11 @@
-<div class="tw-flex tw-items-center tw-gap-3">
-  <h1 class="tw-text-3x tw-font-semibold">{{ title | i18n }}</h1>
+<div class="tw-flex tw-items-center tw-gap-3" *ngIf="routeData$ | async as routeData">
+  <h1 class="tw-text-3xl tw-font-semibold">{{ routeData.title | i18n }}</h1>
   <div class="tw-ml-auto tw-w-1/4">
-    <input bitInput class="search tw-w-full" placeholder="{{ searchTitle | i18n }}" />
+    <input bitInput class="search tw-w-full" placeholder="{{ routeData.searchTitle | i18n }}" />
   </div>
   <sm-new-menu></sm-new-menu>
   <sm-filter></sm-filter>
+  <ng-container *ngIf="account$ | async as account">
+    <bit-avatar [id]="account.userId" [text]="account.name || account.email"></bit-avatar>
+  </ng-container>
 </div>

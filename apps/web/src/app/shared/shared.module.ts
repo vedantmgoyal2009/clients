@@ -8,17 +8,19 @@ import { ToastrModule } from "ngx-toastr";
 
 import { JslibModule } from "@bitwarden/angular/jslib.module";
 import {
+  AsyncActionsModule,
+  AvatarModule,
   BadgeModule,
   ButtonModule,
   CalloutModule,
-  FormFieldModule,
-  MenuModule,
-  IconModule,
-  TableModule,
   DialogModule,
-  TabsModule,
+  FormFieldModule,
   IconButtonModule,
-  AsyncActionsModule,
+  IconModule,
+  MenuModule,
+  NavigationModule,
+  TableModule,
+  TabsModule,
 } from "@bitwarden/components";
 
 // Register the locales for the application
@@ -53,6 +55,8 @@ import "./locales";
     DialogModule,
     TabsModule,
     IconButtonModule,
+    AvatarModule,
+    NavigationModule,
   ],
   exports: [
     CommonModule,
@@ -76,6 +80,8 @@ import "./locales";
     DialogModule,
     TabsModule,
     IconButtonModule,
+    AvatarModule,
+    NavigationModule,
   ],
   providers: [DatePipe],
   bootstrap: [],

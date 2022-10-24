@@ -5607,5 +5607,8 @@
   },
   "multiSelectClearAll": {
     "message": "Clear all"
+  },
+  "searchProjects":{
+    "message":"Search Projects"
   }
 }

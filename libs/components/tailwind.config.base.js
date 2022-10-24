@@ -56,6 +56,8 @@ module.exports = {
         DEFAULT: rgba("--color-background"),
         alt: rgba("--color-background-alt"),
         alt2: rgba("--color-background-alt2"),
+        alt3: rgba("--color-background-alt3"),
+        alt4: rgba("--color-background-alt4"),
       },
     },
     textColor: {
