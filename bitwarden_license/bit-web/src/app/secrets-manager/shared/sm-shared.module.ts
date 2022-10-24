@@ -11,21 +11,21 @@ import { NoItemsComponent } from "../layout/no-items.component";
 @NgModule({
   imports: [SharedModule],
   exports: [
-    HeaderComponent,
+    SharedModule,
+    BulkStatusDialogComponent,
     FilterComponent,
+    HeaderComponent,
     NewMenuComponent,
     NoItemsComponent,
-    BulkStatusDialogComponent,
-    SharedModule,
   ],
   declarations: [
     BulkStatusDialogComponent,
-    HeaderComponent,
     FilterComponent,
+    HeaderComponent,
     NewMenuComponent,
     NoItemsComponent,
   ],
   providers: [],
   bootstrap: [],
 })
-export class SecretsSharedModule {}
+export class SecretsManagerSharedModule {}
