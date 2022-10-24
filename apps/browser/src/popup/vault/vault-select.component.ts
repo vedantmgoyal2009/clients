@@ -13,16 +13,7 @@ import {
   HostListener,
   OnDestroy,
 } from "@angular/core";
-import {
-  BehaviorSubject,
-  concatMap,
-  filter,
-  map,
-  merge,
-  Observable,
-  Subject,
-  takeUntil,
-} from "rxjs";
+import { BehaviorSubject, concatMap, map, merge, Observable, Subject, takeUntil } from "rxjs";
 
 import { VaultFilter } from "@bitwarden/angular/vault/vault-filter/models/vault-filter.model";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
@@ -68,7 +59,7 @@ export class VaultSelectComponent implements OnInit, OnDestroy {
   isOpen = false;
   loaded = false;
   organizations$: Observable<Organization[]>;
-  selectedVault$: Observable<string> = this._selectedVault.pipe(filter((x) => x !== null));
+  selectedVault$: Observable<string | null> = this._selectedVault.asObservable();
 
   vaultFilter: VaultFilter = new VaultFilter();
   enforcePersonalOwnership = false;
