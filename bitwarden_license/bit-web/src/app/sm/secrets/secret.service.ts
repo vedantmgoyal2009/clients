@@ -7,8 +7,9 @@ import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { EncString } from "@bitwarden/common/models/domain/enc-string";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetric-crypto-key";
 import { ListResponse } from "@bitwarden/common/models/response/list.response";
-import { SecretListView } from "@bitwarden/common/models/view/secret-list.view";
-import { SecretView } from "@bitwarden/common/models/view/secret.view";
+
+import { SecretListView } from "../models/view/secret-list.view";
+import { SecretView } from "../models/view/secret.view";
 
 import { SecretRequest } from "./requests/secret.request";
 import { SecretListItemResponse } from "./responses/secret-list-item.response";

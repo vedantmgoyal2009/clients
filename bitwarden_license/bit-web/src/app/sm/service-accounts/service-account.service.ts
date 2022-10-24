@@ -7,7 +7,8 @@ import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { EncString } from "@bitwarden/common/models/domain/enc-string";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetric-crypto-key";
 import { ListResponse } from "@bitwarden/common/models/response/list.response";
-import { ServiceAccountView } from "@bitwarden/common/models/view/service-account.view";
+
+import { ServiceAccountView } from "../models/view/service-account.view";
 
 import { ServiceAccountRequest } from "./requests/service-account.request";
 import { ServiceAccountResponse } from "./responses/service-account.response";

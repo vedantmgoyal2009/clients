@@ -1,6 +1,6 @@
-import { View } from "./view";
+import { View } from "@bitwarden/common/models/view/view";
 
-export class SecretListView implements View {
+export class ProjectView implements View {
   id: string;
   organizationId: string;
   name: string;

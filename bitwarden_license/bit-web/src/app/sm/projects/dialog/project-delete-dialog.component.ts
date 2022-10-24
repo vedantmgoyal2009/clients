@@ -11,7 +11,6 @@ import {
 
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { ProjectListView } from "@bitwarden/common/models/view/project-list.view";
 import { DialogService } from "@bitwarden/components";
 
 import {
@@ -19,6 +18,7 @@ import {
   BulkStatusDetails,
   BulkStatusDialogComponent,
 } from "../../layout/dialogs/bulk-status-dialog.component";
+import { ProjectListView } from "../../models/view/project-list.view";
 import { ProjectService } from "../project.service";
 
 export interface ProjectDeleteOperation {

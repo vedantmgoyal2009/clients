@@ -2,8 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { combineLatestWith, Observable, startWith, switchMap } from "rxjs";
 
-import { ServiceAccountView } from "@bitwarden/common/models/view/service-account.view";
 import { DialogService } from "@bitwarden/components";
+
+import { ServiceAccountView } from "../models/view/service-account.view";
 
 import {
   ServiceAccountDialogComponent,

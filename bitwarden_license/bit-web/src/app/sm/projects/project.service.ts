@@ -7,10 +7,10 @@ import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { EncString } from "@bitwarden/common/models/domain/enc-string";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetric-crypto-key";
 import { ListResponse } from "@bitwarden/common/models/response/list.response";
-import { ProjectListView } from "@bitwarden/common/models/view/project-list.view";
-import { ProjectView } from "@bitwarden/common/models/view/project.view";
 
 import { BulkOperationStatus } from "../layout/dialogs/bulk-status-dialog.component";
+import { ProjectListView } from "../models/view/project-list.view";
+import { ProjectView } from "../models/view/project.view";
 
 import { ProjectRequest } from "./requests/project.request";
 import { ProjectListItemResponse } from "./responses/project-list-item.response";

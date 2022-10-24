@@ -2,8 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { combineLatestWith, Observable, startWith, switchMap } from "rxjs";
 
-import { SecretListView } from "@bitwarden/common/models/view/secret-list.view";
 import { DialogService } from "@bitwarden/components";
+
+import { SecretListView } from "../models/view/secret-list.view";
 
 import {
   SecretDeleteDialogComponent,
