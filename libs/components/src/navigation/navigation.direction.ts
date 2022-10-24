@@ -1,6 +1,6 @@
 import { Directive, HostBinding, OnDestroy, OnInit, Optional } from "@angular/core";
 import { NavigationEnd, Router, RouterLinkWithHref } from "@angular/router";
-import { filter, Subject } from "rxjs";
+import { filter, Subject, takeUntil } from "rxjs";
 
 @Directive({
   selector: "a[bitNavigation]",
@@ -39,7 +39,10 @@ export class NavigationDirective implements OnInit, OnDestroy {
     this.updateActive();
 
     this.router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
+      .pipe(
+        filter((e) => e instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => this.updateActive());
   }
 
