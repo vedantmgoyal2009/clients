@@ -12,6 +12,8 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
   templateUrl: "hint.component.html",
 })
 export class HintComponent extends BaseHintComponent {
+  emailSent: string;
+
   constructor(
     router: Router,
     platformUtilsService: PlatformUtilsService,
@@ -20,5 +22,11 @@ export class HintComponent extends BaseHintComponent {
     logService: LogService
   ) {
     super(router, i18nService, apiService, platformUtilsService, logService);
+
+    this.emailSent = this.router.getCurrentNavigation().extras.state.email;
+    this.email = this.emailSent;
+    super.onSuccessfulSubmit = async () => {
+      this.router.navigateByUrl(this.successRoute, { state: { email: this.emailSent } });
+    };
   }
 }

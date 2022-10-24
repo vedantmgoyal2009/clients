@@ -63,6 +63,9 @@ export class LoginComponent extends BaseLoginComponent {
       await syncService.fullSync(true);
     };
     super.successRoute = "/tabs/vault";
+    if (this.router.getCurrentNavigation().extras?.state?.email != null) {
+      this.formGroup.patchValue({ email: this.router.getCurrentNavigation().extras.state.email });
+    }
   }
 
   settings() {
