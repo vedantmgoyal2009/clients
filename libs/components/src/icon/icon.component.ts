@@ -20,7 +20,5 @@ export class BitIconComponent {
     return this.domSanitizer.bypassSecurityTrustHtml(svg);
   }
 
-  @HostBinding() protected ariaHidden = true;
-
   constructor(private domSanitizer: DomSanitizer) {}
 }
