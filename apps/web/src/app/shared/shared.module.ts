@@ -39,12 +39,11 @@ import "./locales";
     ReactiveFormsModule,
     InfiniteScrollModule,
     RouterModule,
+    ToastrModule,
     JslibModule,
 
     // Component library
     BadgeModule,
-    BadgeModule,
-    ButtonModule,
     ButtonModule,
     CalloutModule,
     DialogModule,
@@ -54,32 +53,33 @@ import "./locales";
     MenuModule,
     TableModule,
     TabsModule,
-    ToastrModule,
+
+    // Web specific
   ],
   exports: [
     CommonModule,
-    InfiniteScrollModule,
+    DragDropModule,
     FormsModule,
     ReactiveFormsModule,
+    InfiniteScrollModule,
     RouterModule,
+    ToastrModule,
     JslibModule,
 
     // Component library
     AsyncActionsModule,
     BadgeModule,
-    BadgeModule,
-    ButtonModule,
     ButtonModule,
     CalloutModule,
     DialogModule,
-    DragDropModule,
     FormFieldModule,
     IconButtonModule,
     IconModule,
     MenuModule,
     TableModule,
     TabsModule,
-    ToastrModule,
+
+    // Web specific
   ],
   providers: [DatePipe],
   bootstrap: [],
