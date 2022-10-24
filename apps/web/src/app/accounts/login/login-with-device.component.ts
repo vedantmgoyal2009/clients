@@ -14,13 +14,14 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PasswordGenerationService } from "@bitwarden/common/abstractions/passwordGeneration.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { StateService } from "@bitwarden/common/abstractions/state.service";
+import { ValidationService } from "@bitwarden/common/abstractions/validation.service";
 import { AuthRequestType } from "@bitwarden/common/enums/authRequestType";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { PasswordlessLogInCredentials } from "@bitwarden/common/models/domain/logInCredentials";
-import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetricCryptoKey";
-import { PasswordlessCreateAuthRequest } from "@bitwarden/common/models/request/passwordlessCreateAuthRequest";
-import { AuthRequestResponse } from "@bitwarden/common/models/response/authRequestResponse";
+import { PasswordlessLogInCredentials } from "@bitwarden/common/models/domain/log-in-credentials";
+import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetric-crypto-key";
+import { PasswordlessCreateAuthRequest } from "@bitwarden/common/models/request/passwordless-create-auth.request";
+import { AuthRequestResponse } from "@bitwarden/common/models/response/auth-request.response";
+import { ErrorResponse } from "@bitwarden/common/models/response/error.response";
 
 @Component({
   selector: "app-login-with-device",
@@ -37,9 +38,11 @@ export class LoginWithDeviceComponent
   onSuccessfulLoginTwoFactorNavigate: () => Promise<any>;
   onSuccessfulLogin: () => Promise<any>;
   onSuccessfulLoginNavigate: () => Promise<any>;
+  onSuccessfulLoginForceResetNavigate: () => Promise<any>;
 
   protected twoFactorRoute = "2fa";
   protected successRoute = "vault";
+  protected forcePasswordResetRoute = "update-temp-password";
   private authRequestKeyPair: [publicKey: ArrayBuffer, privateKey: ArrayBuffer];
 
   constructor(
@@ -51,11 +54,11 @@ export class LoginWithDeviceComponent
     private apiService: ApiService,
     private authService: AuthService,
     private logService: LogService,
-    private stateService: StateService,
     environmentService: EnvironmentService,
     i18nService: I18nService,
     platformUtilsService: PlatformUtilsService,
-    private anonymousHubService: AnonymousHubService
+    private anonymousHubService: AnonymousHubService,
+    private validationService: ValidationService
   ) {
     super(environmentService, i18nService, platformUtilsService);
 
@@ -119,16 +122,37 @@ export class LoginWithDeviceComponent
       }
 
       const credentials = await this.buildLoginCredntials(requestId, response);
-      await this.authService.logIn(credentials);
-      if (this.onSuccessfulLogin != null) {
-        this.onSuccessfulLogin();
-      }
-      if (this.onSuccessfulLoginNavigate != null) {
-        this.onSuccessfulLoginNavigate();
+      const loginResponse = await this.authService.logIn(credentials);
+
+      if (loginResponse.requiresTwoFactor) {
+        if (this.onSuccessfulLoginTwoFactorNavigate != null) {
+          this.onSuccessfulLoginTwoFactorNavigate();
+        } else {
+          this.router.navigate([this.twoFactorRoute]);
+        }
+      } else if (loginResponse.forcePasswordReset) {
+        if (this.onSuccessfulLoginForceResetNavigate != null) {
+          this.onSuccessfulLoginForceResetNavigate();
+        } else {
+          this.router.navigate([this.forcePasswordResetRoute]);
+        }
       } else {
-        this.router.navigate([this.successRoute]);
+        if (this.onSuccessfulLogin != null) {
+          this.onSuccessfulLogin();
+        }
+        if (this.onSuccessfulLoginNavigate != null) {
+          this.onSuccessfulLoginNavigate();
+        } else {
+          this.router.navigate([this.successRoute]);
+        }
       }
     } catch (error) {
+      if (error instanceof ErrorResponse) {
+        this.router.navigate(["/login"]);
+        this.validationService.showError(error);
+        return;
+      }
+
       this.logService.error(error);
     }
   }

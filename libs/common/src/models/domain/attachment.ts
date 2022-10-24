@@ -1,10 +1,12 @@
-import { Utils } from "../../misc/utils";
-import { AttachmentData } from "../data/attachmentData";
-import { AttachmentView } from "../view/attachmentView";
+import { Jsonify } from "type-fest";
 
-import Domain from "./domainBase";
-import { EncString } from "./encString";
-import { SymmetricCryptoKey } from "./symmetricCryptoKey";
+import { Utils } from "../../misc/utils";
+import { AttachmentData } from "../data/attachment.data";
+import { AttachmentView } from "../view/attachment.view";
+
+import Domain from "./domain-base";
+import { EncString } from "./enc-string";
+import { SymmetricCryptoKey } from "./symmetric-crypto-key";
 
 export class Attachment extends Domain {
   id: string;
@@ -89,5 +91,19 @@ export class Attachment extends Domain {
       ["id", "url", "sizeName"]
     );
     return a;
+  }
+
+  static fromJSON(obj: Partial<Jsonify<Attachment>>): Attachment {
+    if (obj == null) {
+      return null;
+    }
+
+    const key = EncString.fromJSON(obj.key);
+    const fileName = EncString.fromJSON(obj.fileName);
+
+    return Object.assign(new Attachment(), obj, {
+      key,
+      fileName,
+    });
   }
 }
