@@ -5,7 +5,7 @@ import {
   GroupServiceAbstraction,
 } from "../../abstractions/group";
 import { ListResponse } from "../../models/response/list.response";
-import { GroupView } from "../../models/view/group-view";
+import { GroupView } from "../../models/view/group.view";
 
 import { OrganizationGroupBulkRequest } from "./requests/organization-group-bulk-request";
 

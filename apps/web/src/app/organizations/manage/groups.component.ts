@@ -31,7 +31,7 @@ import {
 } from "@bitwarden/common/models/response/collection.response";
 import { ListResponse } from "@bitwarden/common/models/response/list.response";
 import { CollectionView } from "@bitwarden/common/models/view/collection.view";
-import { GroupView } from "@bitwarden/common/models/view/group-view";
+import { GroupView } from "@bitwarden/common/models/view/group.view";
 
 import { GroupAddEditComponent } from "./group-add-edit.component";
 
