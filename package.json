@@ -132,7 +132,7 @@
     "url": "^0.11.0",
     "util": "^0.12.4",
     "webcrypto-shim": "^0.1.7",
-    "webpack": "^5.64.4",
+    "webpack": "^5.76.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.9.3",
     "webpack-node-externals": "^3.0.0"
